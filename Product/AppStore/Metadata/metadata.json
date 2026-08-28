@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "app": {
+    "bundleId": "com.steelflow.app",
+    "sku": "STEELFLOW-IOS-001",
+    "primaryCategory": "Utilities",
+    "secondaryCategory": "Business",
+    "ageRating": "4+",
+    "price": "Free",
+    "copyright": "© 2026 SteelFlow",
+    "privacy": {
+      "dataCollection": "Data Not Collected",
+      "privacyPolicyUrl": "REPLACE_BEFORE_SUBMISSION",
+      "supportUrl": "REPLACE_BEFORE_SUBMISSION",
+      "marketingUrl": "REPLACE_BEFORE_SUBMISSION"
+    }
+  },
+  "localizations": {
+    "en-US": {
+      "name": "SteelFlow: Metal Calculator",
+      "subtitle": "Weight, Cost & PDF Quotes",
+      "promotionalText": "From dimensions to a client-ready quote. Calculate metal weight and cost, organize projects, then export PDF quotes and CSV lists offline—no account required.",
+      "keywords": "steel,pipe,tube,plate,bar,beam,angle,fabrication,estimate,material,mass,section,cutlist,workshop",
+      "descriptionFile": "en-US.md",
+      "whatsNew": "Meet SteelFlow: calculate metal weight and cost, organize project items, and create PDF quotes or CSV material lists. Version 1.0 also includes metric and imperial units, custom materials, local backup, and bilingual English/Chinese support."
+    },
+    "zh-Hans": {
+      "name": "SteelFlow 钢材重量计算器",
+      "subtitle": "成本、损耗与PDF报价清单",
+      "promotionalText": "从尺寸到报价单：计算钢材理论重量与成本，管理项目条目，并导出 PDF 报价单和 CSV 清单。无需账号，核心功能离线可用。",
+      "keywords": "钢铁,金属,钢管,圆管,方管,角钢,槽钢,工字钢,H型钢,不锈钢,铝材,铜材,算料",
+      "descriptionFile": "zh-Hans.md",
+      "whatsNew": "SteelFlow 1.0 正式上线：支持钢材与常见金属型材算重、项目成本核算、PDF 报价单和 CSV 清单；同时提供公英制单位、自定义材料、本地备份及中英文界面。"
+    }
+  },
+  "inAppPurchase": {
+    "productId": "com.steelflow.app.pro.lifetime",
+    "type": "Non-Consumable",
+    "launchPriceHypothesis": {"CNY": 68, "USD": 14.99},
+    "localizations": {
+      "en-US": {"displayName": "SteelFlow Pro Lifetime", "description": "Unlimited projects, quotes, and full exports"},
+      "zh-Hans": {"displayName": "SteelFlow Pro 永久版", "description": "无限项目、自定义报价与完整导出"}
+    }
+  }
+}

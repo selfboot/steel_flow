@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 2,
+  "appName": "SteelFlow",
+  "themeId": "ocean-fresh",
+  "connectedCanvas": false,
+  "locales": [
+    "en-US",
+    "zh-Hans"
+  ],
+  "locale": "zh-Hans",
+  "device": "iphone",
+  "orientation": "portrait",
+  "appIcon": "/brand/app-icon.png",
+  "slidesByDevice": {
+    "iphone": [
+      {
+        "id": "steelflow-cover",
+        "layout": "hero",
+        "label": {
+          "en-US": "METAL WEIGHT • COST • QUOTE",
+          "zh-Hans": "钢材算重 • 成本 • 报价"
+        },
+        "headline": {
+          "en-US": "From dimensions\nto a quote.",
+          "zh-Hans": "从尺寸\n到报价单。"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png"
+      },
+      {
+        "id": "steelflow-calculate",
+        "layout": "device-bottom",
+        "label": {
+          "en-US": "FAST & VERIFIABLE",
+          "zh-Hans": "快速、可核对"
+        },
+        "headline": {
+          "en-US": "Enter dimensions.\nGet weight instantly.",
+          "zh-Hans": "输入尺寸，\n即刻算出重量。"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png"
+      },
+      {
+        "id": "steelflow-cost",
+        "layout": "device-top",
+        "label": {
+          "en-US": "TRUE PROJECT COST",
+          "zh-Hans": "真实项目成本"
+        },
+        "headline": {
+          "en-US": "Price waste, fees,\ntax and margin.",
+          "zh-Hans": "损耗、费用、税费\n与利润一次算清。"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png",
+        "inverted": true
+      },
+      {
+        "id": "steelflow-projects",
+        "layout": "device-bottom",
+        "label": {
+          "en-US": "BUILT AROUND PROJECTS",
+          "zh-Hans": "以项目为核心"
+        },
+        "headline": {
+          "en-US": "Keep every item\nin one clear quote.",
+          "zh-Hans": "每个材料条目，\n汇成一份清晰报价。"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png"
+      },
+      {
+        "id": "steelflow-export",
+        "layout": "device-top",
+        "label": {
+          "en-US": "CLIENT-READY OUTPUT",
+          "zh-Hans": "可直接交付"
+        },
+        "headline": {
+          "en-US": "Export polished PDF\nand CSV files.",
+          "zh-Hans": "导出专业 PDF\n与 CSV 清单。"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png",
+        "inverted": true
+      },
+      {
+        "id": "steelflow-offline",
+        "layout": "device-bottom",
+        "label": {
+          "en-US": "PRIVATE BY DEFAULT",
+          "zh-Hans": "默认保护隐私"
+        },
+        "headline": {
+          "en-US": "Works offline.\nNo account required.",
+          "zh-Hans": "离线可用，\n无需注册账号。"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png"
+      }
+    ],
+    "android": [],
+    "ipad": [],
+    "android-7": [],
+    "android-10": [],
+    "feature-graphic": []
+  }
+}
