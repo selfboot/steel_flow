@@ -26,10 +26,30 @@ struct SteelFlowApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootTabView()
+            appRoot
                 .environment(\.locale, languageCode == "system" ? .autoupdatingCurrent : Locale(identifier: languageCode))
-                .task { SeedData.ensure(in: container.mainContext) }
+                .task {
+                    SeedData.ensure(in: container.mainContext)
+#if DEBUG
+                    if MarketingCaptureScreen.requested != nil {
+                        MarketingDemoData.ensure(in: container.mainContext)
+                    }
+#endif
+                }
         }
         .modelContainer(container)
+    }
+
+    @ViewBuilder
+    private var appRoot: some View {
+#if DEBUG
+        if let screen = MarketingCaptureScreen.requested {
+            MarketingCaptureRoot(screen: screen)
+        } else {
+            RootTabView()
+        }
+#else
+        RootTabView()
+#endif
     }
 }

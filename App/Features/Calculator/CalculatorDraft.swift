@@ -159,6 +159,19 @@ final class CalculatorDraft {
         densityText = AppFormatters.number(material.densityKgPerM3, maximumFractionDigits: 1)
     }
 
+    func applyMarketingPreset(chinese: Bool) {
+        quantity = 18
+        wasteText = "5"
+        unitPriceText = chinese ? "5.32" : "0.74"
+        processingFeeText = chinese ? "680" : "95"
+        otherFeeText = chinese ? "120" : "18"
+        priceSource = .manual
+        priceSourceName = chinese ? "华东现货" : "Regional spot"
+        priceRegion = chinese ? "上海" : "US Midwest"
+        materialGrade = "Q235B"
+        itemDescription = chinese ? "底板 200 × 12" : "Base plate 200 × 12"
+    }
+
     func convertGeometry(to newUnit: LengthUnit, locale: Locale) {
         guard newUnit != geometryUnit else { return }
         for field in profile.dimensionFields where field != .customArea {

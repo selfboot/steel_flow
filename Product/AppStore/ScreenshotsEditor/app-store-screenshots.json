@@ -7,7 +7,7 @@
     "en-US",
     "zh-Hans"
   ],
-  "locale": "zh-Hans",
+  "locale": "en-US",
   "device": "iphone",
   "orientation": "portrait",
   "appIcon": "/brand/app-icon.png",
@@ -15,83 +15,81 @@
     "iphone": [
       {
         "id": "steelflow-cover",
-        "layout": "hero",
+        "layout": "device-bottom",
         "label": {
-          "en-US": "METAL WEIGHT • COST • QUOTE",
-          "zh-Hans": "钢材算重 • 成本 • 报价"
+          "en-US": "WEIGHT • COST • QUOTE",
+          "zh-Hans": "算重 • 成本 • 报价"
         },
         "headline": {
-          "en-US": "From dimensions\nto a quote.",
-          "zh-Hans": "从尺寸\n到报价单。"
+          "en-US": "Steel weight.\nReady to quote.",
+          "zh-Hans": "算重量，\n再出报价。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png"
+        "screenshot": "/screenshots/apple/iphone/{locale}/home.png"
       },
       {
         "id": "steelflow-calculate",
         "layout": "device-bottom",
         "label": {
-          "en-US": "FAST & VERIFIABLE",
-          "zh-Hans": "快速、可核对"
+          "en-US": "INSTANT CALCULATION",
+          "zh-Hans": "即时计算"
         },
         "headline": {
-          "en-US": "Enter dimensions.\nGet weight instantly.",
-          "zh-Hans": "输入尺寸，\n即刻算出重量。"
+          "en-US": "Dimensions in.\nWeight and cost out.",
+          "zh-Hans": "输入尺寸，\n重量成本即刻可见。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png"
+        "screenshot": "/screenshots/apple/iphone/{locale}/calculation.png"
       },
       {
         "id": "steelflow-cost",
-        "layout": "device-top",
+        "layout": "device-bottom",
         "label": {
-          "en-US": "TRUE PROJECT COST",
-          "zh-Hans": "真实项目成本"
+          "en-US": "REAL-WORLD PRICING",
+          "zh-Hans": "真实计价"
         },
         "headline": {
-          "en-US": "Price waste, fees,\ntax and margin.",
-          "zh-Hans": "损耗、费用、税费\n与利润一次算清。"
+          "en-US": "Waste and fees.\nSupplier prices too.",
+          "zh-Hans": "损耗、费用、供应价\n逐项算清。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png",
-        "inverted": true
+        "screenshot": "/screenshots/apple/iphone/{locale}/pricing.png"
       },
       {
         "id": "steelflow-projects",
         "layout": "device-bottom",
         "label": {
-          "en-US": "BUILT AROUND PROJECTS",
-          "zh-Hans": "以项目为核心"
+          "en-US": "PROJECT CONTROL",
+          "zh-Hans": "项目汇总"
         },
         "headline": {
-          "en-US": "Keep every item\nin one clear quote.",
-          "zh-Hans": "每个材料条目，\n汇成一份清晰报价。"
+          "en-US": "Every steel item.\nOne project total.",
+          "zh-Hans": "每个材料条目，\n汇成项目总价。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png"
+        "screenshot": "/screenshots/apple/iphone/{locale}/project.png"
       },
       {
         "id": "steelflow-export",
-        "layout": "device-top",
+        "layout": "device-bottom",
         "label": {
           "en-US": "CLIENT-READY OUTPUT",
           "zh-Hans": "可直接交付"
         },
         "headline": {
-          "en-US": "Export polished PDF\nand CSV files.",
-          "zh-Hans": "导出专业 PDF\n与 CSV 清单。"
+          "en-US": "A client-ready\nPDF quote.",
+          "zh-Hans": "客户可直接接收的\nPDF 报价单。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png",
-        "inverted": true
+        "screenshot": "/screenshots/apple/iphone/{locale}/quote.png"
       },
       {
-        "id": "steelflow-offline",
+        "id": "steelflow-materials",
         "layout": "device-bottom",
         "label": {
-          "en-US": "PRIVATE BY DEFAULT",
-          "zh-Hans": "默认保护隐私"
+          "en-US": "YOUR MATERIAL LIBRARY",
+          "zh-Hans": "你的材料库"
         },
         "headline": {
-          "en-US": "Works offline.\nNo account required.",
-          "zh-Hans": "离线可用，\n无需注册账号。"
+          "en-US": "Built-in densities.\nYour own prices.",
+          "zh-Hans": "内置材料密度，\n保存自有价格。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/calculator.png"
+        "screenshot": "/screenshots/apple/iphone/{locale}/materials.png"
       }
     ],
     "android": [],

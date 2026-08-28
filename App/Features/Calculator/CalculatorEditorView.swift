@@ -19,10 +19,17 @@ struct CalculatorEditorView: View {
     @State private var purchaseManager = PurchaseManager.shared
     @State private var selectedPriceEntryID: UUID?
 
-    init(profile: ProfileKind, destinationProject: ProjectEntity? = nil) {
+    init(profile: ProfileKind, destinationProject: ProjectEntity? = nil, marketingPreset: Bool = false) {
         self.profile = profile
         self.destinationProject = destinationProject
-        _draft = State(initialValue: CalculatorDraft(profile: profile))
+        let draft = CalculatorDraft(profile: profile)
+        if marketingPreset {
+            let arguments = ProcessInfo.processInfo.arguments
+            let localeIndex = arguments.firstIndex(of: "--marketing-locale")
+            let localeCode = localeIndex.flatMap { arguments.indices.contains($0 + 1) ? arguments[$0 + 1] : nil }
+            draft.applyMarketingPreset(chinese: localeCode?.hasPrefix("zh") == true)
+        }
+        _draft = State(initialValue: draft)
     }
 
     private var calculation: Result<CalculationResult, CalculationError>? { draft.result(locale: locale) }

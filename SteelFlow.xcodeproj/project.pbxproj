@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		018B6C7AB148AAA5EA78FEE3 /* ProjectDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5C97B234CCD137A2C117E8 /* ProjectDetailView.swift */; };
 		03A9FBA531619D2C7F3854AF /* SteelFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04795DF5B57D9A2BB05DE0A2 /* SteelFlowUITests.swift */; };
+		0A7F78E6E62283FD18117E4A /* MarketingCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24411F83D53BCB9DE1D5464E /* MarketingCapture.swift */; };
 		0E4FBF99CFA02AA4C3652346 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB33FEBDD0F8C3B26D218F /* RootTabView.swift */; };
 		10CABE5CB0E3416B4C53A6AE /* ReferenceCases.json in Resources */ = {isa = PBXBuildFile; fileRef = 20D6D1B0C08DBFE52F6AD27D /* ReferenceCases.json */; };
 		133D88902A77B96E60DDB085 /* CalculatorEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8859FFF9B380FFA691F19 /* CalculatorEditorView.swift */; };
@@ -71,6 +72,7 @@
 		13853DB5AE8124C7BA2CB030 /* SteelFlowUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SteelFlowUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B9CFAE1CC59169A250AC3D /* QuoteExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteExportService.swift; sourceTree = "<group>"; };
 		20D6D1B0C08DBFE52F6AD27D /* ReferenceCases.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ReferenceCases.json; sourceTree = "<group>"; };
+		24411F83D53BCB9DE1D5464E /* MarketingCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingCapture.swift; sourceTree = "<group>"; };
 		3568DCA5A6B45431715922BC /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		3C649A49EC7D9C81AEA70527 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		48EF519CF3E843C209C44ED5 /* SteelFlowTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SteelFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,6 +115,7 @@
 				B8AEA8E96AA53330BAFCD545 /* Data */,
 				7B68B8ED74CCAF94D5A9AA11 /* Domain */,
 				6EA7363200C628041A1C25C7 /* Features */,
+				D3401BEDAB07CECDE70F910F /* Marketing */,
 				7CB87F59192585D2132C87FA /* Presentation */,
 				4AB5A58C956C523595D9E2CA /* Resources */,
 			);
@@ -246,6 +249,14 @@
 				E8D061E5DC539665CC7AF3A6 /* SeedData.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		D3401BEDAB07CECDE70F910F /* Marketing */ = {
+			isa = PBXGroup;
+			children = (
+				24411F83D53BCB9DE1D5464E /* MarketingCapture.swift */,
+			);
+			path = Marketing;
 			sourceTree = "<group>";
 		};
 		DCA0A8CCCC17F77FAC48D54C /* Settings */ = {
@@ -426,6 +437,7 @@
 				61F77F6870ACCF6548DD5E5D /* CalculatorHomeView.swift in Sources */,
 				84291BF8624E6A014F0164BA /* DesignSystem.swift in Sources */,
 				507E2C9612FE12225B3CEF39 /* Entities.swift in Sources */,
+				0A7F78E6E62283FD18117E4A /* MarketingCapture.swift in Sources */,
 				B330E5E46553AD093B2909AF /* MaterialCatalog.swift in Sources */,
 				B39729F62CDC02B60CDBF9EB /* MaterialsView.swift in Sources */,
 				8FED81E02ECBA421030A20F4 /* Money.swift in Sources */,
