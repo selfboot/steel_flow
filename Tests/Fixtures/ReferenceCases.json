@@ -1,0 +1,2020 @@
+[
+  {
+    "id": "plate-01",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "plate",
+    "dimensions": {
+      "width": 50,
+      "thickness": 3
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 1.5,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7200,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.00015000000000000001,
+    "expectedTotalMassKg": 3.24,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "plate-02",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "plate",
+    "dimensions": {
+      "width": 60,
+      "thickness": 4
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7850,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.00024,
+    "expectedTotalMassKg": 11.304,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "plate-03",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "plate",
+    "dimensions": {
+      "width": 70,
+      "thickness": 5
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.5,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 7930,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00035000000000000005,
+    "expectedTotalMassKg": 27.755000000000003,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "plate-04",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "plate",
+    "dimensions": {
+      "width": 80,
+      "thickness": 6
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3,
+    "lengthUnit": "meter",
+    "quantity": 5,
+    "densityKgPerM3": 8000,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.00048,
+    "expectedTotalMassKg": 57.60000000000001,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "plate-05",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "plate",
+    "dimensions": {
+      "width": 90,
+      "thickness": 7
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.5,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 8500,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.00063,
+    "expectedTotalMassKg": 18.7425,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "plate-06",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "plate",
+    "dimensions": {
+      "width": 100,
+      "thickness": 8
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8960,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0008,
+    "expectedTotalMassKg": 57.344,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "plate-07",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "plate",
+    "dimensions": {
+      "width": 110,
+      "thickness": 9
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.5,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 2700,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00099,
+    "expectedTotalMassKg": 36.085499999999996,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "plate-08",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "plate",
+    "dimensions": {
+      "width": 120,
+      "thickness": 10
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 7200,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.0012,
+    "expectedTotalMassKg": 172.79999999999998,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "plate-09",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "plate",
+    "dimensions": {
+      "width": 130,
+      "thickness": 11
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.5,
+    "lengthUnit": "meter",
+    "quantity": 5,
+    "densityKgPerM3": 7850,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.00143,
+    "expectedTotalMassKg": 308.70125,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "plate-10",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "plate",
+    "dimensions": {
+      "width": 140,
+      "thickness": 12
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 6,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 7930,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0016800000000000003,
+    "expectedTotalMassKg": 79.93440000000001,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-bar-01",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundBar",
+    "dimensions": {
+      "diameter": 11
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 1.4,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7850,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00009503317777109122,
+    "expectedTotalMassKg": 2.0888292474085848,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-bar-02",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundBar",
+    "dimensions": {
+      "diameter": 14
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 1.8,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7930,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.00015393804002589986,
+    "expectedTotalMassKg": 6.591934749989084,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-bar-03",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundBar",
+    "dimensions": {
+      "diameter": 17
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.2,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 8000,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.0002269800692218626,
+    "expectedTotalMassKg": 15.979396873219128,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-bar-04",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundBar",
+    "dimensions": {
+      "diameter": 20
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.6,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 8500,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.00031415926535897936,
+    "expectedTotalMassKg": 6.942919764433444,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-bar-05",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundBar",
+    "dimensions": {
+      "diameter": 23
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8960,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00041547562843725016,
+    "expectedTotalMassKg": 22.335969784786567,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-bar-06",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundBar",
+    "dimensions": {
+      "diameter": 26
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.4000000000000004,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 2700,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.000530929158456675,
+    "expectedTotalMassKg": 14.62178902389683,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-bar-07",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundBar",
+    "dimensions": {
+      "diameter": 29
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.8000000000000003,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 7200,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.0006605198554172541,
+    "expectedTotalMassKg": 72.2872929768643,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-bar-08",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundBar",
+    "dimensions": {
+      "diameter": 32
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.2,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 7850,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0008042477193189871,
+    "expectedTotalMassKg": 26.516047305947005,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-bar-09",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundBar",
+    "dimensions": {
+      "diameter": 35
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.6,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7930,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0009621127501618743,
+    "expectedTotalMassKg": 70.1918978008097,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-bar-01",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareBar",
+    "dimensions": {
+      "side": 12
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 1.35,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7930,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.000144,
+    "expectedTotalMassKg": 3.083184,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-bar-02",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareBar",
+    "dimensions": {
+      "side": 16
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 1.7,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 8000,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.000256,
+    "expectedTotalMassKg": 10.444799999999999,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-bar-03",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareBar",
+    "dimensions": {
+      "side": 20
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.05,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 8500,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0004,
+    "expectedTotalMassKg": 27.88,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-bar-04",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareBar",
+    "dimensions": {
+      "side": 24
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.4,
+    "lengthUnit": "meter",
+    "quantity": 5,
+    "densityKgPerM3": 8960,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.000576,
+    "expectedTotalMassKg": 61.93152,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-bar-05",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareBar",
+    "dimensions": {
+      "side": 28
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.75,
+    "lengthUnit": "meter",
+    "quantity": 6,
+    "densityKgPerM3": 2700,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.0007840000000000001,
+    "expectedTotalMassKg": 34.927200000000006,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-bar-06",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareBar",
+    "dimensions": {
+      "side": 32
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.0999999999999996,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 7200,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.001024,
+    "expectedTotalMassKg": 22.855679999999996,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-bar-07",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareBar",
+    "dimensions": {
+      "side": 36
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.4499999999999997,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7850,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0012959999999999998,
+    "expectedTotalMassKg": 70.19783999999999,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-bar-08",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareBar",
+    "dimensions": {
+      "side": 40
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.8,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7930,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0016,
+    "expectedTotalMassKg": 144.6432,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-bar-09",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareBar",
+    "dimensions": {
+      "side": 44
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.15,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 8000,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.0019359999999999998,
+    "expectedTotalMassKg": 257.1008,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "hex-bar-01",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "hexBar",
+    "dimensions": {
+      "acrossFlats": 14
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 1.3,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8000,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.00016974097914174998,
+    "expectedTotalMassKg": 3.5306123661483997,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "hex-bar-02",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "hexBar",
+    "dimensions": {
+      "acrossFlats": 18
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 1.6,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 8500,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0002805922308261581,
+    "expectedTotalMassKg": 11.44816301770725,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "hex-bar-03",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "hexBar",
+    "dimensions": {
+      "acrossFlats": 22
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 1.9,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 8960,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00041915629543166823,
+    "expectedTotalMassKg": 28.54286709371488,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "hex-bar-04",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "hexBar",
+    "dimensions": {
+      "acrossFlats": 26
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.2,
+    "lengthUnit": "meter",
+    "quantity": 5,
+    "densityKgPerM3": 2700,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.0005854331729582804,
+    "expectedTotalMassKg": 17.387365236860926,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "hex-bar-05",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "hexBar",
+    "dimensions": {
+      "acrossFlats": 30
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.5,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 7200,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.0007794228634059947,
+    "expectedTotalMassKg": 14.029611541307904,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "hex-bar-06",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "hexBar",
+    "dimensions": {
+      "acrossFlats": 34
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.8,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7850,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.001001125366774811,
+    "expectedTotalMassKg": 44.00947112342069,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "hex-bar-07",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "hexBar",
+    "dimensions": {
+      "acrossFlats": 38
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.1,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7930,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0012505406830647294,
+    "expectedTotalMassKg": 92.22612483534074,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "hex-bar-08",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "hexBar",
+    "dimensions": {
+      "acrossFlats": 42
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.4,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 8000,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.00152766881227575,
+    "expectedTotalMassKg": 166.21036677560159,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "hex-bar-09",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "hexBar",
+    "dimensions": {
+      "acrossFlats": 46
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.6999999999999997,
+    "lengthUnit": "meter",
+    "quantity": 5,
+    "densityKgPerM3": 8500,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.001832509754407872,
+    "expectedTotalMassKg": 288.1621588806379,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-tube-01",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundTube",
+    "dimensions": {
+      "outerDiameter": 35,
+      "wallThickness": 1.75
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.45,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8500,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.00018280142253075617,
+    "expectedTotalMassKg": 7.613679248405995,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-tube-02",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundTube",
+    "dimensions": {
+      "outerDiameter": 40,
+      "wallThickness": 2
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.9,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 8960,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0002387610416728241,
+    "expectedTotalMassKg": 18.611900720479984,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-tube-03",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundTube",
+    "dimensions": {
+      "outerDiameter": 45,
+      "wallThickness": 2.25
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.35,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 2700,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.00030218194336716813,
+    "expectedTotalMassKg": 10.932942711024143,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-tube-04",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundTube",
+    "dimensions": {
+      "outerDiameter": 50,
+      "wallThickness": 2.5
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.8,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 7200,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.00037306412761378807,
+    "expectedTotalMassKg": 10.20703453151324,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-tube-05",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundTube",
+    "dimensions": {
+      "outerDiameter": 55,
+      "wallThickness": 2.75
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.25,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7850,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0004514075944126832,
+    "expectedTotalMassKg": 30.120171737186286,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-tube-06",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundTube",
+    "dimensions": {
+      "outerDiameter": 60,
+      "wallThickness": 3
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.7,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7930,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0005372123437638547,
+    "expectedTotalMassKg": 60.067323793267896,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-tube-07",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundTube",
+    "dimensions": {
+      "outerDiameter": 65,
+      "wallThickness": 3.25
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.15,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 8000,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.0006304783756673017,
+    "expectedTotalMassKg": 103.90283630997132,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-tube-08",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundTube",
+    "dimensions": {
+      "outerDiameter": 70,
+      "wallThickness": 3.5
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.6,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 8500,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.0007312056901230247,
+    "expectedTotalMassKg": 34.805390849855975,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "round-tube-09",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "roundTube",
+    "dimensions": {
+      "outerDiameter": 75,
+      "wallThickness": 3.75
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 6.05,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8960,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0008393942871310223,
+    "expectedTotalMassKg": 91.0037710335969,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-tube-01",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareTube",
+    "dimensions": {
+      "outerSide": 30,
+      "wallThickness": 1.7
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.5,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8960,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00019244,
+    "expectedTotalMassKg": 8.621312,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-tube-02",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareTube",
+    "dimensions": {
+      "outerSide": 35,
+      "wallThickness": 1.9
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 2700,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.00025156000000000006,
+    "expectedTotalMassKg": 6.112908000000002,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-tube-03",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareTube",
+    "dimensions": {
+      "outerSide": 40,
+      "wallThickness": 2.1
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.5,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 7200,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.00031836000000000017,
+    "expectedTotalMassKg": 8.022672000000004,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-tube-04",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareTube",
+    "dimensions": {
+      "outerSide": 45,
+      "wallThickness": 2.3
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7850,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.00039284,
+    "expectedTotalMassKg": 24.670351999999998,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-tube-05",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareTube",
+    "dimensions": {
+      "outerSide": 50,
+      "wallThickness": 2.5
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.5,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7930,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00047500000000000016,
+    "expectedTotalMassKg": 50.85112500000001,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-tube-06",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareTube",
+    "dimensions": {
+      "outerSide": 55,
+      "wallThickness": 2.7
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 8000,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.00056484,
+    "expectedTotalMassKg": 22.593600000000002,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-tube-07",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareTube",
+    "dimensions": {
+      "outerSide": 60,
+      "wallThickness": 2.9000000000000004
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.5,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8500,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.0006623600000000003,
+    "expectedTotalMassKg": 61.930660000000024,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-tube-08",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareTube",
+    "dimensions": {
+      "outerSide": 65,
+      "wallThickness": 3.1
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 6,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 8960,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.00076756,
+    "expectedTotalMassKg": 123.79207680000002,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "square-tube-09",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "squareTube",
+    "dimensions": {
+      "outerSide": 70,
+      "wallThickness": 3.3
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 6.5,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 2700,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0008804399999999988,
+    "expectedTotalMassKg": 15.45172199999998,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "rect-tube-01",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "rectangularTube",
+    "dimensions": {
+      "width": 55,
+      "height": 28,
+      "wallThickness": 1.7
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.4,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 2700,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.00027064000000000016,
+    "expectedTotalMassKg": 3.507494400000002,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "rect-tube-02",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "rectangularTube",
+    "dimensions": {
+      "width": 60,
+      "height": 31,
+      "wallThickness": 1.9
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.8,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7200,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.00033135999999999994,
+    "expectedTotalMassKg": 20.040652799999997,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "rect-tube-03",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "rectangularTube",
+    "dimensions": {
+      "width": 65,
+      "height": 34,
+      "wallThickness": 2.1
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.2,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 7850,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.00039816000000000005,
+    "expectedTotalMassKg": 40.007116800000006,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "rect-tube-04",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "rectangularTube",
+    "dimensions": {
+      "width": 70,
+      "height": 37,
+      "wallThickness": 2.3
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.6,
+    "lengthUnit": "meter",
+    "quantity": 5,
+    "densityKgPerM3": 7930,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0004710399999999998,
+    "expectedTotalMassKg": 67.23624959999998,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "rect-tube-05",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "rectangularTube",
+    "dimensions": {
+      "width": 75,
+      "height": 40,
+      "wallThickness": 2.5
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 8000,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.0005500000000000001,
+    "expectedTotalMassKg": 17.600000000000005,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "rect-tube-06",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "rectangularTube",
+    "dimensions": {
+      "width": 80,
+      "height": 43,
+      "wallThickness": 2.7
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.4,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8500,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.0006350400000000003,
+    "expectedTotalMassKg": 47.50099200000003,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "rect-tube-07",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "rectangularTube",
+    "dimensions": {
+      "width": 85,
+      "height": 46,
+      "wallThickness": 2.9000000000000004
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.800000000000001,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 8960,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.00072616,
+    "expectedTotalMassKg": 93.69206784,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "rect-tube-08",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "rectangularTube",
+    "dimensions": {
+      "width": 90,
+      "height": 49,
+      "wallThickness": 3.1
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.2,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 2700,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0008233599999999995,
+    "expectedTotalMassKg": 46.23989759999998,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "rect-tube-09",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "rectangularTube",
+    "dimensions": {
+      "width": 95,
+      "height": 52,
+      "wallThickness": 3.3
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.6,
+    "lengthUnit": "meter",
+    "quantity": 5,
+    "densityKgPerM3": 7200,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.0009266400000000003,
+    "expectedTotalMassKg": 186.81062400000002,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "angle-01",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "angle",
+    "dimensions": {
+      "width": 35,
+      "height": 34,
+      "wallThickness": 3.4
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.55,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7200,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.00022304,
+    "expectedTotalMassKg": 8.190028799999999,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "angle-02",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "angle",
+    "dimensions": {
+      "width": 40,
+      "height": 38,
+      "wallThickness": 3.8
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.1,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7850,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.00028196,
+    "expectedTotalMassKg": 20.5844898,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "angle-03",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "angle",
+    "dimensions": {
+      "width": 45,
+      "height": 42,
+      "wallThickness": 4.2
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.6500000000000004,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 7930,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00034776,
+    "expectedTotalMassKg": 40.26295728000001,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "angle-04",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "angle",
+    "dimensions": {
+      "width": 50,
+      "height": 46,
+      "wallThickness": 4.6
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.2,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 8000,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.00042044,
+    "expectedTotalMassKg": 14.126784000000002,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "angle-05",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "angle",
+    "dimensions": {
+      "width": 55,
+      "height": 50,
+      "wallThickness": 5
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.75,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8500,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.0005000000000000001,
+    "expectedTotalMassKg": 40.37500000000001,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "angle-06",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "angle",
+    "dimensions": {
+      "width": 60,
+      "height": 54,
+      "wallThickness": 5.4
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.300000000000001,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 8960,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.00058644,
+    "expectedTotalMassKg": 83.54658816000001,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "angle-07",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "angle",
+    "dimensions": {
+      "width": 65,
+      "height": 58,
+      "wallThickness": 5.800000000000001
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.8500000000000005,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 2700,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0006797600000000001,
+    "expectedTotalMassKg": 42.947236800000006,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "angle-08",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "angle",
+    "dimensions": {
+      "width": 70,
+      "height": 62,
+      "wallThickness": 6.2
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 6.4,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 7200,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.0007799599999999999,
+    "expectedTotalMassKg": 35.940556799999996,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "angle-09",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "angle",
+    "dimensions": {
+      "width": 75,
+      "height": 66,
+      "wallThickness": 6.6
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 6.95,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7850,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.00088704,
+    "expectedTotalMassKg": 96.7893696,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "channel-01",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "channel",
+    "dimensions": {
+      "height": 80,
+      "flangeWidth": 39,
+      "webThickness": 4.25,
+      "flangeThickness": 6.3
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.4,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7850,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0007778500000000001,
+    "expectedTotalMassKg": 41.52163300000001,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "channel-02",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "channel",
+    "dimensions": {
+      "height": 90,
+      "flangeWidth": 43,
+      "webThickness": 4.5,
+      "flangeThickness": 6.6
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.8,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7930,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0009131999999999999,
+    "expectedTotalMassKg": 82.55510639999999,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "channel-03",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "channel",
+    "dimensions": {
+      "height": 100,
+      "flangeWidth": 47,
+      "webThickness": 4.75,
+      "flangeThickness": 6.9
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.2,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 8000,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.00105805,
+    "expectedTotalMassKg": 35.55048,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "channel-04",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "channel",
+    "dimensions": {
+      "height": 110,
+      "flangeWidth": 51,
+      "webThickness": 5,
+      "flangeThickness": 7.2
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.6,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8500,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.0012124,
+    "expectedTotalMassKg": 94.80967999999999,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "channel-05",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "channel",
+    "dimensions": {
+      "height": 120,
+      "flangeWidth": 55,
+      "webThickness": 5.25,
+      "flangeThickness": 7.5
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 8960,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0013762499999999999,
+    "expectedTotalMassKg": 184.968,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "channel-06",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "channel",
+    "dimensions": {
+      "height": 130,
+      "flangeWidth": 59,
+      "webThickness": 5.5,
+      "flangeThickness": 7.8
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.4,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 2700,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0015496,
+    "expectedTotalMassKg": 22.593168,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "channel-07",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "channel",
+    "dimensions": {
+      "height": 140,
+      "flangeWidth": 63,
+      "webThickness": 5.75,
+      "flangeThickness": 8.1
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.800000000000001,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7200,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.00173245,
+    "expectedTotalMassKg": 144.69422400000002,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "channel-08",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "channel",
+    "dimensions": {
+      "height": 150,
+      "flangeWidth": 67,
+      "webThickness": 6,
+      "flangeThickness": 8.4
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 6.2,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7850,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.0019248000000000002,
+    "expectedTotalMassKg": 281.040048,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "channel-09",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "channel",
+    "dimensions": {
+      "height": 160,
+      "flangeWidth": 71,
+      "webThickness": 6.25,
+      "flangeThickness": 8.7
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 6.6,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 7930,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.00212665,
+    "expectedTotalMassKg": 111.30460769999999,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "i-section-01",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "iSection",
+    "dimensions": {
+      "height": 135,
+      "flangeWidth": 66,
+      "webThickness": 5.25,
+      "flangeThickness": 7.4
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.5,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7930,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00160785,
+    "expectedTotalMassKg": 89.25175349999999,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "i-section-02",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "iSection",
+    "dimensions": {
+      "height": 150,
+      "flangeWidth": 72,
+      "webThickness": 5.5,
+      "flangeThickness": 7.8
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 8000,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.0018623999999999997,
+    "expectedTotalMassKg": 178.79039999999995,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "i-section-03",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "iSection",
+    "dimensions": {
+      "height": 165,
+      "flangeWidth": 78,
+      "webThickness": 5.75,
+      "flangeThickness": 8.2
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.5,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 8500,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.00213365,
+    "expectedTotalMassKg": 326.44845,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "i-section-04",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "iSection",
+    "dimensions": {
+      "height": 180,
+      "flangeWidth": 84,
+      "webThickness": 6,
+      "flangeThickness": 8.6
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 8960,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0024216000000000003,
+    "expectedTotalMassKg": 108.48768000000001,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "i-section-05",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "iSection",
+    "dimensions": {
+      "height": 195,
+      "flangeWidth": 90,
+      "webThickness": 6.25,
+      "flangeThickness": 9
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.5,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 2700,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.0027262500000000004,
+    "expectedTotalMassKg": 80.96962500000001,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "i-section-06",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "iSection",
+    "dimensions": {
+      "height": 210,
+      "flangeWidth": 96,
+      "webThickness": 6.5,
+      "flangeThickness": 9.4
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 6,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7200,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.0030476,
+    "expectedTotalMassKg": 394.96896,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "i-section-07",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "iSection",
+    "dimensions": {
+      "height": 225,
+      "flangeWidth": 102,
+      "webThickness": 6.75,
+      "flangeThickness": 9.8
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 6.5,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 7850,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.00338565,
+    "expectedTotalMassKg": 691.011165,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "i-section-08",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "iSection",
+    "dimensions": {
+      "height": 240,
+      "flangeWidth": 108,
+      "webThickness": 7,
+      "flangeThickness": 10.2
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 7,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 7930,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.0037403999999999996,
+    "expectedTotalMassKg": 207.629604,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "i-section-09",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "iSection",
+    "dimensions": {
+      "height": 255,
+      "flangeWidth": 114,
+      "webThickness": 7.25,
+      "flangeThickness": 10.6
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 7.5,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8000,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00411185,
+    "expectedTotalMassKg": 493.422,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "custom-01",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "customArea",
+    "dimensions": {
+      "customArea": 425
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 1.75,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 8000,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.000425,
+    "expectedTotalMassKg": 11.899999999999999,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "custom-02",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "customArea",
+    "dimensions": {
+      "customArea": 600
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 2.5,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 8500,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.0006,
+    "expectedTotalMassKg": 38.25,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "custom-03",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "customArea",
+    "dimensions": {
+      "customArea": 775
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 3.25,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 8960,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.000775,
+    "expectedTotalMassKg": 90.27199999999999,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "custom-04",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "customArea",
+    "dimensions": {
+      "customArea": 950
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4,
+    "lengthUnit": "meter",
+    "quantity": 5,
+    "densityKgPerM3": 2700,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00095,
+    "expectedTotalMassKg": 51.3,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "custom-05",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "customArea",
+    "dimensions": {
+      "customArea": 1125
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 4.75,
+    "lengthUnit": "meter",
+    "quantity": 1,
+    "densityKgPerM3": 7200,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.001125,
+    "expectedTotalMassKg": 38.474999999999994,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "custom-06",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "customArea",
+    "dimensions": {
+      "customArea": 1300
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 5.5,
+    "lengthUnit": "meter",
+    "quantity": 2,
+    "densityKgPerM3": 7850,
+    "wastePercent": 0,
+    "expectedAreaSquareMeters": 0.0013,
+    "expectedTotalMassKg": 112.255,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "custom-07",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "customArea",
+    "dimensions": {
+      "customArea": 1475
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 6.25,
+    "lengthUnit": "meter",
+    "quantity": 3,
+    "densityKgPerM3": 7930,
+    "wastePercent": 2.5,
+    "expectedAreaSquareMeters": 0.001475,
+    "expectedTotalMassKg": 219.3140625,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "custom-08",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "customArea",
+    "dimensions": {
+      "customArea": 1650
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 7,
+    "lengthUnit": "meter",
+    "quantity": 4,
+    "densityKgPerM3": 8000,
+    "wastePercent": 5,
+    "expectedAreaSquareMeters": 0.00165,
+    "expectedTotalMassKg": 369.59999999999997,
+    "tolerance": 1e-9
+  },
+  {
+    "id": "custom-09",
+    "source": "engineering-generated-v1",
+    "reviewStatus": "pending-industry-review",
+    "profile": "customArea",
+    "dimensions": {
+      "customArea": 1825
+    },
+    "geometryUnit": "millimeter",
+    "areaUnit": "squareMillimeter",
+    "lengthValue": 7.75,
+    "lengthUnit": "meter",
+    "quantity": 5,
+    "densityKgPerM3": 8500,
+    "wastePercent": 7.5,
+    "expectedAreaSquareMeters": 0.001825,
+    "expectedTotalMassKg": 601.109375,
+    "tolerance": 1e-9
+  }
+]

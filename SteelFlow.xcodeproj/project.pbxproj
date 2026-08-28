@@ -1,0 +1,787 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		018B6C7AB148AAA5EA78FEE3 /* ProjectDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5C97B234CCD137A2C117E8 /* ProjectDetailView.swift */; };
+		03A9FBA531619D2C7F3854AF /* SteelFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04795DF5B57D9A2BB05DE0A2 /* SteelFlowUITests.swift */; };
+		0E4FBF99CFA02AA4C3652346 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB33FEBDD0F8C3B26D218F /* RootTabView.swift */; };
+		10CABE5CB0E3416B4C53A6AE /* ReferenceCases.json in Resources */ = {isa = PBXBuildFile; fileRef = 20D6D1B0C08DBFE52F6AD27D /* ReferenceCases.json */; };
+		133D88902A77B96E60DDB085 /* CalculatorEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8859FFF9B380FFA691F19 /* CalculatorEditorView.swift */; };
+		165172AE685CE2525DE04081 /* ProjectSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D3D3A9B13E6008D8210B7C /* ProjectSettingsSheet.swift */; };
+		1D70E7AC9C96979FEE44C9B2 /* ProjectSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB217571E84FE8AB483688F /* ProjectSummary.swift */; };
+		411435CBCF920CE83075968E /* AppFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13156998FD8E14A2CC365737 /* AppFormatters.swift */; };
+		415840C9C518A30E31A43B85 /* QuoteExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9CFAE1CC59169A250AC3D /* QuoteExportService.swift */; };
+		4EFBA5E9160EDD2CA7B5FAEA /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3568DCA5A6B45431715922BC /* Profile.swift */; };
+		507E2C9612FE12225B3CEF39 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D181345835385A6C2B069DA3 /* Entities.swift */; };
+		5F9A3E2153A3CD3FF8A9E837 /* BackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66115356606D5FD6B8DEAF9B /* BackupTests.swift */; };
+		61D35950341A5376A5D0823F /* CalculatorDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021C20F77172EB287ACF742F /* CalculatorDraft.swift */; };
+		61F77F6870ACCF6548DD5E5D /* CalculatorHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1037BB719770368AC4AADAED /* CalculatorHomeView.swift */; };
+		660013A3EAC22B0F760EF706 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B52CAF00D414FA5E96E86B0 /* PurchaseManager.swift */; };
+		84291BF8624E6A014F0164BA /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58DBBB7944681B6C94D589A /* DesignSystem.swift */; };
+		8D9024E330781A9B87135B2E /* CalculationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C372A8D61345C59F520B92E /* CalculationEngine.swift */; };
+		8FED81E02ECBA421030A20F4 /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA345B7BEA8F82C77DBEF253 /* Money.swift */; };
+		965E8C99437FF7AADAEA79EE /* SteelFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFAED6444C9E2846FA298C /* SteelFlowApp.swift */; };
+		97102A47AC4F2AB0C4B4178E /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76992118BBD184811B6D777B /* LocalizationTests.swift */; };
+		990941C2F2D6480037294BB6 /* BackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05629230A45CD002AE1E1A28 /* BackupService.swift */; };
+		9B2E0BAC82A75072ECA16AD9 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D061E5DC539665CC7AF3A6 /* SeedData.swift */; };
+		A03DCA5F4A71F2709B6B391F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B19861521A39EBAEF3AA5197 /* PrivacyInfo.xcprivacy */; };
+		A743C0CEE17D5C58EA4C6BD6 /* QuotePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB72DAC0E640709F9F71F69 /* QuotePreviewView.swift */; };
+		A7702DAEB3339ED5200EB12C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8EAF6E9F63DE40D35557AAC /* Assets.xcassets */; };
+		B330E5E46553AD093B2909AF /* MaterialCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26358E6FFCE305FCC30BDA0 /* MaterialCatalog.swift */; };
+		B39729F62CDC02B60CDBF9EB /* MaterialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6058F1C2214E333E8CDBA4A3 /* MaterialsView.swift */; };
+		B702BD014FCC78F48AF0C9EF /* ReferenceCorpusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */; };
+		C5B2997476EF79EF0C81F761 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 548F05EFB267BDEC79826041 /* Localizable.strings */; };
+		D0F99E68002E6508DB5B77A6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C649A49EC7D9C81AEA70527 /* SettingsView.swift */; };
+		D77AC4F52C8D290A24F2F45F /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504649A5D7DDE1728807CF73 /* ProjectsView.swift */; };
+		DF7F5EF6CF656AE48E71F89C /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = B951C002DDA177685932D4A7 /* Units.swift */; };
+		E6339961D929936912C9F74E /* CalculationEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB164A14026EDD752739BCC9 /* CalculationEngineTests.swift */; };
+		E930FBC9F47849B2DE9E5C39 /* AppIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = CBB82E15F487FA24B6F5794C /* AppIcon.svg */; };
+		FCF87E8AFB6766FA3862CA59 /* PricingAndProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FB7EA5EF528FE8C9115653 /* PricingAndProjectTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6C444C36AF0BD91BDE4F06C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 055324803513304B30EC360F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D079574452BE52757D20C1AC;
+			remoteInfo = SteelFlow;
+		};
+		808811A3AC76B33B0C45DCBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 055324803513304B30EC360F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D079574452BE52757D20C1AC;
+			remoteInfo = SteelFlow;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		021C20F77172EB287ACF742F /* CalculatorDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorDraft.swift; sourceTree = "<group>"; };
+		04795DF5B57D9A2BB05DE0A2 /* SteelFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SteelFlowUITests.swift; sourceTree = "<group>"; };
+		05629230A45CD002AE1E1A28 /* BackupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupService.swift; sourceTree = "<group>"; };
+		0C5C97B234CCD137A2C117E8 /* ProjectDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailView.swift; sourceTree = "<group>"; };
+		1037BB719770368AC4AADAED /* CalculatorHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorHomeView.swift; sourceTree = "<group>"; };
+		13156998FD8E14A2CC365737 /* AppFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFormatters.swift; sourceTree = "<group>"; };
+		13853DB5AE8124C7BA2CB030 /* SteelFlowUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SteelFlowUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B9CFAE1CC59169A250AC3D /* QuoteExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteExportService.swift; sourceTree = "<group>"; };
+		20D6D1B0C08DBFE52F6AD27D /* ReferenceCases.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ReferenceCases.json; sourceTree = "<group>"; };
+		3568DCA5A6B45431715922BC /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		3C649A49EC7D9C81AEA70527 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		48EF519CF3E843C209C44ED5 /* SteelFlowTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SteelFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BEB33FEBDD0F8C3B26D218F /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		4C372A8D61345C59F520B92E /* CalculationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationEngine.swift; sourceTree = "<group>"; };
+		504649A5D7DDE1728807CF73 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
+		6058F1C2214E333E8CDBA4A3 /* MaterialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsView.swift; sourceTree = "<group>"; };
+		66115356606D5FD6B8DEAF9B /* BackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupTests.swift; sourceTree = "<group>"; };
+		6641B5D09F6F34AA7B037D5B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		68A8859FFF9B380FFA691F19 /* CalculatorEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorEditorView.swift; sourceTree = "<group>"; };
+		76992118BBD184811B6D777B /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
+		792027DA62C1260C0745FAD1 /* SteelFlow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SteelFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EFFAED6444C9E2846FA298C /* SteelFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SteelFlowApp.swift; sourceTree = "<group>"; };
+		97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceCorpusTests.swift; sourceTree = "<group>"; };
+		9B52CAF00D414FA5E96E86B0 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
+		B19861521A39EBAEF3AA5197 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		B951C002DDA177685932D4A7 /* Units.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
+		BDB72DAC0E640709F9F71F69 /* QuotePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotePreviewView.swift; sourceTree = "<group>"; };
+		CB164A14026EDD752739BCC9 /* CalculationEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationEngineTests.swift; sourceTree = "<group>"; };
+		CBB82E15F487FA24B6F5794C /* AppIcon.svg */ = {isa = PBXFileReference; path = AppIcon.svg; sourceTree = "<group>"; };
+		CCB217571E84FE8AB483688F /* ProjectSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummary.swift; sourceTree = "<group>"; };
+		CF6E337F4AC58FFA00A09D0F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D181345835385A6C2B069DA3 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
+		D8EAF6E9F63DE40D35557AAC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E2FB7EA5EF528FE8C9115653 /* PricingAndProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricingAndProjectTests.swift; sourceTree = "<group>"; };
+		E8D061E5DC539665CC7AF3A6 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
+		F26358E6FFCE305FCC30BDA0 /* MaterialCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialCatalog.swift; sourceTree = "<group>"; };
+		F58DBBB7944681B6C94D589A /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		F5D3D3A9B13E6008D8210B7C /* ProjectSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSettingsSheet.swift; sourceTree = "<group>"; };
+		F971DACC1BB58B485E6418EE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		FA345B7BEA8F82C77DBEF253 /* Money.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1997A5267D0BAE758E972886 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				7EFFAED6444C9E2846FA298C /* SteelFlowApp.swift */,
+				3A906CFF18D0536FB2FFEF80 /* AppShell */,
+				B8AEA8E96AA53330BAFCD545 /* Data */,
+				7B68B8ED74CCAF94D5A9AA11 /* Domain */,
+				6EA7363200C628041A1C25C7 /* Features */,
+				7CB87F59192585D2132C87FA /* Presentation */,
+				4AB5A58C956C523595D9E2CA /* Resources */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		2708428C13072C6C599360BE = {
+			isa = PBXGroup;
+			children = (
+				1997A5267D0BAE758E972886 /* App */,
+				EAB87F2849F55E70B5DAF2CC /* Fixtures */,
+				FFFCB2403771B98FB8602376 /* Tests */,
+				A95D96BFE11C778BBB9315F4 /* UITests */,
+				3BA8C258C2249467B75545A3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3A906CFF18D0536FB2FFEF80 /* AppShell */ = {
+			isa = PBXGroup;
+			children = (
+				4BEB33FEBDD0F8C3B26D218F /* RootTabView.swift */,
+			);
+			path = AppShell;
+			sourceTree = "<group>";
+		};
+		3B714DE7B20EC9323B138A32 /* Calculator */ = {
+			isa = PBXGroup;
+			children = (
+				021C20F77172EB287ACF742F /* CalculatorDraft.swift */,
+				68A8859FFF9B380FFA691F19 /* CalculatorEditorView.swift */,
+				1037BB719770368AC4AADAED /* CalculatorHomeView.swift */,
+			);
+			path = Calculator;
+			sourceTree = "<group>";
+		};
+		3BA8C258C2249467B75545A3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				792027DA62C1260C0745FAD1 /* SteelFlow.app */,
+				48EF519CF3E843C209C44ED5 /* SteelFlowTests.xctest */,
+				13853DB5AE8124C7BA2CB030 /* SteelFlowUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4AB5A58C956C523595D9E2CA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D8EAF6E9F63DE40D35557AAC /* Assets.xcassets */,
+				CF6E337F4AC58FFA00A09D0F /* Info.plist */,
+				B19861521A39EBAEF3AA5197 /* PrivacyInfo.xcprivacy */,
+				F0B6AEBE9739FD70BF8E606A /* Brand */,
+				548F05EFB267BDEC79826041 /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4E6D6E58222C3CD3483958B0 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				0C5C97B234CCD137A2C117E8 /* ProjectDetailView.swift */,
+				F5D3D3A9B13E6008D8210B7C /* ProjectSettingsSheet.swift */,
+				504649A5D7DDE1728807CF73 /* ProjectsView.swift */,
+			);
+			path = Projects;
+			sourceTree = "<group>";
+		};
+		6EA7363200C628041A1C25C7 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				3B714DE7B20EC9323B138A32 /* Calculator */,
+				73BB5EF5622E02936A073B31 /* Export */,
+				8174D58AEC1F992101D7C123 /* Materials */,
+				4E6D6E58222C3CD3483958B0 /* Projects */,
+				DCA0A8CCCC17F77FAC48D54C /* Settings */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		73BB5EF5622E02936A073B31 /* Export */ = {
+			isa = PBXGroup;
+			children = (
+				13B9CFAE1CC59169A250AC3D /* QuoteExportService.swift */,
+				BDB72DAC0E640709F9F71F69 /* QuotePreviewView.swift */,
+			);
+			path = Export;
+			sourceTree = "<group>";
+		};
+		7B68B8ED74CCAF94D5A9AA11 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				4C372A8D61345C59F520B92E /* CalculationEngine.swift */,
+				F26358E6FFCE305FCC30BDA0 /* MaterialCatalog.swift */,
+				FA345B7BEA8F82C77DBEF253 /* Money.swift */,
+				3568DCA5A6B45431715922BC /* Profile.swift */,
+				CCB217571E84FE8AB483688F /* ProjectSummary.swift */,
+				B951C002DDA177685932D4A7 /* Units.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		7CB87F59192585D2132C87FA /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				13156998FD8E14A2CC365737 /* AppFormatters.swift */,
+				F58DBBB7944681B6C94D589A /* DesignSystem.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		8174D58AEC1F992101D7C123 /* Materials */ = {
+			isa = PBXGroup;
+			children = (
+				6058F1C2214E333E8CDBA4A3 /* MaterialsView.swift */,
+			);
+			path = Materials;
+			sourceTree = "<group>";
+		};
+		A95D96BFE11C778BBB9315F4 /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				04795DF5B57D9A2BB05DE0A2 /* SteelFlowUITests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		B8AEA8E96AA53330BAFCD545 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D181345835385A6C2B069DA3 /* Entities.swift */,
+				E8D061E5DC539665CC7AF3A6 /* SeedData.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		DCA0A8CCCC17F77FAC48D54C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				05629230A45CD002AE1E1A28 /* BackupService.swift */,
+				9B52CAF00D414FA5E96E86B0 /* PurchaseManager.swift */,
+				3C649A49EC7D9C81AEA70527 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		EAB87F2849F55E70B5DAF2CC /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				20D6D1B0C08DBFE52F6AD27D /* ReferenceCases.json */,
+			);
+			name = Fixtures;
+			path = Tests/Fixtures;
+			sourceTree = "<group>";
+		};
+		F0B6AEBE9739FD70BF8E606A /* Brand */ = {
+			isa = PBXGroup;
+			children = (
+				CBB82E15F487FA24B6F5794C /* AppIcon.svg */,
+			);
+			path = Brand;
+			sourceTree = "<group>";
+		};
+		FFFCB2403771B98FB8602376 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				66115356606D5FD6B8DEAF9B /* BackupTests.swift */,
+				CB164A14026EDD752739BCC9 /* CalculationEngineTests.swift */,
+				76992118BBD184811B6D777B /* LocalizationTests.swift */,
+				E2FB7EA5EF528FE8C9115653 /* PricingAndProjectTests.swift */,
+				97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5BB0A50D4B1C2BCFB8694A5C /* SteelFlowUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FDAF2C2808EF5DF0DD0C0A3E /* Build configuration list for PBXNativeTarget "SteelFlowUITests" */;
+			buildPhases = (
+				A4222C8BD8065E515CE38AA6 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7B52D11A293602BAD36B28F8 /* PBXTargetDependency */,
+			);
+			name = SteelFlowUITests;
+			packageProductDependencies = (
+			);
+			productName = SteelFlowUITests;
+			productReference = 13853DB5AE8124C7BA2CB030 /* SteelFlowUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		D079574452BE52757D20C1AC /* SteelFlow */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 09B73A8F97509B2ED8F336B3 /* Build configuration list for PBXNativeTarget "SteelFlow" */;
+			buildPhases = (
+				5F03A32302E597D7FB218DA3 /* Sources */,
+				A65119C7E607822429BC4592 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SteelFlow;
+			packageProductDependencies = (
+			);
+			productName = SteelFlow;
+			productReference = 792027DA62C1260C0745FAD1 /* SteelFlow.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F2F631E0456A15C58B2C91A7 /* SteelFlowTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A6AF3D296B72ABDF4303AA55 /* Build configuration list for PBXNativeTarget "SteelFlowTests" */;
+			buildPhases = (
+				7A8CB1BF86ED0FF8168E42B2 /* Sources */,
+				EE65784BB16F5591645A9A50 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				28A43448AD6D991383B636E5 /* PBXTargetDependency */,
+			);
+			name = SteelFlowTests;
+			packageProductDependencies = (
+			);
+			productName = SteelFlowTests;
+			productReference = 48EF519CF3E843C209C44ED5 /* SteelFlowTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		055324803513304B30EC360F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					5BB0A50D4B1C2BCFB8694A5C = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = D079574452BE52757D20C1AC;
+					};
+					D079574452BE52757D20C1AC = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					F2F631E0456A15C58B2C91A7 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 0FD65A468411E74CA701AE55 /* Build configuration list for PBXProject "SteelFlow" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+				"zh-Hans",
+			);
+			mainGroup = 2708428C13072C6C599360BE;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 3BA8C258C2249467B75545A3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D079574452BE52757D20C1AC /* SteelFlow */,
+				F2F631E0456A15C58B2C91A7 /* SteelFlowTests */,
+				5BB0A50D4B1C2BCFB8694A5C /* SteelFlowUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A65119C7E607822429BC4592 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E930FBC9F47849B2DE9E5C39 /* AppIcon.svg in Resources */,
+				A7702DAEB3339ED5200EB12C /* Assets.xcassets in Resources */,
+				C5B2997476EF79EF0C81F761 /* Localizable.strings in Resources */,
+				A03DCA5F4A71F2709B6B391F /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE65784BB16F5591645A9A50 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				10CABE5CB0E3416B4C53A6AE /* ReferenceCases.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5F03A32302E597D7FB218DA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				411435CBCF920CE83075968E /* AppFormatters.swift in Sources */,
+				990941C2F2D6480037294BB6 /* BackupService.swift in Sources */,
+				8D9024E330781A9B87135B2E /* CalculationEngine.swift in Sources */,
+				61D35950341A5376A5D0823F /* CalculatorDraft.swift in Sources */,
+				133D88902A77B96E60DDB085 /* CalculatorEditorView.swift in Sources */,
+				61F77F6870ACCF6548DD5E5D /* CalculatorHomeView.swift in Sources */,
+				84291BF8624E6A014F0164BA /* DesignSystem.swift in Sources */,
+				507E2C9612FE12225B3CEF39 /* Entities.swift in Sources */,
+				B330E5E46553AD093B2909AF /* MaterialCatalog.swift in Sources */,
+				B39729F62CDC02B60CDBF9EB /* MaterialsView.swift in Sources */,
+				8FED81E02ECBA421030A20F4 /* Money.swift in Sources */,
+				4EFBA5E9160EDD2CA7B5FAEA /* Profile.swift in Sources */,
+				018B6C7AB148AAA5EA78FEE3 /* ProjectDetailView.swift in Sources */,
+				165172AE685CE2525DE04081 /* ProjectSettingsSheet.swift in Sources */,
+				1D70E7AC9C96979FEE44C9B2 /* ProjectSummary.swift in Sources */,
+				D77AC4F52C8D290A24F2F45F /* ProjectsView.swift in Sources */,
+				660013A3EAC22B0F760EF706 /* PurchaseManager.swift in Sources */,
+				415840C9C518A30E31A43B85 /* QuoteExportService.swift in Sources */,
+				A743C0CEE17D5C58EA4C6BD6 /* QuotePreviewView.swift in Sources */,
+				0E4FBF99CFA02AA4C3652346 /* RootTabView.swift in Sources */,
+				9B2E0BAC82A75072ECA16AD9 /* SeedData.swift in Sources */,
+				D0F99E68002E6508DB5B77A6 /* SettingsView.swift in Sources */,
+				965E8C99437FF7AADAEA79EE /* SteelFlowApp.swift in Sources */,
+				DF7F5EF6CF656AE48E71F89C /* Units.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A8CB1BF86ED0FF8168E42B2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5F9A3E2153A3CD3FF8A9E837 /* BackupTests.swift in Sources */,
+				E6339961D929936912C9F74E /* CalculationEngineTests.swift in Sources */,
+				97102A47AC4F2AB0C4B4178E /* LocalizationTests.swift in Sources */,
+				FCF87E8AFB6766FA3862CA59 /* PricingAndProjectTests.swift in Sources */,
+				B702BD014FCC78F48AF0C9EF /* ReferenceCorpusTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4222C8BD8065E515CE38AA6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03A9FBA531619D2C7F3854AF /* SteelFlowUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		28A43448AD6D991383B636E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D079574452BE52757D20C1AC /* SteelFlow */;
+			targetProxy = 6C444C36AF0BD91BDE4F06C2 /* PBXContainerItemProxy */;
+		};
+		7B52D11A293602BAD36B28F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D079574452BE52757D20C1AC /* SteelFlow */;
+			targetProxy = 808811A3AC76B33B0C45DCBF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		548F05EFB267BDEC79826041 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6641B5D09F6F34AA7B037D5B /* en */,
+				F971DACC1BB58B485E6418EE /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0602141CF9AAAE1678F3719C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		3C1941643716EFB9F89977DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		5CDE014C35BF01EC6ACCEC33 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.steelflow.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SteelFlow;
+			};
+			name = Release;
+		};
+		645747CF820613D34D4FE8DB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SteelFlow;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.steelflow.app;
+				PRODUCT_NAME = SteelFlow;
+				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8E02BF243E928DDDAA430D6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SteelFlow;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.steelflow.app;
+				PRODUCT_NAME = SteelFlow;
+				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B09ED2E7584207A9C1ECF32E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.steelflow.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SteelFlow.app/SteelFlow";
+			};
+			name = Release;
+		};
+		D9D3CB3C0992D87FA83EE2EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.steelflow.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SteelFlow.app/SteelFlow";
+			};
+			name = Debug;
+		};
+		F3FABAC52C2500484DD4B8D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.steelflow.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SteelFlow;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		09B73A8F97509B2ED8F336B3 /* Build configuration list for PBXNativeTarget "SteelFlow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				645747CF820613D34D4FE8DB /* Debug */,
+				8E02BF243E928DDDAA430D6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		0FD65A468411E74CA701AE55 /* Build configuration list for PBXProject "SteelFlow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0602141CF9AAAE1678F3719C /* Debug */,
+				3C1941643716EFB9F89977DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A6AF3D296B72ABDF4303AA55 /* Build configuration list for PBXNativeTarget "SteelFlowTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D9D3CB3C0992D87FA83EE2EE /* Debug */,
+				B09ED2E7584207A9C1ECF32E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FDAF2C2808EF5DF0DD0C0A3E /* Build configuration list for PBXNativeTarget "SteelFlowUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3FABAC52C2500484DD4B8D0 /* Debug */,
+				5CDE014C35BF01EC6ACCEC33 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 055324803513304B30EC360F /* Project object */;
+}

@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SteelFlow Product Design</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --page: light-dark(#e9edf0, #111416);
+      --device: light-dark(#f7f8f9, #171b1e);
+      --surface: light-dark(#ffffff, #22272b);
+      --surface-2: light-dark(#eef2f4, #2a3035);
+      --text: light-dark(#162027, #f2f5f6);
+      --muted: light-dark(#62717a, #a9b4ba);
+      --line: light-dark(#dce3e7, #353d42);
+      --blue: light-dark(#176b91, #52b5e2);
+      --blue-soft: light-dark(#dceef6, #173d4f);
+      --amber: light-dark(#a55b00, #ffb34d);
+      --amber-soft: light-dark(#fff0d5, #443019);
+      --red: light-dark(#b42318, #ff776d);
+      --shadow: light-dark(0 24px 70px rgba(31, 47, 56, .18), 0 24px 70px rgba(0, 0, 0, .45));
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--page);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    }
+    button, input, select { font: inherit; }
+    button { color: inherit; }
+    .prototype-shell {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: 28px 20px 48px;
+    }
+    .prototype-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+    .prototype-header h1 { margin: 0 0 6px; font-size: clamp(24px, 4vw, 40px); letter-spacing: -.04em; }
+    .prototype-header p { margin: 0; color: var(--muted); }
+    .language-control {
+      display: inline-flex;
+      padding: 4px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+    .language-control button {
+      border: 0;
+      border-radius: 9px;
+      padding: 8px 12px;
+      background: transparent;
+      cursor: pointer;
+    }
+    .language-control button[aria-pressed="true"] { background: var(--text); color: var(--device); }
+    .screen-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 26px;
+    }
+    .screen-nav button {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      padding: 9px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .screen-nav button[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: white; }
+    .stage {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 42px;
+      align-items: center;
+    }
+    .design-notes { max-width: 570px; }
+    .eyebrow { color: var(--blue); font-weight: 650; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+    .design-notes h2 { font-size: clamp(28px, 5vw, 52px); line-height: 1.02; letter-spacing: -.05em; margin: 12px 0 18px; }
+    .design-notes > p { color: var(--muted); font-size: 18px; line-height: 1.55; margin: 0 0 26px; }
+    .principles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .principle { border-top: 1px solid var(--line); padding-top: 12px; }
+    .principle strong { display: block; margin-bottom: 4px; }
+    .principle span { color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .phone {
+      width: 390px;
+      height: 844px;
+      padding: 10px;
+      border-radius: 52px;
+      background: light-dark(#111719, #080a0b);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .phone-screen {
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      border-radius: 43px;
+      background: var(--device);
+    }
+    .status-bar {
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .dynamic-island { width: 110px; height: 30px; background: #050607; border-radius: 20px; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); }
+    .app-screen { height: calc(100% - 46px); display: flex; flex-direction: column; }
+    .app-navbar { display: flex; align-items: center; justify-content: space-between; padding: 10px 18px 8px; }
+    .app-navbar h3 { margin: 0; font-size: 30px; letter-spacing: -.04em; }
+    .app-navbar .compact-title { font-size: 17px; letter-spacing: -.01em; }
+    .nav-action { border: 0; background: transparent; color: var(--blue); font-weight: 600; padding: 8px; cursor: pointer; }
+    .screen-content { flex: 1; overflow: auto; padding: 8px 16px 112px; scrollbar-width: none; }
+    .screen-content::-webkit-scrollbar { display: none; }
+    .search-box { display: flex; align-items: center; gap: 8px; color: var(--muted); background: var(--surface-2); padding: 10px 12px; border-radius: 12px; margin-bottom: 18px; }
+    .search-box svg { width: 17px; height: 17px; }
+    .section-heading { display: flex; align-items: center; justify-content: space-between; margin: 16px 2px 10px; }
+    .section-heading strong { font-size: 14px; }
+    .section-heading span { color: var(--muted); font-size: 12px; }
+    .profile-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .profile-card { background: var(--surface); border: 1px solid var(--line); border-radius: 15px; padding: 14px; min-height: 116px; cursor: pointer; }
+    .profile-card.active { background: var(--blue-soft); border-color: color-mix(in srgb, var(--blue) 35%, var(--line)); }
+    .profile-shape { height: 52px; display: grid; place-items: center; color: var(--blue); }
+    .profile-shape svg { width: 60px; height: 42px; fill: none; stroke: currentColor; stroke-width: 6; }
+    .profile-card strong { display: block; font-size: 14px; }
+    .profile-card span { color: var(--muted); font-size: 12px; }
+    .recent-row, .material-row, .project-row { display: flex; align-items: center; gap: 12px; padding: 13px 4px; border-bottom: 1px solid var(--line); }
+    .row-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--surface-2); display: grid; place-items: center; color: var(--blue); font-weight: 700; }
+    .row-copy { min-width: 0; flex: 1; }
+    .row-copy strong, .row-copy span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row-copy strong { font-size: 14px; }
+    .row-copy span { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .row-value { text-align: right; font-variant-numeric: tabular-nums; }
+    .row-value strong { display: block; font-size: 14px; }
+    .row-value span { color: var(--muted); font-size: 12px; }
+    .diagram-panel { display: grid; place-items: center; min-height: 150px; margin: 2px 0 14px; color: var(--blue); }
+    .diagram-panel svg { width: 160px; height: 140px; fill: none; stroke: currentColor; stroke-width: 8; }
+    .dimension-line { stroke-width: 1.5 !important; stroke-dasharray: 3 3; opacity: .65; }
+    .field-group { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin-bottom: 12px; }
+    .input-row { display: grid; grid-template-columns: minmax(0, 1fr) 112px 58px; align-items: center; min-height: 52px; padding: 0 12px; border-bottom: 1px solid var(--line); }
+    .input-row:last-child { border-bottom: 0; }
+    .input-row label { font-size: 14px; }
+    .input-row input { width: 100%; border: 0; background: transparent; color: var(--text); text-align: right; font-size: 19px; font-variant-numeric: tabular-nums; outline: none; }
+    .unit { text-align: right; color: var(--blue); font-size: 13px; font-weight: 650; }
+    .result-panel { background: var(--blue-soft); border-radius: 17px; padding: 16px; margin: 14px 0; }
+    .result-top { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .metric label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+    .metric strong { display: block; font-size: 25px; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+    .metric span { color: var(--muted); font-size: 12px; }
+    .details-link { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--blue) 20%, transparent); color: var(--blue); font-size: 13px; font-weight: 650; }
+    .warning { display: flex; gap: 9px; padding: 11px 12px; border-radius: 12px; color: var(--amber); background: var(--amber-soft); font-size: 12px; line-height: 1.35; margin: 10px 0; }
+    .primary-button { width: 100%; border: 0; background: var(--blue); color: white; border-radius: 14px; padding: 14px 16px; font-weight: 700; cursor: pointer; }
+    .project-summary { background: var(--surface); border: 1px solid var(--line); border-radius: 17px; padding: 16px; margin-bottom: 14px; }
+    .summary-title { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
+    .summary-title span { color: var(--muted); font-size: 12px; }
+    .summary-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .summary-metrics div { border-top: 1px solid var(--line); padding-top: 10px; }
+    .summary-metrics label { display: block; color: var(--muted); font-size: 11px; }
+    .summary-metrics strong { font-size: 20px; font-variant-numeric: tabular-nums; }
+    .status-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 999px; color: var(--blue); background: var(--blue-soft); font-size: 11px; font-weight: 650; }
+    .quote-page { background: white; color: #172027; border-radius: 3px; min-height: 560px; margin: 6px 6px 16px; padding: 26px 22px; box-shadow: 0 10px 30px rgba(0,0,0,.15); }
+    .quote-head { display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 2px solid #176b91; padding-bottom: 16px; }
+    .quote-brand { font-size: 21px; font-weight: 800; letter-spacing: -.04em; }
+    .quote-head h4 { margin: 0; font-size: 18px; }
+    .quote-head p, .quote-meta p { margin: 3px 0; color: #64727a; font-size: 9px; }
+    .quote-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; }
+    .quote-meta strong { font-size: 9px; text-transform: uppercase; letter-spacing: .05em; }
+    .quote-table { width: 100%; border-collapse: collapse; font-size: 8px; }
+    .quote-table th { text-align: left; color: #64727a; border-bottom: 1px solid #dce3e7; padding: 7px 3px; }
+    .quote-table td { border-bottom: 1px solid #e8edef; padding: 8px 3px; }
+    .quote-table th:last-child, .quote-table td:last-child { text-align: right; }
+    .quote-total { margin-left: auto; margin-top: 16px; width: 54%; }
+    .quote-total div { display: flex; justify-content: space-between; font-size: 9px; padding: 4px 0; }
+    .quote-total .grand { border-top: 1px solid #172027; margin-top: 4px; padding-top: 8px; font-size: 13px; font-weight: 800; }
+    .quote-footer { margin-top: 28px; color: #64727a; font-size: 7px; line-height: 1.4; }
+    .tabbar { position: absolute; left: 0; right: 0; bottom: 0; background: color-mix(in srgb, var(--device) 92%, transparent); backdrop-filter: blur(20px); border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, 1fr); padding: 8px 8px 22px; }
+    .tab { display: grid; gap: 3px; place-items: center; color: var(--muted); font-size: 10px; }
+    .tab svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+    .tab.active { color: var(--blue); }
+    .hidden { display: none !important; }
+    @media (max-width: 850px) {
+      .stage { grid-template-columns: 1fr; }
+      .design-notes { order: 2; margin: 0 auto; }
+      .phone { order: 1; margin: 0 auto; }
+    }
+    @media (max-width: 440px) {
+      .prototype-shell { padding: 18px 0 32px; }
+      .prototype-header, .screen-nav, .design-notes { margin-left: 16px; margin-right: 16px; }
+      .prototype-header { align-items: flex-start; flex-direction: column; }
+      .phone { width: 100%; height: 820px; border-radius: 0; padding: 0; box-shadow: none; }
+      .phone-screen { border-radius: 0; }
+      .dynamic-island { top: 8px; }
+      .principles { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="prototype-shell">
+    <header class="prototype-header">
+      <div>
+        <h1>SteelFlow / 钢流</h1>
+        <p id="subtitle">Bilingual metal weight, cost, and quote tool</p>
+      </div>
+      <div class="language-control" aria-label="Prototype language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="zh" aria-pressed="false">中文</button>
+      </div>
+    </header>
+
+    <nav class="screen-nav" aria-label="Prototype screens">
+      <button type="button" data-screen="home" aria-pressed="true">Calculate</button>
+      <button type="button" data-screen="editor" aria-pressed="false">Tube calculator</button>
+      <button type="button" data-screen="project" aria-pressed="false">Project</button>
+      <button type="button" data-screen="quote" aria-pressed="false">Quote PDF</button>
+      <button type="button" data-screen="materials" aria-pressed="false">Materials</button>
+    </nav>
+
+    <section class="stage">
+      <div class="design-notes">
+        <div class="eyebrow" id="note-eyebrow">Product direction</div>
+        <h2 id="note-title">A measuring tool, not an industrial-themed dashboard.</h2>
+        <p id="note-body">Weight and quote totals are immediate, but every result stays traceable to geometry, units, density, and rounding. The interface remains usable in a workshop and credible in front of a customer.</p>
+        <div class="principles">
+          <div class="principle"><strong id="p1-title">Result first</strong><span id="p1-body">Show unit and total mass as soon as valid dimensions exist.</span></div>
+          <div class="principle"><strong id="p2-title">Units stay visible</strong><span id="p2-body">Every numeric field carries its own unit and converts without changing physical value.</span></div>
+          <div class="principle"><strong id="p3-title">Local by default</strong><span id="p3-body">No account, network, ads, or hidden upload in the first release.</span></div>
+          <div class="principle"><strong id="p4-title">Customer-ready output</strong><span id="p4-body">The quote is a real document, with internal costs excluded by default.</span></div>
+        </div>
+      </div>
+
+      <div class="phone" aria-label="SteelFlow iPhone prototype">
+        <div class="phone-screen">
+          <div class="dynamic-island" aria-hidden="true"></div>
+          <div class="status-bar"><span>9:41</span><span>5G&nbsp;&nbsp;100%</span></div>
+
+          <section class="app-screen" data-view="home">
+            <header class="app-navbar"><h3 data-copy="calculate">Calculate</h3><button class="nav-action" type="button">•••</button></header>
+            <div class="screen-content">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg>
+                <span data-copy="search">Search profiles</span>
+              </div>
+              <div class="section-heading"><strong data-copy="recentProfiles">Recent profiles</strong><span data-copy="edit">Edit</span></div>
+              <div class="profile-grid">
+                <div class="profile-card active" data-jump="editor">
+                  <div class="profile-shape"><svg viewBox="0 0 80 55" aria-hidden="true"><ellipse cx="40" cy="27.5" rx="28" ry="20"></ellipse><ellipse cx="40" cy="27.5" rx="19" ry="12"></ellipse></svg></div>
+                  <strong data-copy="roundTube">Round tube</strong><span data-copy="hollow">Hollow</span>
+                </div>
+                <div class="profile-card">
+                  <div class="profile-shape"><svg viewBox="0 0 80 55" aria-hidden="true"><rect x="13" y="9" width="54" height="37" rx="2"></rect><rect x="22" y="16" width="36" height="23" rx="1"></rect></svg></div>
+                  <strong data-copy="rectTube">Rectangular tube</strong><span>RHS</span>
+                </div>
+                <div class="profile-card">
+                  <div class="profile-shape"><svg viewBox="0 0 80 55" aria-hidden="true"><path d="M18 10h44v9H45v17h17v9H18v-9h17V19H18z"></path></svg></div>
+                  <strong data-copy="iSection">I / H section</strong><span data-copy="structural">Structural</span>
+                </div>
+                <div class="profile-card">
+                  <div class="profile-shape"><svg viewBox="0 0 80 55" aria-hidden="true"><path d="M18 10h13v25h31v10H18z"></path></svg></div>
+                  <strong data-copy="angle">Angle</strong><span data-copy="structural">Structural</span>
+                </div>
+              </div>
+              <div class="section-heading"><strong data-copy="recentCalculations">Recent calculations</strong><span data-copy="seeAll">See all</span></div>
+              <div class="recent-row"><div class="row-icon">○</div><div class="row-copy"><strong data-copy="roundTube">Round tube</strong><span>Ø 60.3 × 3.2 mm · 6 m</span></div><div class="row-value"><strong>27.04 kg</strong><span>1 pc</span></div></div>
+              <div class="recent-row"><div class="row-icon">▭</div><div class="row-copy"><strong data-copy="plate">Plate</strong><span>1200 × 6 mm · 2.4 m</span></div><div class="row-value"><strong>135.65 kg</strong><span>1 pc</span></div></div>
+            </div>
+          </section>
+
+          <section class="app-screen hidden" data-view="editor">
+            <header class="app-navbar"><button class="nav-action" type="button" data-jump="home">‹ <span data-copy="back">Back</span></button><h3 class="compact-title" data-copy="roundTube">Round tube</h3><button class="nav-action" type="button" data-copy="more">More</button></header>
+            <div class="screen-content">
+              <div class="diagram-panel">
+                <svg viewBox="0 0 180 150" aria-label="Round tube section">
+                  <circle cx="90" cy="72" r="48"></circle><circle cx="90" cy="72" r="34"></circle>
+                  <path class="dimension-line" d="M42 132h96M42 126v12M138 126v12"></path>
+                  <path class="dimension-line" d="M90 24v14"></path>
+                  <text x="90" y="147" text-anchor="middle" fill="currentColor" stroke="none" font-size="11">60.3 mm</text>
+                  <text x="99" y="35" fill="currentColor" stroke="none" font-size="10">3.2</text>
+                </svg>
+              </div>
+              <div class="field-group">
+                <div class="input-row"><label data-copy="outerDiameter">Outer diameter</label><input value="60.3" inputmode="decimal" aria-label="Outer diameter"><span class="unit">mm⌄</span></div>
+                <div class="input-row"><label data-copy="wallThickness">Wall thickness</label><input value="3.2" inputmode="decimal" aria-label="Wall thickness"><span class="unit">mm⌄</span></div>
+              </div>
+              <div class="field-group">
+                <div class="input-row"><label data-copy="material">Material</label><input value="Carbon steel" readonly aria-label="Material"><span class="unit">›</span></div>
+                <div class="input-row"><label data-copy="length">Length</label><input value="6" inputmode="decimal" aria-label="Length"><span class="unit">m⌄</span></div>
+                <div class="input-row"><label data-copy="quantity">Quantity</label><input value="4" inputmode="numeric" aria-label="Quantity"><span class="unit">pcs</span></div>
+              </div>
+              <div class="result-panel">
+                <div class="result-top">
+                  <div class="metric"><label data-copy="unitMass">Unit mass</label><strong>27.04</strong><span>kg / pc</span></div>
+                  <div class="metric"><label data-copy="totalMass">Total mass</label><strong>108.17</strong><span>kg</span></div>
+                </div>
+                <div class="details-link"><span data-copy="calculationDetails">Calculation details</span><span>›</span></div>
+              </div>
+              <div class="warning"><span>△</span><span data-copy="densityWarning">Using a typical density of 7,850 kg/m³. Verify the actual material grade when quoting.</span></div>
+              <button class="primary-button" type="button" data-jump="project" data-copy="addToProject">Add to project</button>
+            </div>
+          </section>
+
+          <section class="app-screen hidden" data-view="project">
+            <header class="app-navbar"><button class="nav-action" type="button">‹ <span data-copy="projects">Projects</span></button><h3 class="compact-title">SF-26018</h3><button class="nav-action" type="button" data-copy="edit">Edit</button></header>
+            <div class="screen-content">
+              <div class="project-summary">
+                <div class="summary-title"><div><strong data-copy="platformFrame">Platform frame</strong><br><span>Northline Fabrication</span></div><span class="status-pill" data-copy="draft">● Draft</span></div>
+                <div class="summary-metrics"><div><label data-copy="totalMass">Total mass</label><strong>463.8 kg</strong></div><div><label data-copy="quoteTotal">Quote total</label><strong>$2,846.00</strong></div></div>
+              </div>
+              <div class="section-heading"><strong data-copy="items">Items · 3</strong><span data-copy="reorder">Reorder</span></div>
+              <div class="project-row"><div class="row-icon">○</div><div class="row-copy"><strong data-copy="roundTube">Round tube</strong><span>Ø60.3 × 3.2 · 6 m × 4</span></div><div class="row-value"><strong>$668.00</strong><span>108.2 kg</span></div></div>
+              <div class="project-row"><div class="row-icon">▭</div><div class="row-copy"><strong data-copy="rectTube">Rectangular tube</strong><span>100 × 50 × 4 · 6 m × 6</span></div><div class="row-value"><strong>$1,342.00</strong><span>321.6 kg</span></div></div>
+              <div class="project-row"><div class="row-icon">━</div><div class="row-copy"><strong data-copy="plate">Plate</strong><span>300 × 10 · 1.2 m × 2</span></div><div class="row-value"><strong>$196.00</strong><span>56.5 kg</span></div></div>
+              <div class="section-heading"><strong data-copy="pricingSummary">Pricing summary</strong><span data-copy="details">Details</span></div>
+              <div class="field-group">
+                <div class="input-row"><label data-copy="materialCost">Material cost</label><input value="$1,642.00" readonly><span class="unit"></span></div>
+                <div class="input-row"><label data-copy="processing">Processing</label><input value="$420.00" readonly><span class="unit"></span></div>
+                <div class="input-row"><label data-copy="margin">Margin · 18%</label><input value="$453.00" readonly><span class="unit"></span></div>
+                <div class="input-row"><label data-copy="tax">Tax · 13%</label><input value="$331.00" readonly><span class="unit"></span></div>
+              </div>
+              <button class="primary-button" type="button" data-jump="quote" data-copy="previewQuote">Preview quote</button>
+            </div>
+          </section>
+
+          <section class="app-screen hidden" data-view="quote">
+            <header class="app-navbar"><button class="nav-action" type="button" data-jump="project" data-copy="close">Close</button><h3 class="compact-title" data-copy="quotePreview">Quote preview</h3><button class="nav-action" type="button" data-copy="share">Share</button></header>
+            <div class="screen-content">
+              <article class="quote-page" aria-label="Quote document preview">
+                <div class="quote-head"><div><div class="quote-brand">NORTHLINE</div><p>Metal fabrication & supply</p></div><div><h4 data-copy="quote">QUOTE</h4><p>SF-26018 · Aug 28, 2026</p></div></div>
+                <div class="quote-meta"><div><strong data-copy="preparedFor">Prepared for</strong><p>Harbor Works Ltd.<br>Sam Rivera</p></div><div><strong data-copy="project">Project</strong><p data-copy="platformFrame">Platform frame</p><p data-copy="valid30">Valid for 30 days</p></div></div>
+                <table class="quote-table">
+                  <thead><tr><th data-copy="item">Item</th><th data-copy="quantityShort">Qty</th><th data-copy="mass">Mass</th><th data-copy="amount">Amount</th></tr></thead>
+                  <tbody><tr><td data-copy="roundTube">Round tube</td><td>4</td><td>108.2 kg</td><td>$668</td></tr><tr><td data-copy="rectTube">Rectangular tube</td><td>6</td><td>321.6 kg</td><td>$1,342</td></tr><tr><td data-copy="plate">Plate</td><td>2</td><td>56.5 kg</td><td>$196</td></tr></tbody>
+                </table>
+                <div class="quote-total"><div><span data-copy="subtotal">Subtotal</span><span>$2,515.00</span></div><div><span data-copy="tax">Tax · 13%</span><span>$331.00</span></div><div class="grand"><span data-copy="total">Total</span><span>$2,846.00</span></div></div>
+                <p class="quote-footer" data-copy="quoteDisclaimer">Weights are theoretical estimates based on entered dimensions and typical material density. Verify actual stock before fabrication or transport planning.</p>
+              </article>
+              <button class="primary-button" type="button" data-copy="sharePdf">Share PDF</button>
+            </div>
+          </section>
+
+          <section class="app-screen hidden" data-view="materials">
+            <header class="app-navbar"><h3 data-copy="materials">Materials</h3><button class="nav-action" type="button">＋</button></header>
+            <div class="screen-content">
+              <div class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg><span data-copy="searchMaterials">Search materials</span></div>
+              <div class="section-heading"><strong data-copy="builtIn">Built-in</strong><span data-copy="typicalValues">Typical values</span></div>
+              <div class="material-row"><div class="row-icon">CS</div><div class="row-copy"><strong data-copy="carbonSteel">Carbon steel</strong><span data-copy="typicalDensity">Typical density</span></div><div class="row-value"><strong>7,850</strong><span>kg/m³</span></div></div>
+              <div class="material-row"><div class="row-icon">304</div><div class="row-copy"><strong data-copy="stainless304">Stainless steel 304</strong><span data-copy="typicalDensity">Typical density</span></div><div class="row-value"><strong>8,000</strong><span>kg/m³</span></div></div>
+              <div class="material-row"><div class="row-icon">316</div><div class="row-copy"><strong data-copy="stainless316">Stainless steel 316</strong><span data-copy="typicalDensity">Typical density</span></div><div class="row-value"><strong>8,000</strong><span>kg/m³</span></div></div>
+              <div class="material-row"><div class="row-icon">Al</div><div class="row-copy"><strong data-copy="aluminum">Aluminum</strong><span data-copy="typicalDensity">Typical density</span></div><div class="row-value"><strong>2,700</strong><span>kg/m³</span></div></div>
+              <div class="material-row"><div class="row-icon">Cu</div><div class="row-copy"><strong data-copy="copper">Copper</strong><span data-copy="typicalDensity">Typical density</span></div><div class="row-value"><strong>8,960</strong><span>kg/m³</span></div></div>
+              <div class="section-heading"><strong data-copy="custom">Custom</strong><span>1</span></div>
+              <div class="material-row"><div class="row-icon">×</div><div class="row-copy"><strong>Customer supplied alloy</strong><span data-copy="customDensity">Custom density</span></div><div class="row-value"><strong>7,920</strong><span>kg/m³</span></div></div>
+            </div>
+          </section>
+
+          <nav class="tabbar" aria-label="App tabs">
+            <div class="tab active" data-tab="home"><svg viewBox="0 0 24 24"><path d="M4 19h16M7 16l3-8 4 8 3-11"></path></svg><span data-copy="calculate">Calculate</span></div>
+            <div class="tab" data-tab="project"><svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v10H3z"></path></svg><span data-copy="projects">Projects</span></div>
+            <div class="tab" data-tab="materials"><svg viewBox="0 0 24 24"><path d="m12 3 8 4-8 4-8-4zm-8 9 8 4 8-4m-16 5 8 4 8-4"></path></svg><span data-copy="materials">Materials</span></div>
+            <div class="tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a8 8 0 0 0-1.8-1L14.4 3h-4.8l-.4 3.1a8 8 0 0 0-1.8 1l-2.4-1-2 3.4L5.1 11a7 7 0 0 0 0 2L3 14.5l2 3.4 2.4-1a8 8 0 0 0 1.8 1l.4 3.1h4.8l.4-3.1a8 8 0 0 0 1.8-1l2.4 1 2-3.4-2.1-1.5a7 7 0 0 0 .1-1z"></path></svg><span data-copy="settings">Settings</span></div>
+          </nav>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const copy = {
+      en: {
+        subtitle: "Bilingual metal weight, cost, and quote tool",
+        noteEyebrow: "Product direction", noteTitle: "A measuring tool, not an industrial-themed dashboard.", noteBody: "Weight and quote totals are immediate, but every result stays traceable to geometry, units, density, and rounding. The interface remains usable in a workshop and credible in front of a customer.",
+        p1Title: "Result first", p1Body: "Show unit and total mass as soon as valid dimensions exist.", p2Title: "Units stay visible", p2Body: "Every numeric field carries its own unit and converts without changing physical value.", p3Title: "Local by default", p3Body: "No account, network, ads, or hidden upload in the first release.", p4Title: "Customer-ready output", p4Body: "The quote is a real document, with internal costs excluded by default.",
+        calculate:"Calculate", search:"Search profiles", recentProfiles:"Recent profiles", edit:"Edit", roundTube:"Round tube", hollow:"Hollow", rectTube:"Rectangular tube", iSection:"I / H section", structural:"Structural", angle:"Angle", recentCalculations:"Recent calculations", seeAll:"See all", plate:"Plate", back:"Back", more:"More", outerDiameter:"Outer diameter", wallThickness:"Wall thickness", material:"Material", length:"Length", quantity:"Quantity", unitMass:"Unit mass", totalMass:"Total mass", calculationDetails:"Calculation details", densityWarning:"Using a typical density of 7,850 kg/m³. Verify the actual material grade when quoting.", addToProject:"Add to project", projects:"Projects", platformFrame:"Platform frame", draft:"● Draft", quoteTotal:"Quote total", items:"Items · 3", reorder:"Reorder", pricingSummary:"Pricing summary", details:"Details", materialCost:"Material cost", processing:"Processing", margin:"Margin · 18%", tax:"Tax · 13%", previewQuote:"Preview quote", close:"Close", quotePreview:"Quote preview", share:"Share", quote:"QUOTE", preparedFor:"Prepared for", project:"Project", valid30:"Valid for 30 days", item:"Item", quantityShort:"Qty", mass:"Mass", amount:"Amount", subtotal:"Subtotal", total:"Total", quoteDisclaimer:"Weights are theoretical estimates based on entered dimensions and typical material density. Verify actual stock before fabrication or transport planning.", sharePdf:"Share PDF", materials:"Materials", searchMaterials:"Search materials", builtIn:"Built-in", typicalValues:"Typical values", carbonSteel:"Carbon steel", typicalDensity:"Typical density", stainless304:"Stainless steel 304", stainless316:"Stainless steel 316", aluminum:"Aluminum", copper:"Copper", custom:"Custom", customDensity:"Custom density", settings:"Settings"
+      },
+      zh: {
+        subtitle: "双语钢材算重、成本与报价工具",
+        noteEyebrow: "产品方向", noteTitle: "像一把测量工具，而不是工业主题仪表盘。", noteBody: "重量和报价结果立即可见，但始终可以追溯到截面、单位、密度和舍入。界面既能在车间快速操作，也能放心展示给客户。",
+        p1Title: "结果先行", p1Body: "尺寸有效后立即显示单件重量和总重量。", p2Title: "单位始终可见", p2Body: "每个数值字段自带单位，切换单位不改变物理值。", p3Title: "默认本地", p3Body: "首版无账号、网络、广告或隐藏上传。", p4Title: "可直接交付", p4Body: "报价是真正的文件，默认不会暴露内部成本。",
+        calculate:"计算", search:"搜索型材", recentProfiles:"最近使用", edit:"编辑", roundTube:"圆管", hollow:"管材", rectTube:"矩形管", iSection:"工字 / H 型截面", structural:"结构型材", angle:"角钢", recentCalculations:"最近计算", seeAll:"查看全部", plate:"钢板", back:"返回", more:"更多", outerDiameter:"外径", wallThickness:"壁厚", material:"材料", length:"长度", quantity:"数量", unitMass:"单件重量", totalMass:"总重量", calculationDetails:"计算详情", densityWarning:"当前使用典型密度 7,850 kg/m³。正式报价前请核对实际材料牌号。", addToProject:"保存到项目", projects:"项目", platformFrame:"平台框架", draft:"● 草稿", quoteTotal:"报价总额", items:"条目 · 3", reorder:"排序", pricingSummary:"价格汇总", details:"详情", materialCost:"材料成本", processing:"加工费", margin:"毛利率 · 18%", tax:"税费 · 13%", previewQuote:"预览报价", close:"关闭", quotePreview:"报价预览", share:"分享", quote:"报价单", preparedFor:"报价客户", project:"项目", valid30:"30 天内有效", item:"项目", quantityShort:"数量", mass:"重量", amount:"金额", subtotal:"小计", total:"合计", quoteDisclaimer:"重量依据输入尺寸和典型材料密度计算，仅为理论估算。加工或运输规划前请核对实际材料。", sharePdf:"分享 PDF", materials:"材料", searchMaterials:"搜索材料", builtIn:"内置", typicalValues:"典型值", carbonSteel:"碳钢", typicalDensity:"典型密度", stainless304:"304 不锈钢", stainless316:"316 不锈钢", aluminum:"铝", copper:"铜", custom:"自定义", customDensity:"自定义密度", settings:"设置"
+      }
+    };
+
+    let language = "en";
+    let activeScreen = "home";
+
+    function setLanguage(next) {
+      language = next;
+      document.documentElement.lang = next === "zh" ? "zh-Hans" : "en";
+      document.querySelectorAll("[data-lang]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.lang === next)));
+      document.querySelectorAll("[data-copy]").forEach(node => {
+        const value = copy[next][node.dataset.copy];
+        if (value) node.textContent = value;
+      });
+      document.getElementById("subtitle").textContent = copy[next].subtitle;
+      document.getElementById("note-eyebrow").textContent = copy[next].noteEyebrow;
+      document.getElementById("note-title").textContent = copy[next].noteTitle;
+      document.getElementById("note-body").textContent = copy[next].noteBody;
+      [1,2,3,4].forEach(index => {
+        document.getElementById(`p${index}-title`).textContent = copy[next][`p${index}Title`];
+        document.getElementById(`p${index}-body`).textContent = copy[next][`p${index}Body`];
+      });
+      const screenLabels = next === "zh" ? {home:"计算首页",editor:"圆管计算",project:"项目",quote:"报价 PDF",materials:"材料"} : {home:"Calculate",editor:"Tube calculator",project:"Project",quote:"Quote PDF",materials:"Materials"};
+      document.querySelectorAll(".screen-nav [data-screen]").forEach(button => button.textContent = screenLabels[button.dataset.screen]);
+    }
+
+    function showScreen(next) {
+      activeScreen = next;
+      document.querySelectorAll("[data-view]").forEach(view => view.classList.toggle("hidden", view.dataset.view !== next));
+      document.querySelectorAll(".screen-nav [data-screen]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.screen === next)));
+      const selectedTab = next === "project" || next === "quote" ? "project" : next === "materials" ? "materials" : "home";
+      document.querySelectorAll(".tab[data-tab]").forEach(tab => tab.classList.toggle("active", tab.dataset.tab === selectedTab));
+    }
+
+    document.querySelectorAll("[data-lang]").forEach(button => button.addEventListener("click", () => setLanguage(button.dataset.lang)));
+    document.querySelectorAll(".screen-nav [data-screen]").forEach(button => button.addEventListener("click", () => showScreen(button.dataset.screen)));
+    document.querySelectorAll("[data-jump]").forEach(element => element.addEventListener("click", () => showScreen(element.dataset.jump)));
+    document.querySelectorAll(".tab[data-tab]").forEach(tab => tab.addEventListener("click", () => showScreen(tab.dataset.tab)));
+    setLanguage(language);
+    showScreen(activeScreen);
+  </script>
+</body>
+</html>
