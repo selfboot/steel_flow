@@ -29,7 +29,7 @@ struct ProjectsView: View {
                                 Button {
                                     project.isArchived.toggle()
                                     project.updatedAt = .now
-                                    try? modelContext.save()
+                                    PersistenceErrorCenter.shared.save(modelContext)
                                 } label: {
                                     Label(project.isArchived ? "project.restore" : "project.archive", systemImage: project.isArchived ? "arrow.uturn.backward" : "archivebox")
                                 }
@@ -112,7 +112,7 @@ struct ProjectsView: View {
             copy.items.append(cloned)
         }
         modelContext.insert(copy)
-        try? modelContext.save()
+        PersistenceErrorCenter.shared.save(modelContext)
     }
 }
 
@@ -188,8 +188,7 @@ struct ProjectEditorSheet: View {
                             paperSize: paper
                         )
                         modelContext.insert(project)
-                        try? modelContext.save()
-                        dismiss()
+                        if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
                     }
                     .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || normalizedCurrency == nil)
                 }

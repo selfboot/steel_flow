@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RootTabView: View {
     @State private var selectedTab = 0
+    @State private var persistenceErrors = PersistenceErrorCenter.shared
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -19,5 +20,13 @@ struct RootTabView: View {
                 .tag(3)
         }
         .tint(SteelFlowTheme.steelBlue)
+        .alert("data.error.title", isPresented: Binding(
+            get: { persistenceErrors.message != nil },
+            set: { if !$0 { persistenceErrors.message = nil } }
+        )) {
+            Button("common.ok", role: .cancel) {}
+        } message: {
+            Text(persistenceErrors.message ?? "")
+        }
     }
 }

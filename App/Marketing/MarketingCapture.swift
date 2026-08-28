@@ -178,7 +178,7 @@ enum MarketingDemoData {
             company.contactName = chinese ? "业务部" : "Estimating team"
             company.email = "quotes@steelflow.app"
         }
-        try? context.save()
+        PersistenceErrorCenter.shared.save(context)
     }
 }
 #endif

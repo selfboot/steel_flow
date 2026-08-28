@@ -5,6 +5,7 @@
 - `ASO-Research-2026-08-28.md`：中国大陆、美国及英语市场交叉验证的关键词与竞品报告。
 - `Metadata/metadata.json`：可复制到 App Store Connect 的结构化字段和 IAP 文案。
 - `Metadata/en-US.md`、`Metadata/zh-Hans.md`：完整商店描述。
+- `LegalSite/`：待同步到 `docs.puzzles-game.com` 的中英文产品、支持与隐私政策页面。
 - `RawScreenshots/`：从 iPhone 16 Pro 模拟器截取的 2 语言 × 6 个真实功能界面。
 - `ScreenshotsEditor/`：可继续编辑并批量导出多尺寸 PNG 的截图工程。
 - `Screenshot-Design-Notes.md`：经典 App 参考、统一版式原则，以及每张文案与真实界面的对应关系。
@@ -15,7 +16,7 @@
 
 提交前待办：
 
-1. 替换隐私政策、支持和营销 URL 占位符。
+1. 将 `LegalSite/` 同步发布到 `docs.puzzles-game.com` 并检查 6 个页面返回 200。
 2. 在 App Store Connect 创建 `com.steelflow.app.pro.lifetime` 非消耗型项目并配置分区价格。
 3. 用 TestFlight 对中英文、购买恢复、PDF/CSV 分享和 iPad 布局做最终 QA。
 

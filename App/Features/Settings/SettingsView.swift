@@ -133,16 +133,27 @@ struct SettingsView: View {
     }
 
     private func deleteAllUserData() {
+        let customers: [CustomerEntity]
+        let snapshots: [QuoteSnapshotEntity]
+        do {
+            customers = try modelContext.fetch(FetchDescriptor<CustomerEntity>())
+            snapshots = try modelContext.fetch(FetchDescriptor<QuoteSnapshotEntity>())
+        } catch {
+            PersistenceErrorCenter.shared.message = error.localizedDescription
+            return
+        }
+
         for project in projects { modelContext.delete(project) }
         for material in materials where !material.isBuiltIn { modelContext.delete(material) }
-        if let customers = try? modelContext.fetch(FetchDescriptor<CustomerEntity>()) { customers.forEach(modelContext.delete) }
-        if let snapshots = try? modelContext.fetch(FetchDescriptor<QuoteSnapshotEntity>()) { snapshots.forEach(modelContext.delete) }
+        customers.forEach(modelContext.delete)
+        snapshots.forEach(modelContext.delete)
         priceBook.forEach(modelContext.delete)
         if let company = companies.first {
             company.companyName = ""; company.contactName = ""; company.email = ""; company.phone = ""; company.address = ""; company.updatedAt = .now
         }
-        try? modelContext.save()
-        backupMessage = String(localized: "settings.delete_all.done")
+        if PersistenceErrorCenter.shared.save(modelContext) {
+            backupMessage = String(localized: "settings.delete_all.done")
+        }
     }
 }
 
@@ -153,7 +164,12 @@ private struct CompanyProfileView: View {
     var body: some View {
         Group {
             if let company = companies.first { CompanyProfileForm(company: company) }
-            else { ProgressView().task { modelContext.insert(CompanyProfileEntity()); try? modelContext.save() } }
+            else {
+                ProgressView().task {
+                    modelContext.insert(CompanyProfileEntity())
+                    PersistenceErrorCenter.shared.save(modelContext)
+                }
+            }
         }
         .navigationTitle("settings.company_profile")
     }
@@ -174,7 +190,10 @@ private struct CompanyProfileForm: View {
             }
             Section { Text("company.help").font(.caption).foregroundStyle(.secondary) }
         }
-        .onDisappear { company.updatedAt = .now; try? modelContext.save() }
+        .onDisappear {
+            company.updatedAt = .now
+            PersistenceErrorCenter.shared.save(modelContext)
+        }
     }
 }
 

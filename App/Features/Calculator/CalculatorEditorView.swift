@@ -6,6 +6,7 @@ struct CalculatorEditorView: View {
     let destinationProject: ProjectEntity?
     @Environment(\.modelContext) private var modelContext
     @Environment(\.locale) private var locale
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Query(sort: \MaterialEntity.createdAt) private var materials: [MaterialEntity]
     @Query(sort: \ProjectEntity.updatedAt, order: .reverse) private var projects: [ProjectEntity]
     @Query(sort: \PriceBookEntryEntity.effectiveAt, order: .reverse) private var priceBook: [PriceBookEntryEntity]
@@ -50,38 +51,43 @@ struct CalculatorEditorView: View {
         Form {
             Section("calculator.section.geometry") {
                 ForEach(profile.dimensionFields) { field in
-                    HStack {
-                        Text(field.localizationKey)
-                        Spacer()
+                    AdaptiveFormRow(field.localizationKey) {
                         TextField("0", text: dimensionBinding(field))
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
-                            .frame(minWidth: 90)
+                            .frame(minWidth: 90, maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : 160)
                         Text(field == .customArea ? draft.areaUnit.rawValue : draft.geometryUnit.rawValue)
-                            .foregroundStyle(.secondary).frame(minWidth: 34, alignment: .leading)
+                            .foregroundStyle(.secondary)
+                            .fixedSize()
                     }
                     .accessibilityElement(children: .combine)
                 }
 
                 if profile == .customArea {
-                    Picker("calculator.area_unit", selection: $draft.areaUnit) {
-                        ForEach(AreaUnit.allCases) { Text($0.rawValue).tag($0) }
+                    AdaptiveFormRow("calculator.area_unit") {
+                        Spacer(minLength: 0)
+                        Picker("calculator.area_unit", selection: $draft.areaUnit) {
+                            ForEach(AreaUnit.allCases) { Text($0.rawValue).tag($0) }
+                        }
+                        .labelsHidden()
                     }
                 } else {
-                    Picker("calculator.dimension_unit", selection: geometryUnitBinding) {
-                        ForEach([LengthUnit.millimeter, .centimeter, .inch]) { Text($0.rawValue).tag($0) }
+                    AdaptiveFormRow("calculator.dimension_unit") {
+                        Spacer(minLength: 0)
+                        Picker("calculator.dimension_unit", selection: geometryUnitBinding) {
+                            ForEach([LengthUnit.millimeter, .centimeter, .inch]) { Text($0.rawValue).tag($0) }
+                        }
+                        .labelsHidden()
                     }
                 }
 
-                HStack {
-                    Text("calculator.length")
-                    Spacer()
+                AdaptiveFormRow("calculator.length") {
                     TextField("0", text: $draft.lengthText)
                         .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
                     Picker("calculator.length_unit", selection: lengthUnitBinding) {
                         ForEach([LengthUnit.meter, .foot, .millimeter, .inch]) { Text($0.rawValue).tag($0) }
                     }
-                    .labelsHidden().frame(width: 78)
+                    .labelsHidden().frame(minWidth: 78)
                 }
                 Stepper(value: $draft.quantity, in: 1...1_000_000) {
                     LabeledContent("calculator.quantity", value: "\(draft.quantity)")
@@ -89,59 +95,65 @@ struct CalculatorEditorView: View {
             }
 
             Section("calculator.section.material") {
-                Picker("calculator.material", selection: materialBinding) {
-                    ForEach(materials) { material in
-                        Text(materialDisplayName(material)).tag(material.id)
+                AdaptiveFormRow("calculator.material") {
+                    Spacer(minLength: 0)
+                    Picker("calculator.material", selection: materialBinding) {
+                        ForEach(materials) { material in
+                            Text(materialDisplayName(material)).tag(material.id)
+                        }
                     }
+                    .labelsHidden()
                 }
-                HStack {
-                    Text("calculator.density")
-                    Spacer()
+                AdaptiveFormRow("calculator.density") {
                     TextField("7850", text: $draft.densityText)
                         .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                    Text("kg/m³").foregroundStyle(.secondary)
+                    Text("kg/m³").foregroundStyle(.secondary).fixedSize()
                 }
                 Text("material.note.typical").font(.caption).foregroundStyle(.secondary)
             }
 
             Section("calculator.section.pricing") {
-                HStack {
-                    Text("calculator.waste")
-                    Spacer()
+                AdaptiveFormRow("calculator.waste") {
                     TextField("0", text: $draft.wasteText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                    Text("%").foregroundStyle(.secondary)
+                    Text("%").foregroundStyle(.secondary).fixedSize()
                 }
                 Text("calculator.waste_pricing_help").font(.caption).foregroundStyle(.secondary)
-                Picker("calculator.price_basis", selection: $draft.priceBasis) {
-                    ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0) }
+                AdaptiveFormRow("calculator.price_basis") {
+                    Spacer(minLength: 0)
+                    Picker("calculator.price_basis", selection: $draft.priceBasis) {
+                        ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0) }
+                    }
+                    .labelsHidden()
                 }
-                HStack {
-                    Text("calculator.unit_price")
-                    Spacer()
+                AdaptiveFormRow("calculator.unit_price") {
                     TextField("0", text: $draft.unitPriceText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                    Text(currencyCode).foregroundStyle(.secondary)
+                    Text(currencyCode).foregroundStyle(.secondary).fixedSize()
                 }
-                HStack {
-                    Text("calculator.line_processing_fee")
-                    Spacer()
+                AdaptiveFormRow("calculator.line_processing_fee") {
                     TextField("0", text: $draft.processingFeeText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
                 }
-                HStack {
-                    Text("calculator.line_other_fee")
-                    Spacer()
+                AdaptiveFormRow("calculator.line_other_fee") {
                     TextField("0", text: $draft.otherFeeText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
                 }
                 TextField("calculator.description", text: $draft.itemDescription)
                 TextField("calculator.internal_note", text: $draft.internalNote, axis: .vertical)
-                Picker("calculator.price_source", selection: $draft.priceSource) {
-                    ForEach(PriceSource.allCases) { Text($0.localizationKey).tag($0) }
+                AdaptiveFormRow("calculator.price_source") {
+                    Spacer(minLength: 0)
+                    Picker("calculator.price_source", selection: $draft.priceSource) {
+                        ForEach(PriceSource.allCases) { Text($0.localizationKey).tag($0) }
+                    }
+                    .labelsHidden()
                 }
                 if draft.priceSource == .history {
-                    Picker("calculator.price_history", selection: $selectedPriceEntryID) {
-                        Text("calculator.price_history.choose").tag(UUID?.none)
-                        ForEach(availablePriceEntries) { entry in
-                            Text("\(entry.name) · \(AppFormatters.decimal(entry.unitPrice, currencyCode: entry.currencyCode, locale: locale))").tag(Optional(entry.id))
+                    AdaptiveFormRow("calculator.price_history") {
+                        Spacer(minLength: 0)
+                        Picker("calculator.price_history", selection: $selectedPriceEntryID) {
+                            Text("calculator.price_history.choose").tag(UUID?.none)
+                            ForEach(availablePriceEntries) { entry in
+                                Text("\(entry.name) · \(AppFormatters.decimal(entry.unitPrice, currencyCode: entry.currencyCode, locale: locale))").tag(Optional(entry.id))
+                            }
                         }
+                        .labelsHidden()
                     }
                     .onChange(of: selectedPriceEntryID) { _, id in
                         if let id, let entry = priceBook.first(where: { $0.id == id }) { draft.apply(priceEntry: entry) }
@@ -165,7 +177,7 @@ struct CalculatorEditorView: View {
 
             Section("calculator.section.result") {
                 if let result {
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                    LazyVGrid(columns: dynamicTypeSize.isAccessibilitySize ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                         ResultMetric("calculator.result.unit_mass", value: mass(result.unitMassKg))
                         ResultMetric("calculator.result.total_mass", value: mass(result.totalMassKg), emphasized: true)
                         ResultMetric("calculator.result.area", value: area(result.areaSquareMeters))
@@ -277,9 +289,10 @@ struct CalculatorEditorView: View {
         project.items.append(item)
         project.updatedAt = .now
         modelContext.insert(item)
-        try? modelContext.save()
-        showSaveSheet = false
-        savedConfirmation = true
+        if PersistenceErrorCenter.shared.save(modelContext) {
+            showSaveSheet = false
+            savedConfirmation = true
+        }
     }
 
     private func canAdd(to project: ProjectEntity) -> Bool {
@@ -321,8 +334,7 @@ private struct SaveToProjectSheet: View {
                         } else {
                             let project = ProjectEntity(name: newName.isEmpty ? String(localized: "project.untitled") : newName)
                             modelContext.insert(project)
-                            try? modelContext.save()
-                            onSelect(project)
+                            if PersistenceErrorCenter.shared.save(modelContext) { onSelect(project) }
                         }
                     }
                 }

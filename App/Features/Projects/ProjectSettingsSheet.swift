@@ -84,8 +84,7 @@ struct ProjectSettingsSheet: View {
         project.markupPercentText = profit.description
         project.profitMode = profitMode
         project.updatedAt = .now
-        try? modelContext.save()
-        dismiss()
+        if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
     }
 
     private func applyCurrencyChange(mode: CurrencyChangeMode, rate: Decimal?, newCurrency: String) {

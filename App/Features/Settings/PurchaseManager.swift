@@ -11,14 +11,23 @@ final class PurchaseManager {
     var isPro = UserDefaults.standard.bool(forKey: "purchase.pro.cached")
     var isLoading = false
     var errorMessage: String?
+    private var updatesTask: Task<Void, Never>?
+
+    init(startListening: Bool = true) {
+        guard startListening else { return }
+        updatesTask = Task { [weak self] in
+            await self?.refreshEntitlement()
+            await self?.observeTransactionUpdates()
+        }
+    }
 
     func load() async {
         isLoading = true
         defer { isLoading = false }
         do {
             product = try await Product.products(for: [Self.productID]).first
-            await refreshEntitlement()
         } catch { errorMessage = error.localizedDescription }
+        await refreshEntitlement()
     }
 
     func purchase() async {
@@ -51,8 +60,22 @@ final class PurchaseManager {
                 entitled = true
             }
         }
-        isPro = entitled || isPro
+        isPro = Self.resolvedEntitlement(hasVerifiedCurrentEntitlement: entitled)
         UserDefaults.standard.set(isPro, forKey: "purchase.pro.cached")
+    }
+
+    static func resolvedEntitlement(hasVerifiedCurrentEntitlement: Bool) -> Bool {
+        hasVerifiedCurrentEntitlement
+    }
+
+    private func observeTransactionUpdates() async {
+        for await result in Transaction.updates {
+            guard !Task.isCancelled else { return }
+            if let transaction = try? verified(result), transaction.productID == Self.productID {
+                await transaction.finish()
+            }
+            await refreshEntitlement()
+        }
     }
 
     private func verified<T>(_ result: VerificationResult<T>) throws -> T {

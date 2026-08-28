@@ -8,6 +8,8 @@ struct ProjectDetailView: View {
     @State private var showEdit = false
     @State private var showQuote = false
     @State private var showBulkPricing = false
+    @State private var pendingDeleteItems: [CalculationItemEntity] = []
+    @State private var showDeleteConfirmation = false
 
     private var sortedItems: [CalculationItemEntity] { project.items.sorted { $0.sortIndex < $1.sortIndex } }
     private var summary: ProjectSummary { ProjectCalculator.summarize(project) }
@@ -29,7 +31,7 @@ struct ProjectDetailView: View {
                             ProjectItemRow(item: item, currencyCode: project.currencyCode)
                         }
                     }
-                    .onDelete(perform: deleteItems)
+                    .onDelete(perform: requestDeleteItems)
                     .onMove(perform: moveItems)
                 }
                 NavigationLink {
@@ -79,14 +81,26 @@ struct ProjectDetailView: View {
         .sheet(isPresented: $showEdit) { ProjectSettingsSheet(project: project) }
         .sheet(isPresented: $showQuote) { QuotePreviewView(project: project) }
         .sheet(isPresented: $showBulkPricing) { BulkPricingSheet(project: project) }
+        .confirmationDialog("delete.confirm.title", isPresented: $showDeleteConfirmation, titleVisibility: .visible) {
+            Button("common.delete", role: .destructive) { confirmDeleteItems() }
+            Button("common.cancel", role: .cancel) { pendingDeleteItems = [] }
+        } message: {
+            Text("delete.confirm.message")
+        }
     }
 
     private func money(_ value: Decimal) -> String { AppFormatters.decimal(value, currencyCode: project.currencyCode, locale: locale) }
 
-    private func deleteItems(at offsets: IndexSet) {
-        for index in offsets { modelContext.delete(sortedItems[index]) }
+    private func requestDeleteItems(at offsets: IndexSet) {
+        pendingDeleteItems = offsets.map { sortedItems[$0] }
+        showDeleteConfirmation = !pendingDeleteItems.isEmpty
+    }
+
+    private func confirmDeleteItems() {
+        for item in pendingDeleteItems { modelContext.delete(item) }
         project.updatedAt = .now
-        try? modelContext.save()
+        _ = PersistenceErrorCenter.shared.save(modelContext)
+        pendingDeleteItems = []
     }
 
     private func moveItems(from source: IndexSet, to destination: Int) {
@@ -94,7 +108,7 @@ struct ProjectDetailView: View {
         reordered.move(fromOffsets: source, toOffset: destination)
         for (index, item) in reordered.enumerated() { item.sortIndex = index }
         project.updatedAt = .now
-        try? modelContext.save()
+        PersistenceErrorCenter.shared.save(modelContext)
     }
 }
 
@@ -267,7 +281,11 @@ private struct ProjectItemDetailView: View {
             }
         }
         .navigationTitle(item.profile.localizationKey)
-        .onDisappear { _ = item.canonicalizePricing(locale: locale); item.updatedAt = .now; try? modelContext.save() }
+        .onDisappear {
+            _ = item.canonicalizePricing(locale: locale)
+            item.updatedAt = .now
+            PersistenceErrorCenter.shared.save(modelContext)
+        }
     }
 
     private var itemLengthUnitBinding: Binding<String> {
@@ -331,7 +349,6 @@ private struct BulkPricingSheet: View {
             item.updatedAt = .now
         }
         project.updatedAt = .now
-        try? modelContext.save()
-        dismiss()
+        if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
     }
 }

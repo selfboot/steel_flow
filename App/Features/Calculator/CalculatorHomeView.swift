@@ -4,6 +4,7 @@ import SwiftData
 struct CalculatorHomeView: View {
     @Query(sort: \CalculationItemEntity.updatedAt, order: .reverse) private var recentItems: [CalculationItemEntity]
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private let columns = [GridItem(.adaptive(minimum: 145), spacing: 12)]
 
@@ -11,8 +12,12 @@ struct CalculatorHomeView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 22) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("calculator.hero.title").font(.title2.bold())
-                    Text("calculator.hero.subtitle").font(.subheadline).foregroundStyle(.secondary)
+                    Text("calculator.hero.title")
+                        .font(dynamicTypeSize.isAccessibilitySize ? .headline : .title2.bold())
+                    Text("calculator.hero.subtitle")
+                        .font(dynamicTypeSize.isAccessibilitySize ? .caption : .subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(dynamicTypeSize.isAccessibilitySize ? 3 : nil)
                 }
 
                 LazyVGrid(columns: columns, spacing: 12) {
@@ -22,6 +27,7 @@ struct CalculatorHomeView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel(Text(profile.localizationKey))
+                        .accessibilityIdentifier("profile.\(profile.rawValue)")
                     }
                 }
 

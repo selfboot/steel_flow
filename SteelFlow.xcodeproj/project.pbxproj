@@ -39,6 +39,7 @@
 		C5B2997476EF79EF0C81F761 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 548F05EFB267BDEC79826041 /* Localizable.strings */; };
 		D0F99E68002E6508DB5B77A6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C649A49EC7D9C81AEA70527 /* SettingsView.swift */; };
 		D77AC4F52C8D290A24F2F45F /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504649A5D7DDE1728807CF73 /* ProjectsView.swift */; };
+		DC09FA0F0A80DC62388DB4C4 /* ReliabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454169B69FC88B25D3CE9094 /* ReliabilityTests.swift */; };
 		DF7F5EF6CF656AE48E71F89C /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = B951C002DDA177685932D4A7 /* Units.swift */; };
 		E6339961D929936912C9F74E /* CalculationEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB164A14026EDD752739BCC9 /* CalculationEngineTests.swift */; };
 		E930FBC9F47849B2DE9E5C39 /* AppIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = CBB82E15F487FA24B6F5794C /* AppIcon.svg */; };
@@ -75,6 +76,7 @@
 		24411F83D53BCB9DE1D5464E /* MarketingCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingCapture.swift; sourceTree = "<group>"; };
 		3568DCA5A6B45431715922BC /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		3C649A49EC7D9C81AEA70527 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		454169B69FC88B25D3CE9094 /* ReliabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReliabilityTests.swift; sourceTree = "<group>"; };
 		48EF519CF3E843C209C44ED5 /* SteelFlowTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SteelFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BEB33FEBDD0F8C3B26D218F /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		4C372A8D61345C59F520B92E /* CalculationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationEngine.swift; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				76992118BBD184811B6D777B /* LocalizationTests.swift */,
 				E2FB7EA5EF528FE8C9115653 /* PricingAndProjectTests.swift */,
 				97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */,
+				454169B69FC88B25D3CE9094 /* ReliabilityTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -366,16 +369,16 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					5BB0A50D4B1C2BCFB8694A5C = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = 4Z5Z5TE9EX;
 						ProvisioningStyle = Automatic;
 						TestTargetID = D079574452BE52757D20C1AC;
 					};
 					D079574452BE52757D20C1AC = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = 4Z5Z5TE9EX;
 						ProvisioningStyle = Automatic;
 					};
 					F2F631E0456A15C58B2C91A7 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = 4Z5Z5TE9EX;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -466,6 +469,7 @@
 				97102A47AC4F2AB0C4B4178E /* LocalizationTests.swift in Sources */,
 				FCF87E8AFB6766FA3862CA59 /* PricingAndProjectTests.swift in Sources */,
 				B702BD014FCC78F48AF0C9EF /* ReferenceCorpusTests.swift in Sources */,
+				DC09FA0F0A80DC62388DB4C4 /* ReliabilityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,7 +547,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4Z5Z5TE9EX;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -611,7 +615,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4Z5Z5TE9EX;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

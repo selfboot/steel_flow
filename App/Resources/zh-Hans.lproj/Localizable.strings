@@ -288,3 +288,9 @@
 "export.error.invalid_pricing" = "导出前请修正所有无效的条目价格、费用、税率和利润设置。";
 "calculator.waste_pricing_help" = "损耗会按比例计入重量、长度或件数对应的计费数量。";
 "calculator.idealized_geometry_help" = "通用公式未计入制造圆角和过渡圆弧。需要精确标准型材理论重量时，请使用供应商认证的截面积。";
+"common.retry" = "重试";
+"data.store_unavailable.title" = "无法访问 SteelFlow 数据";
+"data.store_unavailable.message" = "SteelFlow 无法打开本地数据库。现有数据没有被删除，请先重试；如果问题持续，请在重新安装 App 前联系支持。";
+"data.error.title" = "无法保存更改";
+"delete.confirm.title" = "删除此条目？";
+"delete.confirm.message" = "此操作无法撤销，请确认是否永久删除。";

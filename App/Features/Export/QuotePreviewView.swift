@@ -35,17 +35,12 @@ struct QuotePreviewView: View {
                 }
                 Section("project.items") {
                     ForEach(summary.lines) { line in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(line.item.descriptionText.isEmpty ? String(localized: line.item.profile.localizationKey) : line.item.descriptionText).font(.subheadline.weight(.semibold))
-                                Text("\(MaterialCatalog.localizedName(materialID: line.item.materialID, fallback: line.item.materialName, locale: locale)) · × \(line.item.quantity)").font(.caption).foregroundStyle(.secondary)
-                            }
-                            Spacer()
-                            VStack(alignment: .trailing) {
-                                Text("\(AppFormatters.number(line.result.totalMassKg, maximumFractionDigits: 2, locale: locale)) kg").font(.caption)
-                                Text(AppFormatters.decimal(line.materialSubtotal, currencyCode: project.currencyCode, locale: locale)).font(.subheadline.monospacedDigit())
-                            }
-                        }
+                        QuoteLineRow(
+                            title: line.item.descriptionText.isEmpty ? String(localized: line.item.profile.localizationKey) : line.item.descriptionText,
+                            subtitle: "\(MaterialCatalog.localizedName(materialID: line.item.materialID, fallback: line.item.materialName, locale: locale)) · × \(line.item.quantity)",
+                            mass: "\(AppFormatters.number(line.result.totalMassKg, maximumFractionDigits: 2, locale: locale)) kg",
+                            amount: AppFormatters.decimal(line.materialSubtotal, currencyCode: project.currencyCode, locale: locale)
+                        )
                     }
                 }
                 Section("project.summary") {
@@ -90,5 +85,48 @@ struct QuotePreviewView: View {
             modelContext.insert(QuoteSnapshotEntity(projectID: project.id, payload: snapshot))
             try modelContext.save()
         } catch { exportError = error.localizedDescription }
+    }
+}
+
+private struct QuoteLineRow: View {
+    let title: String
+    let subtitle: String
+    let mass: String
+    let amount: String
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    var body: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: 6) {
+                description
+                HStack {
+                    Text(mass).font(.caption.monospacedDigit())
+                    Spacer()
+                    Text(amount).font(.subheadline.monospacedDigit())
+                }
+            }
+        } else {
+            HStack(alignment: .top, spacing: 12) {
+                description
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack(alignment: .trailing, spacing: 3) {
+                    Text(mass).font(.caption.monospacedDigit())
+                    Text(amount).font(.subheadline.monospacedDigit())
+                }
+                .fixedSize(horizontal: true, vertical: true)
+            }
+        }
+    }
+
+    private var description: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(title)
+                .font(.subheadline.weight(.semibold))
+                .fixedSize(horizontal: false, vertical: true)
+            Text(subtitle)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 }

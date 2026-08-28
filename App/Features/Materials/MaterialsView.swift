@@ -12,6 +12,8 @@ struct MaterialsView: View {
     @State private var editingPrice: PriceBookEntryEntity?
     @State private var showProLimit = false
     @State private var purchaseManager = PurchaseManager.shared
+    @State private var pendingDeletion: CatalogDeletion?
+    @State private var showDeleteConfirmation = false
 
     var body: some View {
         List {
@@ -25,8 +27,11 @@ struct MaterialsView: View {
                 ForEach(materials.filter { !$0.isBuiltIn }) { material in
                     Button { editingMaterial = material } label: { MaterialRow(material: material) }
                         .buttonStyle(.plain)
-                        .swipeActions {
-                            Button(role: .destructive) { modelContext.delete(material); try? modelContext.save() } label: { Label("common.delete", systemImage: "trash") }
+                        .swipeActions(allowsFullSwipe: false) {
+                            Button(role: .destructive) {
+                                pendingDeletion = .material(material)
+                                showDeleteConfirmation = true
+                            } label: { Label("common.delete", systemImage: "trash") }
                         }
                 }
             }
@@ -48,8 +53,11 @@ struct MaterialsView: View {
                         }
                     }
                     .buttonStyle(.plain)
-                    .swipeActions {
-                        Button(role: .destructive) { modelContext.delete(entry); try? modelContext.save() } label: { Label("common.delete", systemImage: "trash") }
+                    .swipeActions(allowsFullSwipe: false) {
+                        Button(role: .destructive) {
+                            pendingDeletion = .price(entry)
+                            showDeleteConfirmation = true
+                        } label: { Label("common.delete", systemImage: "trash") }
                     }
                 }
                 Text("price_book.help").font(.caption).foregroundStyle(.secondary)
@@ -70,6 +78,12 @@ struct MaterialsView: View {
         .sheet(isPresented: $showNewPrice) { PriceBookEditorSheet(materials: materials) }
         .sheet(item: $editingPrice) { PriceBookEditorSheet(entry: $0, materials: materials) }
         .alert("purchase.limit.title", isPresented: $showProLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.materials") }
+        .confirmationDialog("delete.confirm.title", isPresented: $showDeleteConfirmation, titleVisibility: .visible) {
+            Button("common.delete", role: .destructive) { confirmDeletion() }
+            Button("common.cancel", role: .cancel) { pendingDeletion = nil }
+        } message: {
+            Text("delete.confirm.message")
+        }
     }
 
     @ViewBuilder
@@ -86,6 +100,21 @@ struct MaterialsView: View {
         .padding(.vertical, 3)
         .contentShape(Rectangle())
     }
+
+    private func confirmDeletion() {
+        guard let pendingDeletion else { return }
+        switch pendingDeletion {
+        case .material(let material): modelContext.delete(material)
+        case .price(let entry): modelContext.delete(entry)
+        }
+        _ = PersistenceErrorCenter.shared.save(modelContext)
+        self.pendingDeletion = nil
+    }
+}
+
+private enum CatalogDeletion {
+    case material(MaterialEntity)
+    case price(PriceBookEntryEntity)
 }
 
 private struct PriceBookEditorSheet: View {
@@ -200,8 +229,7 @@ private struct PriceBookEditorSheet: View {
                 note: note
             ))
         }
-        try? modelContext.save()
-        dismiss()
+        if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
     }
 }
 
@@ -252,7 +280,6 @@ private struct MaterialEditorSheet: View {
         } else {
             modelContext.insert(MaterialEntity(name: name.trimmingCharacters(in: .whitespacesAndNewlines), densityKgPerM3: value, note: note))
         }
-        try? modelContext.save()
-        dismiss()
+        if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
     }
 }

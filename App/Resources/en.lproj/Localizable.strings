@@ -288,3 +288,9 @@
 "export.error.invalid_pricing" = "Fix all invalid item prices, fees, tax, and profit settings before exporting.";
 "calculator.waste_pricing_help" = "Waste is applied proportionally to the billable weight, length, or piece quantity.";
 "calculator.idealized_geometry_help" = "This generic formula ignores manufactured corner and fillet radii. Use a supplier's certified cross-sectional area for standard sections when exact theoretical weight is required.";
+"common.retry" = "Try Again";
+"data.store_unavailable.title" = "SteelFlow Data Is Unavailable";
+"data.store_unavailable.message" = "SteelFlow could not open its local database. Your data has not been deleted. Try again; if the problem continues, contact support before reinstalling the app.";
+"data.error.title" = "Couldn’t Save Changes";
+"delete.confirm.title" = "Delete this item?";
+"delete.confirm.message" = "This action cannot be undone. Confirm that you want to permanently remove it.";

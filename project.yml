@@ -7,7 +7,7 @@ options:
 settings:
   base:
     SWIFT_VERSION: "6.0"
-    DEVELOPMENT_TEAM: ""
+    DEVELOPMENT_TEAM: 4Z5Z5TE9EX
     CODE_SIGN_STYLE: Automatic
     CURRENT_PROJECT_VERSION: 1
     MARKETING_VERSION: 1.0.0
@@ -22,6 +22,7 @@ targets:
         CFBundleDisplayName: SteelFlow
         LSApplicationCategoryType: public.app-category.utilities
         UIApplicationSupportsIndirectInputEvents: true
+        ITSAppUsesNonExemptEncryption: false
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
@@ -101,6 +102,10 @@ schemes:
         SteelFlow: all
         SteelFlowTests: [test]
     test:
+      storeKitConfiguration: SteelFlow.storekit
       targets:
         - SteelFlowTests
         - SteelFlowUITests
+    run:
+      config: Debug
+      storeKitConfiguration: SteelFlow.storekit

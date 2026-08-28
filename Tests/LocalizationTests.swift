@@ -14,7 +14,9 @@ final class LocalizationTests: XCTestCase {
             "materials.custom", "settings.language", "settings.company_profile", "backup.export",
             "backup.import", "purchase.restore", "disclaimer.title", "error.invalid_pricing",
             "error.invalid_currency", "error.web_too_thick", "price_book.title", "currency_change.title",
-            "profit_mode.markup", "profit_mode.margin", "price_source.manual", "price_source.history", "price_source.market_reference"
+            "profit_mode.markup", "profit_mode.margin", "price_source.manual", "price_source.history", "price_source.market_reference",
+            "common.retry", "data.store_unavailable.title", "data.store_unavailable.message", "data.error.title",
+            "delete.confirm.title", "delete.confirm.message"
         ]
         for language in ["en", "zh-Hans"] {
             let path = try XCTUnwrap(Bundle.main.path(forResource: language, ofType: "lproj"))

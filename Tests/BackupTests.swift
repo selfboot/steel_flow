@@ -64,6 +64,19 @@ final class BackupTests: XCTestCase {
         }
     }
 
+    func testSemanticallyInvalidBackupDoesNotPartiallyImportMaterials() throws {
+        let material = MaterialEntity(name: "Valid material", densityKgPerM3: 8_100)
+        let invalidProject = ProjectEntity(name: "Invalid project", currencyCode: "INVALID")
+        let document = try BackupService.makeDocument(projects: [invalidProject], materials: [material], company: nil)
+        let destination = try container()
+
+        XCTAssertThrowsError(try BackupService.importCopy(data: document.data, into: destination.mainContext)) {
+            XCTAssertEqual($0 as? BackupError, .corrupt)
+        }
+        XCTAssertEqual(try destination.mainContext.fetch(FetchDescriptor<MaterialEntity>()).count, 0)
+        XCTAssertEqual(try destination.mainContext.fetch(FetchDescriptor<ProjectEntity>()).count, 0)
+    }
+
     func testQuoteSnapshotPayloadPersistsAsImmutableAuditRecord() throws {
         let container = try container()
         let project = ProjectEntity(name: "Audit", currencyCode: "USD")

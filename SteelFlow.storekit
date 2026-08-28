@@ -1,0 +1,41 @@
+{
+  "identifier" : "3E788DF3-3DC7-4C4C-97D3-8E236996EA3B",
+  "nonRenewingSubscriptions" : [ ],
+  "products" : [
+    {
+      "displayPrice" : "14.99",
+      "familyShareable" : false,
+      "internalID" : "E9CA1495-4483-4870-8686-9F86AB80BCB6",
+      "localizations" : [
+        {
+          "description" : "Unlimited active projects, custom materials, project items, and CSV exports.",
+          "displayName" : "SteelFlow Pro Lifetime",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "解锁无限活动项目、自定义材料、项目条目和 CSV 导出。",
+          "displayName" : "SteelFlow Pro 永久版",
+          "locale" : "zh_Hans"
+        }
+      ],
+      "productID" : "com.steelflow.app.pro.lifetime",
+      "referenceName" : "SteelFlow Pro Lifetime",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "com.steelflow.app",
+    "_developerTeamID" : "4Z5Z5TE9EX",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 0,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [ ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [ ],
+  "version" : {
+    "major" : 5,
+    "minor" : 0
+  }
+}

@@ -13,16 +13,18 @@ final class SteelFlowUITests: XCTestCase {
         continueAfterFailure = false
         let app = launchApp()
         XCTAssertTrue(app.navigationBars["Calculate"].waitForExistence(timeout: 3))
-        let plate = app.staticTexts["Plate / flat bar"]
-        XCTAssertTrue(plate.exists)
+        let plate = app.descendants(matching: .any)["profile.plate"]
+        XCTAssertTrue(plate.waitForExistence(timeout: 2))
         plate.tap()
         XCTAssertTrue(app.navigationBars["Plate / flat bar"].waitForExistence(timeout: 2))
-        app.swipeUp()
-        XCTAssertTrue(app.staticTexts["Total mass"].waitForExistence(timeout: 2))
+        let totalMass = app.staticTexts["Total mass"]
+        for _ in 0..<8 where !totalMass.isHittable { app.swipeUp() }
+        XCTAssertTrue(totalMass.waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["47.1 kg"].waitForExistence(timeout: 2))
-        app.swipeUp()
-        XCTAssertTrue(app.buttons["Save to project"].waitForExistence(timeout: 2))
-        XCTAssertTrue(app.buttons["Save to project"].isEnabled)
+        let save = app.buttons["Save to project"]
+        for _ in 0..<8 where !save.isHittable { app.swipeUp() }
+        XCTAssertTrue(save.waitForExistence(timeout: 3))
+        XCTAssertTrue(save.isEnabled)
     }
 
     func testAllPrimaryTabsRenderLocalizedContent() {
@@ -39,6 +41,96 @@ final class SteelFlowUITests: XCTestCase {
         app.swipeUp()
         app.swipeUp()
         XCTAssertTrue(app.staticTexts["Data collection"].waitForExistence(timeout: 2))
+    }
+
+    func testCalculatorRemainsUsableAtLargestAccessibilityTextSize() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+            "-app.unitSystem", "metric", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"
+        ]
+        app.launch()
+
+        let plate = app.descendants(matching: .any)["profile.plate"]
+        for _ in 0..<4 where !plate.isHittable { app.swipeUp() }
+        XCTAssertTrue(plate.waitForExistence(timeout: 3))
+        XCTAssertTrue(plate.isHittable)
+        plate.tap()
+
+        XCTAssertTrue(app.navigationBars["Plate / flat bar"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.otherElements.matching(NSPredicate(format: "label CONTAINS 'Width'")).firstMatch.waitForExistence(timeout: 3))
+        attachScreenshot(named: "accessibility-xxxl-calculator")
+    }
+
+    func testChineseQuoteRowsDoNotOverlapOnCompactPhone() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "zh-Hans",
+            "-app.unitSystem", "metric", "-app.currency", "CNY",
+            "--marketing-screen", "quote", "--marketing-locale", "zh-Hans"
+        ]
+        app.launch()
+
+        XCTAssertTrue(app.navigationBars["报价预览"].waitForExistence(timeout: 8))
+        let title = app.staticTexts["连接角钢 L75 × 6"]
+        let mass = app.staticTexts["1,220.83 kg"]
+        XCTAssertTrue(title.waitForExistence(timeout: 3))
+        XCTAssertTrue(mass.waitForExistence(timeout: 3))
+        XCTAssertFalse(title.frame.intersects(mass.frame), "The item title must not overlap the mass column")
+        attachScreenshot(named: "compact-chinese-quote")
+    }
+
+    func testPriceDeletionRequiresExplicitConfirmation() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+            "--marketing-screen", "materials", "--marketing-locale", "en-US"
+        ]
+        app.launch()
+
+        let price = app.staticTexts["Q235B regional spot"]
+        for _ in 0..<4 where !price.isHittable { app.swipeUp() }
+        XCTAssertTrue(price.waitForExistence(timeout: 5))
+        price.swipeLeft()
+        app.buttons["Delete"].tap()
+        XCTAssertTrue(app.staticTexts["Delete this item?"].waitForExistence(timeout: 3))
+        app.buttons["Cancel"].tap()
+        XCTAssertTrue(price.exists)
+    }
+
+    func testDataStoreFailureShowsRecoveryInsteadOfCrashing() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+            "--simulate-data-store-failure"
+        ]
+        app.launch()
+
+        XCTAssertTrue(app.staticTexts["SteelFlow Data Is Unavailable"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Try Again"].exists)
+    }
+
+    func testProjectItemDeletionRequiresExplicitConfirmation() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+            "--marketing-screen", "project", "--marketing-locale", "en-US"
+        ]
+        app.launch()
+
+        XCTAssertTrue(app.navigationBars["Harbor Canopy"].waitForExistence(timeout: 8))
+        let item = app.staticTexts["Base plate 200 × 12"]
+        XCTAssertTrue(item.waitForExistence(timeout: 5))
+        item.swipeLeft()
+        app.buttons["Delete"].tap()
+        XCTAssertTrue(app.staticTexts["Delete this item?"].waitForExistence(timeout: 3))
+        app.buttons["Cancel"].tap()
+        XCTAssertTrue(item.exists)
     }
 
     func testCaptureEnglishMarketingScreens() throws {

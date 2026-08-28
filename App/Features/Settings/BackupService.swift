@@ -148,13 +148,20 @@ enum BackupService {
 
     static func importCopy(data: Data, into context: ModelContext) throws -> (projects: Int, materials: Int) {
         let envelope = try decodeAndValidate(data)
-        let existingMaterialIDs = Set(((try? context.fetch(FetchDescriptor<MaterialEntity>())) ?? []).map(\.id))
+        var reservedMaterialIDs = Set(try context.fetch(FetchDescriptor<MaterialEntity>()).map(\.id))
         var materialIDMap: [String: String] = [:]
+        var importedMaterials: [MaterialEntity] = []
+        var importedProjects: [ProjectEntity] = []
+        var importedPrices: [PriceBookEntryEntity] = []
+
         for material in envelope.payload.materials {
-            let id = existingMaterialIDs.contains(material.id) ? UUID().uuidString : material.id
+            guard material.densityKgPerM3.finitePositive, material.densityKgPerM3 < 100_000 else { throw BackupError.corrupt }
+            let id = reservedMaterialIDs.contains(material.id) ? UUID().uuidString : material.id
+            reservedMaterialIDs.insert(id)
             materialIDMap[material.id] = id
-            context.insert(MaterialEntity(id: id, name: material.name, densityKgPerM3: material.densityKgPerM3, note: material.note))
+            importedMaterials.append(MaterialEntity(id: id, name: material.name, densityKgPerM3: material.densityKgPerM3, note: material.note))
         }
+
         for source in envelope.payload.projects {
             guard let currencyCode = CurrencyRules.normalizedCode(source.currencyCode) else { throw BackupError.corrupt }
             let project = ProjectEntity(
@@ -204,12 +211,13 @@ enum BackupService {
                     sortIndex: sourceItem.sortIndex
                 ))
             }
-            context.insert(project)
+            importedProjects.append(project)
         }
+
         for source in envelope.payload.priceBook ?? [] {
             guard let currency = CurrencyRules.normalizedCode(source.currencyCode),
-                  let price = PricingInputValidator.nonnegative(source.unitPriceText, locale: Locale(identifier: "en_US_POSIX")) else { continue }
-            context.insert(PriceBookEntryEntity(
+                  let price = PricingInputValidator.nonnegative(source.unitPriceText, locale: Locale(identifier: "en_US_POSIX")) else { throw BackupError.corrupt }
+            importedPrices.append(PriceBookEntryEntity(
                 name: source.name,
                 materialID: materialIDMap[source.materialID] ?? source.materialID,
                 materialName: source.materialName,
@@ -224,21 +232,36 @@ enum BackupService {
                 note: source.note
             ))
         }
-        if let source = envelope.payload.company {
-            let existing = (try? context.fetch(FetchDescriptor<CompanyProfileEntity>()))?.first
-            let isEmpty = existing.map { $0.companyName.isEmpty && $0.contactName.isEmpty && $0.email.isEmpty && $0.phone.isEmpty && $0.address.isEmpty } ?? true
-            if isEmpty {
-                let company = existing ?? CompanyProfileEntity()
-                company.companyName = source.companyName
-                company.contactName = source.contactName
-                company.email = source.email
-                company.phone = source.phone
-                company.address = source.address
-                company.updatedAt = .now
-                if existing == nil { context.insert(company) }
+
+        let existingCompany = try context.fetch(FetchDescriptor<CompanyProfileEntity>()).first
+        let shouldImportCompany = existingCompany.map {
+            $0.companyName.isEmpty && $0.contactName.isEmpty && $0.email.isEmpty && $0.phone.isEmpty && $0.address.isEmpty
+        } ?? true
+
+        do {
+            importedMaterials.forEach(context.insert)
+            importedProjects.forEach(context.insert)
+            importedPrices.forEach(context.insert)
+
+            if let source = envelope.payload.company {
+                if shouldImportCompany {
+                    let company = existingCompany ?? CompanyProfileEntity()
+                    company.companyName = source.companyName
+                    company.contactName = source.contactName
+                    company.email = source.email
+                    company.phone = source.phone
+                    company.address = source.address
+                    company.updatedAt = .now
+                    if existingCompany == nil { context.insert(company) }
+                }
             }
+
+            try context.save()
+        } catch {
+            context.rollback()
+            throw error
         }
-        try context.save()
+
         return (envelope.payload.projects.count, envelope.payload.materials.count)
     }
 

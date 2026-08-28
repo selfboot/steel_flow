@@ -3,9 +3,9 @@ import SwiftData
 
 @MainActor
 enum SeedData {
-    static func ensure(in context: ModelContext) {
+    static func ensure(in context: ModelContext) throws {
         let descriptor = FetchDescriptor<MaterialEntity>()
-        let existing = (try? context.fetch(descriptor)) ?? []
+        let existing = try context.fetch(descriptor)
         let ids = Set(existing.map(\.id))
         for preset in MaterialCatalog.presets where !ids.contains(preset.id) {
             context.insert(MaterialEntity(
@@ -18,12 +18,12 @@ enum SeedData {
             ))
         }
 
-        if ((try? context.fetch(FetchDescriptor<CompanyProfileEntity>())) ?? []).isEmpty {
+        if try context.fetch(FetchDescriptor<CompanyProfileEntity>()).isEmpty {
             context.insert(CompanyProfileEntity())
         }
-        if ((try? context.fetch(FetchDescriptor<AppPreferenceEntity>())) ?? []).isEmpty {
+        if try context.fetch(FetchDescriptor<AppPreferenceEntity>()).isEmpty {
             context.insert(AppPreferenceEntity())
         }
-        try? context.save()
+        try context.save()
     }
 }

@@ -10,9 +10,9 @@
     "copyright": "© 2026 SteelFlow",
     "privacy": {
       "dataCollection": "Data Not Collected",
-      "privacyPolicyUrl": "REPLACE_BEFORE_SUBMISSION",
-      "supportUrl": "REPLACE_BEFORE_SUBMISSION",
-      "marketingUrl": "REPLACE_BEFORE_SUBMISSION"
+      "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy",
+      "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
+      "marketingUrl": "https://docs.puzzles-game.com/en/steelflow"
     }
   },
   "localizations": {
