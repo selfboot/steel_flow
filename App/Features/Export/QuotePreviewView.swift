@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import PDFKit
 
 struct QuotePreviewView: View {
     @Environment(\.dismiss) private var dismiss
@@ -13,6 +14,7 @@ struct QuotePreviewView: View {
     @State private var purchaseManager = PurchaseManager.shared
 
     private var summary: ProjectSummary { ProjectCalculator.summarize(project) }
+    private var quoteLocale: Locale { Locale(identifier: project.quoteLanguage) }
 
     var body: some View {
         NavigationStack {
@@ -21,34 +23,50 @@ struct QuotePreviewView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
                             VStack(alignment: .leading) {
-                                Text(companies.first.flatMap { $0.companyName.isEmpty ? nil : $0.companyName } ?? "SteelFlow").font(.headline)
+                                Text(purchaseManager.isPro ? (companies.first.flatMap { $0.companyName.isEmpty ? nil : $0.companyName } ?? "SteelFlow") : "SteelFlow").font(.headline)
                                 Text(project.projectNumber).font(.caption.monospaced()).foregroundStyle(.secondary)
                             }
                             Spacer()
-                            Text("quote.title").font(.title2.bold()).foregroundStyle(SteelFlowTheme.steelBlue)
+                            Text(AppLocalization.text("quote.title", locale: quoteLocale)).font(.title2.bold()).foregroundStyle(SteelFlowTheme.steelBlue)
                         }
                         Divider()
-                        LabeledContent("project.customer", value: project.customerName.isEmpty ? "—" : project.customerName)
-                        LabeledContent("project.quote_language", value: project.quoteLanguage == "zh-Hans" ? String(localized: "language.chinese") : String(localized: "language.english"))
-                        LabeledContent("settings.paper", value: project.paperSize == .a4 ? "A4" : "US Letter")
-                    }
-                }
-                Section("project.items") {
-                    ForEach(summary.lines) { line in
-                        QuoteLineRow(
-                            title: line.item.descriptionText.isEmpty ? String(localized: line.item.profile.localizationKey) : line.item.descriptionText,
-                            subtitle: "\(MaterialCatalog.localizedName(materialID: line.item.materialID, fallback: line.item.materialName, locale: locale)) · × \(line.item.quantity)",
-                            mass: "\(AppFormatters.number(line.result.totalMassKg, maximumFractionDigits: 2, locale: locale)) kg",
-                            amount: AppFormatters.decimal(line.materialSubtotal, currencyCode: project.currencyCode, locale: locale)
+                        metadataRow(
+                            label: AppLocalization.text("project.customer", locale: quoteLocale),
+                            value: project.customerName.isEmpty ? "—" : project.customerName
+                        )
+                        metadataRow(
+                            label: AppLocalization.text("project.quote_language", locale: locale),
+                            value: AppLocalization.text(project.quoteLanguage == "zh-Hans" ? "language.chinese" : "language.english", locale: locale)
+                        )
+                        metadataRow(
+                            label: AppLocalization.text("settings.paper", locale: locale),
+                            value: AppLocalization.text(project.paperSize == .a4 ? "paper.a4" : "paper.letter", locale: locale)
                         )
                     }
                 }
-                Section("project.summary") {
-                    LabeledContent("project.material_subtotal", value: money(summary.pricing.materialSubtotal))
-                    LabeledContent("project.fees", value: money(summary.pricing.fees))
-                    LabeledContent(project.profitMode == .markup ? "project.markup" : "project.margin", value: money(summary.pricing.profit))
-                    LabeledContent("project.tax", value: money(summary.pricing.tax))
-                    LabeledContent("project.total", value: money(summary.pricing.total)).font(.headline)
+                Section(AppLocalization.text("project.items", locale: quoteLocale)) {
+                    ForEach(summary.lines) { line in
+                        QuoteLineRow(
+                            title: line.item.descriptionText.isEmpty ? AppLocalization.text("profile.\(line.item.profile.rawValue)", locale: quoteLocale) : line.item.descriptionText,
+                            subtitle: "\(MaterialCatalog.localizedName(materialID: line.item.materialID, fallback: line.item.materialName, locale: quoteLocale)) · × \(line.item.quantity)",
+                            mass: "\(AppFormatters.number(line.result.totalMassKg, maximumFractionDigits: 2, locale: quoteLocale)) kg",
+                            amount: AppFormatters.decimal(line.customerQuoteAmount, currencyCode: project.currencyCode, locale: quoteLocale)
+                        )
+                    }
+                }
+                Section(AppLocalization.text("project.summary", locale: quoteLocale)) {
+                    quoteTotalRow("quote.subtotal", value: summary.pricing.preTax)
+                    quoteTotalRow("project.tax", value: summary.pricing.tax)
+                    quoteTotalRow("project.total", value: summary.pricing.total).font(.headline)
+                }
+                if let pdfURL {
+                    Section("quote.document") {
+                        NavigationLink {
+                            GeneratedPDFPreview(url: pdfURL)
+                        } label: {
+                            Label("quote.open_pdf_preview", systemImage: "doc.text.image")
+                        }
+                    }
                 }
                 Section("quote.export") {
                     if let pdfURL {
@@ -75,16 +93,65 @@ struct QuotePreviewView: View {
         }
     }
 
-    private func money(_ value: Decimal) -> String { AppFormatters.decimal(value, currencyCode: project.currencyCode, locale: locale) }
+    private func quoteTotalRow(_ key: String, value: Decimal) -> some View {
+        LabeledContent {
+            Text(AppFormatters.decimal(value, currencyCode: project.currencyCode, locale: quoteLocale))
+        } label: {
+            Text(AppLocalization.text(key, locale: quoteLocale))
+        }
+    }
+
+    private func metadataRow(label: String, value: String) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            Text(label)
+            Spacer(minLength: 8)
+            Text(value)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.trailing)
+                .lineLimit(2)
+                .minimumScaleFactor(0.8)
+        }
+    }
+
     private func prepareExports() {
         do {
             let generatedAt = Date.now
-            let snapshot = try QuoteExportService.snapshotData(for: project, generatedAt: generatedAt)
-            pdfURL = try QuoteExportService.pdfURL(for: project, company: companies.first, generatedAt: generatedAt)
-            csvURL = try QuoteExportService.csvURL(for: project, generatedAt: generatedAt)
+            let company = purchaseManager.isPro ? companies.first : nil
+            let includeBranding = !purchaseManager.isPro
+            let snapshot = try QuoteExportService.snapshotData(for: project, company: company, generatedAt: generatedAt, includeBranding: includeBranding)
+            pdfURL = try QuoteExportService.pdfURL(for: project, company: company, generatedAt: generatedAt, includeBranding: includeBranding)
+            csvURL = purchaseManager.isPro ? try QuoteExportService.csvURL(for: project, generatedAt: generatedAt) : nil
             modelContext.insert(QuoteSnapshotEntity(projectID: project.id, payload: snapshot))
             try modelContext.save()
         } catch { exportError = error.localizedDescription }
+    }
+}
+
+private struct GeneratedPDFPreview: View {
+    let url: URL
+
+    var body: some View {
+        PDFKitView(url: url)
+            .background(Color(uiColor: .secondarySystemBackground))
+            .navigationTitle("quote.document")
+            .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private struct PDFKitView: UIViewRepresentable {
+    let url: URL
+
+    func makeUIView(context: Context) -> PDFView {
+        let view = PDFView()
+        view.autoScales = true
+        view.displayMode = .singlePageContinuous
+        view.displayDirection = .vertical
+        view.document = PDFDocument(url: url)
+        return view
+    }
+
+    func updateUIView(_ view: PDFView, context: Context) {
+        if view.document?.documentURL != url { view.document = PDFDocument(url: url) }
     }
 }
 
@@ -94,15 +161,16 @@ private struct QuoteLineRow: View {
     let mass: String
     let amount: String
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     var body: some View {
-        if dynamicTypeSize.isAccessibilitySize {
+        if dynamicTypeSize.isAccessibilitySize || horizontalSizeClass == .compact {
             VStack(alignment: .leading, spacing: 6) {
                 description
                 HStack {
-                    Text(mass).font(.caption.monospacedDigit())
+                    Text(mass).font(.caption.monospacedDigit()).fixedSize(horizontal: true, vertical: false)
                     Spacer()
-                    Text(amount).font(.subheadline.monospacedDigit())
+                    Text(amount).font(.subheadline.monospacedDigit()).fixedSize(horizontal: true, vertical: false)
                 }
             }
         } else {

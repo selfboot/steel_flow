@@ -95,12 +95,13 @@ enum CurrencyMigration {
     static func apply(to project: ProjectEntity, newCurrency: String, mode: CurrencyChangeMode, rate: Decimal? = nil) -> Bool {
         guard let normalized = CurrencyRules.normalizedCode(newCurrency), normalized != project.currencyCode else { return false }
         if mode == .convert, rate.map({ $0 > 0 }) != true { return false }
+        if mode == .convert, project.items.contains(where: { !$0.isPricingValid }) { return false }
         let oldCurrency = project.currencyCode
         for item in project.items {
             switch mode {
             case .keepAmounts:
                 item.priceSource = .manual
-                item.priceSourceName = "\(oldCurrency)→\(normalized), no conversion"
+                item.priceSourceName = "\(oldCurrency) → \(normalized)"
                 item.priceEffectiveAt = .now
             case .clearAmounts:
                 item.unitPriceText = "0"

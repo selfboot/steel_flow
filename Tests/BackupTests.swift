@@ -35,15 +35,32 @@ final class BackupTests: XCTestCase {
         let price = PriceBookEntryEntity(name: "Supplier quote", materialID: material.id, materialName: material.name, materialGrade: "Q355B", supplier: "Acme", region: "Shanghai", currencyCode: "CNY", priceBasis: .perKilogram, unitPrice: 4.25, includesTax: true)
         source.insert(material); source.insert(project); source.insert(price); try source.save()
 
-        let document = try BackupService.makeDocument(projects: [project], materials: [material], company: nil, priceBook: [price])
+        let customer = CustomerEntity(name: "Acme", email: "quotes@example.com")
+        let snapshot = QuoteSnapshotEntity(projectID: project.id, createdAt: Date(timeIntervalSince1970: 1_700_000_000), engineVersion: 1, payload: Data("snapshot".utf8))
+        let preferences = PreferencesBackup(languageCode: "zh-Hans", unitSystemRaw: "metric", currencyCode: "CNY", paperSizeRaw: "a4")
+        let document = try BackupService.makeDocument(
+            projects: [project],
+            materials: [material],
+            company: nil,
+            priceBook: [price],
+            customers: [customer],
+            quoteSnapshots: [snapshot],
+            preferences: preferences
+        )
         let preview = try BackupService.preview(data: document.data)
         XCTAssertEqual(preview.projects, 1)
         XCTAssertEqual(preview.materials, 1)
+        XCTAssertEqual(preview.customers, 1)
+        XCTAssertEqual(preview.quoteSnapshots, 1)
+        XCTAssertTrue(preview.hasPreferences)
 
         let destinationContainer = try container()
         let imported = try BackupService.importCopy(data: document.data, into: destinationContainer.mainContext)
         XCTAssertEqual(imported.projects, 1)
         XCTAssertEqual(imported.materials, 1)
+        XCTAssertEqual(imported.customers, 1)
+        XCTAssertEqual(imported.quoteSnapshots, 1)
+        XCTAssertEqual(imported.preferences, preferences)
         let projects = try destinationContainer.mainContext.fetch(FetchDescriptor<ProjectEntity>())
         XCTAssertEqual(projects.count, 1)
         XCTAssertEqual(projects.first?.items.count, 1)
@@ -53,9 +70,13 @@ final class BackupTests: XCTestCase {
         XCTAssertEqual(prices.count, 1)
         XCTAssertEqual(prices.first?.supplier, "Acme")
         XCTAssertEqual(prices.first?.unitPrice, Decimal(string: "4.25"))
+        XCTAssertEqual(try destinationContainer.mainContext.fetch(FetchDescriptor<CustomerEntity>()).first?.name, "Acme")
+        let snapshots = try destinationContainer.mainContext.fetch(FetchDescriptor<QuoteSnapshotEntity>())
+        XCTAssertEqual(snapshots.first?.projectID, projects.first?.id)
+        XCTAssertEqual(snapshots.first?.payload, Data("snapshot".utf8))
     }
 
-    func testNewBackupsUseStableSchemaVersionTwoAndStillReadLegacyVersionOneGeometry() throws {
+    func testNewBackupsUseCompleteSchemaVersionThreeAndStillReadLegacyVersionOneGeometry() throws {
         let project = ProjectEntity(name: "Schema")
         project.items.append(CalculationItemEntity(
             profile: .plate,
@@ -74,10 +95,10 @@ final class BackupTests: XCTestCase {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let envelope = try decoder.decode(BackupEnvelope.self, from: document.data)
-        XCTAssertEqual(envelope.schemaVersion, 2)
+        XCTAssertEqual(envelope.schemaVersion, 3)
 
         var versionOneText = String(decoding: document.data, as: UTF8.self)
-            .replacingOccurrences(of: "\"schemaVersion\":2", with: "\"schemaVersion\":1")
+            .replacingOccurrences(of: "\"schemaVersion\":3", with: "\"schemaVersion\":1")
             .replacingOccurrences(
                 of: "\"values\":{\"thickness\":10,\"width\":100}",
                 with: "\"values\":[\"width\",100,\"thickness\",10]"
@@ -104,6 +125,15 @@ final class BackupTests: XCTestCase {
         text = text.replacingOccurrences(of: "Source", with: "Changed")
         XCTAssertThrowsError(try BackupService.preview(data: Data(text.utf8))) {
             XCTAssertEqual($0 as? BackupError, .checksumMismatch)
+        }
+    }
+
+    func testBackupRejectsEmptyAndOversizedDocumentsBeforeDecoding() {
+        XCTAssertThrowsError(try BackupService.preview(data: Data())) {
+            XCTAssertEqual($0 as? BackupError, .corrupt)
+        }
+        XCTAssertThrowsError(try BackupService.preview(data: Data(repeating: 0, count: 20_000_001))) {
+            XCTAssertEqual($0 as? BackupError, .corrupt)
         }
     }
 

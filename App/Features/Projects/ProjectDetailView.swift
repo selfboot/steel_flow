@@ -10,6 +10,8 @@ struct ProjectDetailView: View {
     @State private var showBulkPricing = false
     @State private var pendingDeleteItems: [CalculationItemEntity] = []
     @State private var showDeleteConfirmation = false
+    @State private var showProLimit = false
+    @State private var purchaseManager = PurchaseManager.shared
 
     private var sortedItems: [CalculationItemEntity] { project.items.sorted { $0.sortIndex < $1.sortIndex } }
     private var summary: ProjectSummary { ProjectCalculator.summarize(project) }
@@ -40,16 +42,15 @@ struct ProjectDetailView: View {
             }
 
             Section("project.summary") {
-                LabeledContent("calculator.result.total_mass", value: "\(AppFormatters.number(summary.netMassKg, maximumFractionDigits: 2, locale: locale)) kg")
-                LabeledContent("calculator.result.with_waste", value: "\(AppFormatters.number(summary.adjustedMassKg, maximumFractionDigits: 2, locale: locale)) kg")
-                LabeledContent("project.material_subtotal", value: money(summary.pricing.materialSubtotal))
-                LabeledContent("project.fees", value: money(summary.pricing.fees))
-                LabeledContent(project.profitMode == .markup ? "project.markup" : "project.margin", value: money(summary.pricing.profit))
-                LabeledContent("project.tax", value: money(summary.pricing.tax))
-                LabeledContent("project.total", value: money(summary.pricing.total))
-                    .font(.headline).foregroundStyle(SteelFlowTheme.steelBlue)
+                ProjectSummaryRow("calculator.result.total_mass", value: "\(AppFormatters.number(summary.netMassKg, maximumFractionDigits: 2, locale: locale)) kg")
+                ProjectSummaryRow("calculator.result.with_waste", value: "\(AppFormatters.number(summary.adjustedMassKg, maximumFractionDigits: 2, locale: locale)) kg")
+                ProjectSummaryRow("project.material_subtotal", value: money(summary.pricing.materialSubtotal))
+                ProjectSummaryRow("project.fees", value: money(summary.pricing.fees))
+                ProjectSummaryRow(project.profitMode == .markup ? "project.markup" : "project.margin", value: money(summary.pricing.profit))
+                ProjectSummaryRow("project.tax", value: money(summary.pricing.tax))
+                ProjectSummaryRow("project.total", value: money(summary.pricing.total), emphasized: true)
                 if summary.invalidItemCount > 0 {
-                    Label(String.localizedStringWithFormat(String(localized: "project.invalid_items"), summary.invalidItemCount), systemImage: "exclamationmark.triangle")
+                    Label(AppLocalization.count("project.invalid_items", value: summary.invalidItemCount, locale: locale), systemImage: "exclamationmark.triangle")
                         .foregroundStyle(.orange)
                 }
                 if !summary.isPricingPolicyValid {
@@ -57,7 +58,7 @@ struct ProjectDetailView: View {
                 }
                 let zeroPriceCount = project.items.filter { $0.isPricingValid && $0.unitPrice == 0 }.count
                 if zeroPriceCount > 0 {
-                    Label(String.localizedStringWithFormat(String(localized: "project.zero_price_items"), zeroPriceCount), systemImage: "exclamationmark.circle").foregroundStyle(.orange)
+                    Label(AppLocalization.count("project.zero_price_items", value: zeroPriceCount, locale: locale), systemImage: "exclamationmark.circle").foregroundStyle(.orange)
                 }
             }
 
@@ -74,7 +75,9 @@ struct ProjectDetailView: View {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
                     Button("common.edit") { showEdit = true }
-                    Button("project.bulk_pricing") { showBulkPricing = true }
+                    Button("project.bulk_pricing") {
+                        if purchaseManager.isPro { showBulkPricing = true } else { showProLimit = true }
+                    }
                 } label: { Image(systemName: "ellipsis.circle") }
             }
         }
@@ -86,6 +89,11 @@ struct ProjectDetailView: View {
             Button("common.cancel", role: .cancel) { pendingDeleteItems = [] }
         } message: {
             Text("delete.confirm.message")
+        }
+        .alert("purchase.limit.title", isPresented: $showProLimit) {
+            Button("common.ok", role: .cancel) {}
+        } message: {
+            Text("purchase.limit.bulk_pricing")
         }
     }
 
@@ -112,6 +120,38 @@ struct ProjectDetailView: View {
     }
 }
 
+private struct ProjectSummaryRow: View {
+    let title: LocalizedStringResource
+    let value: String
+    let emphasized: Bool
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    init(_ title: LocalizedStringResource, value: String, emphasized: Bool = false) {
+        self.title = title
+        self.value = value
+        self.emphasized = emphasized
+    }
+
+    var body: some View {
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                    Text(value).frame(maxWidth: .infinity, alignment: .trailing)
+                }
+            } else {
+                HStack(alignment: .firstTextBaseline, spacing: 12) {
+                    Text(title).lineLimit(2)
+                    Spacer(minLength: 8)
+                    Text(value).fixedSize(horizontal: true, vertical: false)
+                }
+            }
+        }
+        .font(emphasized ? .headline : .body)
+        .foregroundStyle(emphasized ? SteelFlowTheme.steelBlue : .primary)
+    }
+}
+
 private struct ProjectItemRow: View {
     let item: CalculationItemEntity
     let currencyCode: String
@@ -121,10 +161,13 @@ private struct ProjectItemRow: View {
         HStack(spacing: 12) {
             Image(systemName: item.profile.symbol).foregroundStyle(SteelFlowTheme.steelBlue).frame(width: 30)
             VStack(alignment: .leading, spacing: 3) {
-                Text(item.descriptionText.isEmpty ? String(localized: item.profile.localizationKey) : item.descriptionText).font(.subheadline.weight(.semibold))
-                Text("\(MaterialCatalog.localizedName(materialID: item.materialID, fallback: item.materialName, locale: locale)) · \(AppFormatters.number(item.lengthValue)) \(item.lengthUnit.rawValue) × \(item.quantity)")
+                Text(item.descriptionText.isEmpty ? AppLocalization.text("profile.\(item.profile.rawValue)", locale: locale) : item.descriptionText)
+                    .font(.subheadline.weight(.semibold))
+                    .lineLimit(2)
+                Text("\(MaterialCatalog.localizedName(materialID: item.materialID, fallback: item.materialName, locale: locale)) · \(AppFormatters.number(item.lengthValue, locale: locale)) \(item.lengthUnit.rawValue) × \(item.quantity)")
                     .font(.caption).foregroundStyle(.secondary).lineLimit(1)
             }
+            .layoutPriority(1)
             Spacer()
             if item.isPricingValid, let result = try? item.calculation() {
                 let subtotal = PricingCalculator.lineSubtotal(unitPrice: item.unitPrice, basis: item.priceBasis, result: result, lengthMeters: item.lengthUnit.toMeters(item.lengthValue), quantity: item.quantity, currencyCode: currencyCode)
@@ -132,6 +175,7 @@ private struct ProjectItemRow: View {
                     Text("\(AppFormatters.number(result.totalMassKg, maximumFractionDigits: 2, locale: locale)) kg").font(.caption.monospacedDigit())
                     Text(AppFormatters.decimal(subtotal, currencyCode: currencyCode, locale: locale)).font(.caption2).foregroundStyle(.secondary)
                 }
+                .fixedSize(horizontal: true, vertical: false)
             } else {
                 Image(systemName: "exclamationmark.triangle").foregroundStyle(.orange)
             }
@@ -180,41 +224,119 @@ private struct ProjectCalculatorEditorHost: View {
 }
 
 private struct ProjectItemDetailView: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
-    @Bindable var item: CalculationItemEntity
+    let item: CalculationItemEntity
     let currencyCode: String
     @Environment(\.locale) private var locale
+    @Query(sort: \MaterialEntity.createdAt) private var materials: [MaterialEntity]
     @Query(sort: \PriceBookEntryEntity.effectiveAt, order: .reverse) private var priceBook: [PriceBookEntryEntity]
     @State private var selectedPriceEntryID: UUID?
+    @State private var dimensionTexts: [DimensionField: String] = [:]
+    @State private var geometryUnit = LengthUnit.millimeter
+    @State private var areaUnit = AreaUnit.squareMillimeter
+    @State private var selectedMaterialID = ""
+    @State private var densityText = ""
+    @State private var lengthText = ""
+    @State private var lengthUnit = LengthUnit.meter
+    @State private var quantity = 1
+    @State private var wasteText = ""
+    @State private var priceBasis = PriceBasis.perKilogram
+    @State private var unitPriceText = ""
+    @State private var processingFeeText = ""
+    @State private var otherFeeText = ""
+    @State private var priceSource = PriceSource.manual
+    @State private var priceSourceName = ""
+    @State private var priceRegion = ""
+    @State private var materialGrade = ""
+    @State private var priceIncludesTax = false
+    @State private var priceEffectiveAt = Date.now
+    @State private var descriptionText = ""
+    @State private var internalNote = ""
 
     private var availablePriceEntries: [PriceBookEntryEntity] {
-        priceBook.filter { $0.currencyCode == currencyCode && ($0.materialID.isEmpty || $0.materialID == item.materialID) }
+        priceBook.filter { $0.currencyCode == currencyCode && ($0.materialID.isEmpty || $0.materialID == selectedMaterialID) }
     }
-    private var isPricingDraftValid: Bool {
-        PricingInputValidator.nonnegative(item.unitPriceText, locale: locale) != nil &&
-        PricingInputValidator.nonnegative(item.processingFeeText, locale: locale) != nil &&
-        PricingInputValidator.nonnegative(item.otherFeeText, locale: locale) != nil
+    private var parsedDensity: Double? { DecimalParser.double(densityText, locale: locale) }
+    private var parsedLength: Double? { DecimalParser.double(lengthText, locale: locale) }
+    private var parsedWaste: Double? { DecimalParser.double(wasteText, locale: locale) }
+    private var parsedUnitPrice: Decimal? { PricingInputValidator.nonnegative(unitPriceText, locale: locale) }
+    private var parsedProcessingFee: Decimal? { PricingInputValidator.nonnegative(processingFeeText, locale: locale) }
+    private var parsedOtherFee: Decimal? { PricingInputValidator.nonnegative(otherFeeText, locale: locale) }
+    private var parsedGeometry: GeometryInput? {
+        var values: [DimensionField: Double] = [:]
+        for field in item.profile.dimensionFields {
+            guard let text = dimensionTexts[field], let value = DecimalParser.double(text, locale: locale) else { return nil }
+            values[field] = value
+        }
+        return GeometryInput(values: values, lengthUnit: geometryUnit, areaUnit: areaUnit)
     }
+    private var calculation: Result<CalculationResult, CalculationError>? {
+        guard let geometry = parsedGeometry, let density = parsedDensity, let length = parsedLength, let waste = parsedWaste else { return nil }
+        do {
+            return .success(try CalculationEngine.calculate(.init(
+                profile: item.profile,
+                geometry: geometry,
+                lengthValue: length,
+                lengthUnit: lengthUnit,
+                quantity: quantity,
+                densityKgPerM3: density,
+                wastePercent: waste
+            )))
+        } catch let error as CalculationError {
+            return .failure(error)
+        } catch {
+            return .failure(.nonFiniteResult)
+        }
+    }
+    private var result: CalculationResult? {
+        guard case .success(let result) = calculation else { return nil }
+        return result
+    }
+    private var isPricingDraftValid: Bool { parsedUnitPrice != nil && parsedProcessingFee != nil && parsedOtherFee != nil }
+    private var canSave: Bool { result != nil && isPricingDraftValid }
 
     var body: some View {
         List {
             Section("calculator.section.geometry") {
-                ForEach(item.geometry.values.keys.sorted(by: { $0.rawValue < $1.rawValue }), id: \.self) { key in
-                    LabeledContent {
-                        Text("\(AppFormatters.number(item.geometry.values[key] ?? 0)) \(key == .customArea ? item.geometry.areaUnit.rawValue : item.geometry.lengthUnit.rawValue)")
-                    } label: {
-                        Text(key.localizationKey)
+                ForEach(item.profile.dimensionFields) { field in
+                    AdaptiveFormRow(field.localizationKey) {
+                        TextField("0", text: dimensionBinding(field))
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                        Text(field == .customArea ? areaUnit.rawValue : geometryUnit.rawValue)
+                            .foregroundStyle(.secondary)
+                            .fixedSize()
                     }
                 }
-                LabeledContent("calculator.length", value: "\(AppFormatters.number(item.lengthValue)) \(item.lengthUnit.rawValue)")
-                LabeledContent("calculator.quantity", value: "\(item.quantity)")
+                if item.profile == .customArea {
+                    Picker("calculator.area_unit", selection: areaUnitBinding) {
+                        ForEach(AreaUnit.allCases) { Text($0.rawValue).tag($0) }
+                    }
+                } else {
+                    Picker("calculator.dimension_unit", selection: geometryUnitBinding) {
+                        ForEach([LengthUnit.millimeter, .centimeter, .inch]) { Text($0.rawValue).tag($0) }
+                    }
+                }
             }
             Section("calculator.section.material") {
-                LabeledContent("calculator.material", value: MaterialCatalog.localizedName(materialID: item.materialID, fallback: item.materialName, locale: locale))
+                Picker("calculator.material", selection: $selectedMaterialID) {
+                    if !materials.contains(where: { $0.id == item.materialID }) {
+                        Text(MaterialCatalog.localizedName(materialID: item.materialID, fallback: item.materialName, locale: locale)).tag(item.materialID)
+                    }
+                    ForEach(materials) { material in
+                        Text(MaterialCatalog.localizedName(materialID: material.id, fallback: material.name, locale: locale)).tag(material.id)
+                    }
+                }
+                .onChange(of: selectedMaterialID) { oldID, id in
+                    guard !oldID.isEmpty else { return }
+                    guard let material = materials.first(where: { $0.id == id }) else { return }
+                    densityText = AppFormatters.number(material.densityKgPerM3, maximumFractionDigits: 3, locale: locale)
+                }
                 HStack {
                     Text("calculator.density")
                     Spacer()
-                    TextField("7850", value: $item.densityKgPerM3, format: .number).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                    TextField("7850", text: $densityText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
                     Text("kg/m³").foregroundStyle(.secondary)
                 }
             }
@@ -222,55 +344,55 @@ private struct ProjectItemDetailView: View {
                 HStack {
                     Text("calculator.length")
                     Spacer()
-                    TextField("0", value: $item.lengthValue, format: .number).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                    Picker("calculator.length_unit", selection: itemLengthUnitBinding) {
-                        ForEach(LengthUnit.allCases) { Text($0.rawValue).tag($0.rawValue) }
+                    TextField("0", text: $lengthText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                    Picker("calculator.length_unit", selection: lengthUnitBinding) {
+                        ForEach(LengthUnit.allCases) { Text($0.rawValue).tag($0) }
                     }.labelsHidden().frame(width: 78)
                 }
-                Stepper(value: $item.quantity, in: 1...1_000_000) { LabeledContent("calculator.quantity", value: "\(item.quantity)") }
-                HStack { Text("calculator.waste"); Spacer(); TextField("0", value: $item.wastePercent, format: .number).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text("%") }
+                Stepper(value: $quantity, in: 1...1_000_000) { LabeledContent("calculator.quantity", value: "\(quantity)") }
+                HStack { Text("calculator.waste"); Spacer(); TextField("0", text: $wasteText).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text("%") }
                 Text("calculator.waste_pricing_help").font(.caption).foregroundStyle(.secondary)
-                Picker("calculator.price_basis", selection: $item.priceBasisRaw) {
-                    ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0.rawValue) }
+                Picker("calculator.price_basis", selection: $priceBasis) {
+                    ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0) }
                 }
-                HStack { Text("calculator.unit_price"); Spacer(); TextField("0", text: $item.unitPriceText).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text(currencyCode).foregroundStyle(.secondary) }
-                HStack { Text("calculator.line_processing_fee"); Spacer(); TextField("0", text: $item.processingFeeText).keyboardType(.decimalPad).multilineTextAlignment(.trailing) }
-                HStack { Text("calculator.line_other_fee"); Spacer(); TextField("0", text: $item.otherFeeText).keyboardType(.decimalPad).multilineTextAlignment(.trailing) }
-                Picker("calculator.price_source", selection: $item.priceSourceRaw) {
-                    ForEach(PriceSource.allCases) { Text($0.localizationKey).tag($0.rawValue) }
+                HStack { Text("calculator.unit_price"); Spacer(); TextField("0", text: $unitPriceText).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text(currencyCode).foregroundStyle(.secondary) }
+                HStack { Text("calculator.line_processing_fee"); Spacer(); TextField("0", text: $processingFeeText).keyboardType(.decimalPad).multilineTextAlignment(.trailing) }
+                HStack { Text("calculator.line_other_fee"); Spacer(); TextField("0", text: $otherFeeText).keyboardType(.decimalPad).multilineTextAlignment(.trailing) }
+                Picker("calculator.price_source", selection: $priceSource) {
+                    ForEach(PriceSource.allCases) { Text($0.localizationKey).tag($0) }
                 }
-                if item.priceSource == .history {
+                if priceSource == .history {
                     Picker("calculator.price_history", selection: $selectedPriceEntryID) {
                         Text("calculator.price_history.choose").tag(Optional<UUID>.none)
                         ForEach(availablePriceEntries) { entry in Text(entry.name).tag(Optional(entry.id)) }
                     }
                     .onChange(of: selectedPriceEntryID) { _, id in
                         guard let id, let entry = priceBook.first(where: { $0.id == id }) else { return }
-                        item.unitPriceText = entry.unitPrice.description
-                        item.priceBasisRaw = entry.priceBasis.rawValue
-                        item.priceSourceName = entry.supplier.isEmpty ? entry.name : entry.supplier
-                        item.priceRegion = entry.region
-                        item.materialGrade = entry.materialGrade
-                        item.priceIncludesTax = entry.includesTax
-                        item.priceEffectiveAt = entry.effectiveAt
+                        unitPriceText = entry.unitPrice.description
+                        priceBasis = entry.priceBasis
+                        priceSourceName = entry.supplier.isEmpty ? entry.name : entry.supplier
+                        priceRegion = entry.region
+                        materialGrade = entry.materialGrade
+                        priceIncludesTax = entry.includesTax
+                        priceEffectiveAt = entry.effectiveAt
                     }
                 } else {
-                    TextField("calculator.price_source_name", text: $item.priceSourceName)
-                    TextField("calculator.price_region", text: $item.priceRegion)
-                    TextField("calculator.material_grade", text: $item.materialGrade)
-                    DatePicker("calculator.price_effective_date", selection: Binding(get: { item.priceEffectiveAt ?? .now }, set: { item.priceEffectiveAt = $0 }), displayedComponents: .date)
+                    TextField("calculator.price_source_name", text: $priceSourceName)
+                    TextField("calculator.price_region", text: $priceRegion)
+                    TextField("calculator.material_grade", text: $materialGrade)
+                    DatePicker("calculator.price_effective_date", selection: $priceEffectiveAt, displayedComponents: .date)
                 }
-                Toggle("calculator.price_includes_tax", isOn: $item.priceIncludesTax)
-                TextField("calculator.description", text: $item.descriptionText)
-                TextField("calculator.internal_note", text: $item.internalNote, axis: .vertical)
+                Toggle("calculator.price_includes_tax", isOn: $priceIncludesTax)
+                TextField("calculator.description", text: $descriptionText)
+                TextField("calculator.internal_note", text: $internalNote, axis: .vertical)
                 if !isPricingDraftValid { Label("error.invalid_pricing", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
             }
-            if let result = try? item.calculation() {
+            if let result {
                 Section("calculator.section.result") {
                     LabeledContent("calculator.result.unit_mass", value: "\(AppFormatters.number(result.unitMassKg, maximumFractionDigits: 3, locale: locale)) kg")
                     LabeledContent("calculator.result.total_mass", value: "\(AppFormatters.number(result.totalMassKg, maximumFractionDigits: 3, locale: locale)) kg")
-                    if isPricingDraftValid, let unitPrice = PricingInputValidator.nonnegative(item.unitPriceText, locale: locale) {
-                        let subtotal = PricingCalculator.lineSubtotal(unitPrice: unitPrice, basis: item.priceBasis, result: result, lengthMeters: item.lengthUnit.toMeters(item.lengthValue), quantity: item.quantity, currencyCode: currencyCode)
+                    if let unitPrice = parsedUnitPrice, let length = parsedLength {
+                        let subtotal = PricingCalculator.lineSubtotal(unitPrice: unitPrice, basis: priceBasis, result: result, lengthMeters: lengthUnit.toMeters(length), quantity: quantity, currencyCode: currencyCode)
                         LabeledContent("calculator.result.material_subtotal", value: AppFormatters.decimal(subtotal, currencyCode: currencyCode, locale: locale))
                     }
                     LabeledContent("calculator.details.formula", value: result.trace.formula)
@@ -278,33 +400,130 @@ private struct ProjectItemDetailView: View {
                         Label("calculator.idealized_geometry_help", systemImage: "info.circle").font(.caption).foregroundStyle(.secondary)
                     }
                 }
+            } else if calculation != nil {
+                Section { Label("calculator.invalid_input", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
             }
         }
         .navigationTitle(item.profile.localizationKey)
-        .onDisappear {
-            _ = item.canonicalizePricing(locale: locale)
-            item.updatedAt = .now
-            PersistenceErrorCenter.shared.save(modelContext)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
+            ToolbarItem(placement: .confirmationAction) { Button("common.done") { save() }.disabled(!canSave) }
         }
+        .onAppear(perform: load)
     }
 
-    private var itemLengthUnitBinding: Binding<String> {
+    private var lengthUnitBinding: Binding<LengthUnit> {
         Binding(
-            get: { item.lengthUnitRaw },
-            set: { raw in
-                guard let newUnit = LengthUnit(rawValue: raw) else { return }
-                let oldUnit = item.lengthUnit
+            get: { lengthUnit },
+            set: { newUnit in
+                let oldUnit = lengthUnit
                 guard newUnit != oldUnit else { return }
-                item.lengthValue = newUnit.fromMeters(oldUnit.toMeters(item.lengthValue))
-                item.lengthUnitRaw = newUnit.rawValue
+                if let value = parsedLength {
+                    lengthText = AppFormatters.number(newUnit.fromMeters(oldUnit.toMeters(value)), maximumFractionDigits: 6, locale: locale)
+                }
+                lengthUnit = newUnit
             }
         )
+    }
+
+    private func dimensionBinding(_ field: DimensionField) -> Binding<String> {
+        Binding(get: { dimensionTexts[field] ?? "" }, set: { dimensionTexts[field] = $0 })
+    }
+
+    private var geometryUnitBinding: Binding<LengthUnit> {
+        Binding(
+            get: { geometryUnit },
+            set: { newUnit in
+                guard newUnit != geometryUnit else { return }
+                var converted = dimensionTexts
+                for field in item.profile.dimensionFields where field != .customArea {
+                    guard let text = dimensionTexts[field], let value = DecimalParser.double(text, locale: locale) else { return }
+                    converted[field] = AppFormatters.number(newUnit.fromMeters(geometryUnit.toMeters(value)), maximumFractionDigits: 6, locale: locale)
+                }
+                dimensionTexts = converted
+                geometryUnit = newUnit
+            }
+        )
+    }
+
+    private var areaUnitBinding: Binding<AreaUnit> {
+        Binding(
+            get: { areaUnit },
+            set: { newUnit in
+                guard newUnit != areaUnit,
+                      let text = dimensionTexts[.customArea],
+                      let value = DecimalParser.double(text, locale: locale) else { return }
+                dimensionTexts[.customArea] = AppFormatters.number(
+                    newUnit.fromSquareMeters(areaUnit.toSquareMeters(value)),
+                    maximumFractionDigits: 6,
+                    locale: locale
+                )
+                areaUnit = newUnit
+            }
+        )
+    }
+
+    private func load() {
+        let geometry = item.geometry
+        dimensionTexts = geometry.values.mapValues { AppFormatters.number($0, maximumFractionDigits: 6, locale: locale) }
+        geometryUnit = geometry.lengthUnit
+        areaUnit = geometry.areaUnit
+        selectedMaterialID = item.materialID
+        densityText = AppFormatters.number(item.densityKgPerM3, maximumFractionDigits: 3, locale: locale)
+        lengthText = AppFormatters.number(item.lengthValue, maximumFractionDigits: 6, locale: locale)
+        lengthUnit = item.lengthUnit
+        quantity = item.quantity
+        wasteText = AppFormatters.number(item.wastePercent, maximumFractionDigits: 3, locale: locale)
+        priceBasis = item.priceBasis
+        unitPriceText = item.unitPriceText
+        processingFeeText = item.processingFeeText
+        otherFeeText = item.otherFeeText
+        priceSource = item.priceSource
+        priceSourceName = item.priceSourceName
+        priceRegion = item.priceRegion
+        materialGrade = item.materialGrade
+        priceIncludesTax = item.priceIncludesTax
+        priceEffectiveAt = item.priceEffectiveAt ?? .now
+        descriptionText = item.descriptionText
+        internalNote = item.internalNote
+    }
+
+    private func save() {
+        guard let geometry = parsedGeometry, let geometryData = try? JSONEncoder().encode(geometry),
+              let density = parsedDensity, let length = parsedLength, let waste = parsedWaste,
+              let unitPrice = parsedUnitPrice, let processingFee = parsedProcessingFee, let otherFee = parsedOtherFee,
+              result != nil else { return }
+        item.geometryData = geometryData
+        if let material = materials.first(where: { $0.id == selectedMaterialID }) {
+            item.materialID = material.id
+            item.materialName = material.name
+        }
+        item.densityKgPerM3 = density
+        item.lengthValue = length
+        item.lengthUnitRaw = lengthUnit.rawValue
+        item.quantity = quantity
+        item.wastePercent = waste
+        item.priceBasisRaw = priceBasis.rawValue
+        item.unitPriceText = unitPrice.description
+        item.processingFeeText = processingFee.description
+        item.otherFeeText = otherFee.description
+        item.priceSource = priceSource
+        item.priceSourceName = priceSourceName
+        item.priceRegion = priceRegion
+        item.materialGrade = materialGrade
+        item.priceIncludesTax = priceIncludesTax
+        item.priceEffectiveAt = priceEffectiveAt
+        item.descriptionText = descriptionText
+        item.internalNote = internalNote
+        item.updatedAt = .now
+        if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
     }
 }
 
 private struct BulkPricingSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.locale) private var locale
     @Bindable var project: ProjectEntity
     @State private var updateWaste = true
     @State private var waste = "0"
@@ -313,10 +532,10 @@ private struct BulkPricingSheet: View {
     @State private var basis = PriceBasis.perKilogram
 
     private var validWaste: Double? {
-        guard let value = DecimalParser.double(waste), value >= 0, value <= 1_000 else { return nil }
+        guard let value = DecimalParser.double(waste, locale: locale), value >= 0, value <= 1_000 else { return nil }
         return value
     }
-    private var validPrice: Decimal? { PricingInputValidator.nonnegative(price) }
+    private var validPrice: Decimal? { PricingInputValidator.nonnegative(price, locale: locale) }
     private var canApply: Bool { (!updateWaste || validWaste != nil) && (!updatePrice || validPrice != nil) && (updateWaste || updatePrice) }
 
     var body: some View {

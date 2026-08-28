@@ -73,6 +73,17 @@ final class CalculationEngineTests: XCTestCase {
         XCTAssertEqual(LengthUnit.millimeter.fromMeters(LengthUnit.inch.toMeters(1)), 25.4, accuracy: 1e-12)
     }
 
+    @MainActor
+    func testCustomAreaUnitConversionPreservesPhysicalArea() throws {
+        let draft = CalculatorDraft(profile: .customArea)
+        draft.dimensionTexts[.customArea] = "645.16"
+        draft.convertArea(to: .squareInch, locale: Locale(identifier: "en_US"))
+        XCTAssertEqual(draft.areaUnit, .squareInch)
+        XCTAssertEqual(try XCTUnwrap(DecimalParser.double(draft.dimensionTexts[.customArea] ?? "", locale: Locale(identifier: "en_US"))), 1, accuracy: 1e-9)
+        draft.convertArea(to: .squareMillimeter, locale: Locale(identifier: "en_US"))
+        XCTAssertEqual(try XCTUnwrap(DecimalParser.double(draft.dimensionTexts[.customArea] ?? "", locale: Locale(identifier: "en_US"))), 645.16, accuracy: 1e-6)
+    }
+
     func testWasteOnlyChangesAdjustedMass() throws {
         let base = try calculate(.squareBar, [.side: 20], length: 6, waste: 0)
         let wasted = try calculate(.squareBar, [.side: 20], length: 6, waste: 12.5)

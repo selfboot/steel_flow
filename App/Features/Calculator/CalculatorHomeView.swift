@@ -73,6 +73,7 @@ private struct ProfileCard: View {
 
 private struct RecentCalculationRow: View {
     let item: CalculationItemEntity
+    @Environment(\.locale) private var locale
 
     var body: some View {
         HStack(spacing: 12) {
@@ -82,12 +83,12 @@ private struct RecentCalculationRow: View {
                 .background(SteelFlowTheme.steelBlue.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
             VStack(alignment: .leading) {
                 Text(item.profile.localizationKey).font(.subheadline.weight(.semibold))
-                Text("\(AppFormatters.number(item.lengthValue)) \(item.lengthUnit.rawValue) × \(item.quantity)")
+                Text("\(AppFormatters.number(item.lengthValue, locale: locale)) \(item.lengthUnit.rawValue) × \(item.quantity)")
                     .font(.caption).foregroundStyle(.secondary)
             }
             Spacer()
             if let result = try? item.calculation() {
-                Text("\(AppFormatters.number(result.totalMassKg, maximumFractionDigits: 2)) kg")
+                Text("\(AppFormatters.number(result.totalMassKg, maximumFractionDigits: 2, locale: locale)) kg")
                     .font(.subheadline.monospacedDigit())
             }
         }

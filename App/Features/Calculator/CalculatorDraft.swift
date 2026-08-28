@@ -154,9 +154,9 @@ final class CalculatorDraft {
         priceEffectiveAt = priceEntry.effectiveAt
     }
 
-    func apply(material: MaterialEntity) {
+    func apply(material: MaterialEntity, locale: Locale = .current) {
         selectedMaterialID = material.id
-        densityText = AppFormatters.number(material.densityKgPerM3, maximumFractionDigits: 1)
+        densityText = AppFormatters.number(material.densityKgPerM3, maximumFractionDigits: 1, locale: locale)
     }
 
     func applyMarketingPreset(chinese: Bool) {
@@ -186,6 +186,15 @@ final class CalculatorDraft {
         guard newUnit != lengthUnit, let value = DecimalParser.double(lengthText, locale: locale) else { return }
         lengthText = AppFormatters.number(newUnit.fromMeters(lengthUnit.toMeters(value)), maximumFractionDigits: 6, locale: locale)
         lengthUnit = newUnit
+    }
+
+    func convertArea(to newUnit: AreaUnit, locale: Locale) {
+        guard newUnit != areaUnit,
+              let text = dimensionTexts[.customArea],
+              let value = DecimalParser.double(text, locale: locale) else { return }
+        let squareMeters = areaUnit.toSquareMeters(value)
+        dimensionTexts[.customArea] = AppFormatters.number(newUnit.fromSquareMeters(squareMeters), maximumFractionDigits: 6, locale: locale)
+        areaUnit = newUnit
     }
 
     private static func defaults(for profile: ProfileKind, system: UnitSystem) -> [DimensionField: Double] {

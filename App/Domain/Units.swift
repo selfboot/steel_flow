@@ -50,6 +50,9 @@ enum AreaUnit: String, Codable, CaseIterable, Identifiable, Sendable {
         case .squareInch: 0.000_645_16
         }
     }
+
+    func toSquareMeters(_ value: Double) -> Double { value * squareMetersPerUnit }
+    func fromSquareMeters(_ value: Double) -> Double { value / squareMetersPerUnit }
 }
 
 enum MassUnit: String, Codable, CaseIterable, Identifiable, Sendable {

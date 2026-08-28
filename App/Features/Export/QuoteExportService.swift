@@ -8,9 +8,9 @@ enum QuoteExportError: LocalizedError, Equatable {
 
     var errorDescription: String? {
         switch self {
-        case .noValidItems: String(localized: "export.error.no_valid_items")
-        case .invalidPricing: String(localized: "export.error.invalid_pricing")
-        case .unableToWrite: String(localized: "export.error.write")
+        case .noValidItems: AppLocalization.text("export.error.no_valid_items")
+        case .invalidPricing: AppLocalization.text("export.error.invalid_pricing")
+        case .unableToWrite: AppLocalization.text("export.error.write")
         }
     }
 }
@@ -39,6 +39,14 @@ enum QuotePaginator {
 }
 
 struct QuoteSnapshotPayload: Codable, Sendable {
+    struct Company: Codable, Sendable {
+        let companyName: String
+        let contactName: String
+        let email: String
+        let phone: String
+        let address: String
+    }
+
     struct Line: Codable, Sendable {
         let itemID: UUID
         let profile: String
@@ -61,11 +69,14 @@ struct QuoteSnapshotPayload: Codable, Sendable {
         let processingFee: Decimal
         let otherFee: Decimal
         let materialSubtotal: Decimal
+        let customerQuoteAmount: Decimal
         let priceSource: String
         let priceSourceName: String
         let priceRegion: String
         let priceIncludesTax: Bool
         let priceEffectiveAt: Date?
+        let descriptionText: String
+        let internalNote: String
     }
 
     struct Totals: Codable, Sendable {
@@ -87,6 +98,9 @@ struct QuoteSnapshotPayload: Codable, Sendable {
     let customerName: String
     let quoteLanguage: String
     let currencyCode: String
+    let paperSize: String
+    let includeBranding: Bool
+    let company: Company?
     let profitMode: String
     let profitPercent: Decimal
     let taxPercent: Decimal
@@ -97,13 +111,25 @@ struct QuoteSnapshotPayload: Codable, Sendable {
 
 @MainActor
 enum QuoteExportService {
-    static func snapshotData(for project: ProjectEntity, generatedAt: Date = .now) throws -> Data {
+    private static let pdfText = UIColor(red: 0.08, green: 0.10, blue: 0.12, alpha: 1)
+    private static let pdfSecondary = UIColor(red: 0.34, green: 0.38, blue: 0.42, alpha: 1)
+    private static let pdfAccent = UIColor(red: 0.04, green: 0.43, blue: 0.62, alpha: 1)
+    private static let pdfHeader = UIColor(red: 0.03, green: 0.20, blue: 0.27, alpha: 1)
+    private static let pdfRowFill = UIColor(white: 0.96, alpha: 1)
+    private static let pdfSeparator = UIColor(white: 0.78, alpha: 1)
+
+    static func snapshotData(
+        for project: ProjectEntity,
+        company: CompanyProfileEntity? = nil,
+        generatedAt: Date = .now,
+        includeBranding: Bool = true
+    ) throws -> Data {
         let summary = ProjectCalculator.summarize(project)
         guard !summary.lines.isEmpty else { throw QuoteExportError.noValidItems }
         guard summary.invalidItemCount == 0, summary.isPricingPolicyValid else { throw QuoteExportError.invalidPricing }
         let locale = Locale(identifier: project.quoteLanguage)
         let payload = QuoteSnapshotPayload(
-            schemaVersion: 1,
+            schemaVersion: 3,
             generatedAt: generatedAt,
             validUntil: Calendar.current.date(byAdding: .day, value: project.validDays, to: generatedAt) ?? generatedAt,
             engineVersion: CalculationEngine.version,
@@ -113,6 +139,11 @@ enum QuoteExportService {
             customerName: project.customerName,
             quoteLanguage: project.quoteLanguage,
             currencyCode: project.currencyCode,
+            paperSize: project.paperSize.rawValue,
+            includeBranding: includeBranding,
+            company: company.map {
+                .init(companyName: $0.companyName, contactName: $0.contactName, email: $0.email, phone: $0.phone, address: $0.address)
+            },
             profitMode: project.profitMode.rawValue,
             profitPercent: project.markupPercent,
             taxPercent: project.taxPercent,
@@ -141,11 +172,14 @@ enum QuoteExportService {
                     processingFee: CurrencyRules.round(item.processingFee, currencyCode: project.currencyCode),
                     otherFee: CurrencyRules.round(item.otherFee, currencyCode: project.currencyCode),
                     materialSubtotal: line.materialSubtotal,
+                    customerQuoteAmount: line.customerQuoteAmount,
                     priceSource: item.priceSource.rawValue,
                     priceSourceName: item.priceSourceName,
                     priceRegion: item.priceRegion,
                     priceIncludesTax: item.priceIncludesTax,
-                    priceEffectiveAt: item.priceEffectiveAt
+                    priceEffectiveAt: item.priceEffectiveAt,
+                    descriptionText: item.descriptionText,
+                    internalNote: item.internalNote
                 )
             },
             totals: .init(
@@ -218,7 +252,7 @@ enum QuoteExportService {
         return url
     }
 
-    static func pdfURL(for project: ProjectEntity, company: CompanyProfileEntity?, generatedAt: Date = .now) throws -> URL {
+    static func pdfURL(for project: ProjectEntity, company: CompanyProfileEntity?, generatedAt: Date = .now, includeBranding: Bool = true) throws -> URL {
         let summary = ProjectCalculator.summarize(project)
         guard !summary.lines.isEmpty else { throw QuoteExportError.noValidItems }
         guard summary.invalidItemCount == 0, summary.isPricingPolicyValid else { throw QuoteExportError.invalidPricing }
@@ -246,9 +280,9 @@ enum QuoteExportService {
                         lineIndex += 1
                     }
                     if pageOffset == pageCounts.count - 1 {
-                        drawTotals(summary: summary, project: project, y: y + 12, bounds: bounds)
+                        drawTotals(summary: summary, project: project, y: y + 12, bounds: bounds, includeCustomTerms: !includeBranding)
                     }
-                    drawFooter(page: page, language: project.quoteLanguage, bounds: bounds)
+                        drawFooter(page: page, language: project.quoteLanguage, bounds: bounds, includeBranding: includeBranding)
                 }
             }
         } catch {
@@ -261,14 +295,25 @@ enum QuoteExportService {
         let margin: CGFloat = 36
         var y: CGFloat = 34
         let companyName = company.flatMap { $0.companyName.isEmpty ? nil : $0.companyName } ?? "SteelFlow"
-        drawText(companyName, frame: CGRect(x: margin, y: y, width: bounds.width - margin * 2, height: 28), font: .systemFont(ofSize: 20, weight: .bold), color: .label)
+        let hasCompanyDetails = company.map { !$0.contactName.isEmpty || !$0.email.isEmpty || !$0.phone.isEmpty || !$0.address.isEmpty } ?? false
+        let companyNameWidth = hasCompanyDetails ? bounds.width / 2 - margin - 8 : bounds.width - margin * 2
+        drawText(companyName, frame: CGRect(x: margin, y: y, width: companyNameWidth, height: 28), font: .systemFont(ofSize: 20, weight: .bold), color: pdfText)
+        if let company {
+            let contacts = [company.contactName, company.email, company.phone].filter { !$0.isEmpty }.joined(separator: " · ")
+            if !contacts.isEmpty {
+                drawText(contacts, frame: CGRect(x: bounds.width / 2, y: y, width: bounds.width / 2 - margin, height: 14), font: .systemFont(ofSize: 8.5), color: pdfSecondary, alignment: .right)
+            }
+            if !company.address.isEmpty {
+                drawText(company.address, frame: CGRect(x: bounds.width / 2, y: y + 14, width: bounds.width / 2 - margin, height: 14), font: .systemFont(ofSize: 8.5), color: pdfSecondary, alignment: .right)
+            }
+        }
         y += 31
-        drawText(localized("quote.title", language: project.quoteLanguage), frame: CGRect(x: margin, y: y, width: 250, height: 32), font: .systemFont(ofSize: 26, weight: .bold), color: UIColor(red: 0.04, green: 0.43, blue: 0.62, alpha: 1))
-        drawText(project.projectNumber, frame: CGRect(x: bounds.width - margin - 180, y: y + 5, width: 180, height: 24), font: .monospacedSystemFont(ofSize: 12, weight: .medium), color: .secondaryLabel, alignment: .right)
+        drawText(localized("quote.title", language: project.quoteLanguage), frame: CGRect(x: margin, y: y, width: 250, height: 32), font: .systemFont(ofSize: 26, weight: .bold), color: pdfAccent)
+        drawText(project.projectNumber, frame: CGRect(x: bounds.width - margin - 180, y: y + 5, width: 180, height: 24), font: .monospacedSystemFont(ofSize: 12, weight: .medium), color: pdfSecondary, alignment: .right)
         y += 40
-        drawText("\(localized("project.customer", language: project.quoteLanguage)): \(project.customerName.isEmpty ? "—" : project.customerName)", frame: CGRect(x: margin, y: y, width: 280, height: 22), font: .systemFont(ofSize: 11), color: .label)
+        drawText("\(localized("project.customer", language: project.quoteLanguage)): \(project.customerName.isEmpty ? "—" : project.customerName)", frame: CGRect(x: margin, y: y, width: 280, height: 22), font: .systemFont(ofSize: 11), color: pdfText)
         let validity = Calendar.current.date(byAdding: .day, value: project.validDays, to: generatedAt) ?? generatedAt
-        drawText("\(localized("quote.valid_until", language: project.quoteLanguage)): \(AppFormatters.date(validity, locale: Locale(identifier: project.quoteLanguage)))", frame: CGRect(x: bounds.width - margin - 240, y: y, width: 240, height: 22), font: .systemFont(ofSize: 11), color: .label, alignment: .right)
+        drawText("\(localized("quote.valid_until", language: project.quoteLanguage)): \(AppFormatters.date(validity, locale: Locale(identifier: project.quoteLanguage)))", frame: CGRect(x: bounds.width - margin - 240, y: y, width: 240, height: 22), font: .systemFont(ofSize: 11), color: pdfText, alignment: .right)
         y += 34
         return y
     }
@@ -277,7 +322,7 @@ enum QuoteExportService {
         let margin: CGFloat = 36
         let widths: [CGFloat] = [28, 150, 72, 50, 74, 90]
         let labels = ["#", localized("quote.item", language: language), localized("quote.material", language: language), localized("quote.quantity", language: language), localized("quote.mass", language: language), localized("quote.amount", language: language)]
-        UIColor(red: 0.03, green: 0.20, blue: 0.27, alpha: 1).setFill()
+        pdfHeader.setFill()
         UIBezierPath(roundedRect: CGRect(x: margin, y: y, width: bounds.width - margin * 2, height: 28), cornerRadius: 4).fill()
         var x = margin + 4
         for (index, label) in labels.enumerated() {
@@ -292,54 +337,55 @@ enum QuoteExportService {
         let widths: [CGFloat] = [28, 150, 72, 50, 74, 90]
         let rowHeight = QuotePaginator.rowHeight
         if index.isMultiple(of: 2) {
-            UIColor.secondarySystemBackground.setFill()
+            pdfRowFill.setFill()
             UIBezierPath(rect: CGRect(x: margin, y: y, width: bounds.width - margin * 2, height: rowHeight)).fill()
         }
         let item = line.item
         let description = item.descriptionText.isEmpty ? localized("profile.\(item.profile.rawValue)", language: project.quoteLanguage) : item.descriptionText
         let values = [
             String(index),
-            description + "\n" + dimensionsSummary(item),
+            description + "\n" + dimensionsSummary(item, language: project.quoteLanguage),
             MaterialCatalog.localizedName(materialID: item.materialID, fallback: item.materialName, locale: Locale(identifier: project.quoteLanguage)),
             String(item.quantity),
             AppFormatters.number(line.result.totalMassKg, maximumFractionDigits: 2, locale: Locale(identifier: project.quoteLanguage)) + " kg",
-            AppFormatters.decimal(line.materialSubtotal, currencyCode: project.currencyCode, locale: Locale(identifier: project.quoteLanguage))
+            AppFormatters.decimal(line.customerQuoteAmount, currencyCode: project.currencyCode, locale: Locale(identifier: project.quoteLanguage))
         ]
         var x = margin + 4
         for (column, value) in values.enumerated() {
-            drawText(value, frame: CGRect(x: x, y: y + 5, width: widths[column] - 6, height: rowHeight - 8), font: .systemFont(ofSize: column == 1 ? 8.5 : 9), color: .label, alignment: column >= 3 ? .right : .left)
+            drawText(value, frame: CGRect(x: x, y: y + 5, width: widths[column] - 6, height: rowHeight - 8), font: .systemFont(ofSize: column == 1 ? 8.5 : 9), color: pdfText, alignment: column >= 3 ? .right : .left)
             x += widths[column]
         }
-        UIColor.separator.setStroke()
+        pdfSeparator.setStroke()
         let path = UIBezierPath(); path.move(to: CGPoint(x: margin, y: y + rowHeight)); path.addLine(to: CGPoint(x: bounds.width - margin, y: y + rowHeight)); path.lineWidth = 0.4; path.stroke()
         return y + rowHeight
     }
 
-    private static func drawTotals(summary: ProjectSummary, project: ProjectEntity, y: CGFloat, bounds: CGRect) {
+    private static func drawTotals(summary: ProjectSummary, project: ProjectEntity, y: CGFloat, bounds: CGRect, includeCustomTerms: Bool) {
         let labelX = bounds.width - 340
         let amountX = bounds.width - 36 - 110
         var cursor = y
         let locale = Locale(identifier: project.quoteLanguage)
         let rows: [(String, Decimal, Bool)] = [
-            (localized("project.material_subtotal", language: project.quoteLanguage), summary.pricing.materialSubtotal, false),
-            (localized("project.fees", language: project.quoteLanguage), summary.pricing.fees, false),
-            (localized(project.profitMode == .markup ? "project.markup" : "project.margin", language: project.quoteLanguage), summary.pricing.profit, false),
+            (localized("quote.subtotal", language: project.quoteLanguage), summary.pricing.preTax, false),
             (localized("project.tax", language: project.quoteLanguage), summary.pricing.tax, false),
             (localized("project.total", language: project.quoteLanguage), summary.pricing.total, true)
         ]
         for row in rows {
-            drawText(row.0, frame: CGRect(x: labelX, y: cursor, width: amountX - labelX - 10, height: 20), font: .systemFont(ofSize: row.2 ? 12 : 10, weight: row.2 ? .bold : .regular), color: .label, alignment: .right)
-            drawText(AppFormatters.decimal(row.1, currencyCode: project.currencyCode, locale: locale), frame: CGRect(x: amountX, y: cursor, width: 110, height: 20), font: .monospacedSystemFont(ofSize: row.2 ? 12 : 10, weight: row.2 ? .bold : .regular), color: row.2 ? UIColor(red: 0.04, green: 0.43, blue: 0.62, alpha: 1) : .label, alignment: .right)
+            drawText(row.0, frame: CGRect(x: labelX, y: cursor, width: amountX - labelX - 10, height: 20), font: .systemFont(ofSize: row.2 ? 12 : 10, weight: row.2 ? .bold : .regular), color: pdfText, alignment: .right)
+            drawText(AppFormatters.decimal(row.1, currencyCode: project.currencyCode, locale: locale), frame: CGRect(x: amountX, y: cursor, width: 110, height: 20), font: .monospacedSystemFont(ofSize: row.2 ? 12 : 10, weight: row.2 ? .bold : .regular), color: row.2 ? pdfAccent : pdfText, alignment: .right)
             cursor += 21
         }
-        if !project.terms.isEmpty {
-            drawText("\(localized("project.terms", language: project.quoteLanguage)): \(project.terms)", frame: CGRect(x: 36, y: y, width: labelX - 52, height: 90), font: .systemFont(ofSize: 9), color: .secondaryLabel)
+        if includeCustomTerms, !project.terms.isEmpty {
+            drawText("\(localized("project.terms", language: project.quoteLanguage)): \(project.terms)", frame: CGRect(x: 36, y: y, width: labelX - 52, height: 90), font: .systemFont(ofSize: 9), color: pdfSecondary)
         }
     }
 
-    private static func drawFooter(page: Int, language: String, bounds: CGRect) {
-        drawText("\(localized("quote.generated_by", language: language)) · \(localized("quote.disclaimer", language: language))", frame: CGRect(x: 36, y: bounds.height - 38, width: bounds.width - 120, height: 18), font: .systemFont(ofSize: 7.5), color: .tertiaryLabel)
-        drawText(String(page), frame: CGRect(x: bounds.width - 70, y: bounds.height - 38, width: 34, height: 18), font: .monospacedSystemFont(ofSize: 8, weight: .regular), color: .tertiaryLabel, alignment: .right)
+    private static func drawFooter(page: Int, language: String, bounds: CGRect, includeBranding: Bool) {
+        let footer = includeBranding
+            ? "\(localized("quote.generated_by", language: language)) · \(localized("quote.disclaimer", language: language))"
+            : localized("quote.disclaimer", language: language)
+        drawText(footer, frame: CGRect(x: 36, y: bounds.height - 38, width: bounds.width - 120, height: 18), font: .systemFont(ofSize: 7.5), color: pdfSecondary)
+        drawText(String(page), frame: CGRect(x: bounds.width - 70, y: bounds.height - 38, width: 34, height: 18), font: .monospacedSystemFont(ofSize: 8, weight: .regular), color: pdfSecondary, alignment: .right)
     }
 
     private static func drawText(_ text: String, frame: CGRect, font: UIFont, color: UIColor, alignment: NSTextAlignment = .left) {
@@ -351,9 +397,10 @@ enum QuoteExportService {
         AppLocalization.text(key, locale: Locale(identifier: language))
     }
 
-    private static func dimensionsSummary(_ item: CalculationItemEntity) -> String {
-        item.profile.dimensionFields.compactMap { field in
-            item.geometry.values[field].map { "\(AppFormatters.number($0)) \(field == .customArea ? item.geometry.areaUnit.rawValue : item.geometry.lengthUnit.rawValue)" }
+    private static func dimensionsSummary(_ item: CalculationItemEntity, language: String) -> String {
+        let locale = Locale(identifier: language)
+        return item.profile.dimensionFields.compactMap { field in
+            item.geometry.values[field].map { "\(AppFormatters.number($0, locale: locale)) \(field == .customArea ? item.geometry.areaUnit.rawValue : item.geometry.lengthUnit.rawValue)" }
         }.joined(separator: " × ")
     }
 
@@ -363,6 +410,7 @@ enum QuoteExportService {
     private static func temporaryURL(project: ProjectEntity, extension ext: String) -> URL {
         let invalid = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-_ ")).inverted
         let safe = (project.projectNumber + "_" + project.name).components(separatedBy: invalid).joined().replacingOccurrences(of: " ", with: "_")
-        return FileManager.default.temporaryDirectory.appendingPathComponent(safe.isEmpty ? "SteelFlow_Quote" : safe).appendingPathExtension(ext)
+        let bounded = String(safe.prefix(60))
+        return FileManager.default.temporaryDirectory.appendingPathComponent(bounded.isEmpty ? "SteelFlow_Quote" : bounded).appendingPathExtension(ext)
     }
 }

@@ -25,6 +25,18 @@ enum MaterialCatalog {
 }
 
 enum AppLocalization {
+    static var preferredLocale: Locale {
+        switch UserDefaults.standard.string(forKey: "app.language") {
+        case "en": Locale(identifier: "en")
+        case "zh-Hans": Locale(identifier: "zh-Hans")
+        default: .autoupdatingCurrent
+        }
+    }
+
+    static func text(_ key: String) -> String {
+        text(key, locale: preferredLocale)
+    }
+
     static func text(_ key: String, locale: Locale) -> String {
         let languageCode = locale.language.languageCode?.identifier ?? locale.identifier
         let candidates = [locale.identifier, languageCode, languageCode == "zh" ? "zh-Hans" : languageCode]
@@ -34,5 +46,14 @@ enum AppLocalization {
             }
         }
         return String(localized: String.LocalizationValue(key), locale: locale)
+    }
+
+    static func format(_ key: String, locale: Locale, _ arguments: CVarArg...) -> String {
+        String(format: text(key, locale: locale), locale: locale, arguments: arguments)
+    }
+
+    static func count(_ key: String, value: Int, locale: Locale) -> String {
+        let suffix = value == 1 ? "one" : "other"
+        return format("\(key).\(suffix)", locale: locale, value)
     }
 }

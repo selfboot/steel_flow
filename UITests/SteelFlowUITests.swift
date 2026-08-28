@@ -76,10 +76,71 @@ final class SteelFlowUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["报价预览"].waitForExistence(timeout: 8))
         let title = app.staticTexts["连接角钢 L75 × 6"]
         let mass = app.staticTexts["1,220.83 kg"]
+        let amount = app.staticTexts["¥8,495.98"]
         XCTAssertTrue(title.waitForExistence(timeout: 3))
         XCTAssertTrue(mass.waitForExistence(timeout: 3))
+        XCTAssertTrue(amount.waitForExistence(timeout: 3))
         XCTAssertFalse(title.frame.intersects(mass.frame), "The item title must not overlap the mass column")
+        XCTAssertFalse(mass.frame.intersects(amount.frame), "Mass and amount must remain separately readable")
+        XCTAssertGreaterThanOrEqual(mass.frame.minX, app.windows.firstMatch.frame.minX)
+        XCTAssertLessThanOrEqual(amount.frame.maxX, app.windows.firstMatch.frame.maxX)
         attachScreenshot(named: "compact-chinese-quote")
+    }
+
+    func testEnglishQuoteRowsKeepAmountsInsideCompactPhone() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+            "--marketing-screen", "quote", "--marketing-locale", "en-US"
+        ]
+        app.launch()
+
+        XCTAssertTrue(app.navigationBars["Quote preview"].waitForExistence(timeout: 8))
+        let title = app.staticTexts["Connection angle L75 × 6"]
+        let amount = app.staticTexts["$1,276.03"]
+        XCTAssertTrue(title.waitForExistence(timeout: 3))
+        XCTAssertTrue(amount.waitForExistence(timeout: 3))
+        XCTAssertFalse(title.frame.intersects(amount.frame))
+        XCTAssertLessThanOrEqual(amount.frame.maxX, app.windows.firstMatch.frame.maxX)
+        attachScreenshot(named: "compact-english-quote")
+    }
+
+    func testChineseProjectSummaryKeepsLongLabelsAndValuesReadable() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN", "-app.language", "zh-Hans",
+            "--marketing-screen", "project", "--marketing-locale", "zh-Hans"
+        ]
+        app.launch()
+
+        XCTAssertTrue(app.navigationBars["港区雨棚"].waitForExistence(timeout: 8))
+        let label = app.staticTexts["加工及其他费用"]
+        let amount = app.staticTexts["¥2,280.00"]
+        for _ in 0..<4 where !label.isHittable { app.swipeUp() }
+        XCTAssertTrue(label.waitForExistence(timeout: 3))
+        XCTAssertTrue(amount.waitForExistence(timeout: 3))
+        XCTAssertFalse(label.frame.intersects(amount.frame))
+        XCTAssertLessThanOrEqual(amount.frame.maxX, app.windows.firstMatch.frame.maxX)
+        attachScreenshot(named: "compact-chinese-project-summary")
+    }
+
+    func testQuoteBodyUsesProjectLanguageAndDoesNotExposeInternalPricing() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+            "--marketing-screen", "quote", "--marketing-locale", "zh-Hans"
+        ]
+        app.launch()
+
+        XCTAssertTrue(app.navigationBars["Quote preview"].waitForExistence(timeout: 8))
+        XCTAssertTrue(app.staticTexts["报价单"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["税前小计"].waitForExistence(timeout: 3))
+        XCTAssertFalse(app.staticTexts["Material subtotal"].exists)
+        XCTAssertFalse(app.staticTexts["Markup"].exists)
+        attachScreenshot(named: "quote-language-and-customer-safe-pricing")
     }
 
     func testPriceDeletionRequiresExplicitConfirmation() {

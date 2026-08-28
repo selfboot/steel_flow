@@ -308,37 +308,20 @@ iSection: 工字钢, H型钢, I-beam, H-beam, universal beam
 
 ### 迁移原则
 
-- 使用显式 `SchemaV1`, `SchemaV2`。
+- v1 当前使用 SwiftData 轻量迁移兼容新增默认字段；引入破坏性模型变更前再建立显式 `VersionedSchema` 与迁移计划。
 - 每次改变公式语义时增加 `calculationVersion`，而非只改 UI。
 - 旧项目重新打开时可使用新引擎重算，但已导出的 QuoteSnapshot 保持冻结值。
 - 迁移先复制/验证再提交；失败时保留原 store 并提供导出诊断。
 
 ## 9. 备份文件格式
 
-扩展名：`.steelflowbackup`
+扩展名：`.steelflowbackup`，内容为稳定编码的 JSON envelope：
 
-v1 使用 ZIP 容器：
+- `schemaVersion`、`appVersion`、`createdAt`
+- `checksumSHA256`：对规范化 payload 计算
+- `payload`：自定义材料、项目与条目、公司资料、价格簿、客户、报价快照和用户偏好
 
-```text
-manifest.json
-projects.json
-materials.json
-customers.json
-company-profile.json
-quote-snapshots/
-assets/logo.png
-```
-
-`manifest.json` 包含：
-
-- schemaVersion
-- appVersion
-- createdAt
-- locale
-- objectCounts
-- SHA-256 checksums
-
-导入流程：选择文件 -> 校验 manifest/checksum -> 预览对象数 -> 选择复制导入或取消 -> 单事务写入。禁止静默覆盖同 ID 数据。
+当前写入 schema v3，并继续读取 v1/v2。单文件上限 20 MB；导入先校验版本、checksum、枚举、几何、密度、数量、损耗、币种和价格，再显示对象数量预览。用户选择“复制导入”或“复制并恢复设置”后才在单事务中写入，禁止静默覆盖现有项目。
 
 ## 10. PDF 与 CSV
 
@@ -347,7 +330,7 @@ assets/logo.png
 1. Domain 生成不可变 `QuoteDocumentModel`。
 2. `QuotePaginator` 根据纸张和可见列计算行高及分页。
 3. Core Graphics 绘制文本、表格和矢量截面图。
-4. PDFKit 用于预览和系统分享。
+4. PDFKit 用于查看真实生成文件；系统分享使用同一个 PDF URL。
 
 要求：
 

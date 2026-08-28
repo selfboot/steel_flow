@@ -22,9 +22,7 @@ final class PurchaseManager {
     init(startListening: Bool = true) {
         guard startListening else { return }
         guard configureRevenueCatIfNeeded() else {
-            isPro = false
-            persistEntitlement()
-            availabilityMessage = String(localized: "purchase.configuration_missing")
+            availabilityMessage = AppLocalization.text("purchase.configuration_missing")
             return
         }
         updatesTask = Task { [weak self] in
@@ -36,7 +34,7 @@ final class PurchaseManager {
 
     func load() async {
         guard configureRevenueCatIfNeeded() else {
-            availabilityMessage = String(localized: "purchase.configuration_missing")
+            availabilityMessage = AppLocalization.text("purchase.configuration_missing")
             return
         }
         isLoading = true
@@ -51,7 +49,7 @@ final class PurchaseManager {
             }
             localizedPrice = package?.storeProduct.localizedPriceString
             if package == nil {
-                availabilityMessage = String(localized: "purchase.product_missing")
+                availabilityMessage = AppLocalization.text("purchase.product_missing")
             }
             apply(loadedCustomerInfo)
         } catch {
@@ -174,11 +172,11 @@ final class PurchaseManager {
     }
 
     private func showAlert(titleKey: String, messageKey: String) {
-        showAlert(titleKey: titleKey, message: String(localized: String.LocalizationValue(messageKey)))
+        showAlert(titleKey: titleKey, message: AppLocalization.text(messageKey))
     }
 
     private func showAlert(titleKey: String, message: String) {
-        alertTitle = String(localized: String.LocalizationValue(titleKey))
+        alertTitle = AppLocalization.text(titleKey)
         alertMessage = message
     }
 }

@@ -66,7 +66,7 @@ struct CalculatorEditorView: View {
                 if profile == .customArea {
                     AdaptiveFormRow("calculator.area_unit") {
                         Spacer(minLength: 0)
-                        Picker("calculator.area_unit", selection: $draft.areaUnit) {
+                        Picker("calculator.area_unit", selection: areaUnitBinding) {
                             ForEach(AreaUnit.allCases) { Text($0.rawValue).tag($0) }
                         }
                         .labelsHidden()
@@ -219,11 +219,14 @@ struct CalculatorEditorView: View {
         .navigationTitle(profile.localizationKey)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            let preferred = UnitSystem(rawValue: unitSystemRaw) ?? .metric
+            let preferred = destinationProject?.unitSystem ?? UnitSystem(rawValue: unitSystemRaw) ?? .metric
             if draft.geometryUnit == .millimeter && preferred == .imperial {
-                draft = CalculatorDraft(profile: profile, unitSystem: preferred)
+                draft.convertGeometry(to: preferred.lengthUnit, locale: locale)
+                if profile == .customArea { draft.convertArea(to: .squareInch, locale: locale) }
+                draft.convertLength(to: preferred.stockLengthUnit, locale: locale)
+                if draft.unitPriceText == "0" { draft.priceBasis = .perPound }
             }
-            if let material = materials.first(where: { $0.id == draft.selectedMaterialID }) { draft.apply(material: material) }
+            if let material = materials.first(where: { $0.id == draft.selectedMaterialID }) { draft.apply(material: material, locale: locale) }
         }
         .sheet(isPresented: $showSaveSheet) {
             SaveToProjectSheet(projects: projects) { project in save(to: project) }
@@ -243,29 +246,33 @@ struct CalculatorEditorView: View {
         Binding(get: { draft.geometryUnit }, set: { draft.convertGeometry(to: $0, locale: locale) })
     }
 
+    private var areaUnitBinding: Binding<AreaUnit> {
+        Binding(get: { draft.areaUnit }, set: { draft.convertArea(to: $0, locale: locale) })
+    }
+
     private var lengthUnitBinding: Binding<LengthUnit> {
         Binding(get: { draft.lengthUnit }, set: { draft.convertLength(to: $0, locale: locale) })
     }
 
     private var materialBinding: Binding<String> {
         Binding(get: { draft.selectedMaterialID }, set: { id in
-            if let material = materials.first(where: { $0.id == id }) { draft.apply(material: material) }
+            if let material = materials.first(where: { $0.id == id }) { draft.apply(material: material, locale: locale) }
         })
     }
 
     private func materialDisplayName(_ material: MaterialEntity) -> String {
         guard let key = material.nameKey else { return material.name }
-        return String(localized: String.LocalizationValue(key), locale: locale)
+        return AppLocalization.text(key, locale: locale)
     }
 
     private func mass(_ kg: Double) -> String {
-        let system = UnitSystem(rawValue: unitSystemRaw) ?? .metric
+        let system = destinationProject?.unitSystem ?? UnitSystem(rawValue: unitSystemRaw) ?? .metric
         let unit = system.massUnit
         return "\(AppFormatters.number(unit.fromKilograms(kg), maximumFractionDigits: 3, locale: locale)) \(unit.rawValue)"
     }
 
     private func area(_ squareMeters: Double) -> String {
-        let unit: AreaUnit = (UnitSystem(rawValue: unitSystemRaw) ?? .metric) == .metric ? .squareMillimeter : .squareInch
+        let unit: AreaUnit = (destinationProject?.unitSystem ?? UnitSystem(rawValue: unitSystemRaw) ?? .metric) == .metric ? .squareMillimeter : .squareInch
         return "\(AppFormatters.number(squareMeters / unit.squareMetersPerUnit, maximumFractionDigits: 3, locale: locale)) \(unit.rawValue)"
     }
 
@@ -303,6 +310,11 @@ struct CalculatorEditorView: View {
 private struct SaveToProjectSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.locale) private var locale
+    @AppStorage("app.unitSystem") private var defaultUnitRaw = UnitSystem.metric.rawValue
+    @AppStorage("app.currency") private var defaultCurrency = "USD"
+    @AppStorage("app.language") private var appLanguage = "system"
+    @AppStorage("app.paper") private var defaultPaperRaw = PaperSize.a4.rawValue
     let projects: [ProjectEntity]
     let onSelect: (ProjectEntity) -> Void
     @State private var newName = ""
@@ -335,7 +347,14 @@ private struct SaveToProjectSheet: View {
                         ) {
                             showProjectLimit = true
                         } else {
-                            let project = ProjectEntity(name: newName.isEmpty ? String(localized: "project.untitled") : newName)
+                            let trimmedName = newName.trimmingCharacters(in: .whitespacesAndNewlines)
+                            let project = ProjectEntity(
+                                name: trimmedName.isEmpty ? AppLocalization.text("project.untitled", locale: locale) : trimmedName,
+                                quoteLanguage: appLanguage == "zh-Hans" || (appLanguage == "system" && locale.language.languageCode?.identifier == "zh") ? "zh-Hans" : "en",
+                                unitSystem: UnitSystem(rawValue: defaultUnitRaw) ?? .metric,
+                                currencyCode: CurrencyRules.normalizedCode(defaultCurrency) ?? "USD",
+                                paperSize: PaperSize(rawValue: defaultPaperRaw) ?? .a4
+                            )
                             modelContext.insert(project)
                             if PersistenceErrorCenter.shared.save(modelContext) { onSelect(project) }
                         }
@@ -352,6 +371,7 @@ private struct SaveToProjectSheet: View {
 
 private struct CalculationDetailsView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.locale) private var locale
     let result: CalculationResult
 
     var body: some View {
@@ -360,12 +380,17 @@ private struct CalculationDetailsView: View {
                 Section("calculator.details.formula") { Text(result.trace.formula).font(.body.monospaced()) }
                 Section("calculator.details.normalized") {
                     ForEach(result.trace.normalizedDimensions.keys.sorted(), id: \.self) { key in
-                        LabeledContent(key, value: "\(AppFormatters.number(result.trace.normalizedDimensions[key] ?? 0, maximumFractionDigits: 8)) m")
+                        let field = DimensionField(rawValue: key)
+                        LabeledContent {
+                            Text("\(AppFormatters.number(result.trace.normalizedDimensions[key] ?? 0, maximumFractionDigits: 8, locale: locale)) \(field == .customArea ? "m²" : "m")")
+                        } label: {
+                            Text(field.map { AppLocalization.text("dimension.\($0.rawValue)", locale: locale) } ?? key)
+                        }
                     }
-                    LabeledContent("calculator.result.area", value: "\(result.areaSquareMeters) m²")
-                    LabeledContent("calculator.length", value: "\(result.trace.lengthMeters) m")
+                    LabeledContent("calculator.result.area", value: "\(AppFormatters.number(result.areaSquareMeters, maximumFractionDigits: 10, locale: locale)) m²")
+                    LabeledContent("calculator.length", value: "\(AppFormatters.number(result.trace.lengthMeters, maximumFractionDigits: 8, locale: locale)) m")
                     LabeledContent("calculator.quantity", value: "\(result.trace.quantity)")
-                    LabeledContent("calculator.density", value: "\(result.trace.densityKgPerM3) kg/m³")
+                    LabeledContent("calculator.density", value: "\(AppFormatters.number(result.trace.densityKgPerM3, maximumFractionDigits: 3, locale: locale)) kg/m³")
                 }
                 Section("calculator.details.engine") { LabeledContent("calculator.details.version", value: "\(result.trace.engineVersion)") }
             }

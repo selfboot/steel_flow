@@ -33,6 +33,48 @@ struct BackupPayload: Codable, Sendable {
     let projects: [ProjectBackup]
     let company: CompanyBackup?
     let priceBook: [PriceBookBackup]?
+    let customers: [CustomerBackup]?
+    let quoteSnapshots: [QuoteSnapshotBackup]?
+    let preferences: PreferencesBackup?
+}
+
+struct CustomerBackup: Codable, Sendable {
+    let name: String
+    let email: String
+    let phone: String
+    let address: String
+    let createdAt: Date
+}
+
+struct QuoteSnapshotBackup: Codable, Sendable {
+    let projectID: UUID
+    let createdAt: Date
+    let engineVersion: Int
+    let payload: Data
+}
+
+struct PreferencesBackup: Codable, Sendable, Equatable {
+    let languageCode: String
+    let unitSystemRaw: String
+    let currencyCode: String
+    let paperSizeRaw: String
+}
+
+struct BackupPreview: Equatable {
+    let schemaVersion: Int
+    let projects: Int
+    let materials: Int
+    let customers: Int
+    let quoteSnapshots: Int
+    let hasPreferences: Bool
+}
+
+struct BackupImportResult {
+    let projects: Int
+    let materials: Int
+    let customers: Int
+    let quoteSnapshots: Int
+    let preferences: PreferencesBackup?
 }
 
 struct PriceBookBackup: Codable, Sendable {
@@ -58,6 +100,7 @@ struct MaterialBackup: Codable, Sendable {
 }
 
 struct ProjectBackup: Codable, Sendable {
+    let id: UUID?
     let name: String
     let projectNumber: String
     let customerName: String
@@ -114,19 +157,28 @@ enum BackupError: LocalizedError, Equatable {
     case corrupt
     var errorDescription: String? {
         switch self {
-        case .unsupportedVersion: String(localized: "backup.error.version")
-        case .checksumMismatch: String(localized: "backup.error.checksum")
-        case .corrupt: String(localized: "backup.error.corrupt")
+        case .unsupportedVersion: AppLocalization.text("backup.error.version")
+        case .checksumMismatch: AppLocalization.text("backup.error.checksum")
+        case .corrupt: AppLocalization.text("backup.error.corrupt")
         }
     }
 }
 
 @MainActor
 enum BackupService {
-    private static let currentSchemaVersion = 2
+    private static let currentSchemaVersion = 3
     private static let supportedSchemaVersions = 1...currentSchemaVersion
 
-    static func makeDocument(projects: [ProjectEntity], materials: [MaterialEntity], company: CompanyProfileEntity?, priceBook: [PriceBookEntryEntity] = []) throws -> SteelFlowBackupDocument {
+    static func makeDocument(
+        projects: [ProjectEntity],
+        materials: [MaterialEntity],
+        company: CompanyProfileEntity?,
+        priceBook: [PriceBookEntryEntity] = [],
+        customers: [CustomerEntity] = [],
+        quoteSnapshots: [QuoteSnapshotEntity] = [],
+        preferences: PreferencesBackup? = nil
+    ) throws -> SteelFlowBackupDocument {
+        let projectIDs = Set(projects.map(\.id))
         let payload = BackupPayload(
             materials: materials.filter { !$0.isBuiltIn }.map { .init(id: $0.id, name: $0.name, densityKgPerM3: $0.densityKgPerM3, note: $0.note) },
             projects: projects.map(projectBackup),
@@ -135,7 +187,12 @@ enum BackupService {
                 .init(name: $0.name, materialID: $0.materialID, materialName: $0.materialName, materialGrade: $0.materialGrade,
                       supplier: $0.supplier, region: $0.region, currencyCode: $0.currencyCode, priceBasisRaw: $0.priceBasisRaw,
                       unitPriceText: $0.unitPriceText, includesTax: $0.includesTax, effectiveAt: $0.effectiveAt, note: $0.note)
-            }
+            },
+            customers: customers.map { .init(name: $0.name, email: $0.email, phone: $0.phone, address: $0.address, createdAt: $0.createdAt) },
+            quoteSnapshots: quoteSnapshots.filter { projectIDs.contains($0.projectID) }.map {
+                .init(projectID: $0.projectID, createdAt: $0.createdAt, engineVersion: $0.engineVersion, payload: $0.payload)
+            },
+            preferences: preferences
         )
         let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]; encoder.dateEncodingStrategy = .iso8601
         let payloadData = try encoder.encode(payload)
@@ -144,18 +201,28 @@ enum BackupService {
         return SteelFlowBackupDocument(data: try encoder.encode(envelope))
     }
 
-    static func preview(data: Data) throws -> (projects: Int, materials: Int) {
+    static func preview(data: Data) throws -> BackupPreview {
         let envelope = try decodeAndValidate(data)
-        return (envelope.payload.projects.count, envelope.payload.materials.count)
+        return .init(
+            schemaVersion: envelope.schemaVersion,
+            projects: envelope.payload.projects.count,
+            materials: envelope.payload.materials.count,
+            customers: envelope.payload.customers?.count ?? 0,
+            quoteSnapshots: envelope.payload.quoteSnapshots?.count ?? 0,
+            hasPreferences: envelope.payload.preferences != nil
+        )
     }
 
-    static func importCopy(data: Data, into context: ModelContext) throws -> (projects: Int, materials: Int) {
+    static func importCopy(data: Data, into context: ModelContext) throws -> BackupImportResult {
         let envelope = try decodeAndValidate(data)
         var reservedMaterialIDs = Set(try context.fetch(FetchDescriptor<MaterialEntity>()).map(\.id))
         var materialIDMap: [String: String] = [:]
         var importedMaterials: [MaterialEntity] = []
         var importedProjects: [ProjectEntity] = []
         var importedPrices: [PriceBookEntryEntity] = []
+        var importedCustomers: [CustomerEntity] = []
+        var importedSnapshots: [QuoteSnapshotEntity] = []
+        var projectIDMap: [UUID: UUID] = [:]
 
         for material in envelope.payload.materials {
             guard !material.id.isEmpty,
@@ -183,7 +250,7 @@ enum BackupService {
                 profitMode = .markup
             }
             let project = ProjectEntity(
-                name: source.name + " " + String(localized: "backup.imported_suffix"),
+                name: source.name + " " + AppLocalization.text("backup.imported_suffix"),
                 projectNumber: source.projectNumber + "-COPY",
                 customerName: source.customerName,
                 quoteLanguage: source.quoteLanguage,
@@ -191,6 +258,10 @@ enum BackupService {
                 currencyCode: currencyCode,
                 paperSize: paperSize
             )
+            if let sourceID = source.id {
+                guard projectIDMap[sourceID] == nil else { throw BackupError.corrupt }
+                projectIDMap[sourceID] = project.id
+            }
             project.taxPercentText = source.taxPercentText
             project.markupPercentText = source.markupPercentText
             project.profitMode = profitMode
@@ -249,6 +320,33 @@ enum BackupService {
             importedProjects.append(project)
         }
 
+        for source in envelope.payload.customers ?? [] {
+            guard !source.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { throw BackupError.corrupt }
+            let customer = CustomerEntity(name: source.name, email: source.email, phone: source.phone, address: source.address)
+            customer.createdAt = source.createdAt
+            importedCustomers.append(customer)
+        }
+
+        for source in envelope.payload.quoteSnapshots ?? [] {
+            guard let importedProjectID = projectIDMap[source.projectID],
+                  source.engineVersion > 0,
+                  !source.payload.isEmpty,
+                  source.payload.count <= 20_000_000 else { throw BackupError.corrupt }
+            importedSnapshots.append(QuoteSnapshotEntity(
+                projectID: importedProjectID,
+                createdAt: source.createdAt,
+                engineVersion: source.engineVersion,
+                payload: source.payload
+            ))
+        }
+
+        if let preferences = envelope.payload.preferences {
+            guard ["system", "en", "zh-Hans"].contains(preferences.languageCode),
+                  UnitSystem(rawValue: preferences.unitSystemRaw) != nil,
+                  CurrencyRules.normalizedCode(preferences.currencyCode) != nil,
+                  PaperSize(rawValue: preferences.paperSizeRaw) != nil else { throw BackupError.corrupt }
+        }
+
         for source in envelope.payload.priceBook ?? [] {
             guard let currency = CurrencyRules.normalizedCode(source.currencyCode),
                   let priceBasis = PriceBasis(rawValue: source.priceBasisRaw),
@@ -279,6 +377,8 @@ enum BackupService {
             importedMaterials.forEach(context.insert)
             importedProjects.forEach(context.insert)
             importedPrices.forEach(context.insert)
+            importedCustomers.forEach(context.insert)
+            importedSnapshots.forEach(context.insert)
 
             if let source = envelope.payload.company {
                 if shouldImportCompany {
@@ -299,10 +399,17 @@ enum BackupService {
             throw error
         }
 
-        return (envelope.payload.projects.count, envelope.payload.materials.count)
+        return .init(
+            projects: envelope.payload.projects.count,
+            materials: envelope.payload.materials.count,
+            customers: envelope.payload.customers?.count ?? 0,
+            quoteSnapshots: envelope.payload.quoteSnapshots?.count ?? 0,
+            preferences: envelope.payload.preferences
+        )
     }
 
     private static func decodeAndValidate(_ data: Data) throws -> BackupEnvelope {
+        guard !data.isEmpty, data.count <= 20_000_000 else { throw BackupError.corrupt }
         let decoder = JSONDecoder(); decoder.dateDecodingStrategy = .iso8601
         guard let envelope = try? decoder.decode(BackupEnvelope.self, from: data) else { throw BackupError.corrupt }
         guard supportedSchemaVersions.contains(envelope.schemaVersion) else { throw BackupError.unsupportedVersion }
@@ -361,7 +468,7 @@ enum BackupService {
 
     private static func projectBackup(_ project: ProjectEntity) -> ProjectBackup {
         .init(
-            name: project.name, projectNumber: project.projectNumber, customerName: project.customerName,
+            id: project.id, name: project.name, projectNumber: project.projectNumber, customerName: project.customerName,
             quoteLanguage: project.quoteLanguage, unitSystemRaw: project.unitSystemRaw, currencyCode: project.currencyCode,
             paperSizeRaw: project.paperSizeRaw, taxPercentText: project.taxPercentText, markupPercentText: project.markupPercentText, profitModeRaw: project.profitModeRaw,
             validDays: project.validDays, terms: project.terms, notes: project.notes, isArchived: project.isArchived,

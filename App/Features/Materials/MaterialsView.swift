@@ -45,11 +45,13 @@ struct MaterialsView: View {
                                 Text([entry.supplier, entry.region, entry.materialGrade].filter { !$0.isEmpty }.joined(separator: " · "))
                                     .font(.caption).foregroundStyle(.secondary).lineLimit(1)
                             }
+                            .layoutPriority(1)
                             Spacer()
                             VStack(alignment: .trailing) {
                                 Text(AppFormatters.decimal(entry.unitPrice, currencyCode: entry.currencyCode, locale: locale)).font(.subheadline.monospacedDigit())
                                 Text(entry.priceBasis.localizationKey).font(.caption).foregroundStyle(.secondary)
                             }
+                            .fixedSize(horizontal: true, vertical: false)
                         }
                     }
                     .buttonStyle(.plain)
@@ -90,12 +92,14 @@ struct MaterialsView: View {
     private func MaterialRow(material: MaterialEntity) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 3) {
-                if let key = material.nameKey { Text(LocalizedStringKey(key)).font(.headline) } else { Text(material.name).font(.headline) }
+                if let key = material.nameKey { Text(LocalizedStringKey(key)).font(.headline).lineLimit(2) } else { Text(material.name).font(.headline).lineLimit(2) }
                 Text(material.isBuiltIn ? "materials.preset" : "materials.custom.label").font(.caption).foregroundStyle(.secondary)
             }
+            .layoutPriority(1)
             Spacer()
             Text("\(AppFormatters.number(material.densityKgPerM3, maximumFractionDigits: 1, locale: locale)) kg/m³")
                 .font(.subheadline.monospacedDigit())
+                .fixedSize(horizontal: true, vertical: false)
         }
         .padding(.vertical, 3)
         .contentShape(Rectangle())
@@ -120,6 +124,7 @@ private enum CatalogDeletion {
 private struct PriceBookEditorSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.locale) private var locale
     var entry: PriceBookEntryEntity?
     let materials: [MaterialEntity]
     @AppStorage("app.currency") private var defaultCurrency = "USD"
@@ -136,7 +141,7 @@ private struct PriceBookEditorSheet: View {
     @State private var note = ""
 
     private var normalizedCurrency: String? { CurrencyRules.normalizedCode(currency) }
-    private var validPrice: Decimal? { PricingInputValidator.nonnegative(price) }
+    private var validPrice: Decimal? { PricingInputValidator.nonnegative(price, locale: locale) }
     private var canSave: Bool {
         !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && normalizedCurrency != nil && validPrice != nil
     }
@@ -148,7 +153,7 @@ private struct PriceBookEditorSheet: View {
                 Picker("calculator.material", selection: $materialID) {
                     Text("price_book.any_material").tag("")
                     ForEach(materials) { material in
-                        Text(material.nameKey.map { String(localized: String.LocalizationValue($0)) } ?? material.name).tag(material.id)
+                        Text(material.nameKey.map { AppLocalization.text($0, locale: locale) } ?? material.name).tag(material.id)
                     }
                 }
                 TextField("calculator.material_grade", text: $grade)
@@ -236,6 +241,7 @@ private struct PriceBookEditorSheet: View {
 private struct MaterialEditorSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.locale) private var locale
     var material: MaterialEntity?
     @State private var name = ""
     @State private var density = "7850"
@@ -263,7 +269,7 @@ private struct MaterialEditorSheet: View {
             .onAppear {
                 guard let material else { return }
                 name = material.name
-                density = AppFormatters.number(material.densityKgPerM3, maximumFractionDigits: 2)
+                density = AppFormatters.number(material.densityKgPerM3, maximumFractionDigits: 2, locale: locale)
                 note = material.note
             }
             .alert("materials.invalid_density", isPresented: $validationError) { Button("common.ok", role: .cancel) {} }
@@ -271,7 +277,7 @@ private struct MaterialEditorSheet: View {
     }
 
     private func save() {
-        guard let value = DecimalParser.double(density), value.finitePositive, value < 100_000 else { validationError = true; return }
+        guard let value = DecimalParser.double(density, locale: locale), value.finitePositive, value < 100_000 else { validationError = true; return }
         if let material {
             material.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
             material.densityKgPerM3 = value

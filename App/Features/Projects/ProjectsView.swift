@@ -3,10 +3,12 @@ import SwiftData
 
 struct ProjectsView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.locale) private var locale
     @Query(sort: \ProjectEntity.updatedAt, order: .reverse) private var projects: [ProjectEntity]
     @State private var showArchived = false
     @State private var showNewProject = false
     @State private var showProLimit = false
+    @State private var showProFeatureLimit = false
     @State private var purchaseManager = PurchaseManager.shared
 
     private var visibleProjects: [ProjectEntity] { projects.filter { $0.isArchived == showArchived } }
@@ -65,6 +67,7 @@ struct ProjectsView: View {
         }
         .sheet(isPresented: $showNewProject) { ProjectEditorSheet() }
         .alert("purchase.limit.title", isPresented: $showProLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.projects") }
+        .alert("purchase.limit.title", isPresented: $showProFeatureLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.duplicate") }
     }
 
     private func attemptNewProject() {
@@ -74,6 +77,10 @@ struct ProjectsView: View {
     }
 
     private func duplicate(_ source: ProjectEntity) {
+        guard purchaseManager.isPro else {
+            showProFeatureLimit = true
+            return
+        }
         if !ProPolicy.canActivateProject(
             activeProjectCount: projects.filter({ !$0.isArchived }).count,
             isPro: purchaseManager.isPro
@@ -82,7 +89,7 @@ struct ProjectsView: View {
             return
         }
         let copy = ProjectEntity(
-            name: source.name + " " + String(localized: "project.copy_suffix"),
+            name: source.name + " " + AppLocalization.text("project.copy_suffix", locale: locale),
             customerName: source.customerName,
             quoteLanguage: source.quoteLanguage,
             unitSystem: source.unitSystem,
@@ -135,16 +142,16 @@ private struct ProjectRow: View {
         let summary = ProjectCalculator.summarize(project)
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text(project.name).font(.headline)
+                Text(project.name).font(.headline).lineLimit(2).layoutPriority(1)
                 Spacer()
                 Text(AppFormatters.decimal(summary.pricing.total, currencyCode: project.currencyCode, locale: locale))
-                    .font(.subheadline.weight(.semibold)).monospacedDigit()
+                    .font(.subheadline.weight(.semibold)).monospacedDigit().fixedSize(horizontal: true, vertical: false)
             }
             HStack(spacing: 8) {
-                Text(project.projectNumber)
-                if !project.customerName.isEmpty { Text("•"); Text(project.customerName) }
+                Text(project.projectNumber).lineLimit(1)
+                if !project.customerName.isEmpty { Text("•"); Text(project.customerName).lineLimit(1) }
                 Spacer()
-                Text(String.localizedStringWithFormat(String(localized: "project.item_count"), project.items.count))
+                Text(AppLocalization.count("project.item_count", value: project.items.count, locale: locale)).fixedSize(horizontal: true, vertical: false)
             }
             .font(.caption).foregroundStyle(.secondary)
         }
@@ -155,9 +162,11 @@ private struct ProjectRow: View {
 struct ProjectEditorSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.locale) private var locale
     @AppStorage("app.unitSystem") private var defaultUnitRaw = UnitSystem.metric.rawValue
     @AppStorage("app.currency") private var defaultCurrency = "USD"
     @AppStorage("app.language") private var appLanguage = "system"
+    @AppStorage("app.paper") private var defaultPaperRaw = PaperSize.a4.rawValue
     @State private var name = ""
     @State private var customer = ""
     @State private var currency = "USD"
@@ -207,8 +216,8 @@ struct ProjectEditorSheet: View {
             .onAppear {
                 currency = defaultCurrency
                 unitSystem = UnitSystem(rawValue: defaultUnitRaw) ?? .metric
-                quoteLanguage = appLanguage == "zh-Hans" ? "zh-Hans" : "en"
-                paper = unitSystem == .metric ? .a4 : .letter
+                quoteLanguage = appLanguage == "zh-Hans" || (appLanguage == "system" && locale.language.languageCode?.identifier == "zh") ? "zh-Hans" : "en"
+                paper = PaperSize(rawValue: defaultPaperRaw) ?? .a4
             }
         }
     }

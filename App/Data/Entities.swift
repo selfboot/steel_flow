@@ -331,11 +331,11 @@ final class QuoteSnapshotEntity {
     var engineVersion: Int
     var payload: Data
 
-    init(projectID: UUID, payload: Data) {
-        self.id = UUID()
+    init(id: UUID = UUID(), projectID: UUID, createdAt: Date = .now, engineVersion: Int = CalculationEngine.version, payload: Data) {
+        self.id = id
         self.projectID = projectID
-        self.createdAt = .now
-        self.engineVersion = CalculationEngine.version
+        self.createdAt = createdAt
+        self.engineVersion = engineVersion
         self.payload = payload
     }
 }
