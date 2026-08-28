@@ -241,8 +241,8 @@ SteelFlow is a pocket material calculator and quoting tool for fabricators, meta
 
 ### 首轮价格假设
 
-- 中国大陆：¥68–98。
-- 美国：US$14.99–19.99。
+- 中国大陆标准价：¥58；可选 30–45 天首发价 ¥38。
+- 美国标准价：US$14.99；可选 30–45 天首发价 US$9.99。
 - 其他市场使用 App Store 分区定价，不直接按汇率硬换算。
 
 最终价格必须通过真实报价任务和价格选择测试验证。
@@ -314,5 +314,5 @@ SteelFlow is a pocket material calculator and quoting tool for fabricators, meta
 
 1. **验证原型（1–2 周）**：5 种型材、计算详情、单项目报价样例。
 2. **Alpha（3–5 周）**：完整计算引擎、项目、本地材料和双语基础 UI。
-3. **Beta（2–3 周）**：PDF/CSV、备份、StoreKit、iPad、无障碍与本地化 QA。
+3. **Beta（2–3 周）**：PDF/CSV、备份、RevenueCat/StoreKit、iPad、无障碍与本地化 QA。
 4. **Release candidate（1–2 周）**：100+ 参考案例、真实报价回归、隐私与商店材料。

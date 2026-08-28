@@ -4,6 +4,7 @@ import Observation
 
 @main
 struct SteelFlowApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     @AppStorage("app.language") private var languageCode = "system"
     @State private var dataStore = AppDataStore()
 
@@ -27,6 +28,11 @@ struct SteelFlowApp: App {
                 }
             }
             .environment(\.locale, languageCode == "system" ? .autoupdatingCurrent : Locale(identifier: languageCode))
+            .task { await PurchaseManager.shared.refreshEntitlement() }
+            .onChange(of: scenePhase) { _, phase in
+                guard phase == .active else { return }
+                Task { await PurchaseManager.shared.refreshEntitlement() }
+            }
         }
     }
 

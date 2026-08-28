@@ -49,15 +49,20 @@ struct SettingsView: View {
                 HStack {
                     Label(purchaseManager.isPro ? "purchase.pro_active" : "purchase.free", systemImage: purchaseManager.isPro ? "checkmark.seal.fill" : "seal")
                     Spacer()
-                    if let product = purchaseManager.product, !purchaseManager.isPro { Text(product.displayPrice).foregroundStyle(.secondary) }
+                    if let price = purchaseManager.localizedPrice, !purchaseManager.isPro { Text(price).foregroundStyle(.secondary) }
                 }
                 if !purchaseManager.isPro {
                     Button("purchase.buy") { Task { await purchaseManager.purchase() } }
-                        .disabled(purchaseManager.product == nil || purchaseManager.isLoading)
+                        .disabled(!purchaseManager.isPurchaseAvailable || purchaseManager.isLoading)
                 }
                 Button("purchase.restore") { Task { await purchaseManager.restore() } }
                     .disabled(purchaseManager.isLoading)
                 if purchaseManager.isLoading { ProgressView() }
+                if let message = purchaseManager.availabilityMessage {
+                    Label(message, systemImage: "exclamationmark.triangle")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
                 Text("purchase.help").font(.caption).foregroundStyle(.secondary)
             }
 
@@ -98,9 +103,9 @@ struct SettingsView: View {
         .onChange(of: currencyDraft) { _, value in
             if let code = CurrencyRules.normalizedCode(value) { currencyCode = code }
         }
-        .alert("purchase.error", isPresented: Binding(get: { purchaseManager.errorMessage != nil }, set: { if !$0 { purchaseManager.errorMessage = nil } })) {
+        .alert(purchaseManager.alertTitle, isPresented: Binding(get: { purchaseManager.alertMessage != nil }, set: { if !$0 { purchaseManager.alertMessage = nil } })) {
             Button("common.ok", role: .cancel) {}
-        } message: { Text(purchaseManager.errorMessage ?? "") }
+        } message: { Text(purchaseManager.alertMessage ?? "") }
     }
 
     private func exportBackup() {

@@ -41,6 +41,12 @@
 	<string>public.app-category.utilities</string>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>RevenueCatAPIKey</key>
+	<string>$(REVENUECAT_API_KEY)</string>
+	<key>RevenueCatEntitlementID</key>
+	<string>$(REVENUECAT_ENTITLEMENT_ID)</string>
+	<key>RevenueCatProxyURL</key>
+	<string>$(REVENUECAT_PROXY_URL)</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchScreen</key>

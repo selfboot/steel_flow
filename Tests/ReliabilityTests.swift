@@ -18,6 +18,18 @@ final class ReliabilityTests: XCTestCase {
         XCTAssertFalse(PurchaseManager.resolvedEntitlement(hasVerifiedCurrentEntitlement: false))
     }
 
+    func testRevenueCatKeyValidationAllowsAppleKeysInEveryBuild() {
+        XCTAssertTrue(PurchaseManager.isAcceptableAPIKey(" appl_public_key ", debugBuild: true))
+        XCTAssertTrue(PurchaseManager.isAcceptableAPIKey("appl_public_key", debugBuild: false))
+    }
+
+    func testRevenueCatKeyValidationNeverShipsTestStoreKey() {
+        XCTAssertTrue(PurchaseManager.isAcceptableAPIKey("test_public_key", debugBuild: true))
+        XCTAssertFalse(PurchaseManager.isAcceptableAPIKey("test_public_key", debugBuild: false))
+        XCTAssertFalse(PurchaseManager.isAcceptableAPIKey("REVENUECAT_API_KEY_NOT_CONFIGURED", debugBuild: true))
+        XCTAssertFalse(PurchaseManager.isAcceptableAPIKey("", debugBuild: false))
+    }
+
     func testPersistenceErrorCenterReportsFailureAndClearsAfterSuccess() {
         let center = PersistenceErrorCenter()
         XCTAssertFalse(center.perform { throw TestFailure.expected })

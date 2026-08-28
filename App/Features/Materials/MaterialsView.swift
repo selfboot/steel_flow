@@ -78,7 +78,7 @@ struct MaterialsView: View {
         .sheet(isPresented: $showNewPrice) { PriceBookEditorSheet(materials: materials) }
         .sheet(item: $editingPrice) { PriceBookEditorSheet(entry: $0, materials: materials) }
         .alert("purchase.limit.title", isPresented: $showProLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.materials") }
-        .confirmationDialog("delete.confirm.title", isPresented: $showDeleteConfirmation, titleVisibility: .visible) {
+        .alert("delete.confirm.title", isPresented: $showDeleteConfirmation) {
             Button("common.delete", role: .destructive) { confirmDeletion() }
             Button("common.cancel", role: .cancel) { pendingDeletion = nil }
         } message: {

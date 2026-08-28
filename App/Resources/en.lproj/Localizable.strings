@@ -209,6 +209,14 @@
 "purchase.restore" = "Restore purchase";
 "purchase.help" = "A one-time purchase unlocks unlimited projects, custom materials, and full exports. No account is required.";
 "purchase.error" = "Purchase unavailable";
+"purchase.configuration_missing" = "Purchases are not configured for this build.";
+"purchase.product_missing" = "SteelFlow Pro is not attached to the current RevenueCat offering yet.";
+"purchase.pending.title" = "Purchase pending";
+"purchase.pending.message" = "The App Store is waiting for approval or payment confirmation. Pro will unlock automatically when it completes.";
+"purchase.restore.success.title" = "Purchase restored";
+"purchase.restore.success.message" = "SteelFlow Pro is unlocked on this device.";
+"purchase.restore.empty.title" = "No purchase found";
+"purchase.restore.empty.message" = "No active SteelFlow Pro purchase was found for this Apple Account.";
 "purchase.limit.title" = "SteelFlow Pro required";
 "purchase.limit.projects" = "The free plan supports up to 2 active projects. Archive a project or unlock Pro in Settings.";
 "purchase.limit.items" = "The free plan supports up to 10 items per project. Unlock Pro in Settings for unlimited items.";

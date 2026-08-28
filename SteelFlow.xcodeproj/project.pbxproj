@@ -30,6 +30,7 @@
 		97102A47AC4F2AB0C4B4178E /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76992118BBD184811B6D777B /* LocalizationTests.swift */; };
 		990941C2F2D6480037294BB6 /* BackupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05629230A45CD002AE1E1A28 /* BackupService.swift */; };
 		9B2E0BAC82A75072ECA16AD9 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D061E5DC539665CC7AF3A6 /* SeedData.swift */; };
+		9DC2DF01590C38F7A0CB780B /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = EFA69638395E81CE3B41DB72 /* RevenueCat */; };
 		A03DCA5F4A71F2709B6B391F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B19861521A39EBAEF3AA5197 /* PrivacyInfo.xcprivacy */; };
 		A743C0CEE17D5C58EA4C6BD6 /* QuotePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB72DAC0E640709F9F71F69 /* QuotePreviewView.swift */; };
 		A7702DAEB3339ED5200EB12C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8EAF6E9F63DE40D35557AAC /* Assets.xcassets */; };
@@ -107,6 +108,17 @@
 		F971DACC1BB58B485E6418EE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		FA345B7BEA8F82C77DBEF253 /* Money.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9DD8EABD86D75BCAB76A825B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9DC2DF01590C38F7A0CB780B /* RevenueCat in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		1997A5267D0BAE758E972886 /* App */ = {
@@ -328,6 +340,7 @@
 			buildPhases = (
 				5F03A32302E597D7FB218DA3 /* Sources */,
 				A65119C7E607822429BC4592 /* Resources */,
+				9DD8EABD86D75BCAB76A825B /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -335,6 +348,7 @@
 			);
 			name = SteelFlow;
 			packageProductDependencies = (
+				EFA69638395E81CE3B41DB72 /* RevenueCat */,
 			);
 			productName = SteelFlow;
 			productReference = 792027DA62C1260C0745FAD1 /* SteelFlow.app */;
@@ -393,6 +407,9 @@
 			);
 			mainGroup = 2708428C13072C6C599360BE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FBB0BFD4F61BC998A8511F9B /* XCRemoteSwiftPackageReference "purchases-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3BA8C258C2249467B75545A3 /* Products */;
 			projectDirPath = "";
@@ -570,6 +587,9 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REVENUECAT_API_KEY = REVENUECAT_API_KEY_NOT_CONFIGURED;
+				REVENUECAT_ENTITLEMENT_ID = pro;
+				REVENUECAT_PROXY_URL = "https://api.rc-backup.com/";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -631,6 +651,9 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REVENUECAT_API_KEY = REVENUECAT_API_KEY_NOT_CONFIGURED;
+				REVENUECAT_ENTITLEMENT_ID = pro;
+				REVENUECAT_PROXY_URL = "https://api.rc-backup.com/";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -798,6 +821,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FBB0BFD4F61BC998A8511F9B /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
+			requirement = {
+				kind = exactVersion;
+				version = 5.85.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EFA69638395E81CE3B41DB72 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FBB0BFD4F61BC998A8511F9B /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 055324803513304B30EC360F /* Project object */;
 }

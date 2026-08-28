@@ -22,11 +22,11 @@ xcodebuild -project SteelFlow.xcodeproj -scheme SteelFlow \
   -derivedDataPath Build/DerivedData CODE_SIGNING_ALLOWED=NO test
 ```
 
-StoreKit 商品 ID 为 `com.steelflow.app.pro.lifetime`。接入 App Store Connect 前，请替换 Bundle ID、开发团队、商品配置和正式隐私政策地址。
+RevenueCat 使用 StoreKit 2 管理一次性 Pro。商品 ID 为 `com.steelflow.app.pro.lifetime`，entitlement 为 `pro`。运行购买流程前需按 [RevenueCat 配置指南](./Product/RevenueCat-Setup.md)提供本 App 专属的公开 SDK key；仓库不保存真实密钥。
 
 ## 工程目录
 
-- `App/`：SwiftUI、SwiftData、计算引擎、PDF/CSV、备份、StoreKit 与双语资源。
+- `App/`：SwiftUI、SwiftData、计算引擎、PDF/CSV、备份、RevenueCat/StoreKit 与双语资源。
 - `Tests/`：公式、单位、金额、项目、PDF/CSV 和备份测试。
 - `UITests/`：核心计算与四个主导航的 UI 验收。
 - `project.yml`：XcodeGen 工程定义；`SteelFlow.xcodeproj` 可随时重新生成。
@@ -45,8 +45,8 @@ StoreKit 商品 ID 为 `com.steelflow.app.pro.lifetime`。接入 App Store Conne
 - 用户录入供应商价、离线历史参考价格库、价格来源/地区/牌号/日期追溯；不把期货行情当作采购价，也不会自动联网改价。
 - 改币种时显式选择保留数字、按手工汇率换算或清空金额；每次导出保存不可变报价快照。
 - 带 schema 版本和 SHA-256 校验的完整备份，导入前预览并复制导入。
-- StoreKit 2 一次性 Pro、购买恢复和离线权益缓存。
-- 无第三方 SDK、无广告、无账号、无自有后端；隐私清单声明不收集数据。
+- RevenueCat + StoreKit 2 一次性 Pro、购买恢复、权益撤销监听和离线权益缓存。
+- 无广告、无账号、无自有业务后端；项目和报价内容保持本地。购买历史由 RevenueCat 以匿名 App User ID 处理，隐私清单已按“未关联用户、不用于跟踪”披露。
 
 ## 产品文档
 
@@ -54,6 +54,8 @@ StoreKit 商品 ID 为 `com.steelflow.app.pro.lifetime`。接入 App Store Conne
 - [Technical specification](./Product/Technical-Spec.md)
 - [Design specification](./Product/Design-Spec.md)
 - [Implementation status](./Product/Implementation-Status.md)
+- [RevenueCat setup](./Product/RevenueCat-Setup.md)
+- [Competitor pricing research](./Product/AppStore/Pricing-Research-2026-08-28.md)
 - [Interactive design prototype](./Product/Design/SteelFlow-Prototype.html)
 
 产品承诺：从尺寸到重量、成本和报价单，一次完成，结果可核对。

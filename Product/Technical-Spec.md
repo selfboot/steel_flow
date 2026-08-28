@@ -7,7 +7,7 @@
 | 目标系统 | iOS/iPadOS 17+ |
 | UI | SwiftUI |
 | 持久化 | SwiftData |
-| 商业化 | StoreKit 2，一次买断 |
+| 商业化 | RevenueCat + StoreKit 2，一次买断 |
 | 后端 | v1 无 |
 
 ## 1. 技术目标
@@ -25,7 +25,8 @@
 - Swift 6 language mode where practical.
 - SwiftUI：界面和跨 iPhone/iPad 布局。
 - SwiftData：项目、条目、材料、客户和设置。
-- StoreKit 2：Pro 非消耗型购买及恢复。
+- RevenueCat iOS SDK 5.85.0：商品方案、购买恢复和 `pro` entitlement。
+- StoreKit 2：RevenueCat 5 默认使用的 Apple 支付底层。
 - Core Graphics + PDFKit：PDF 生成和预览。
 - UniformTypeIdentifiers：CSV、JSON 备份和文档分享。
 - Foundation `Measurement`、`FormatStyle`、`Locale`、`Decimal`。
@@ -34,7 +35,7 @@
 
 ### 第三方依赖
 
-v1 默认零第三方运行时依赖。公式、PDF 和 CSV 自有实现。这样可以降低 SDK 隐私披露、联网行为、供应链和备案不确定性。
+v1 仅有 RevenueCat 一个第三方运行时依赖，且只参与购买和权益管理。公式、PDF、CSV、项目数据和客户数据均不经过 RevenueCat。SDK 使用 Swift Package Manager 精确锁定版本，并随 App 的隐私清单和 SBOM 记录。
 
 如确需引入依赖，必须满足：
 
@@ -368,26 +369,28 @@ item_id,profile_kind,description,material,density_kg_m3,length_value,length_unit
 - 数字使用 `.` 作为机器小数点，不写本地千分位。
 - 单位和币种单独列，不混进数字字符串。
 
-## 11. StoreKit 2
+## 11. RevenueCat + StoreKit 2
 
-产品：`com.example.steelflow.pro.lifetime`（正式 Bundle ID 确定后替换）。
+产品：`com.steelflow.app.pro.lifetime`；RevenueCat entitlement：`pro`；offering：`default`。
 
 - 非消耗型购买。
-- `Transaction.currentEntitlements` 作为真值。
+- `CustomerInfo.entitlements["pro"].isActive` 作为 App 内权益真值；RevenueCat 从 Apple 收据同步底层交易。
 - 本地缓存最近已验证 entitlement，使离线用户持续使用。
-- 启动、前台恢复、购买完成和手动恢复时更新状态。
-- 不自建账号或服务器收据系统。
+- 启动、前台恢复、购买完成、CustomerInfo 更新和手动恢复时更新状态。
+- 使用 RevenueCat 匿名 App User ID，不建立 SteelFlow 账号，也不上传项目/报价内容。
+- 中国大陆用户占比较高，SDK 在 configure 前使用 RevenueCat 官方备用 API 域名 `https://api.rc-backup.com/`。
+- Debug 可使用 `test_` Test Store key；Release 只接受 `appl_` Apple public SDK key，避免测试密钥进入正式包。
 - Free 限制只影响保存/导出，不阻止用户完成基础计算。
 
 ## 12. 隐私与安全
 
 - 不收集项目、客户、报价、材料和计算内容。
-- 无广告、分析或远程配置 SDK。
+- 无广告、行为分析或远程配置 SDK；RevenueCat 仅处理购买和匿名权益分析。
 - OSLog 禁止记录客户名、金额、尺寸和文件路径。
 - 备份由用户主动导出；分享后由目标应用负责存储。
 - 公司 Logo 使用 app sandbox，删除公司资料时一并清除未引用资源。
 - 提供全部数据删除，并在删除前显示对象数量。
-- 隐私政策明确说明 StoreKit/Apple 可能处理购买数据，但 App 开发者不建立业务数据账户。
+- 隐私政策与 App Privacy 明确披露 Apple 和 RevenueCat 处理购买历史；该数据不关联用户身份、不用于跨 App 跟踪。
 
 ## 13. UI 状态与并发
 
@@ -489,7 +492,7 @@ v1 核心功能完全离线：不提供行情、账号、云端模板、AI、广
 
 ### Phase 3：商业化与 QA
 
-- StoreKit 2、免费限制、恢复购买。
+- RevenueCat/StoreKit 2、免费限制、恢复购买。
 - iPad、无障碍、性能、本地化和真机验证。
 - App Store 隐私、截图、审核说明和中国区合规确认。
 

@@ -9,7 +9,13 @@
     "price": "Free",
     "copyright": "© 2026 SteelFlow",
     "privacy": {
-      "dataCollection": "Data Not Collected",
+      "dataCollection": {
+        "type": "Purchase History",
+        "purposes": ["App Functionality", "Analytics"],
+        "linkedToIdentity": false,
+        "usedForTracking": false,
+        "note": "RevenueCat processes anonymous purchase and entitlement information; project and quote content is not collected."
+      },
       "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy",
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow"
@@ -36,7 +42,12 @@
   "inAppPurchase": {
     "productId": "com.steelflow.app.pro.lifetime",
     "type": "Non-Consumable",
-    "launchPriceHypothesis": {"CNY": 68, "USD": 14.99},
+    "pricing": {
+      "model": "Free + Non-Consumable Lifetime Pro",
+      "standard": {"CNY": 58, "USD": 14.99},
+      "launchWindow": {"durationDays": "30-45", "CNY": 38, "USD": 9.99},
+      "note": "Use territory-specific App Store price points; do not auto-convert from one base currency."
+    },
     "localizations": {
       "en-US": {"displayName": "SteelFlow Pro Lifetime", "description": "Unlimited projects, quotes, and full exports"},
       "zh-Hans": {"displayName": "SteelFlow Pro 永久版", "description": "无限项目、自定义报价与完整导出"}

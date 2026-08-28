@@ -209,6 +209,14 @@
 "purchase.restore" = "恢复购买";
 "purchase.help" = "一次性购买可解锁无限项目、自定义材料和完整导出，无需注册账号。";
 "purchase.error" = "购买暂不可用";
+"purchase.configuration_missing" = "当前构建尚未配置购买服务。";
+"purchase.product_missing" = "SteelFlow Pro 尚未加入 RevenueCat 当前商品方案。";
+"purchase.pending.title" = "购买待处理";
+"purchase.pending.message" = "App Store 正在等待批准或付款确认，完成后会自动解锁 Pro。";
+"purchase.restore.success.title" = "已恢复购买";
+"purchase.restore.success.message" = "此设备已解锁 SteelFlow Pro。";
+"purchase.restore.empty.title" = "未找到购买记录";
+"purchase.restore.empty.message" = "当前 Apple 账户没有有效的 SteelFlow Pro 购买记录。";
 "purchase.limit.title" = "需要 SteelFlow Pro";
 "purchase.limit.projects" = "免费版最多支持 2 个进行中的项目。可以先归档项目，或在设置中解锁 Pro。";
 "purchase.limit.items" = "免费版每个项目最多支持 10 个条目。在设置中解锁 Pro 可取消限制。";

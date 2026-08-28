@@ -3,6 +3,7 @@
 本目录包含 2026-08-28 准备的双语上架素材：
 
 - `ASO-Research-2026-08-28.md`：中国大陆、美国及英语市场交叉验证的关键词与竞品报告。
+- `Pricing-Research-2026-08-28.md`：同类买断、订阅与广告模式对比，以及 SteelFlow 分区定价建议。
 - `Metadata/metadata.json`：可复制到 App Store Connect 的结构化字段和 IAP 文案。
 - `Metadata/en-US.md`、`Metadata/zh-Hans.md`：完整商店描述。
 - `LegalSite/`：待同步到 `docs.puzzles-game.com` 的中英文产品、支持与隐私政策页面。
@@ -17,8 +18,10 @@
 提交前待办：
 
 1. 将 `LegalSite/` 同步发布到 `docs.puzzles-game.com` 并检查 6 个页面返回 200。
-2. 在 App Store Connect 创建 `com.steelflow.app.pro.lifetime` 非消耗型项目并配置分区价格。
-3. 用 TestFlight 对中英文、购买恢复、PDF/CSV 分享和 iPad 布局做最终 QA。
+2. 在 App Store Connect 创建 `com.steelflow.app.pro.lifetime` 非消耗型项目：标准价建议 USD 14.99 / CNY 58；可用 30–45 天首发价 USD 9.99 / CNY 38。
+3. 在 RevenueCat 配置 `pro` entitlement、`default` offering、lifetime package 和 Apple In-App Purchase Key，再注入本 App 专属公开 SDK key。
+4. App Privacy 选择 Purchase History，用途为 App Functionality 与 Analytics；不关联身份，不跟踪。
+5. 用 TestFlight 对中英文、首购/取消/恢复/退款、PDF/CSV 分享和 iPad 布局做最终 QA。
 
 ## 重新生成
 

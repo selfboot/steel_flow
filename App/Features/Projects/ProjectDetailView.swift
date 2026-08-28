@@ -81,7 +81,7 @@ struct ProjectDetailView: View {
         .sheet(isPresented: $showEdit) { ProjectSettingsSheet(project: project) }
         .sheet(isPresented: $showQuote) { QuotePreviewView(project: project) }
         .sheet(isPresented: $showBulkPricing) { BulkPricingSheet(project: project) }
-        .confirmationDialog("delete.confirm.title", isPresented: $showDeleteConfirmation, titleVisibility: .visible) {
+        .alert("delete.confirm.title", isPresented: $showDeleteConfirmation) {
             Button("common.delete", role: .destructive) { confirmDeleteItems() }
             Button("common.cancel", role: .cancel) { pendingDeleteItems = [] }
         } message: {
