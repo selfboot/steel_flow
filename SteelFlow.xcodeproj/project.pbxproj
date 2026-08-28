@@ -338,6 +338,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 09B73A8F97509B2ED8F336B3 /* Build configuration list for PBXNativeTarget "SteelFlow" */;
 			buildPhases = (
+				9A5380EEE9C97223285C5096 /* Validate RevenueCat release configuration */,
 				5F03A32302E597D7FB218DA3 /* Sources */,
 				A65119C7E607822429BC4592 /* Resources */,
 				9DD8EABD86D75BCAB76A825B /* Frameworks */,
@@ -390,6 +391,11 @@
 					D079574452BE52757D20C1AC = {
 						DevelopmentTeam = 4Z5Z5TE9EX;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
 					};
 					F2F631E0456A15C58B2C91A7 = {
 						DevelopmentTeam = 4Z5Z5TE9EX;
@@ -443,6 +449,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9A5380EEE9C97223285C5096 /* Validate RevenueCat release configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Validate RevenueCat release configuration";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/sh \"$SRCROOT/tools/validate_revenuecat_configuration.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5F03A32302E597D7FB218DA3 /* Sources */ = {

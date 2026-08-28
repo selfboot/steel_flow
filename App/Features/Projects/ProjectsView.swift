@@ -27,6 +27,14 @@ struct ProjectsView: View {
                         NavigationLink { ProjectDetailView(project: project) } label: { ProjectRow(project: project) }
                             .swipeActions(edge: .trailing) {
                                 Button {
+                                    if project.isArchived,
+                                       !ProPolicy.canActivateProject(
+                                        activeProjectCount: projects.filter({ !$0.isArchived }).count,
+                                        isPro: purchaseManager.isPro
+                                       ) {
+                                        showProLimit = true
+                                        return
+                                    }
                                     project.isArchived.toggle()
                                     project.updatedAt = .now
                                     PersistenceErrorCenter.shared.save(modelContext)
@@ -61,12 +69,15 @@ struct ProjectsView: View {
 
     private func attemptNewProject() {
         let activeCount = projects.filter { !$0.isArchived }.count
-        if !purchaseManager.isPro && activeCount >= ProPolicy.freeActiveProjectLimit { showProLimit = true }
+        if !ProPolicy.canActivateProject(activeProjectCount: activeCount, isPro: purchaseManager.isPro) { showProLimit = true }
         else { showNewProject = true }
     }
 
     private func duplicate(_ source: ProjectEntity) {
-        if !purchaseManager.isPro && projects.filter({ !$0.isArchived }).count >= ProPolicy.freeActiveProjectLimit {
+        if !ProPolicy.canActivateProject(
+            activeProjectCount: projects.filter({ !$0.isArchived }).count,
+            isPro: purchaseManager.isPro
+        ) {
             showProLimit = true
             return
         }

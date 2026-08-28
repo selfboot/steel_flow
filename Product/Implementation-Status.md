@@ -16,16 +16,16 @@
 | FR-007 PDF 报价 | 完成 | 中英文、A4/Letter、多页重复表头、末页总计安全区、公司/客户/有效期/条款、不可变报价快照和系统分享。 |
 | FR-008 CSV | 完成 | 固定机器字段、UTF-8 BOM、面积/体积/损耗/价格来源/费用及项目汇总、独立数字/单位/币种列和系统分享。 |
 | FR-009 本地化 | 完成 | 简体中文/English，界面语言和报价语言分离；关键动态键自动化测试。 |
-| FR-010 数据可移植性 | 完成 | schema v1、SHA-256 校验、导入前数量预览、复制导入、不覆盖现有项目和公司资料；语义校验全部通过后才执行原子提交。 |
-| FR-011 购买 | 代码完成，待外部配置 | RevenueCat + StoreKit 2 非消耗型购买、恢复、匿名权益验证、CustomerInfo 更新监听和离线缓存；退款或撤销会收回 Pro，免费限制不阻断基础计算。待填入本 App 的公开 SDK key 并完成 Dashboard/App Store Connect 联调。 |
+| FR-010 数据可移植性 | 完成 | schema v2（继续读取 v1）、稳定 JSON 编码、SHA-256 校验、导入前数量预览、复制导入、不覆盖现有项目和公司资料；枚举、几何、密度、数量、损耗和价格等语义校验全部通过后才执行原子提交，并兼容旧版本地几何记录。 |
+| FR-011 购买 | 代码完成，待外部配置 | RevenueCat + StoreKit 2 非消耗型购买、恢复、匿名权益验证、CustomerInfo 更新监听和离线缓存；退款或撤销会收回 Pro，免费限制不阻断基础计算。工程已启用 In-App Purchase capability，Release 构建会拦截占位/测试/畸形 SDK key。待填入本 App 的公开 SDK key 并完成 Dashboard/App Store Connect 联调。 |
 
 ## 质量门槛
 
-- Debug：51 项测试通过，覆盖领域计算、100 条参考语料、所有计价单位损耗、币种舍入与迁移、Markup/Margin、非法价格、价格历史、备份原子性、数据库启动恢复、RevenueCat key 发布保护、Pro 权益撤销、PDF 分页、CSV 汇总、报价快照、本地化，以及核心导航、最大辅助字号、中文小屏报价和安全删除 UI 流程。
-- Release：RevenueCat 5.85.0 集成后的 iOS Simulator arm64/x86_64 无签名构建通过；正式购买仍需 App 专属 key 与 Sandbox/TestFlight 联调。
+- Debug：57 项测试通过（48 项单元测试 + 9 项 UI 测试），覆盖领域计算、100 条参考语料、所有计价单位损耗、币种舍入与迁移、Markup/Margin、非法价格、价格历史、稳定备份 checksum、旧数据兼容、备份原子性、数据库启动恢复、RevenueCat key 发布保护、Pro 权益撤销、免费项目限制、PDF 分页、CSV 汇总、报价快照、本地化，以及核心导航、最大辅助字号、中文小屏报价和安全删除 UI 流程。
+- Release：RevenueCat 5.85.0 集成后的 iOS Simulator arm64/x86_64 无签名构建通过；占位 key 的 Release 构建已验证会失败，格式合法 key 的构建已验证会放行。正式购买仍需 App 专属 key 与 Sandbox/TestFlight 联调。
 - 运行时：iPhone 16 Pro / iOS 18.2 中文界面启动通过；iPad Pro 11-inch / iOS 18.2 英文界面启动通过。
 - 视觉：iPhone SE 标准字号/AX5 最大辅助字号、深色模式、横屏、中文报价及 iPad 四列自适应布局均完成截图检查。
-- 隐私：无广告、账号或自有业务后端；项目、客户和报价内容不上传。`PrivacyInfo.xcprivacy` 披露 RevenueCat 处理购买历史用于 App 功能和分析，未关联身份且不用于跟踪。
+- 隐私：无广告、账号或自有业务后端；项目、客户和报价内容不上传。`PrivacyInfo.xcprivacy` 披露 RevenueCat 处理购买历史用于 App 功能和分析，未关联身份且不用于跟踪；同时为 App 自身的 UserDefaults 使用声明 `CA92.1` required-reason API。
 
 ## 上架前外部配置
 

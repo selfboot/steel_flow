@@ -19,15 +19,23 @@ final class ReliabilityTests: XCTestCase {
     }
 
     func testRevenueCatKeyValidationAllowsAppleKeysInEveryBuild() {
-        XCTAssertTrue(PurchaseManager.isAcceptableAPIKey(" appl_public_key ", debugBuild: true))
-        XCTAssertTrue(PurchaseManager.isAcceptableAPIKey("appl_public_key", debugBuild: false))
+        XCTAssertTrue(PurchaseManager.isAcceptableAPIKey(" appl_1234567890AbCdEf ", debugBuild: true))
+        XCTAssertTrue(PurchaseManager.isAcceptableAPIKey("appl_1234567890AbCdEf", debugBuild: false))
+        XCTAssertFalse(PurchaseManager.isAcceptableAPIKey("appl_short", debugBuild: false))
+        XCTAssertFalse(PurchaseManager.isAcceptableAPIKey("appl_1234567890_bad_key", debugBuild: false))
     }
 
     func testRevenueCatKeyValidationNeverShipsTestStoreKey() {
-        XCTAssertTrue(PurchaseManager.isAcceptableAPIKey("test_public_key", debugBuild: true))
-        XCTAssertFalse(PurchaseManager.isAcceptableAPIKey("test_public_key", debugBuild: false))
+        XCTAssertTrue(PurchaseManager.isAcceptableAPIKey("test_1234567890AbCdEf", debugBuild: true))
+        XCTAssertFalse(PurchaseManager.isAcceptableAPIKey("test_1234567890AbCdEf", debugBuild: false))
         XCTAssertFalse(PurchaseManager.isAcceptableAPIKey("REVENUECAT_API_KEY_NOT_CONFIGURED", debugBuild: true))
         XCTAssertFalse(PurchaseManager.isAcceptableAPIKey("", debugBuild: false))
+    }
+
+    func testFreeProjectLimitAlsoAppliesWhenRestoringArchivedProjects() {
+        XCTAssertTrue(ProPolicy.canActivateProject(activeProjectCount: 1, isPro: false))
+        XCTAssertFalse(ProPolicy.canActivateProject(activeProjectCount: 2, isPro: false))
+        XCTAssertTrue(ProPolicy.canActivateProject(activeProjectCount: 2, isPro: true))
     }
 
     func testPersistenceErrorCenterReportsFailureAndClearsAfterSuccess() {

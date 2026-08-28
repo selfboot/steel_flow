@@ -1,5 +1,6 @@
 import XCTest
 import SwiftData
+import CryptoKit
 @testable import SteelFlow
 
 @MainActor
@@ -54,6 +55,48 @@ final class BackupTests: XCTestCase {
         XCTAssertEqual(prices.first?.unitPrice, Decimal(string: "4.25"))
     }
 
+    func testNewBackupsUseStableSchemaVersionTwoAndStillReadLegacyVersionOneGeometry() throws {
+        let project = ProjectEntity(name: "Schema")
+        project.items.append(CalculationItemEntity(
+            profile: .plate,
+            geometry: .init(values: [.width: 100, .thickness: 10], lengthUnit: .millimeter),
+            materialID: "carbon-steel",
+            materialName: "Carbon steel",
+            densityKgPerM3: 7_850,
+            lengthValue: 6,
+            lengthUnit: .meter,
+            quantity: 1,
+            wastePercent: 0,
+            priceBasis: .perKilogram,
+            unitPrice: 2
+        ))
+        let document = try BackupService.makeDocument(projects: [project], materials: [], company: nil)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let envelope = try decoder.decode(BackupEnvelope.self, from: document.data)
+        XCTAssertEqual(envelope.schemaVersion, 2)
+
+        var versionOneText = String(decoding: document.data, as: UTF8.self)
+            .replacingOccurrences(of: "\"schemaVersion\":2", with: "\"schemaVersion\":1")
+            .replacingOccurrences(
+                of: "\"values\":{\"thickness\":10,\"width\":100}",
+                with: "\"values\":[\"width\",100,\"thickness\",10]"
+            )
+        XCTAssertNotEqual(versionOneText, String(decoding: document.data, as: UTF8.self))
+        XCTAssertTrue(versionOneText.contains("\"values\":[\"width\",100,\"thickness\",10]"))
+
+        let payloadMarker = "\"payload\":"
+        let schemaMarker = ",\"schemaVersion\":1}"
+        let payloadStart = try XCTUnwrap(versionOneText.range(of: payloadMarker)?.upperBound)
+        let payloadEnd = try XCTUnwrap(versionOneText.range(of: schemaMarker, options: .backwards)?.lowerBound)
+        let legacyPayloadData = Data(versionOneText[payloadStart..<payloadEnd].utf8)
+        let legacyChecksum = SHA256.hash(data: legacyPayloadData).map { String(format: "%02x", $0) }.joined()
+        versionOneText = versionOneText.replacingOccurrences(of: envelope.checksumSHA256, with: legacyChecksum)
+
+        let versionOneData = Data(versionOneText.utf8)
+        XCTAssertEqual(try BackupService.preview(data: versionOneData).projects, 1)
+    }
+
     func testTamperedBackupFailsChecksum() throws {
         let project = ProjectEntity(name: "Source")
         let document = try BackupService.makeDocument(projects: [project], materials: [], company: nil)
@@ -74,6 +117,44 @@ final class BackupTests: XCTestCase {
             XCTAssertEqual($0 as? BackupError, .corrupt)
         }
         XCTAssertEqual(try destination.mainContext.fetch(FetchDescriptor<MaterialEntity>()).count, 0)
+        XCTAssertEqual(try destination.mainContext.fetch(FetchDescriptor<ProjectEntity>()).count, 0)
+    }
+
+    func testBackupRejectsInvalidItemGeometryBeforeAnyImport() throws {
+        let material = MaterialEntity(name: "Valid material", densityKgPerM3: 7_850)
+        let project = ProjectEntity(name: "Invalid geometry")
+        project.items.append(CalculationItemEntity(
+            profile: .roundTube,
+            geometry: .init(values: [.outerDiameter: 10, .wallThickness: 6], lengthUnit: .millimeter),
+            materialID: material.id,
+            materialName: material.name,
+            densityKgPerM3: material.densityKgPerM3,
+            lengthValue: 6,
+            lengthUnit: .meter,
+            quantity: 1,
+            wastePercent: 0,
+            priceBasis: .perKilogram,
+            unitPrice: 5
+        ))
+        let document = try BackupService.makeDocument(projects: [project], materials: [material], company: nil)
+        let destination = try container()
+
+        XCTAssertThrowsError(try BackupService.importCopy(data: document.data, into: destination.mainContext)) {
+            XCTAssertEqual($0 as? BackupError, .corrupt)
+        }
+        XCTAssertEqual(try destination.mainContext.fetch(FetchDescriptor<MaterialEntity>()).count, 0)
+        XCTAssertEqual(try destination.mainContext.fetch(FetchDescriptor<ProjectEntity>()).count, 0)
+    }
+
+    func testBackupRejectsUnsupportedSemanticEnums() throws {
+        let project = ProjectEntity(name: "Unsupported locale")
+        project.quoteLanguage = "fr"
+        let document = try BackupService.makeDocument(projects: [project], materials: [], company: nil)
+        let destination = try container()
+
+        XCTAssertThrowsError(try BackupService.importCopy(data: document.data, into: destination.mainContext)) {
+            XCTAssertEqual($0 as? BackupError, .corrupt)
+        }
         XCTAssertEqual(try destination.mainContext.fetch(FetchDescriptor<ProjectEntity>()).count, 0)
     }
 

@@ -123,6 +123,9 @@ enum BackupError: LocalizedError, Equatable {
 
 @MainActor
 enum BackupService {
+    private static let currentSchemaVersion = 2
+    private static let supportedSchemaVersions = 1...currentSchemaVersion
+
     static func makeDocument(projects: [ProjectEntity], materials: [MaterialEntity], company: CompanyProfileEntity?, priceBook: [PriceBookEntryEntity] = []) throws -> SteelFlowBackupDocument {
         let payload = BackupPayload(
             materials: materials.filter { !$0.isBuiltIn }.map { .init(id: $0.id, name: $0.name, densityKgPerM3: $0.densityKgPerM3, note: $0.note) },
@@ -137,7 +140,7 @@ enum BackupService {
         let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]; encoder.dateEncodingStrategy = .iso8601
         let payloadData = try encoder.encode(payload)
         let checksum = SHA256.hash(data: payloadData).map { String(format: "%02x", $0) }.joined()
-        let envelope = BackupEnvelope(schemaVersion: 1, appVersion: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0", createdAt: .now, checksumSHA256: checksum, payload: payload)
+        let envelope = BackupEnvelope(schemaVersion: currentSchemaVersion, appVersion: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0", createdAt: .now, checksumSHA256: checksum, payload: payload)
         return SteelFlowBackupDocument(data: try encoder.encode(envelope))
     }
 
@@ -155,7 +158,11 @@ enum BackupService {
         var importedPrices: [PriceBookEntryEntity] = []
 
         for material in envelope.payload.materials {
-            guard material.densityKgPerM3.finitePositive, material.densityKgPerM3 < 100_000 else { throw BackupError.corrupt }
+            guard !material.id.isEmpty,
+                  materialIDMap[material.id] == nil,
+                  !material.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                  material.densityKgPerM3.finitePositive,
+                  material.densityKgPerM3 < 100_000 else { throw BackupError.corrupt }
             let id = reservedMaterialIDs.contains(material.id) ? UUID().uuidString : material.id
             reservedMaterialIDs.insert(id)
             materialIDMap[material.id] = id
@@ -163,19 +170,30 @@ enum BackupService {
         }
 
         for source in envelope.payload.projects {
-            guard let currencyCode = CurrencyRules.normalizedCode(source.currencyCode) else { throw BackupError.corrupt }
+            guard let currencyCode = CurrencyRules.normalizedCode(source.currencyCode),
+                  ["en", "zh-Hans"].contains(source.quoteLanguage),
+                  let unitSystem = UnitSystem(rawValue: source.unitSystemRaw),
+                  let paperSize = PaperSize(rawValue: source.paperSizeRaw),
+                  (1...365).contains(source.validDays) else { throw BackupError.corrupt }
+            let profitMode: ProfitMode
+            if let raw = source.profitModeRaw {
+                guard let decoded = ProfitMode(rawValue: raw) else { throw BackupError.corrupt }
+                profitMode = decoded
+            } else {
+                profitMode = .markup
+            }
             let project = ProjectEntity(
                 name: source.name + " " + String(localized: "backup.imported_suffix"),
                 projectNumber: source.projectNumber + "-COPY",
                 customerName: source.customerName,
                 quoteLanguage: source.quoteLanguage,
-                unitSystem: UnitSystem(rawValue: source.unitSystemRaw) ?? .metric,
+                unitSystem: unitSystem,
                 currencyCode: currencyCode,
-                paperSize: PaperSize(rawValue: source.paperSizeRaw) ?? .a4
+                paperSize: paperSize
             )
             project.taxPercentText = source.taxPercentText
             project.markupPercentText = source.markupPercentText
-            project.profitModeRaw = source.profitModeRaw ?? ProfitMode.markup.rawValue
+            project.profitMode = profitMode
             guard project.isPricingPolicyValid else { throw BackupError.corrupt }
             project.validDays = source.validDays
             project.terms = source.terms
@@ -183,24 +201,39 @@ enum BackupService {
             project.isArchived = source.isArchived
             for sourceItem in source.items {
                 guard let profile = ProfileKind(rawValue: sourceItem.profileRaw),
+                      let lengthUnit = LengthUnit(rawValue: sourceItem.lengthUnitRaw),
+                      let priceBasis = PriceBasis(rawValue: sourceItem.priceBasisRaw),
+                      sourceItem.densityKgPerM3.finitePositive,
+                      sourceItem.densityKgPerM3 < 100_000,
+                      sourceItem.lengthValue.finitePositive,
+                      (1...1_000_000).contains(sourceItem.quantity),
+                      sourceItem.wastePercent.isFinite,
+                      (0...1_000).contains(sourceItem.wastePercent),
                       let unitPrice = PricingInputValidator.nonnegative(sourceItem.unitPriceText, locale: Locale(identifier: "en_US_POSIX")),
                       let processingFee = PricingInputValidator.nonnegative(sourceItem.processingFeeText, locale: Locale(identifier: "en_US_POSIX")),
                       let otherFee = PricingInputValidator.nonnegative(sourceItem.otherFeeText, locale: Locale(identifier: "en_US_POSIX")) else { throw BackupError.corrupt }
-                project.items.append(CalculationItemEntity(
+                let priceSource: PriceSource
+                if let raw = sourceItem.priceSourceRaw {
+                    guard let decoded = PriceSource(rawValue: raw) else { throw BackupError.corrupt }
+                    priceSource = decoded
+                } else {
+                    priceSource = .manual
+                }
+                let item = CalculationItemEntity(
                     profile: profile,
                     geometry: sourceItem.geometry,
                     materialID: materialIDMap[sourceItem.materialID] ?? sourceItem.materialID,
                     materialName: sourceItem.materialName,
                     densityKgPerM3: sourceItem.densityKgPerM3,
                     lengthValue: sourceItem.lengthValue,
-                    lengthUnit: LengthUnit(rawValue: sourceItem.lengthUnitRaw) ?? .meter,
+                    lengthUnit: lengthUnit,
                     quantity: sourceItem.quantity,
                     wastePercent: sourceItem.wastePercent,
-                    priceBasis: PriceBasis(rawValue: sourceItem.priceBasisRaw) ?? .perKilogram,
+                    priceBasis: priceBasis,
                     unitPrice: unitPrice,
                     processingFee: processingFee,
                     otherFee: otherFee,
-                    priceSource: PriceSource(rawValue: sourceItem.priceSourceRaw ?? "") ?? .manual,
+                    priceSource: priceSource,
                     priceSourceName: sourceItem.priceSourceName ?? "",
                     priceRegion: sourceItem.priceRegion ?? "",
                     materialGrade: sourceItem.materialGrade ?? "",
@@ -209,13 +242,17 @@ enum BackupService {
                     description: sourceItem.descriptionText,
                     internalNote: sourceItem.internalNote,
                     sortIndex: sourceItem.sortIndex
-                ))
+                )
+                guard (try? item.calculation()) != nil else { throw BackupError.corrupt }
+                project.items.append(item)
             }
             importedProjects.append(project)
         }
 
         for source in envelope.payload.priceBook ?? [] {
             guard let currency = CurrencyRules.normalizedCode(source.currencyCode),
+                  let priceBasis = PriceBasis(rawValue: source.priceBasisRaw),
+                  !source.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                   let price = PricingInputValidator.nonnegative(source.unitPriceText, locale: Locale(identifier: "en_US_POSIX")) else { throw BackupError.corrupt }
             importedPrices.append(PriceBookEntryEntity(
                 name: source.name,
@@ -225,7 +262,7 @@ enum BackupService {
                 supplier: source.supplier,
                 region: source.region,
                 currencyCode: currency,
-                priceBasis: PriceBasis(rawValue: source.priceBasisRaw) ?? .perKilogram,
+                priceBasis: priceBasis,
                 unitPrice: price,
                 includesTax: source.includesTax,
                 effectiveAt: source.effectiveAt,
@@ -268,12 +305,58 @@ enum BackupService {
     private static func decodeAndValidate(_ data: Data) throws -> BackupEnvelope {
         let decoder = JSONDecoder(); decoder.dateDecodingStrategy = .iso8601
         guard let envelope = try? decoder.decode(BackupEnvelope.self, from: data) else { throw BackupError.corrupt }
-        guard envelope.schemaVersion == 1 else { throw BackupError.unsupportedVersion }
+        guard supportedSchemaVersions.contains(envelope.schemaVersion) else { throw BackupError.unsupportedVersion }
         let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]; encoder.dateEncodingStrategy = .iso8601
-        guard let payloadData = try? encoder.encode(envelope.payload) else { throw BackupError.corrupt }
+        let payloadData: Data
+        if envelope.schemaVersion == 1 {
+            // v1 encoded enum-keyed dictionaries as order-sensitive arrays. Hash
+            // the payload bytes stored in the file so decoding cannot reorder them.
+            guard let originalPayload = rawPayloadData(in: data) else { throw BackupError.corrupt }
+            payloadData = originalPayload
+        } else {
+            guard let canonicalPayload = try? encoder.encode(envelope.payload) else { throw BackupError.corrupt }
+            payloadData = canonicalPayload
+        }
         let checksum = SHA256.hash(data: payloadData).map { String(format: "%02x", $0) }.joined()
         guard checksum == envelope.checksumSHA256 else { throw BackupError.checksumMismatch }
         return envelope
+    }
+
+    private static func rawPayloadData(in data: Data) -> Data? {
+        let marker = Data("\"payload\":".utf8)
+        guard let markerRange = data.range(of: marker) else { return nil }
+        let bytes = [UInt8](data)
+        var index = markerRange.upperBound
+        while index < bytes.count, [9, 10, 13, 32].contains(bytes[index]) { index += 1 }
+        guard index < bytes.count, bytes[index] == 123 else { return nil } // {
+
+        let start = index
+        var objectDepth = 0
+        var isInString = false
+        var isEscaped = false
+        while index < bytes.count {
+            let byte = bytes[index]
+            if isInString {
+                if isEscaped {
+                    isEscaped = false
+                } else if byte == 92 { // \\
+                    isEscaped = true
+                } else if byte == 34 { // "
+                    isInString = false
+                }
+            } else if byte == 34 {
+                isInString = true
+            } else if byte == 123 {
+                objectDepth += 1
+            } else if byte == 125 {
+                objectDepth -= 1
+                if objectDepth == 0 {
+                    return data.subdata(in: start..<(index + 1))
+                }
+            }
+            index += 1
+        }
+        return nil
     }
 
     private static func projectBackup(_ project: ProjectEntity) -> ProjectBackup {

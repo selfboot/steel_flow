@@ -28,7 +28,6 @@ final class PurchaseManager {
             return
         }
         updatesTask = Task { [weak self] in
-            await self?.refreshEntitlement()
             await self?.observeCustomerInfoUpdates()
         }
     }
@@ -117,8 +116,16 @@ final class PurchaseManager {
 
     static func isAcceptableAPIKey(_ rawKey: String, debugBuild: Bool) -> Bool {
         let key = rawKey.trimmingCharacters(in: .whitespacesAndNewlines)
-        if key.hasPrefix("appl_") { return true }
-        return debugBuild && key.hasPrefix("test_")
+        let allowedPrefix: String
+        if key.hasPrefix("appl_") {
+            allowedPrefix = "appl_"
+        } else if debugBuild, key.hasPrefix("test_") {
+            allowedPrefix = "test_"
+        } else {
+            return false
+        }
+        let suffix = key.dropFirst(allowedPrefix.count)
+        return suffix.count >= 16 && suffix.allSatisfy { $0.isASCII && ($0.isLetter || $0.isNumber) }
     }
 
     private func observeCustomerInfoUpdates() async {
@@ -179,4 +186,8 @@ final class PurchaseManager {
 enum ProPolicy {
     static let freeActiveProjectLimit = 2
     static let freeItemsPerProjectLimit = 10
+
+    static func canActivateProject(activeProjectCount: Int, isPro: Bool) -> Bool {
+        isPro || activeProjectCount < freeActiveProjectLimit
+    }
 }

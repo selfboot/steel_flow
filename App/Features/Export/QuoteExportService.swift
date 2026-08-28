@@ -260,7 +260,8 @@ enum QuoteExportService {
     private static func drawHeader(project: ProjectEntity, company: CompanyProfileEntity?, page: Int, bounds: CGRect, generatedAt: Date) -> CGFloat {
         let margin: CGFloat = 36
         var y: CGFloat = 34
-        drawText(company?.companyName.isEmpty == false ? company!.companyName : "SteelFlow", frame: CGRect(x: margin, y: y, width: bounds.width - margin * 2, height: 28), font: .systemFont(ofSize: 20, weight: .bold), color: .label)
+        let companyName = company.flatMap { $0.companyName.isEmpty ? nil : $0.companyName } ?? "SteelFlow"
+        drawText(companyName, frame: CGRect(x: margin, y: y, width: bounds.width - margin * 2, height: 28), font: .systemFont(ofSize: 20, weight: .bold), color: .label)
         y += 31
         drawText(localized("quote.title", language: project.quoteLanguage), frame: CGRect(x: margin, y: y, width: 250, height: 32), font: .systemFont(ofSize: 26, weight: .bold), color: UIColor(red: 0.04, green: 0.43, blue: 0.62, alpha: 1))
         drawText(project.projectNumber, frame: CGRect(x: bounds.width - margin - 180, y: y + 5, width: 180, height: 24), font: .monospacedSystemFont(ofSize: 12, weight: .medium), color: .secondaryLabel, alignment: .right)

@@ -2,6 +2,17 @@ import XCTest
 @testable import SteelFlow
 
 final class CalculationEngineTests: XCTestCase {
+    func testGeometryEncodingIsCanonicalAndDecodesLegacyRecords() throws {
+        let first = GeometryInput(values: [.width: 100, .thickness: 10], lengthUnit: .millimeter)
+        let second = GeometryInput(values: [.thickness: 10, .width: 100], lengthUnit: .millimeter)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        XCTAssertEqual(try encoder.encode(first), try encoder.encode(second))
+
+        let legacy = Data(#"{"values":["width",100,"thickness",10],"lengthUnit":"mm","areaUnit":"mm²"}"#.utf8)
+        XCTAssertEqual(try JSONDecoder().decode(GeometryInput.self, from: legacy), first)
+    }
+
     private let density = 7_850.0
 
     func testAllProfileAreas() throws {

@@ -97,7 +97,9 @@ final class ProjectEntity {
 
     static func makeNumber(date: Date = .now) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyyMMdd-HHmm"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.dateFormat = "yyyyMMdd-HHmmss-SSS"
         return "Q-\(formatter.string(from: date))"
     }
 }

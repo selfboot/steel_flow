@@ -21,7 +21,7 @@ struct QuotePreviewView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
                             VStack(alignment: .leading) {
-                                Text(companies.first?.companyName.isEmpty == false ? companies.first!.companyName : "SteelFlow").font(.headline)
+                                Text(companies.first.flatMap { $0.companyName.isEmpty ? nil : $0.companyName } ?? "SteelFlow").font(.headline)
                                 Text(project.projectNumber).font(.caption.monospaced()).foregroundStyle(.secondary)
                             }
                             Spacer()

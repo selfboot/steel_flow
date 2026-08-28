@@ -126,7 +126,7 @@ private struct ProjectItemRow: View {
                     .font(.caption).foregroundStyle(.secondary).lineLimit(1)
             }
             Spacer()
-            if let result = try? item.calculation() {
+            if item.isPricingValid, let result = try? item.calculation() {
                 let subtotal = PricingCalculator.lineSubtotal(unitPrice: item.unitPrice, basis: item.priceBasis, result: result, lengthMeters: item.lengthUnit.toMeters(item.lengthValue), quantity: item.quantity, currencyCode: currencyCode)
                 VStack(alignment: .trailing) {
                     Text("\(AppFormatters.number(result.totalMassKg, maximumFractionDigits: 2, locale: locale)) kg").font(.caption.monospacedDigit())

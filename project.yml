@@ -1,6 +1,7 @@
 name: SteelFlow
 options:
   bundleIdPrefix: com.steelflow
+  postGenCommand: ruby tools/patch_in_app_purchase_capability.rb
   deploymentTarget:
     iOS: "17.0"
   xcodeVersion: "26.0"
@@ -81,6 +82,10 @@ targets:
     dependencies:
       - package: RevenueCat
         product: RevenueCat
+    preBuildScripts:
+      - name: Validate RevenueCat release configuration
+        basedOnDependencyAnalysis: false
+        script: /bin/sh "$SRCROOT/tools/validate_revenuecat_configuration.sh"
   SteelFlowTests:
     type: bundle.unit-test
     platform: iOS

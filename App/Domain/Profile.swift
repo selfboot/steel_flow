@@ -85,10 +85,49 @@ struct GeometryInput: Codable, Hashable, Sendable {
     var lengthUnit: LengthUnit
     var areaUnit: AreaUnit
 
+    private enum CodingKeys: String, CodingKey {
+        case values
+        case lengthUnit
+        case areaUnit
+    }
+
     init(values: [DimensionField: Double] = [:], lengthUnit: LengthUnit = .millimeter, areaUnit: AreaUnit = .squareMillimeter) {
         self.values = values
         self.lengthUnit = lengthUnit
         self.areaUnit = areaUnit
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        lengthUnit = try container.decode(LengthUnit.self, forKey: .lengthUnit)
+        areaUnit = try container.decode(AreaUnit.self, forKey: .areaUnit)
+
+        if let stableValues = try? container.decode([String: Double].self, forKey: .values) {
+            var decoded: [DimensionField: Double] = [:]
+            for (rawKey, value) in stableValues {
+                guard let key = DimensionField(rawValue: rawKey) else {
+                    throw DecodingError.dataCorruptedError(
+                        forKey: .values,
+                        in: container,
+                        debugDescription: "Unknown geometry dimension: \(rawKey)"
+                    )
+                }
+                decoded[key] = value
+            }
+            values = decoded
+        } else {
+            // Compatibility with v1 records synthesized by Swift, which encoded
+            // enum-keyed dictionaries as an alternating unkeyed array.
+            values = try container.decode([DimensionField: Double].self, forKey: .values)
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        let stableValues = Dictionary(uniqueKeysWithValues: values.map { ($0.key.rawValue, $0.value) })
+        try container.encode(stableValues, forKey: .values)
+        try container.encode(lengthUnit, forKey: .lengthUnit)
+        try container.encode(areaUnit, forKey: .areaUnit)
     }
 
     func meters(_ field: DimensionField) -> Double? {

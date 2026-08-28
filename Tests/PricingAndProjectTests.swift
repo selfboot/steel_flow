@@ -3,6 +3,13 @@ import XCTest
 
 @MainActor
 final class PricingAndProjectTests: XCTestCase {
+    func testGeneratedProjectNumbersDistinguishRapidCreations() {
+        let first = Date(timeIntervalSince1970: 1_700_000_000)
+        let second = first.addingTimeInterval(0.001)
+        XCTAssertNotEqual(ProjectEntity.makeNumber(date: first), ProjectEntity.makeNumber(date: second))
+        XCTAssertTrue(ProjectEntity.makeNumber(date: first).hasPrefix("Q-"))
+    }
+
     func testPricingUsesDecimalAndExplicitOrder() {
         let pricing = PricingCalculator.total(
             subtotal: Decimal(string: "100.10")!,

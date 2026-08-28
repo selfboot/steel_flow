@@ -329,7 +329,10 @@ private struct SaveToProjectSheet: View {
                 Section("project.create") {
                     TextField("project.name", text: $newName)
                     Button("project.create_and_add") {
-                        if !purchaseManager.isPro && projects.filter({ !$0.isArchived }).count >= ProPolicy.freeActiveProjectLimit {
+                        if !ProPolicy.canActivateProject(
+                            activeProjectCount: projects.filter({ !$0.isArchived }).count,
+                            isPro: purchaseManager.isPro
+                        ) {
                             showProjectLimit = true
                         } else {
                             let project = ProjectEntity(name: newName.isEmpty ? String(localized: "project.untitled") : newName)
