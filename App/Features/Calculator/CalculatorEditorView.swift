@@ -46,6 +46,17 @@ struct CalculatorEditorView: View {
     private var availablePriceEntries: [PriceBookEntryEntity] {
         priceBook.filter { $0.currencyCode == currencyCode && ($0.materialID.isEmpty || $0.materialID == draft.selectedMaterialID) }
     }
+    private var previewInput: ProfilePreviewInput? {
+        guard let geometry = draft.geometry(locale: locale),
+              let length = DecimalParser.double(draft.lengthText, locale: locale) else { return nil }
+        return ProfilePreviewInput.make(
+            profile: profile,
+            geometry: geometry,
+            lengthValue: length,
+            lengthUnit: draft.lengthUnit,
+            locale: locale
+        )
+    }
 
     var body: some View {
         Form {
@@ -82,15 +93,23 @@ struct CalculatorEditorView: View {
                 }
 
                 AdaptiveFormRow("calculator.length") {
-                    TextField("0", text: $draft.lengthText)
-                        .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                    Picker("calculator.length_unit", selection: lengthUnitBinding) {
-                        ForEach([LengthUnit.meter, .foot, .millimeter, .inch]) { Text($0.rawValue).tag($0) }
-                    }
-                    .labelsHidden().frame(minWidth: 78)
+                    LengthValueInput(
+                        text: $draft.lengthText,
+                        unit: lengthUnitBinding,
+                        units: [.meter, .foot, .millimeter, .inch]
+                    )
                 }
                 Stepper(value: $draft.quantity, in: 1...1_000_000) {
                     LabeledContent("calculator.quantity", value: "\(draft.quantity)")
+                }
+            }
+
+            Section("calculator.section.preview") {
+                if let previewInput {
+                    ProfileSection3DPreview(input: previewInput)
+                } else {
+                    Label("preview.invalid", systemImage: "cube")
+                        .foregroundStyle(.secondary)
                 }
             }
 

@@ -17,6 +17,7 @@
 "calculator.hero.subtitle" = "选择型材并输入尺寸，立即获得可核对的重量和价格。";
 "calculator.recent" = "最近计算";
 "calculator.section.geometry" = "几何尺寸";
+"calculator.section.preview" = "3D 型材预览";
 "calculator.section.material" = "材料";
 "calculator.section.pricing" = "计价";
 "calculator.section.result" = "计算结果";
@@ -47,6 +48,10 @@
 "calculator.invalid_input" = "请输入有效尺寸";
 "calculator.save_to_project" = "保存到项目";
 "calculator.saved" = "已保存到项目";
+"preview.invalid" = "请输入有效尺寸和长度以生成预览。";
+"preview.scale_note" = "长度方向采用自适应比例压缩，确保较长材料的截面仍清晰可辨。";
+"preview.equivalent_square_note" = "自定义截面积没有轮廓尺寸，因此以等面积正方形示意。";
+"preview.accessibility_label" = "3D 型材预览";
 
 "profile.plate" = "钢板 / 扁钢";
 "profile.roundBar" = "圆钢";

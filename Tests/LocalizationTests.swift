@@ -27,6 +27,8 @@ final class LocalizationTests: XCTestCase {
         let fixedKeys = [
             "tab.calculate", "tab.projects", "tab.materials", "tab.settings",
             "calculator.hero.title", "calculator.result.total_mass", "calculator.save_to_project",
+            "calculator.section.preview", "preview.invalid", "preview.scale_note",
+            "preview.equivalent_square_note", "preview.accessibility_label",
             "project.create", "project.total", "quote.title", "quote.share_pdf", "quote.share_csv",
             "materials.custom", "settings.language", "settings.company_profile", "backup.export",
             "backup.import", "purchase.restore", "disclaimer.title", "error.invalid_pricing",

@@ -17,6 +17,7 @@
 		165172AE685CE2525DE04081 /* ProjectSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D3D3A9B13E6008D8210B7C /* ProjectSettingsSheet.swift */; };
 		1D70E7AC9C96979FEE44C9B2 /* ProjectSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB217571E84FE8AB483688F /* ProjectSummary.swift */; };
 		207A5AF55ACB720174B1BECE /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C2554186B9F660A235420E /* FeedbackView.swift */; };
+		33EE96C317A2867059BC58B9 /* ProfileSectionPreviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8172D5DC871EB67365F28CD /* ProfileSectionPreviewTests.swift */; };
 		3D92AF34814EAB13F32D6716 /* KeyboardDismissSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE9E6DA308241E2A6327023 /* KeyboardDismissSupport.swift */; };
 		411435CBCF920CE83075968E /* AppFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13156998FD8E14A2CC365737 /* AppFormatters.swift */; };
 		415840C9C518A30E31A43B85 /* QuoteExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9CFAE1CC59169A250AC3D /* QuoteExportService.swift */; };
@@ -27,6 +28,7 @@
 		61F77F6870ACCF6548DD5E5D /* CalculatorHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1037BB719770368AC4AADAED /* CalculatorHomeView.swift */; };
 		660013A3EAC22B0F760EF706 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B52CAF00D414FA5E96E86B0 /* PurchaseManager.swift */; };
 		84291BF8624E6A014F0164BA /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58DBBB7944681B6C94D589A /* DesignSystem.swift */; };
+		8C8E050DA16D0BA8EEC66006 /* ProfileSection3DPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DE5AF3E3652E30A118DCCF /* ProfileSection3DPreview.swift */; };
 		8D9024E330781A9B87135B2E /* CalculationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C372A8D61345C59F520B92E /* CalculationEngine.swift */; };
 		8FED81E02ECBA421030A20F4 /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA345B7BEA8F82C77DBEF253 /* Money.swift */; };
 		965E8C99437FF7AADAEA79EE /* SteelFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFAED6444C9E2846FA298C /* SteelFlowApp.swift */; };
@@ -101,6 +103,7 @@
 		97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceCorpusTests.swift; sourceTree = "<group>"; };
 		9B52CAF00D414FA5E96E86B0 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		9EB1431579F7CCAEE8C06263 /* RevenueCat.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = RevenueCat.xcconfig; sourceTree = "<group>"; };
+		A8DE5AF3E3652E30A118DCCF /* ProfileSection3DPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSection3DPreview.swift; sourceTree = "<group>"; };
 		B19861521A39EBAEF3AA5197 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B951C002DDA177685932D4A7 /* Units.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
 		BCE9E6DA308241E2A6327023 /* KeyboardDismissSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDismissSupport.swift; sourceTree = "<group>"; };
@@ -113,6 +116,7 @@
 		D181345835385A6C2B069DA3 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		D8EAF6E9F63DE40D35557AAC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E2FB7EA5EF528FE8C9115653 /* PricingAndProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricingAndProjectTests.swift; sourceTree = "<group>"; };
+		E8172D5DC871EB67365F28CD /* ProfileSectionPreviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSectionPreviewTests.swift; sourceTree = "<group>"; };
 		E8D061E5DC539665CC7AF3A6 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
 		F26358E6FFCE305FCC30BDA0 /* MaterialCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialCatalog.swift; sourceTree = "<group>"; };
 		F58DBBB7944681B6C94D589A /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
@@ -175,6 +179,7 @@
 				021C20F77172EB287ACF742F /* CalculatorDraft.swift */,
 				68A8859FFF9B380FFA691F19 /* CalculatorEditorView.swift */,
 				1037BB719770368AC4AADAED /* CalculatorHomeView.swift */,
+				A8DE5AF3E3652E30A118DCCF /* ProfileSection3DPreview.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -335,6 +340,7 @@
 				9415D8F551024B7C1D682C68 /* FeedbackMailPayloadTests.swift */,
 				76992118BBD184811B6D777B /* LocalizationTests.swift */,
 				E2FB7EA5EF528FE8C9115653 /* PricingAndProjectTests.swift */,
+				E8172D5DC871EB67365F28CD /* ProfileSectionPreviewTests.swift */,
 				97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */,
 				454169B69FC88B25D3CE9094 /* ReliabilityTests.swift */,
 			);
@@ -522,6 +528,7 @@
 				8FED81E02ECBA421030A20F4 /* Money.swift in Sources */,
 				032E45C382AB668D2118CCA8 /* ProPaywallView.swift in Sources */,
 				4EFBA5E9160EDD2CA7B5FAEA /* Profile.swift in Sources */,
+				8C8E050DA16D0BA8EEC66006 /* ProfileSection3DPreview.swift in Sources */,
 				018B6C7AB148AAA5EA78FEE3 /* ProjectDetailView.swift in Sources */,
 				165172AE685CE2525DE04081 /* ProjectSettingsSheet.swift in Sources */,
 				1D70E7AC9C96979FEE44C9B2 /* ProjectSummary.swift in Sources */,
@@ -547,6 +554,7 @@
 				EA10F69A0A5447591060A840 /* FeedbackMailPayloadTests.swift in Sources */,
 				97102A47AC4F2AB0C4B4178E /* LocalizationTests.swift in Sources */,
 				FCF87E8AFB6766FA3862CA59 /* PricingAndProjectTests.swift in Sources */,
+				33EE96C317A2867059BC58B9 /* ProfileSectionPreviewTests.swift in Sources */,
 				B702BD014FCC78F48AF0C9EF /* ReferenceCorpusTests.swift in Sources */,
 				DC09FA0F0A80DC62388DB4C4 /* ReliabilityTests.swift in Sources */,
 			);
@@ -624,7 +632,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 4Z5Z5TE9EX;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -694,7 +702,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4Z5Z5TE9EX;
 				ENABLE_NS_ASSERTIONS = NO;

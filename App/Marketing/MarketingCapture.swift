@@ -22,6 +22,14 @@ struct MarketingCaptureRoot: View {
     let screen: MarketingCaptureScreen
     @Query(sort: \ProjectEntity.createdAt) private var projects: [ProjectEntity]
 
+    private var calculationProfile: ProfileKind {
+        let arguments = ProcessInfo.processInfo.arguments
+        guard let index = arguments.firstIndex(of: "--marketing-profile"),
+              arguments.indices.contains(index + 1),
+              let profile = ProfileKind(rawValue: arguments[index + 1]) else { return .plate }
+        return profile
+    }
+
     private var demoProject: ProjectEntity? {
         projects.first(where: {
             $0.projectNumber == MarketingDemoData.projectNumber && $0.name == MarketingDemoData.projectName
@@ -34,7 +42,7 @@ struct MarketingCaptureRoot: View {
         case .home:
             NavigationStack { CalculatorHomeView() }
         case .calculation, .pricing:
-            NavigationStack { CalculatorEditorView(profile: .plate, marketingPreset: true) }
+            NavigationStack { CalculatorEditorView(profile: calculationProfile, marketingPreset: true) }
         case .project:
             if let project = demoProject {
                 NavigationStack { ProjectDetailView(project: project) }

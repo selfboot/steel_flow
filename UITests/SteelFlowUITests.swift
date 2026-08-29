@@ -27,6 +27,58 @@ final class SteelFlowUITests: XCTestCase {
         XCTAssertTrue(save.isEnabled)
     }
 
+    func testLengthValueInputHasADistinctTapTargetAndAcceptsPreciseValues() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+            "-app.unitSystem", "metric", "--marketing-screen", "calculation",
+            "--marketing-locale", "en-US", "--marketing-profile", "plate"
+        ]
+        app.launch()
+
+        let valueField = app.textFields["length.value"]
+        let unitPicker = app.descendants(matching: .any)["length.unit"]
+        XCTAssertTrue(valueField.waitForExistence(timeout: 3))
+        XCTAssertTrue(unitPicker.waitForExistence(timeout: 3))
+        XCTAssertGreaterThanOrEqual(valueField.frame.height, 44)
+        XCTAssertGreaterThanOrEqual(valueField.frame.width, 112)
+        XCTAssertFalse(valueField.frame.intersects(unitPicker.frame), "Length value and unit must have distinct hit targets")
+
+        valueField.tap()
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 2))
+        valueField.tap(withNumberOfTaps: 2, numberOfTouches: 1)
+        valueField.typeText("7.25")
+        XCTAssertEqual(valueField.value as? String, "7.25")
+        attachScreenshot(named: "length-value-input-focused")
+    }
+
+    func testEveryProfilePreviewRendersEnteredLengthAndDimensions() {
+        continueAfterFailure = false
+        let profiles = [
+            "plate", "roundBar", "squareBar", "hexBar", "octagonalBar", "roundTube", "squareTube",
+            "rectangularTube", "angle", "channel", "iSection", "tSection", "customArea"
+        ]
+
+        for profile in profiles {
+            let app = XCUIApplication()
+            app.launchArguments = [
+                "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+                "-app.unitSystem", "metric", "--marketing-screen", "calculation",
+                "--marketing-locale", "en-US", "--marketing-profile", profile
+            ]
+            app.launch()
+
+            let preview = app.descendants(matching: .any)["calculator.profile_preview"]
+            for _ in 0..<6 where !preview.isHittable { app.swipeUp() }
+            XCTAssertTrue(preview.waitForExistence(timeout: 3), "Missing 3D preview for \(profile)")
+            XCTAssertTrue(preview.isHittable, "3D preview is off-screen for \(profile)")
+            XCTAssertTrue((preview.value as? String)?.contains("6 m") == true, "Missing length for \(profile)")
+            attachScreenshot(named: "3d-profile-\(profile)")
+            app.terminate()
+        }
+    }
+
     func testAllPrimaryTabsRenderLocalizedContent() {
         continueAfterFailure = false
         let app = launchApp()

@@ -60,6 +60,42 @@ struct AdaptiveFormRow<Content: View>: View {
     }
 }
 
+struct LengthValueInput: View {
+    @Binding var text: String
+    @Binding var unit: LengthUnit
+    let units: [LengthUnit]
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        HStack(spacing: 8) {
+            TextField("0", text: $text)
+                .keyboardType(.decimalPad)
+                .multilineTextAlignment(.trailing)
+                .font(.body.monospacedDigit())
+                .focused($isFocused)
+                .padding(.horizontal, 12)
+                .frame(minWidth: 112, maxWidth: .infinity, minHeight: 44)
+                .background(Color(uiColor: .tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(isFocused ? SteelFlowTheme.steelBlue : .clear, lineWidth: 2)
+                }
+                .contentShape(Rectangle())
+                .accessibilityLabel("calculator.length")
+                .accessibilityIdentifier("length.value")
+
+            Picker("calculator.length_unit", selection: $unit) {
+                ForEach(units) { Text($0.rawValue).tag($0) }
+            }
+            .pickerStyle(.menu)
+            .labelsHidden()
+            .frame(minWidth: 68, minHeight: 44)
+            .background(Color(uiColor: .tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
+            .accessibilityIdentifier("length.unit")
+        }
+    }
+}
+
 @MainActor
 @Observable
 final class PersistenceErrorCenter {

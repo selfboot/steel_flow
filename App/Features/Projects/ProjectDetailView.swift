@@ -273,6 +273,16 @@ private struct ProjectItemDetailView: View {
         }
         return GeometryInput(values: values, lengthUnit: geometryUnit, areaUnit: areaUnit)
     }
+    private var previewInput: ProfilePreviewInput? {
+        guard let geometry = parsedGeometry, let length = parsedLength else { return nil }
+        return ProfilePreviewInput.make(
+            profile: item.profile,
+            geometry: geometry,
+            lengthValue: length,
+            lengthUnit: lengthUnit,
+            locale: locale
+        )
+    }
     private var calculation: Result<CalculationResult, CalculationError>? {
         guard let geometry = parsedGeometry, let density = parsedDensity, let length = parsedLength, let waste = parsedWaste else { return nil }
         do {
@@ -321,6 +331,14 @@ private struct ProjectItemDetailView: View {
                     }
                 }
             }
+            Section("calculator.section.preview") {
+                if let previewInput {
+                    ProfileSection3DPreview(input: previewInput)
+                } else {
+                    Label("preview.invalid", systemImage: "cube")
+                        .foregroundStyle(.secondary)
+                }
+            }
             Section("calculator.section.material") {
                 Picker("calculator.material", selection: $selectedMaterialID) {
                     if !materials.contains(where: { $0.id == item.materialID }) {
@@ -343,13 +361,12 @@ private struct ProjectItemDetailView: View {
                 }
             }
             Section("calculator.section.pricing") {
-                HStack {
-                    Text("calculator.length")
-                    Spacer()
-                    TextField("0", text: $lengthText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                    Picker("calculator.length_unit", selection: lengthUnitBinding) {
-                        ForEach(LengthUnit.allCases) { Text($0.rawValue).tag($0) }
-                    }.labelsHidden().frame(width: 78)
+                AdaptiveFormRow("calculator.length") {
+                    LengthValueInput(
+                        text: $lengthText,
+                        unit: lengthUnitBinding,
+                        units: LengthUnit.allCases
+                    )
                 }
                 Stepper(value: $quantity, in: 1...1_000_000) { LabeledContent("calculator.quantity", value: "\(quantity)") }
                 HStack { Text("calculator.waste"); Spacer(); TextField("0", text: $wasteText).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text("%") }

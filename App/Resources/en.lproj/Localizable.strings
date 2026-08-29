@@ -17,6 +17,7 @@
 "calculator.hero.subtitle" = "Choose a profile, enter dimensions, and get a verifiable weight and price.";
 "calculator.recent" = "Recent calculations";
 "calculator.section.geometry" = "Geometry";
+"calculator.section.preview" = "3D profile preview";
 "calculator.section.material" = "Material";
 "calculator.section.pricing" = "Pricing";
 "calculator.section.result" = "Result";
@@ -47,6 +48,10 @@
 "calculator.invalid_input" = "Enter valid dimensions";
 "calculator.save_to_project" = "Save to project";
 "calculator.saved" = "Saved to project";
+"preview.invalid" = "Enter valid dimensions and length to generate the preview.";
+"preview.scale_note" = "The length direction uses adaptive proportional compression so the cross-section remains readable.";
+"preview.equivalent_square_note" = "Custom area is shown as an equal-area square because no outline dimensions are available.";
+"preview.accessibility_label" = "3D profile preview";
 
 "profile.plate" = "Plate / flat bar";
 "profile.roundBar" = "Round bar";
