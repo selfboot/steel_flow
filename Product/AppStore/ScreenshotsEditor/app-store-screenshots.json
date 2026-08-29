@@ -93,7 +93,86 @@
       }
     ],
     "android": [],
-    "ipad": [],
+    "ipad": [
+      {
+        "id": "steelflow-ipad-cover",
+        "layout": "device-bottom",
+        "label": {
+          "en-US": "WEIGHT • COST • QUOTE",
+          "zh-Hans": "算重 • 成本 • 报价"
+        },
+        "headline": {
+          "en-US": "Steel weight.\nReady to quote.",
+          "zh-Hans": "算重量，\n再出报价。"
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/home.png"
+      },
+      {
+        "id": "steelflow-ipad-calculate",
+        "layout": "device-bottom",
+        "label": {
+          "en-US": "INSTANT CALCULATION",
+          "zh-Hans": "即时计算"
+        },
+        "headline": {
+          "en-US": "Dimensions in.\nWeight and cost out.",
+          "zh-Hans": "输入尺寸，\n重量成本即刻可见。"
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/calculation.png"
+      },
+      {
+        "id": "steelflow-ipad-cost",
+        "layout": "device-bottom",
+        "label": {
+          "en-US": "REAL-WORLD PRICING",
+          "zh-Hans": "真实计价"
+        },
+        "headline": {
+          "en-US": "Waste and fees.\nSupplier prices too.",
+          "zh-Hans": "损耗、费用、供应价\n逐项算清。"
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/pricing.png"
+      },
+      {
+        "id": "steelflow-ipad-projects",
+        "layout": "device-bottom",
+        "label": {
+          "en-US": "PROJECT CONTROL",
+          "zh-Hans": "项目汇总"
+        },
+        "headline": {
+          "en-US": "Every steel item.\nOne project total.",
+          "zh-Hans": "每个材料条目，\n汇成项目总价。"
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/project.png"
+      },
+      {
+        "id": "steelflow-ipad-export",
+        "layout": "device-bottom",
+        "label": {
+          "en-US": "CLIENT-READY OUTPUT",
+          "zh-Hans": "可直接交付"
+        },
+        "headline": {
+          "en-US": "A client-ready\nPDF quote.",
+          "zh-Hans": "客户可直接接收的\nPDF 报价单。"
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/quote.png"
+      },
+      {
+        "id": "steelflow-ipad-materials",
+        "layout": "device-bottom",
+        "label": {
+          "en-US": "YOUR MATERIAL LIBRARY",
+          "zh-Hans": "你的材料库"
+        },
+        "headline": {
+          "en-US": "Built-in densities.\nYour own prices.",
+          "zh-Hans": "内置材料密度，\n保存自有价格。"
+        },
+        "screenshot": "/screenshots/apple/ipad/{locale}/materials.png"
+      }
+    ],
     "android-7": [],
     "android-10": [],
     "feature-graphic": []
