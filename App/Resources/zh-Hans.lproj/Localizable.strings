@@ -135,7 +135,9 @@
 "project.archive" = "归档";
 "project.restore" = "恢复";
 "project.duplicate" = "复制";
-"project.archive.help" = "归档可以恢复。向左轻扫项目即可恢复。";
+"project.archive.help" = "归档可以恢复；删除会永久移除项目及其全部条目。";
+"project.delete.confirm.title" = "删除此项目？";
+"project.delete.confirm.message" = "项目及其全部条目将被永久删除，此操作无法恢复。";
 "project.copy_suffix" = "副本";
 "project.item_count" = "%lld 个条目";
 "project.item_count.one" = "%lld 个条目";

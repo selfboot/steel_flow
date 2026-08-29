@@ -135,7 +135,9 @@
 "project.archive" = "Archive";
 "project.restore" = "Restore";
 "project.duplicate" = "Duplicate";
-"project.archive.help" = "Archiving is recoverable. Swipe a project to restore it.";
+"project.archive.help" = "Archiving is recoverable. Deleting permanently removes a project and all its items.";
+"project.delete.confirm.title" = "Delete this project?";
+"project.delete.confirm.message" = "The project and all its items will be permanently deleted. This cannot be undone.";
 "project.copy_suffix" = "Copy";
 "project.item_count" = "%lld items";
 "project.item_count.one" = "%lld item";

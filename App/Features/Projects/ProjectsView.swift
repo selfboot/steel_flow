@@ -9,6 +9,8 @@ struct ProjectsView: View {
     @State private var showNewProject = false
     @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
+    @State private var pendingDeletion: ProjectEntity?
+    @State private var showDeleteConfirmation = false
 
     private var visibleProjects: [ProjectEntity] { projects.filter { $0.isArchived == showArchived } }
 
@@ -26,7 +28,7 @@ struct ProjectsView: View {
                 List {
                     ForEach(visibleProjects) { project in
                         NavigationLink { ProjectDetailView(project: project) } label: { ProjectRow(project: project) }
-                            .swipeActions(edge: .trailing) {
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button {
                                     if project.isArchived,
                                        !ProPolicy.canActivateProject(
@@ -43,6 +45,12 @@ struct ProjectsView: View {
                                     Label(project.isArchived ? "project.restore" : "project.archive", systemImage: project.isArchived ? "arrow.uturn.backward" : "archivebox")
                                 }
                                 .tint(.orange)
+                                Button(role: .destructive) {
+                                    pendingDeletion = project
+                                    showDeleteConfirmation = true
+                                } label: {
+                                    Label("common.delete", systemImage: "trash")
+                                }
                             }
                             .swipeActions(edge: .leading) {
                                 Button { duplicate(project) } label: { Label("project.duplicate", systemImage: "plus.square.on.square") }
@@ -66,6 +74,12 @@ struct ProjectsView: View {
         }
         .sheet(isPresented: $showNewProject) { ProjectEditorSheet() }
         .proPaywall(reason: $paywallReason)
+        .alert("project.delete.confirm.title", isPresented: $showDeleteConfirmation) {
+            Button("common.delete", role: .destructive) { confirmDeletion() }
+            Button("common.cancel", role: .cancel) { pendingDeletion = nil }
+        } message: {
+            Text("project.delete.confirm.message")
+        }
     }
 
     private func attemptNewProject() {
@@ -129,6 +143,13 @@ struct ProjectsView: View {
         }
         modelContext.insert(copy)
         PersistenceErrorCenter.shared.save(modelContext)
+    }
+
+    private func confirmDeletion() {
+        guard let pendingDeletion else { return }
+        modelContext.delete(pendingDeletion)
+        _ = PersistenceErrorCenter.shared.save(modelContext)
+        self.pendingDeletion = nil
     }
 }
 

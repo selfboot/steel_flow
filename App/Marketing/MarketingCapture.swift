@@ -6,6 +6,7 @@ enum MarketingCaptureScreen: String {
     case home
     case calculation
     case pricing
+    case projects
     case project
     case quote
     case materials
@@ -43,6 +44,8 @@ struct MarketingCaptureRoot: View {
             NavigationStack { CalculatorHomeView() }
         case .calculation, .pricing:
             NavigationStack { CalculatorEditorView(profile: calculationProfile, marketingPreset: true) }
+        case .projects:
+            NavigationStack { ProjectsView() }
         case .project:
             if let project = demoProject {
                 NavigationStack { ProjectDetailView(project: project) }

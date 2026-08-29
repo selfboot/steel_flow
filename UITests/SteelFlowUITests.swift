@@ -44,13 +44,38 @@ final class SteelFlowUITests: XCTestCase {
         XCTAssertGreaterThanOrEqual(valueField.frame.height, 44)
         XCTAssertGreaterThanOrEqual(valueField.frame.width, 112)
         XCTAssertFalse(valueField.frame.intersects(unitPicker.frame), "Length value and unit must have distinct hit targets")
+        XCTAssertGreaterThanOrEqual(unitPicker.frame.minY, valueField.frame.maxY, "Length unit must use its own row")
 
         valueField.tap()
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 2))
+        valueField.typeText("7")
+        XCTAssertEqual(valueField.value as? String, "67", "First focus should put the cursor after the existing value")
         valueField.tap(withNumberOfTaps: 2, numberOfTouches: 1)
         valueField.typeText("7.25")
         XCTAssertEqual(valueField.value as? String, "7.25")
         attachScreenshot(named: "length-value-input-focused")
+    }
+
+    func testQuantitySupportsDirectEntryForLargeCounts() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+            "-app.unitSystem", "metric", "--marketing-screen", "calculation",
+            "--marketing-locale", "en-US", "--marketing-profile", "plate"
+        ]
+        app.launch()
+
+        let quantityField = app.textFields["quantity.value"]
+        XCTAssertTrue(quantityField.waitForExistence(timeout: 3))
+        XCTAssertGreaterThanOrEqual(quantityField.frame.height, 44)
+        quantityField.tap()
+        quantityField.tap(withNumberOfTaps: 2, numberOfTouches: 1)
+        quantityField.typeText("12500")
+        XCTAssertEqual(quantityField.value as? String, "12500")
+        app.buttons["Done"].tap()
+        XCTAssertEqual(quantityField.value as? String, "12500")
+        attachScreenshot(named: "quantity-direct-entry")
     }
 
     func testEveryProfilePreviewRendersEnteredLengthAndDimensions() {
@@ -359,6 +384,34 @@ final class SteelFlowUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Delete this item?"].waitForExistence(timeout: 3))
         app.buttons["Cancel"].tap()
         XCTAssertTrue(item.exists)
+    }
+
+    func testProjectDeletionRequiresConfirmationAndCannotBeRestored() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+            "--marketing-screen", "projects", "--marketing-locale", "en-US"
+        ]
+        app.launch()
+
+        let project = app.staticTexts["Harbor Canopy"]
+        XCTAssertTrue(project.waitForExistence(timeout: 8))
+        project.swipeLeft()
+        XCTAssertTrue(app.buttons["Archive"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.buttons["Delete"].exists)
+        app.buttons["Delete"].tap()
+
+        XCTAssertTrue(app.staticTexts["Delete this project?"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["The project and all its items will be permanently deleted. This cannot be undone."].exists)
+        app.buttons["Cancel"].tap()
+        XCTAssertTrue(project.exists)
+
+        project.swipeLeft()
+        app.buttons["Delete"].tap()
+        app.alerts.buttons["Delete"].tap()
+        XCTAssertTrue(project.waitForNonExistence(timeout: 3))
+        XCTAssertFalse(app.buttons["Restore"].exists)
     }
 
     func testCaptureEnglishMarketingScreens() throws {

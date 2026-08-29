@@ -93,14 +93,14 @@ struct CalculatorEditorView: View {
                 }
 
                 AdaptiveFormRow("calculator.length") {
-                    LengthValueInput(
-                        text: $draft.lengthText,
-                        unit: lengthUnitBinding,
-                        units: [.meter, .foot, .millimeter, .inch]
-                    )
+                    LengthValueInput(text: $draft.lengthText)
                 }
-                Stepper(value: $draft.quantity, in: 1...1_000_000) {
-                    LabeledContent("calculator.quantity", value: "\(draft.quantity)")
+                Picker("calculator.length_unit", selection: lengthUnitBinding) {
+                    ForEach([LengthUnit.meter, .foot, .millimeter, .inch]) { Text($0.rawValue).tag($0) }
+                }
+                .accessibilityIdentifier("length.unit")
+                AdaptiveFormRow("calculator.quantity") {
+                    QuantityValueInput(value: $draft.quantity, range: 1...1_000_000)
                 }
             }
 

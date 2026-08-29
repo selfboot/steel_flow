@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import Observation
+import UIKit
 
 enum SteelFlowTheme {
     static let steelBlue = Color(red: 0.04, green: 0.43, blue: 0.62)
@@ -62,36 +63,147 @@ struct AdaptiveFormRow<Content: View>: View {
 
 struct LengthValueInput: View {
     @Binding var text: String
-    @Binding var unit: LengthUnit
-    let units: [LengthUnit]
-    @FocusState private var isFocused: Bool
+    @State private var isFocused = false
+    @Environment(\.locale) private var locale
 
     var body: some View {
-        HStack(spacing: 8) {
-            TextField("0", text: $text)
-                .keyboardType(.decimalPad)
-                .multilineTextAlignment(.trailing)
-                .font(.body.monospacedDigit())
-                .focused($isFocused)
-                .padding(.horizontal, 12)
-                .frame(minWidth: 112, maxWidth: .infinity, minHeight: 44)
-                .background(Color(uiColor: .tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(isFocused ? SteelFlowTheme.steelBlue : .clear, lineWidth: 2)
-                }
-                .contentShape(Rectangle())
-                .accessibilityLabel("calculator.length")
-                .accessibilityIdentifier("length.value")
+        CursorAtEndTextField(
+            text: $text,
+            keyboardType: .decimalPad,
+            accessibilityIdentifier: "length.value",
+            doneTitle: AppLocalization.text("common.done", locale: locale),
+            onFocusChange: { isFocused = $0 }
+        )
+        .padding(.horizontal, 12)
+        .frame(minWidth: 112, maxWidth: .infinity, minHeight: 44)
+        .background(Color(uiColor: .tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
+        .overlay {
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(isFocused ? SteelFlowTheme.steelBlue : .clear, lineWidth: 2)
+        }
+        .contentShape(Rectangle())
+        .accessibilityLabel("calculator.length")
+    }
+}
 
-            Picker("calculator.length_unit", selection: $unit) {
-                ForEach(units) { Text($0.rawValue).tag($0) }
+struct QuantityValueInput: View {
+    @Binding var value: Int
+    let range: ClosedRange<Int>
+    @State private var text: String
+    @State private var isFocused = false
+    @Environment(\.locale) private var locale
+
+    init(value: Binding<Int>, range: ClosedRange<Int>) {
+        _value = value
+        self.range = range
+        _text = State(initialValue: String(value.wrappedValue))
+    }
+
+    var body: some View {
+        CursorAtEndTextField(
+            text: $text,
+            keyboardType: .numberPad,
+            accessibilityIdentifier: "quantity.value",
+            doneTitle: AppLocalization.text("common.done", locale: locale),
+            onFocusChange: handleFocusChange
+        )
+        .padding(.horizontal, 12)
+        .frame(minWidth: 112, maxWidth: 160, minHeight: 44)
+        .background(Color(uiColor: .tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
+        .overlay {
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(isFocused ? SteelFlowTheme.steelBlue : .clear, lineWidth: 2)
+        }
+        .contentShape(Rectangle())
+        .accessibilityLabel("calculator.quantity")
+        .onChange(of: text) { _, newValue in
+            guard let parsed = Int(newValue), range.contains(parsed) else { return }
+            value = parsed
+        }
+        .onChange(of: value) { _, newValue in
+            guard !isFocused else { return }
+            text = String(clamped(newValue))
+        }
+    }
+
+    private func handleFocusChange(_ focused: Bool) {
+        isFocused = focused
+        guard !focused else { return }
+        let normalized = clamped(Int(text) ?? value)
+        value = normalized
+        text = String(normalized)
+    }
+
+    private func clamped(_ value: Int) -> Int {
+        min(max(value, range.lowerBound), range.upperBound)
+    }
+}
+
+private struct CursorAtEndTextField: UIViewRepresentable {
+    @Binding var text: String
+    let keyboardType: UIKeyboardType
+    let accessibilityIdentifier: String
+    let doneTitle: String
+    let onFocusChange: (Bool) -> Void
+
+    func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+    func makeUIView(context: Context) -> UITextField {
+        let textField = UITextField()
+        textField.delegate = context.coordinator
+        textField.keyboardType = keyboardType
+        textField.textAlignment = .right
+        textField.font = .monospacedDigitSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize, weight: .regular)
+        textField.adjustsFontForContentSizeCategory = true
+        textField.accessibilityIdentifier = accessibilityIdentifier
+        let toolbar = UIToolbar()
+        let doneButton = UIBarButtonItem(title: doneTitle, style: .done, target: context.coordinator, action: #selector(Coordinator.finishEditing))
+        toolbar.items = [.flexibleSpace(), doneButton]
+        toolbar.sizeToFit()
+        textField.inputAccessoryView = toolbar
+        context.coordinator.textField = textField
+        context.coordinator.doneButton = doneButton
+        textField.addTarget(context.coordinator, action: #selector(Coordinator.textChanged(_:)), for: .editingChanged)
+        return textField
+    }
+
+    func updateUIView(_ textField: UITextField, context: Context) {
+        context.coordinator.parent = self
+        textField.keyboardType = keyboardType
+        textField.accessibilityIdentifier = accessibilityIdentifier
+        context.coordinator.doneButton?.title = doneTitle
+        if textField.text != text { textField.text = text }
+    }
+
+    final class Coordinator: NSObject, UITextFieldDelegate {
+        var parent: CursorAtEndTextField
+        weak var textField: UITextField?
+        weak var doneButton: UIBarButtonItem?
+
+        init(_ parent: CursorAtEndTextField) {
+            self.parent = parent
+        }
+
+        @objc func textChanged(_ textField: UITextField) {
+            parent.text = textField.text ?? ""
+        }
+
+        @objc func finishEditing() {
+            textField?.resignFirstResponder()
+        }
+
+        func textFieldDidBeginEditing(_ textField: UITextField) {
+            parent.onFocusChange(true)
+            Task { @MainActor [weak textField] in
+                await Task.yield()
+                guard let textField else { return }
+                let end = textField.endOfDocument
+                textField.selectedTextRange = textField.textRange(from: end, to: end)
             }
-            .pickerStyle(.menu)
-            .labelsHidden()
-            .frame(minWidth: 68, minHeight: 44)
-            .background(Color(uiColor: .tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
-            .accessibilityIdentifier("length.unit")
+        }
+
+        func textFieldDidEndEditing(_ textField: UITextField) {
+            parent.onFocusChange(false)
         }
     }
 }

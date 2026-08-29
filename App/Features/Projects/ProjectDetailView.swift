@@ -362,13 +362,15 @@ private struct ProjectItemDetailView: View {
             }
             Section("calculator.section.pricing") {
                 AdaptiveFormRow("calculator.length") {
-                    LengthValueInput(
-                        text: $lengthText,
-                        unit: lengthUnitBinding,
-                        units: LengthUnit.allCases
-                    )
+                    LengthValueInput(text: $lengthText)
                 }
-                Stepper(value: $quantity, in: 1...1_000_000) { LabeledContent("calculator.quantity", value: "\(quantity)") }
+                Picker("calculator.length_unit", selection: lengthUnitBinding) {
+                    ForEach(LengthUnit.allCases) { Text($0.rawValue).tag($0) }
+                }
+                .accessibilityIdentifier("length.unit")
+                AdaptiveFormRow("calculator.quantity") {
+                    QuantityValueInput(value: $quantity, range: 1...1_000_000)
+                }
                 HStack { Text("calculator.waste"); Spacer(); TextField("0", text: $wasteText).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text("%") }
                 Text("calculator.waste_pricing_help").font(.caption).foregroundStyle(.secondary)
                 Picker("calculator.price_basis", selection: $priceBasis) {
