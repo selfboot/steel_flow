@@ -10,7 +10,7 @@ struct ProjectDetailView: View {
     @State private var showBulkPricing = false
     @State private var pendingDeleteItems: [CalculationItemEntity] = []
     @State private var showDeleteConfirmation = false
-    @State private var showProLimit = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
 
     private var sortedItems: [CalculationItemEntity] { project.items.sorted { $0.sortIndex < $1.sortIndex } }
@@ -36,9 +36,15 @@ struct ProjectDetailView: View {
                     .onDelete(perform: requestDeleteItems)
                     .onMove(perform: moveItems)
                 }
-                NavigationLink {
-                    ProfilePickerForProject(project: project)
-                } label: { Label("project.add_item", systemImage: "plus.circle") }
+                if purchaseManager.isPro || project.items.count < ProPolicy.freeItemsPerProjectLimit {
+                    NavigationLink {
+                        ProfilePickerForProject(project: project)
+                    } label: { Label("project.add_item", systemImage: "plus.circle") }
+                } else {
+                    Button { paywallReason = .items } label: {
+                        Label("project.add_item", systemImage: "lock.fill")
+                    }
+                }
             }
 
             Section("project.summary") {
@@ -76,7 +82,7 @@ struct ProjectDetailView: View {
                 Menu {
                     Button("common.edit") { showEdit = true }
                     Button("project.bulk_pricing") {
-                        if purchaseManager.isPro { showBulkPricing = true } else { showProLimit = true }
+                        if purchaseManager.isPro { showBulkPricing = true } else { paywallReason = .bulkPricing }
                     }
                 } label: { Image(systemName: "ellipsis.circle") }
             }
@@ -84,16 +90,12 @@ struct ProjectDetailView: View {
         .sheet(isPresented: $showEdit) { ProjectSettingsSheet(project: project) }
         .sheet(isPresented: $showQuote) { QuotePreviewView(project: project) }
         .sheet(isPresented: $showBulkPricing) { BulkPricingSheet(project: project) }
+        .proPaywall(reason: $paywallReason)
         .alert("delete.confirm.title", isPresented: $showDeleteConfirmation) {
             Button("common.delete", role: .destructive) { confirmDeleteItems() }
             Button("common.cancel", role: .cancel) { pendingDeleteItems = [] }
         } message: {
             Text("delete.confirm.message")
-        }
-        .alert("purchase.limit.title", isPresented: $showProLimit) {
-            Button("common.ok", role: .cancel) {}
-        } message: {
-            Text("purchase.limit.bulk_pricing")
         }
     }
 
@@ -404,6 +406,7 @@ private struct ProjectItemDetailView: View {
                 Section { Label("calculator.invalid_input", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
             }
         }
+        .keyboardDismissSupport()
         .navigationTitle(item.profile.localizationKey)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
@@ -553,6 +556,7 @@ private struct BulkPricingSheet: View {
                 Section { Text("project.bulk.help").font(.caption).foregroundStyle(.secondary) }
                 if !canApply { Section { Label("error.invalid_pricing", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) } }
             }
+            .keyboardDismissSupport()
             .navigationTitle("project.bulk_pricing")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }

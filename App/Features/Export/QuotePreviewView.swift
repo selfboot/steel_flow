@@ -12,6 +12,7 @@ struct QuotePreviewView: View {
     @State private var csvURL: URL?
     @State private var exportError: String?
     @State private var purchaseManager = PurchaseManager.shared
+    @State private var paywallReason: ProPaywallReason?
 
     private var summary: ProjectSummary { ProjectCalculator.summarize(project) }
     private var quoteLocale: Locale { Locale(identifier: project.quoteLanguage) }
@@ -79,7 +80,9 @@ struct QuotePreviewView: View {
                             Label("quote.share_csv", systemImage: "tablecells").frame(maxWidth: .infinity)
                         }
                     } else if !purchaseManager.isPro {
-                        Label("purchase.limit.csv", systemImage: "lock.fill").foregroundStyle(.secondary)
+                        Button { paywallReason = .csv } label: {
+                            Label("purchase.limit.csv", systemImage: "lock.fill").frame(maxWidth: .infinity)
+                        }
                     }
                     if pdfURL == nil && csvURL == nil { ProgressView("quote.preparing") }
                 }
@@ -87,6 +90,7 @@ struct QuotePreviewView: View {
             .navigationTitle("quote.preview")
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("common.done") { dismiss() } } }
             .task { prepareExports() }
+            .proPaywall(reason: $paywallReason)
             .alert("export.error.title", isPresented: Binding(get: { exportError != nil }, set: { if !$0 { exportError = nil } })) {
                 Button("common.ok", role: .cancel) {}
             } message: { Text(exportError ?? "") }

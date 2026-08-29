@@ -14,20 +14,24 @@ settings:
     SWIFT_VERSION: "6.0"
     DEVELOPMENT_TEAM: 4Z5Z5TE9EX
     CODE_SIGN_STYLE: Automatic
-    CURRENT_PROJECT_VERSION: 1
-    MARKETING_VERSION: 1.0.0
+    CURRENT_PROJECT_VERSION: 4
+    MARKETING_VERSION: 1.0
     ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
-    REVENUECAT_API_KEY: REVENUECAT_API_KEY_NOT_CONFIGURED
     REVENUECAT_ENTITLEMENT_ID: pro
     REVENUECAT_PROXY_URL: https://api.rc-backup.com/
 targets:
   SteelFlow:
     type: application
     platform: iOS
+    configFiles:
+      Debug: Config/RevenueCat.xcconfig
+      Release: Config/RevenueCat.xcconfig
     info:
       path: App/Resources/Info.plist
       properties:
         CFBundleDisplayName: SteelFlow
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSApplicationCategoryType: public.app-category.utilities
         UIApplicationSupportsIndirectInputEvents: true
         ITSAppUsesNonExemptEncryption: false

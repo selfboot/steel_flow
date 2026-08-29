@@ -16,7 +16,7 @@ struct CalculatorEditorView: View {
     @State private var showSaveSheet = false
     @State private var showDetails = false
     @State private var savedConfirmation = false
-    @State private var showProLimit = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
     @State private var selectedPriceEntryID: UUID?
 
@@ -206,7 +206,7 @@ struct CalculatorEditorView: View {
             Section {
                 Button {
                     if let destinationProject {
-                        if canAdd(to: destinationProject) { save(to: destinationProject) } else { showProLimit = true }
+                        if canAdd(to: destinationProject) { save(to: destinationProject) } else { paywallReason = .items }
                     }
                     else { showSaveSheet = true }
                 } label: {
@@ -216,6 +216,7 @@ struct CalculatorEditorView: View {
                 .disabled(result == nil || pricing == nil)
             }
         }
+        .keyboardDismissSupport()
         .navigationTitle(profile.localizationKey)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
@@ -235,7 +236,7 @@ struct CalculatorEditorView: View {
             if let result { CalculationDetailsView(result: result) }
         }
         .alert("calculator.saved", isPresented: $savedConfirmation) { Button("common.ok", role: .cancel) {} }
-        .alert("purchase.limit.title", isPresented: $showProLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.items") }
+        .proPaywall(reason: $paywallReason)
     }
 
     private func dimensionBinding(_ field: DimensionField) -> Binding<String> {
@@ -290,7 +291,7 @@ struct CalculatorEditorView: View {
     }
 
     private func save(to project: ProjectEntity) {
-        guard canAdd(to: project) else { showProLimit = true; return }
+        guard canAdd(to: project) else { paywallReason = .items; return }
         guard let material = materials.first(where: { $0.id == draft.selectedMaterialID }),
               let item = draft.makeItem(materialName: materialDisplayName(material), locale: locale, sortIndex: project.items.count) else { return }
         project.items.append(item)
@@ -318,8 +319,7 @@ private struct SaveToProjectSheet: View {
     let projects: [ProjectEntity]
     let onSelect: (ProjectEntity) -> Void
     @State private var newName = ""
-    @State private var showProjectLimit = false
-    @State private var showItemLimit = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
 
     var body: some View {
@@ -329,7 +329,7 @@ private struct SaveToProjectSheet: View {
                     ForEach(projects.filter { !$0.isArchived }) { project in
                         Button {
                             if purchaseManager.isPro || project.items.count < ProPolicy.freeItemsPerProjectLimit { onSelect(project) }
-                            else { showItemLimit = true }
+                            else { paywallReason = .items }
                         } label: {
                             VStack(alignment: .leading) {
                                 Text(project.name).foregroundStyle(.primary)
@@ -345,7 +345,7 @@ private struct SaveToProjectSheet: View {
                             activeProjectCount: projects.filter({ !$0.isArchived }).count,
                             isPro: purchaseManager.isPro
                         ) {
-                            showProjectLimit = true
+                            paywallReason = .projects
                         } else {
                             let trimmedName = newName.trimmingCharacters(in: .whitespacesAndNewlines)
                             let project = ProjectEntity(
@@ -361,10 +361,10 @@ private struct SaveToProjectSheet: View {
                     }
                 }
             }
+            .keyboardDismissSupport()
             .navigationTitle("calculator.save_to_project")
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } } }
-            .alert("purchase.limit.title", isPresented: $showProjectLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.projects") }
-            .alert("purchase.limit.title", isPresented: $showItemLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.items") }
+            .proPaywall(reason: $paywallReason)
         }
     }
 }

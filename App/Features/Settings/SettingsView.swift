@@ -23,8 +23,7 @@ struct SettingsView: View {
     @State private var pendingImportPreview: BackupPreview?
     @State private var showImportConfirmation = false
     @State private var showDeleteConfirmation = false
-    @State private var showProLimit = false
-    @State private var currencyDraft = ""
+    @State private var paywallReason: ProPaywallReason?
 
     var body: some View {
         Form {
@@ -37,8 +36,7 @@ struct SettingsView: View {
                 Picker("settings.unit_system", selection: $unitSystemRaw) {
                     ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0.rawValue) }
                 }
-                TextField("settings.currency", text: $currencyDraft).textInputAutocapitalization(.characters)
-                if CurrencyRules.normalizedCode(currencyDraft) == nil { Label("error.invalid_currency", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
+                CurrencyPickerRow(selection: $currencyCode)
                 Picker("settings.paper", selection: $paperRaw) {
                     Text("paper.a4").tag(PaperSize.a4.rawValue)
                     Text("paper.letter").tag(PaperSize.letter.rawValue)
@@ -49,7 +47,7 @@ struct SettingsView: View {
                 if purchaseManager.isPro {
                     NavigationLink("settings.company_profile") { CompanyProfileView() }
                 } else {
-                    Button { showProLimit = true } label: { Label("settings.company_profile", systemImage: "lock.fill") }
+                    Button { paywallReason = .companyProfile } label: { Label("settings.company_profile", systemImage: "lock.fill") }
                 }
             }
 
@@ -60,32 +58,31 @@ struct SettingsView: View {
                     if let price = purchaseManager.localizedPrice, !purchaseManager.isPro { Text(price).foregroundStyle(.secondary) }
                 }
                 if !purchaseManager.isPro {
-                    Button("purchase.buy") { Task { await purchaseManager.purchase() } }
-                        .disabled(!purchaseManager.isPurchaseAvailable || purchaseManager.isLoading)
-                }
-                Button("purchase.restore") { Task { await purchaseManager.restore() } }
-                    .disabled(purchaseManager.isLoading)
-                if purchaseManager.isLoading { ProgressView() }
-                if let message = purchaseManager.availabilityMessage {
-                    Label(message, systemImage: "exclamationmark.triangle")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    Button("purchase.buy") { paywallReason = .general }
                 }
                 Text("purchase.help").font(.caption).foregroundStyle(.secondary)
             }
 
             Section("settings.data") {
                 Button {
-                    if purchaseManager.isPro { exportBackup() } else { showProLimit = true }
+                    if purchaseManager.isPro { exportBackup() } else { paywallReason = .backups }
                 } label: {
                     Label("backup.export", systemImage: purchaseManager.isPro ? "square.and.arrow.up" : "lock.fill")
                 }
                 Button {
-                    if purchaseManager.isPro { showImporter = true } else { showProLimit = true }
+                    if purchaseManager.isPro { showImporter = true } else { paywallReason = .backups }
                 } label: {
                     Label("backup.import", systemImage: purchaseManager.isPro ? "square.and.arrow.down" : "lock.fill")
                 }
                 Button(role: .destructive) { showDeleteConfirmation = true } label: { Label("settings.delete_all", systemImage: "trash") }
+            }
+
+            Section("settings.support") {
+                NavigationLink {
+                    FeedbackView()
+                } label: {
+                    Label("feedback.entry", systemImage: "envelope")
+                }
             }
 
             Section("settings.about") {
@@ -96,6 +93,7 @@ struct SettingsView: View {
         }
         .navigationTitle("tab.settings")
         .task { await purchaseManager.load() }
+        .proPaywall(reason: $paywallReason)
         .fileExporter(isPresented: $showExporter, document: backupDocument, contentType: .steelFlowBackup, defaultFilename: "SteelFlow-Backup") { result in
             if case .failure(let error) = result { backupMessage = error.localizedDescription }
         }
@@ -136,19 +134,7 @@ struct SettingsView: View {
                 snapshots.count
             ))
         }
-        .onAppear { currencyDraft = currencyCode }
-        .onChange(of: currencyDraft) { _, value in
-            if let code = CurrencyRules.normalizedCode(value) { currencyCode = code }
-        }
         .onChange(of: languageCode) { _, _ in Task { await purchaseManager.load() } }
-        .alert("purchase.limit.title", isPresented: $showProLimit) {
-            Button("common.ok", role: .cancel) {}
-        } message: {
-            Text("purchase.limit.pro_feature")
-        }
-        .alert(purchaseManager.alertTitle, isPresented: Binding(get: { purchaseManager.alertMessage != nil }, set: { if !$0 { purchaseManager.alertMessage = nil } })) {
-            Button("common.ok", role: .cancel) {}
-        } message: { Text(purchaseManager.alertMessage ?? "") }
     }
 
     private func exportBackup() {
@@ -186,7 +172,6 @@ struct SettingsView: View {
                 languageCode = preferences.languageCode
                 unitSystemRaw = preferences.unitSystemRaw
                 currencyCode = preferences.currencyCode
-                currencyDraft = preferences.currencyCode
                 paperRaw = preferences.paperSizeRaw
             }
             let messageLocale = importPreferences && imported.preferences?.languageCode != "system"
@@ -263,6 +248,7 @@ private struct CompanyProfileForm: View {
             }
             Section { Text("company.help").font(.caption).foregroundStyle(.secondary) }
         }
+        .keyboardDismissSupport()
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
             ToolbarItem(placement: .confirmationAction) { Button("common.save") { save() } }

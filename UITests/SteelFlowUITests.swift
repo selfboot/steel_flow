@@ -2,9 +2,9 @@ import XCTest
 
 @MainActor
 final class SteelFlowUITests: XCTestCase {
-    private func launchApp() -> XCUIApplication {
+    private func launchApp(extraArguments: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en", "-app.unitSystem", "metric"]
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en", "-app.unitSystem", "metric"] + extraArguments
         app.launch()
         return app
     }
@@ -41,6 +41,121 @@ final class SteelFlowUITests: XCTestCase {
         app.swipeUp()
         app.swipeUp()
         XCTAssertTrue(app.staticTexts["Data collection"].waitForExistence(timeout: 2))
+    }
+
+    func testCurrencySearchDisappearsAfterSelectingCurrency() {
+        continueAfterFailure = false
+        let app = launchApp()
+
+        app.tabBars.buttons["Settings"].tap()
+        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 3))
+        app.staticTexts["Currency"].tap()
+
+        XCTAssertTrue(app.navigationBars["Choose Currency"].waitForExistence(timeout: 3))
+        let searchField = app.textFields["Search by currency or code"]
+        XCTAssertTrue(searchField.waitForExistence(timeout: 3))
+        searchField.tap()
+        searchField.typeText("JPY")
+
+        let yenCode = app.staticTexts["JPY"].firstMatch
+        XCTAssertTrue(yenCode.waitForExistence(timeout: 3))
+        yenCode.tap()
+
+        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 3))
+        XCTAssertFalse(searchField.exists, "Currency search must be destroyed when leaving its page")
+        XCTAssertFalse(app.staticTexts["Search by currency or code"].exists)
+    }
+
+    func testFeedbackEntryBuildsEmailAndOffersFallback() {
+        continueAfterFailure = false
+        let app = launchApp(extraArguments: ["--simulate-mail-unavailable"])
+
+        app.tabBars.buttons["Settings"].tap()
+        let feedbackEntry = app.buttons["Feedback & feature requests"]
+        for _ in 0..<5 where !feedbackEntry.isHittable { app.swipeUp() }
+        XCTAssertTrue(feedbackEntry.waitForExistence(timeout: 3))
+        feedbackEntry.tap()
+
+        XCTAssertTrue(app.navigationBars["Feedback"].waitForExistence(timeout: 3))
+        let summary = app.textFields["Brief summary"]
+        XCTAssertTrue(summary.waitForExistence(timeout: 3))
+        summary.tap()
+        summary.typeText("Test feedback")
+
+        let send = app.buttons["Send feedback"]
+        XCTAssertTrue(send.isEnabled)
+        send.tap()
+
+        XCTAssertTrue(app.buttons["Copy feedback content"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["Open email app"].exists)
+    }
+
+    func testLockedFeatureOpensPurchaseLandingPageWithStoreProduct() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+            "-purchase.pro.cached", "NO"
+        ]
+        app.launch()
+
+        app.tabBars.buttons["Settings"].tap()
+        let companyProfile = app.buttons["Company profile"]
+        XCTAssertTrue(companyProfile.waitForExistence(timeout: 5))
+        companyProfile.tap()
+
+        XCTAssertTrue(app.navigationBars["SteelFlow Pro"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Unlock SteelFlow Pro"].exists)
+        XCTAssertTrue(app.buttons["Restore purchase"].exists)
+
+        let purchaseButton = app.buttons.matching(
+            NSPredicate(format: "label BEGINSWITH %@", "Unlock Pro ·")
+        ).firstMatch
+        XCTAssertTrue(purchaseButton.waitForExistence(timeout: 20), "The App Store product and localized price should load")
+        XCTAssertTrue(purchaseButton.isEnabled, "A configured lifetime product must be purchasable")
+        attachScreenshot(named: "pro-purchase-landing-page")
+    }
+
+    func testPurchaseInvokesStoreKitAndCancellationIsHandledCleanly() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
+            "-purchase.pro.cached", "NO"
+        ]
+        app.launch()
+
+        app.tabBars.buttons["Settings"].tap()
+        app.buttons["Company profile"].tap()
+
+        let purchaseButton = app.buttons.matching(
+            NSPredicate(format: "label BEGINSWITH %@", "Unlock Pro ·")
+        ).firstMatch
+        XCTAssertTrue(purchaseButton.waitForExistence(timeout: 20))
+        XCTAssertTrue(purchaseButton.isEnabled)
+        purchaseButton.tap()
+
+        let systemProcesses = [
+            XCUIApplication(bundleIdentifier: "com.apple.ios.StoreKitUIService"),
+            XCUIApplication(bundleIdentifier: "com.apple.StoreKitUISceneService"),
+            XCUIApplication(bundleIdentifier: "com.apple.AMSUIAuthenticationViewService"),
+            XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        ]
+        let cancelPredicate = NSPredicate(format: "label IN %@", ["Cancel", "取消"])
+        let deadline = Date().addingTimeInterval(10)
+        var cancelButton: XCUIElement?
+        repeat {
+            cancelButton = systemProcesses
+                .map { $0.buttons.matching(cancelPredicate).firstMatch }
+                .first(where: \.exists)
+            if cancelButton == nil { Thread.sleep(forTimeInterval: 0.25) }
+        } while cancelButton == nil && Date() < deadline
+
+        let systemCancel = try? XCTUnwrap(cancelButton, "Tapping purchase should invoke Apple's StoreKit confirmation UI")
+        systemCancel?.tap()
+
+        XCTAssertTrue(app.navigationBars["SteelFlow Pro"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.alerts["Purchase unavailable"].exists, "User cancellation should not be reported as an error")
     }
 
     func testCalculatorRemainsUsableAtLargestAccessibilityTextSize() {

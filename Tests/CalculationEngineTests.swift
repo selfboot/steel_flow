@@ -21,12 +21,14 @@ final class CalculationEngineTests: XCTestCase {
             (.roundBar, [.diameter: 20], .pi * pow(0.02, 2) / 4),
             (.squareBar, [.side: 20], pow(0.02, 2)),
             (.hexBar, [.acrossFlats: 20], sqrt(3) * pow(0.02, 2) / 2),
+            (.octagonalBar, [.acrossFlats: 20], 2 * (sqrt(2) - 1) * pow(0.02, 2)),
             (.roundTube, [.outerDiameter: 60.3, .wallThickness: 3.2], .pi * (pow(0.0603, 2) - pow(0.0539, 2)) / 4),
             (.squareTube, [.outerSide: 50, .wallThickness: 3], pow(0.05, 2) - pow(0.044, 2)),
             (.rectangularTube, [.width: 80, .height: 40, .wallThickness: 3], 0.08 * 0.04 - 0.074 * 0.034),
             (.angle, [.width: 50, .height: 50, .wallThickness: 5], 0.05 * 0.005 + 0.05 * 0.005 - 0.005 * 0.005),
             (.channel, [.height: 100, .flangeWidth: 50, .webThickness: 5, .flangeThickness: 7], 2 * 0.05 * 0.007 + 0.086 * 0.005),
             (.iSection, [.height: 200, .flangeWidth: 100, .webThickness: 6, .flangeThickness: 9], 2 * 0.1 * 0.009 + 0.182 * 0.006),
+            (.tSection, [.height: 100, .flangeWidth: 50, .webThickness: 5, .flangeThickness: 7], 0.05 * 0.007 + 0.093 * 0.005),
             (.customArea, [.customArea: 1_000], 0.001)
         ]
 
@@ -42,6 +44,32 @@ final class CalculationEngineTests: XCTestCase {
         XCTAssertEqual(result.areaSquareMeters, 0.001, accuracy: 1e-12)
         XCTAssertEqual(result.unitMassKg, 47.1, accuracy: 1e-9)
         XCTAssertEqual(result.totalMassKg, 47.1, accuracy: 1e-9)
+    }
+
+    @MainActor
+    func testEveryProfileDefaultDraftProducesAValidCalculation() throws {
+        for profile in ProfileKind.allCases {
+            let draft = CalculatorDraft(profile: profile)
+            let result = try XCTUnwrap(draft.result(locale: Locale(identifier: "en_US")), "Missing result for \(profile)")
+            switch result {
+            case .success(let calculation):
+                XCTAssertGreaterThan(calculation.areaSquareMeters, 0, "Invalid default area for \(profile)")
+            case .failure(let error):
+                XCTFail("Default inputs failed for \(profile): \(error)")
+            }
+        }
+    }
+
+    func testBuiltInMaterialDensitiesRemainWithinVerifiedTypicalReferences() throws {
+        let presets = Dictionary(uniqueKeysWithValues: MaterialCatalog.presets.map { ($0.id, $0.densityKgPerM3) })
+        XCTAssertEqual(presets.count, MaterialCatalog.presets.count)
+        XCTAssertEqual(try XCTUnwrap(presets["carbon-steel"]), 7_850)
+        XCTAssertEqual(try XCTUnwrap(presets["stainless-304"]), 7_930)
+        XCTAssertEqual(try XCTUnwrap(presets["stainless-316"]), 8_000)
+        XCTAssertEqual(try XCTUnwrap(presets["aluminum"]), 2_700)
+        XCTAssertEqual(try XCTUnwrap(presets["brass"]), 8_500)
+        XCTAssertEqual(try XCTUnwrap(presets["copper"]), 8_960)
+        XCTAssertEqual(try XCTUnwrap(presets["cast-iron"]), 7_200)
     }
 
     func testMetricAndImperialInputsAreEquivalent() throws {
@@ -104,6 +132,12 @@ final class CalculationEngineTests: XCTestCase {
         XCTAssertThrowsError(try calculate(.iSection, [.height: 100, .flangeWidth: 20, .webThickness: 21, .flangeThickness: 5], length: 1)) {
             XCTAssertEqual($0 as? CalculationError, .webTooThick)
         }
+        XCTAssertThrowsError(try calculate(.tSection, [.height: 20, .flangeWidth: 30, .webThickness: 3, .flangeThickness: 20], length: 1)) {
+            XCTAssertEqual($0 as? CalculationError, .flangeTooThick)
+        }
+        XCTAssertThrowsError(try calculate(.tSection, [.height: 100, .flangeWidth: 20, .webThickness: 21, .flangeThickness: 5], length: 1)) {
+            XCTAssertEqual($0 as? CalculationError, .webTooThick)
+        }
     }
 
     func testRejectsMissingNegativeAndNonFiniteInputs() {
@@ -130,6 +164,7 @@ final class CalculationEngineTests: XCTestCase {
         XCTAssertTrue(ProfileKind.angle.usesIdealizedGeometry)
         XCTAssertTrue(ProfileKind.channel.usesIdealizedGeometry)
         XCTAssertTrue(ProfileKind.iSection.usesIdealizedGeometry)
+        XCTAssertTrue(ProfileKind.tSection.usesIdealizedGeometry)
         XCTAssertFalse(ProfileKind.roundBar.usesIdealizedGeometry)
         XCTAssertFalse(ProfileKind.roundTube.usesIdealizedGeometry)
     }

@@ -10,7 +10,7 @@ struct MaterialsView: View {
     @State private var showNew = false
     @State private var showNewPrice = false
     @State private var editingPrice: PriceBookEntryEntity?
-    @State private var showProLimit = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
     @State private var pendingDeletion: CatalogDeletion?
     @State private var showDeleteConfirmation = false
@@ -70,7 +70,7 @@ struct MaterialsView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
-                    Button("materials.add") { if purchaseManager.isPro { showNew = true } else { showProLimit = true } }
+                    Button("materials.add") { if purchaseManager.isPro { showNew = true } else { paywallReason = .materials } }
                     Button("price_book.add") { showNewPrice = true }
                 } label: { Image(systemName: "plus") }
             }
@@ -79,7 +79,7 @@ struct MaterialsView: View {
         .sheet(item: $editingMaterial) { MaterialEditorSheet(material: $0) }
         .sheet(isPresented: $showNewPrice) { PriceBookEditorSheet(materials: materials) }
         .sheet(item: $editingPrice) { PriceBookEditorSheet(entry: $0, materials: materials) }
-        .alert("purchase.limit.title", isPresented: $showProLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.materials") }
+        .proPaywall(reason: $paywallReason)
         .alert("delete.confirm.title", isPresented: $showDeleteConfirmation) {
             Button("common.delete", role: .destructive) { confirmDeletion() }
             Button("common.cancel", role: .cancel) { pendingDeletion = nil }
@@ -159,11 +159,7 @@ private struct PriceBookEditorSheet: View {
                 TextField("calculator.material_grade", text: $grade)
                 TextField("price_book.supplier", text: $supplier)
                 TextField("calculator.price_region", text: $region)
-                HStack {
-                    Text("settings.currency")
-                    Spacer()
-                    TextField("USD", text: $currency).textInputAutocapitalization(.characters).multilineTextAlignment(.trailing)
-                }
+                CurrencyPickerRow(selection: $currency)
                 Picker("calculator.price_basis", selection: $basis) { ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0) } }
                 HStack {
                     Text("calculator.unit_price")
@@ -177,6 +173,7 @@ private struct PriceBookEditorSheet: View {
                 if validPrice == nil { Label("error.invalid_pricing", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
                 Text("price_book.reference_disclaimer").font(.caption).foregroundStyle(.secondary)
             }
+            .keyboardDismissSupport()
             .navigationTitle(entry == nil ? "price_book.add" : "price_book.edit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
@@ -261,6 +258,7 @@ private struct MaterialEditorSheet: View {
                 TextField("materials.note", text: $note, axis: .vertical).lineLimit(3...6)
                 Text("materials.density.help").font(.caption).foregroundStyle(.secondary)
             }
+            .keyboardDismissSupport()
             .navigationTitle(material == nil ? "materials.add" : "materials.edit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }

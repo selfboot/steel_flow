@@ -6,21 +6,29 @@ struct CalculatorHomeView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    private let columns = [GridItem(.adaptive(minimum: 145), spacing: 12)]
+    private var columns: [GridItem] {
+        if dynamicTypeSize.isAccessibilitySize {
+            return [GridItem(.flexible())]
+        }
+        if horizontalSizeClass == .regular {
+            return [GridItem(.adaptive(minimum: 190), spacing: 12)]
+        }
+        return [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)]
+    }
 
     var body: some View {
         ScrollView {
-            LazyVStack(alignment: .leading, spacing: 22) {
+            LazyVStack(alignment: .leading, spacing: 18) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("calculator.hero.title")
                         .font(dynamicTypeSize.isAccessibilitySize ? .headline : .title2.bold())
                     Text("calculator.hero.subtitle")
                         .font(dynamicTypeSize.isAccessibilitySize ? .caption : .subheadline)
                         .foregroundStyle(.secondary)
-                        .lineLimit(dynamicTypeSize.isAccessibilitySize ? 3 : nil)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
-                LazyVGrid(columns: columns, spacing: 12) {
+                LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
                     ForEach(ProfileKind.allCases) { profile in
                         NavigationLink(value: profile) {
                             ProfileCard(profile: profile)
@@ -54,20 +62,31 @@ private struct ProfileCard: View {
     let profile: ProfileKind
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        HStack(alignment: .center, spacing: 10) {
             Image(systemName: profile.symbol)
-                .font(.system(size: 28, weight: .semibold))
+                .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(SteelFlowTheme.steelBlue)
-                .frame(height: 32)
-            Text(profile.localizationKey)
-                .font(.headline)
-                .foregroundStyle(.primary)
-                .multilineTextAlignment(.leading)
+                .frame(width: 36, height: 36)
+                .background(SteelFlowTheme.steelBlue.opacity(0.1), in: RoundedRectangle(cornerRadius: 9))
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(profile.localizationKey)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.primary)
+                    .lineLimit(2)
+                Text(profile.summaryKey)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
+            .multilineTextAlignment(.leading)
+            .layoutPriority(1)
         }
-        .frame(maxWidth: .infinity, minHeight: 100, alignment: .leading)
-        .padding(16)
-        .background(SteelFlowTheme.surface, in: RoundedRectangle(cornerRadius: 16))
-        .overlay(RoundedRectangle(cornerRadius: 16).stroke(.separator.opacity(0.25)))
+        .frame(maxWidth: .infinity, minHeight: 58, alignment: .leading)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 9)
+        .background(SteelFlowTheme.surface, in: RoundedRectangle(cornerRadius: 14))
+        .overlay(RoundedRectangle(cornerRadius: 14).stroke(.separator.opacity(0.22)))
     }
 }
 

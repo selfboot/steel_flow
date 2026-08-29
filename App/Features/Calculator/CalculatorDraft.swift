@@ -204,12 +204,14 @@ final class CalculatorDraft {
         case .roundBar: metric = [.diameter: 20]
         case .squareBar: metric = [.side: 20]
         case .hexBar: metric = [.acrossFlats: 20]
+        case .octagonalBar: metric = [.acrossFlats: 20]
         case .roundTube: metric = [.outerDiameter: 60.3, .wallThickness: 3.2]
         case .squareTube: metric = [.outerSide: 50, .wallThickness: 3]
         case .rectangularTube: metric = [.width: 80, .height: 40, .wallThickness: 3]
         case .angle: metric = [.width: 50, .height: 50, .wallThickness: 5]
         case .channel: metric = [.height: 100, .flangeWidth: 50, .webThickness: 5, .flangeThickness: 7]
         case .iSection: metric = [.height: 200, .flangeWidth: 100, .webThickness: 6, .flangeThickness: 9]
+        case .tSection: metric = [.height: 100, .flangeWidth: 50, .webThickness: 5, .flangeThickness: 7]
         case .customArea: return [.customArea: system == .metric ? 1_000 : 1.55]
         }
         guard system == .imperial else { return metric }

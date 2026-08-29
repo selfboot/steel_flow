@@ -21,7 +21,7 @@ struct ProjectSettingsSheet: View {
     @State private var profitMode = ProfitMode.markup
     @State private var showCurrencyChange = false
     @State private var showCurrencyError = false
-    @State private var showProTerms = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
 
     private var normalizedCurrency: String? { CurrencyRules.normalizedCode(currencyDraft) }
@@ -47,7 +47,7 @@ struct ProjectSettingsSheet: View {
                     Picker("settings.unit_system", selection: $unitSystem) {
                         ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0) }
                     }
-                    TextField("settings.currency", text: $currencyDraft).textInputAutocapitalization(.characters)
+                    CurrencyPickerRow(selection: $currencyDraft)
                     Picker("settings.paper", selection: $paperSize) {
                         Text("paper.a4").tag(PaperSize.a4)
                         Text("paper.letter").tag(PaperSize.letter)
@@ -64,13 +64,14 @@ struct ProjectSettingsSheet: View {
                     if purchaseManager.isPro {
                         TextField("project.terms", text: $terms, axis: .vertical).lineLimit(3...8)
                     } else {
-                        Button { showProTerms = true } label: {
+                        Button { paywallReason = .terms } label: {
                             Label("purchase.limit.terms", systemImage: "lock.fill")
                         }
                     }
                     TextField("project.notes", text: $notes, axis: .vertical).lineLimit(3...8)
                 }
             }
+            .keyboardDismissSupport()
             .navigationTitle("project.edit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
@@ -112,11 +113,7 @@ struct ProjectSettingsSheet: View {
             } message: {
                 Text("currency_change.failed.message")
             }
-            .alert("purchase.limit.title", isPresented: $showProTerms) {
-                Button("common.ok", role: .cancel) {}
-            } message: {
-                Text("purchase.limit.terms")
-            }
+            .proPaywall(reason: $paywallReason)
         }
     }
 
@@ -187,6 +184,7 @@ private struct CurrencyChangeSheet: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }
+            .keyboardDismissSupport()
             .navigationTitle("currency_change.title")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }

@@ -4,3 +4,6 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 .DS_Store
+
+# Local RevenueCat SDK key override. Never commit this file.
+Config/RevenueCat.local.xcconfig

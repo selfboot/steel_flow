@@ -7,8 +7,7 @@ struct ProjectsView: View {
     @Query(sort: \ProjectEntity.updatedAt, order: .reverse) private var projects: [ProjectEntity]
     @State private var showArchived = false
     @State private var showNewProject = false
-    @State private var showProLimit = false
-    @State private var showProFeatureLimit = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
 
     private var visibleProjects: [ProjectEntity] { projects.filter { $0.isArchived == showArchived } }
@@ -34,7 +33,7 @@ struct ProjectsView: View {
                                         activeProjectCount: projects.filter({ !$0.isArchived }).count,
                                         isPro: purchaseManager.isPro
                                        ) {
-                                        showProLimit = true
+                                        paywallReason = .projects
                                         return
                                     }
                                     project.isArchived.toggle()
@@ -66,26 +65,25 @@ struct ProjectsView: View {
             ToolbarItem(placement: .primaryAction) { Button { attemptNewProject() } label: { Image(systemName: "plus") } }
         }
         .sheet(isPresented: $showNewProject) { ProjectEditorSheet() }
-        .alert("purchase.limit.title", isPresented: $showProLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.projects") }
-        .alert("purchase.limit.title", isPresented: $showProFeatureLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.duplicate") }
+        .proPaywall(reason: $paywallReason)
     }
 
     private func attemptNewProject() {
         let activeCount = projects.filter { !$0.isArchived }.count
-        if !ProPolicy.canActivateProject(activeProjectCount: activeCount, isPro: purchaseManager.isPro) { showProLimit = true }
+        if !ProPolicy.canActivateProject(activeProjectCount: activeCount, isPro: purchaseManager.isPro) { paywallReason = .projects }
         else { showNewProject = true }
     }
 
     private func duplicate(_ source: ProjectEntity) {
         guard purchaseManager.isPro else {
-            showProFeatureLimit = true
+            paywallReason = .duplicate
             return
         }
         if !ProPolicy.canActivateProject(
             activeProjectCount: projects.filter({ !$0.isArchived }).count,
             isPro: purchaseManager.isPro
         ) {
-            showProLimit = true
+            paywallReason = .projects
             return
         }
         let copy = ProjectEntity(
@@ -187,13 +185,13 @@ struct ProjectEditorSheet: View {
                 Picker("settings.unit_system", selection: $unitSystem) {
                     ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0) }
                 }
-                TextField("settings.currency", text: $currency).textInputAutocapitalization(.characters)
-                if normalizedCurrency == nil { Label("error.invalid_currency", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
+                CurrencyPickerRow(selection: $currency)
                 Picker("settings.paper", selection: $paper) {
                     Text("paper.a4").tag(PaperSize.a4)
                     Text("paper.letter").tag(PaperSize.letter)
                 }
             }
+            .keyboardDismissSupport()
             .navigationTitle("project.create")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
