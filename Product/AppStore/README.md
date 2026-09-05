@@ -1,47 +1,34 @@
-# SteelFlow App Store launch kit
+# SteelFlow App Store 素材
 
-本目录包含 2026-08-28 准备的双语上架素材：
+当前素材对应 2026-09-05 的 1.0.1（构建 8）ASO 更新。发布与审核状态见 `Release-1.0.1-2026-09-05.md`。
 
-- `ASO-Research-2026-08-28.md`：中国大陆、美国及英语市场交叉验证的关键词与竞品报告。
-- `Pricing-Research-2026-08-28.md`：同类买断、订阅与广告模式对比，以及 SteelFlow 分区定价建议。
-- `Metadata/metadata.json`：可复制到 App Store Connect 的结构化字段和 IAP 文案。
+- `Metadata/metadata.json`：中英文名称、副标题、关键词、更新说明及审核说明。
 - `Metadata/en-US.md`、`Metadata/zh-Hans.md`：完整商店描述。
-- `LegalSite/`：待同步到 `docs.puzzles-game.com` 的中英文产品、支持与隐私政策页面。
-- `RawScreenshots/`：从 iPhone 16 Pro 模拟器截取的 2 语言 × 6 个真实功能界面。
-- `ScreenshotsEditor/`：可继续编辑并批量导出多尺寸 PNG 的截图工程。
-- `Screenshot-Design-Notes.md`：经典 App 参考、统一版式原则，以及每张文案与真实界面的对应关系。
-- `Exports/Covers/`：中英文首屏封面的 6.9、6.5、6.3、6.1 英寸 PNG。
-- `Exports/SteelFlow-AppStore-Screenshots.zip`：最终导出的 2 语言 × 4 尺寸 × 6 页素材包（48 张 PNG，体积较大，不纳入 Git）。
+- `RawScreenshots/`、`RawScreenshots/iPad/`：新版本真实 SwiftUI 界面的中英文截图。
+- `ScreenshotsEditor/`：截图编辑工程与已保存的六页布局。
+- `Screenshot-Design-Notes.md`：本轮截图顺序、版式和真实功能依据。
+- `Exports/ASO-2026-09-05/`：两种设备、两种语言的六页预览。
+- `Exports/SteelFlow-AppStore-Screenshots.zip`：72 张 PNG，包含中英文 iPhone 四种尺寸、iPad 两种尺寸。
 
-当前六页均为“标题在上、设备在下”的统一规则，分别对应首页、计算结果、真实计价、项目汇总、报价预览和材料价格库；不再复用同一张首页截图。
+首三张依次展示实时重量、项目成本、PDF 报价，随后为型材选择、材料价格库和离线计算。标题和设备上下交替，PDF 页使用深色背景；所有功能画面来自 App 的真实界面。
 
-提交前待办：
-
-1. 将 `LegalSite/` 同步发布到 `docs.puzzles-game.com` 并检查 6 个页面返回 200。
-2. 在 App Store Connect 创建 `com.steelflow.app.pro.lifetime` 非消耗型项目：标准价建议 USD 14.99 / CNY 58；可用 30–45 天首发价 USD 9.99 / CNY 38。
-3. 在 RevenueCat 配置 `pro` entitlement、`default` offering、lifetime package 和 Apple In-App Purchase Key，再注入本 App 专属公开 SDK key。
-4. App Privacy 选择 Purchase History，用途为 App Functionality 与 Analytics；不关联身份，不跟踪。
-5. 用 TestFlight 对中英文、首购/取消/恢复/退款、PDF/CSV 分享和 iPad 布局做最终 QA。
+2026-08-28 的 ASO 和定价研究保留为历史资料。现有 IAP、价格、RevenueCat 配置与隐私声明沿用线上版本。
 
 ## 重新生成
 
-原生界面由 `SteelFlowUITests` 中的两条营销截图测试生成，使用 `--marketing-screen` Debug 启动参数加载确定性项目数据；正式 Release 构建不会进入该路径。
+原生截图由 `SteelFlowUITests` 的中英文营销截图测试生成，分别在 iPhone、iPad 模拟器运行。测试使用 Debug 专用确定性演示数据，Release 不进入该路径；采集前检查并排除系统弹窗。
 
 ```bash
 xcodegen generate
 xcodebuild -project SteelFlow.xcodeproj -scheme SteelFlow \
-  -destination 'platform=iOS Simulator,id=<IPHONE_SIMULATOR_ID>' \
-  -only-testing:SteelFlowUITests/SteelFlowUITests/testCaptureEnglishMarketingScreens test
-xcodebuild -project SteelFlow.xcodeproj -scheme SteelFlow \
-  -destination 'platform=iOS Simulator,id=<IPHONE_SIMULATOR_ID>' \
+  -destination 'platform=iOS Simulator,id=<SIMULATOR_ID>' \
+  -only-testing:SteelFlowUITests/SteelFlowUITests/testCaptureEnglishMarketingScreens \
   -only-testing:SteelFlowUITests/SteelFlowUITests/testCaptureChineseMarketingScreens test
 ```
 
-继续编辑和导出：
-
 ```bash
 cd Product/AppStore/ScreenshotsEditor
-npm run dev -- --port 3016
+npm run dev -- --port 3026
 ```
 
-浏览器打开 `http://localhost:3016/`，点击 **Export bundle** 即可导出所有语言和尺寸。
+在编辑器分别选择 iPhone、iPad，点击 **Export bundle**。正式上传文件只移除全不透明 PNG 的 alpha 通道，不改变任何像素颜色；Apple 接收的最大尺寸为 1320×2868 和 2064×2752，每种设备、语言各 6 张。

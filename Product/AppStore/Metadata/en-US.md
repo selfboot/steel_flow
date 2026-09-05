@@ -1,6 +1,6 @@
 # SteelFlow: Metal Calculator
 
-SteelFlow turns dimensions into a clear, verifiable metal estimate—and turns that estimate into a client-ready quote.
+Calculate metal weight from dimensions, check material costs, and turn a project into a PDF quote. SteelFlow works offline with no account required.
 
 CALCULATE METAL WEIGHT
 

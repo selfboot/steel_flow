@@ -17,10 +17,10 @@ final class SteelFlowUITests: XCTestCase {
         XCTAssertTrue(plate.waitForExistence(timeout: 2))
         plate.tap()
         XCTAssertTrue(app.navigationBars["Plate / flat bar"].waitForExistence(timeout: 2))
-        let totalMass = app.staticTexts["Total mass"]
+        let totalMass = app.staticTexts["Total mass"].firstMatch
         for _ in 0..<8 where !totalMass.isHittable { app.swipeUp() }
         XCTAssertTrue(totalMass.waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["47.1 kg"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["47.1 kg"].firstMatch.waitForExistence(timeout: 2))
         let save = app.buttons["Save to project"]
         for _ in 0..<8 where !save.isHittable { app.swipeUp() }
         XCTAssertTrue(save.waitForExistence(timeout: 3))
@@ -70,11 +70,12 @@ final class SteelFlowUITests: XCTestCase {
         XCTAssertTrue(quantityField.waitForExistence(timeout: 3))
         XCTAssertGreaterThanOrEqual(quantityField.frame.height, 44)
         quantityField.tap()
-        quantityField.tap(withNumberOfTaps: 2, numberOfTouches: 1)
-        quantityField.typeText("12500")
+        XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 3))
+        quantityField.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 2) + "12500")
         XCTAssertEqual(quantityField.value as? String, "12500")
         app.buttons["Done"].tap()
         XCTAssertEqual(quantityField.value as? String, "12500")
+        XCTAssertTrue(app.staticTexts["588,750 kg"].firstMatch.waitForExistence(timeout: 3), "The weight preview must reflect the new quantity")
         attachScreenshot(named: "quantity-direct-entry")
     }
 
@@ -437,10 +438,22 @@ final class SteelFlowUITests: XCTestCase {
                 "--marketing-locale", locale
             ]
             app.launch()
+            dismissSimulatorAccountPrompt()
             try waitForMarketingScreen(screen, in: app, language: language)
+            dismissSimulatorAccountPrompt()
             attachScreenshot(named: "\(locale)-\(screen)")
             app.terminate()
         }
+    }
+
+    private func dismissSimulatorAccountPrompt() {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let alert = springboard.alerts.firstMatch
+        if alert.exists {
+            let postpone = alert.buttons.matching(NSPredicate(format: "label IN %@", ["Not Now", "以后", "稍后", "暂不"])).firstMatch
+            if postpone.exists { postpone.tap() }
+        }
+        XCTAssertFalse(alert.exists, "Marketing captures must not contain a system alert")
     }
 
     private func waitForMarketingScreen(_ screen: String, in app: XCUIApplication, language: String) throws {
@@ -450,9 +463,9 @@ final class SteelFlowUITests: XCTestCase {
             XCTAssertTrue(app.navigationBars[chinese ? "计算" : "Calculate"].waitForExistence(timeout: 8))
         case "calculation":
             XCTAssertTrue(app.navigationBars[chinese ? "钢板 / 扁钢" : "Plate / flat bar"].waitForExistence(timeout: 8))
-            let target = app.staticTexts[chinese ? "总重量" : "Total mass"]
-            for _ in 0..<5 where !target.isHittable { app.swipeUp() }
+            let target = app.staticTexts["847.8 kg"].firstMatch
             XCTAssertTrue(target.waitForExistence(timeout: 3))
+            XCTAssertTrue(target.isHittable, "Weight preview must be visible before scrolling")
         case "pricing":
             XCTAssertTrue(app.navigationBars[chinese ? "钢板 / 扁钢" : "Plate / flat bar"].waitForExistence(timeout: 8))
             let target = app.staticTexts[chinese ? "损耗" : "Waste"]

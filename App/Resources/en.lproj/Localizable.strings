@@ -389,3 +389,5 @@
 "data.error.title" = "Couldn’t Save Changes";
 "delete.confirm.title" = "Delete this item?";
 "delete.confirm.message" = "This action cannot be undone. Confirm that you want to permanently remove it.";
+"calculator.section.quick_result" = "Weight at a glance";
+"calculator.quick_result.help" = "Theoretical weight, before waste. Updates as you change dimensions, quantity or material.";

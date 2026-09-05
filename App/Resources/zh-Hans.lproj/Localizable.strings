@@ -389,3 +389,5 @@
 "data.error.title" = "无法保存更改";
 "delete.confirm.title" = "删除此条目？";
 "delete.confirm.message" = "此操作无法撤销，请确认是否永久删除。";
+"calculator.section.quick_result" = "重量一目了然";
+"calculator.quick_result.help" = "理论净重，不含损耗。随尺寸、数量和材料实时更新。";

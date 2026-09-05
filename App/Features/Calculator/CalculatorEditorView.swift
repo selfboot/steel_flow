@@ -60,6 +60,19 @@ struct CalculatorEditorView: View {
 
     var body: some View {
         Form {
+            if let result {
+                Section("calculator.section.quick_result") {
+                    LazyVGrid(columns: dynamicTypeSize.isAccessibilitySize ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                        ResultMetric("calculator.result.unit_mass", value: mass(result.unitMassKg))
+                        ResultMetric("calculator.result.total_mass", value: mass(result.totalMassKg), emphasized: true)
+                    }
+                    .accessibilityIdentifier("calculation.quick_result")
+                    Text("calculator.quick_result.help")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
             Section("calculator.section.geometry") {
                 ForEach(profile.dimensionFields) { field in
                     AdaptiveFormRow(field.localizationKey) {

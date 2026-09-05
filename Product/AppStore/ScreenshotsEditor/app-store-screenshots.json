@@ -8,169 +8,373 @@
     "zh-Hans"
   ],
   "locale": "en-US",
-  "device": "iphone",
+  "device": "ipad",
   "orientation": "portrait",
   "appIcon": "/brand/app-icon.png",
   "slidesByDevice": {
     "iphone": [
       {
-        "id": "steelflow-cover",
-        "layout": "device-bottom",
+        "id": "aso-101-calculation-iphone",
+        "layout": "hero",
         "label": {
-          "en-US": "WEIGHT • COST • QUOTE",
-          "zh-Hans": "算重 • 成本 • 报价"
+          "en-US": "LIVE WEIGHT PREVIEW",
+          "zh-Hans": "实时重量预览"
         },
         "headline": {
-          "en-US": "Steel weight.\nReady to quote.",
-          "zh-Hans": "算重量，\n再出报价。"
+          "en-US": "Metal weight.\nCalculated.",
+          "zh-Hans": "输入尺寸，\n即刻算重。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/home.png"
+        "screenshot": "/screenshots/apple/iphone/{locale}/calculation.png",
+        "inverted": false,
+        "transforms": {
+          "caption": {
+            "x": 70,
+            "y": 120,
+            "width": 1180,
+            "height": 520,
+            "rotation": 0
+          },
+          "device": {
+            "x": 40,
+            "y": 710,
+            "width": 1240,
+            "height": 2526,
+            "rotation": 0
+          }
+        }
       },
       {
-        "id": "steelflow-calculate",
-        "layout": "device-bottom",
+        "id": "aso-101-project-iphone",
+        "layout": "device-top",
         "label": {
-          "en-US": "INSTANT CALCULATION",
-          "zh-Hans": "即时计算"
+          "en-US": "PROJECT COST",
+          "zh-Hans": "项目成本汇总"
         },
         "headline": {
-          "en-US": "Dimensions in.\nWeight and cost out.",
-          "zh-Hans": "输入尺寸，\n重量成本即刻可见。"
+          "en-US": "Every cost.\nOne clear total.",
+          "zh-Hans": "损耗与费用，\n逐项汇总。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/calculation.png"
+        "screenshot": "/screenshots/apple/iphone/{locale}/project.png",
+        "inverted": false,
+        "transforms": {
+          "caption": {
+            "x": 65,
+            "y": 2350,
+            "width": 1190,
+            "height": 470,
+            "rotation": 0
+          },
+          "device": {
+            "x": 115,
+            "y": 55,
+            "width": 1090,
+            "height": 2220,
+            "rotation": 0
+          }
+        }
       },
       {
-        "id": "steelflow-cost",
+        "id": "aso-101-quote-iphone",
         "layout": "device-bottom",
         "label": {
-          "en-US": "REAL-WORLD PRICING",
-          "zh-Hans": "真实计价"
+          "en-US": "PDF QUOTES · PRO BRANDING",
+          "zh-Hans": "PDF 报价 · PRO 品牌定制"
         },
         "headline": {
-          "en-US": "Waste and fees.\nSupplier prices too.",
-          "zh-Hans": "损耗、费用、供应价\n逐项算清。"
+          "en-US": "A PDF quote.\nReady to share.",
+          "zh-Hans": "生成报价单，\n直接发客户。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/pricing.png"
+        "screenshot": "/screenshots/apple/iphone/{locale}/quote.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 70,
+            "y": 140,
+            "width": 1180,
+            "height": 520,
+            "rotation": 0
+          },
+          "device": {
+            "x": 140,
+            "y": 715,
+            "width": 1040,
+            "height": 2118,
+            "rotation": 0
+          }
+        }
       },
       {
-        "id": "steelflow-projects",
-        "layout": "device-bottom",
+        "id": "aso-101-home-iphone",
+        "layout": "hero",
         "label": {
-          "en-US": "PROJECT CONTROL",
-          "zh-Hans": "项目汇总"
+          "en-US": "PLATE · PIPE · BAR · BEAM",
+          "zh-Hans": "钢板 · 钢管 · 棒材 · 型钢"
         },
         "headline": {
-          "en-US": "Every steel item.\nOne project total.",
-          "zh-Hans": "每个材料条目，\n汇成项目总价。"
+          "en-US": "Pick a profile.\nStart your estimate.",
+          "zh-Hans": "选好型材，\n开始算重。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/project.png"
+        "screenshot": "/screenshots/apple/iphone/{locale}/home.png",
+        "inverted": false,
+        "transforms": {
+          "caption": {
+            "x": 70,
+            "y": 140,
+            "width": 1180,
+            "height": 520,
+            "rotation": 0
+          },
+          "device": {
+            "x": 140,
+            "y": 715,
+            "width": 1040,
+            "height": 2118,
+            "rotation": 0
+          }
+        }
       },
       {
-        "id": "steelflow-export",
-        "layout": "device-bottom",
+        "id": "aso-101-materials-iphone",
+        "layout": "device-top",
         "label": {
-          "en-US": "CLIENT-READY OUTPUT",
-          "zh-Hans": "可直接交付"
+          "en-US": "YOUR PRICES · BUILT-IN DENSITIES",
+          "zh-Hans": "自有价格 · 内置密度"
         },
         "headline": {
-          "en-US": "A client-ready\nPDF quote.",
-          "zh-Hans": "客户可直接接收的\nPDF 报价单。"
+          "en-US": "Your materials.\nYour saved prices.",
+          "zh-Hans": "材料与价格，\n随用随查。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/quote.png"
+        "screenshot": "/screenshots/apple/iphone/{locale}/materials.png",
+        "inverted": false,
+        "transforms": {
+          "caption": {
+            "x": 65,
+            "y": 2350,
+            "width": 1190,
+            "height": 470,
+            "rotation": 0
+          },
+          "device": {
+            "x": 115,
+            "y": 55,
+            "width": 1090,
+            "height": 2220,
+            "rotation": 0
+          }
+        }
       },
       {
-        "id": "steelflow-materials",
+        "id": "aso-101-pricing-iphone",
         "layout": "device-bottom",
         "label": {
-          "en-US": "YOUR MATERIAL LIBRARY",
-          "zh-Hans": "你的材料库"
+          "en-US": "OFFLINE · NO ACCOUNT",
+          "zh-Hans": "离线可用 · 无需账号"
         },
         "headline": {
-          "en-US": "Built-in densities.\nYour own prices.",
-          "zh-Hans": "内置材料密度，\n保存自有价格。"
+          "en-US": "Work offline.\nKeep projects local.",
+          "zh-Hans": "离线也能算，\n项目留本机。"
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/materials.png"
+        "screenshot": "/screenshots/apple/iphone/{locale}/pricing.png",
+        "inverted": false,
+        "transforms": {
+          "caption": {
+            "x": 70,
+            "y": 140,
+            "width": 1180,
+            "height": 520,
+            "rotation": 0
+          },
+          "device": {
+            "x": 140,
+            "y": 715,
+            "width": 1040,
+            "height": 2118,
+            "rotation": 0
+          }
+        }
       }
     ],
     "android": [],
     "ipad": [
       {
-        "id": "steelflow-ipad-cover",
-        "layout": "device-bottom",
+        "id": "aso-101-calculation-ipad",
+        "layout": "hero",
         "label": {
-          "en-US": "WEIGHT • COST • QUOTE",
-          "zh-Hans": "算重 • 成本 • 报价"
+          "en-US": "LIVE WEIGHT PREVIEW",
+          "zh-Hans": "实时重量预览"
         },
         "headline": {
-          "en-US": "Steel weight.\nReady to quote.",
-          "zh-Hans": "算重量，\n再出报价。"
+          "en-US": "Metal weight.\nCalculated.",
+          "zh-Hans": "输入尺寸，\n即刻算重。"
         },
-        "screenshot": "/screenshots/apple/ipad/{locale}/home.png"
+        "screenshot": "/screenshots/apple/ipad/{locale}/calculation.png",
+        "inverted": false,
+        "transforms": {
+          "caption": {
+            "x": 105,
+            "y": 145,
+            "width": 1854,
+            "height": 580,
+            "rotation": 0
+          },
+          "device": {
+            "x": 282,
+            "y": 760,
+            "width": 1500,
+            "height": 1948,
+            "rotation": 0
+          }
+        }
       },
       {
-        "id": "steelflow-ipad-calculate",
-        "layout": "device-bottom",
+        "id": "aso-101-project-ipad",
+        "layout": "device-top",
         "label": {
-          "en-US": "INSTANT CALCULATION",
-          "zh-Hans": "即时计算"
+          "en-US": "PROJECT COST",
+          "zh-Hans": "项目成本汇总"
         },
         "headline": {
-          "en-US": "Dimensions in.\nWeight and cost out.",
-          "zh-Hans": "输入尺寸，\n重量成本即刻可见。"
+          "en-US": "Every cost.\nOne clear total.",
+          "zh-Hans": "损耗与费用，\n逐项汇总。"
         },
-        "screenshot": "/screenshots/apple/ipad/{locale}/calculation.png"
+        "screenshot": "/screenshots/apple/ipad/{locale}/project.png",
+        "inverted": false,
+        "transforms": {
+          "caption": {
+            "x": 105,
+            "y": 2190,
+            "width": 1854,
+            "height": 485,
+            "rotation": 0
+          },
+          "device": {
+            "x": 257,
+            "y": 50,
+            "width": 1550,
+            "height": 2013,
+            "rotation": 0
+          }
+        }
       },
       {
-        "id": "steelflow-ipad-cost",
+        "id": "aso-101-quote-ipad",
         "layout": "device-bottom",
         "label": {
-          "en-US": "REAL-WORLD PRICING",
-          "zh-Hans": "真实计价"
+          "en-US": "PDF QUOTES · PRO BRANDING",
+          "zh-Hans": "PDF 报价 · PRO 品牌定制"
         },
         "headline": {
-          "en-US": "Waste and fees.\nSupplier prices too.",
-          "zh-Hans": "损耗、费用、供应价\n逐项算清。"
+          "en-US": "A PDF quote.\nReady to share.",
+          "zh-Hans": "生成报价单，\n直接发客户。"
         },
-        "screenshot": "/screenshots/apple/ipad/{locale}/pricing.png"
+        "screenshot": "/screenshots/apple/ipad/{locale}/quote.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 105,
+            "y": 145,
+            "width": 1854,
+            "height": 580,
+            "rotation": 0
+          },
+          "device": {
+            "x": 282,
+            "y": 760,
+            "width": 1500,
+            "height": 1948,
+            "rotation": 0
+          }
+        }
       },
       {
-        "id": "steelflow-ipad-projects",
-        "layout": "device-bottom",
+        "id": "aso-101-home-ipad",
+        "layout": "hero",
         "label": {
-          "en-US": "PROJECT CONTROL",
-          "zh-Hans": "项目汇总"
+          "en-US": "PLATE · PIPE · BAR · BEAM",
+          "zh-Hans": "钢板 · 钢管 · 棒材 · 型钢"
         },
         "headline": {
-          "en-US": "Every steel item.\nOne project total.",
-          "zh-Hans": "每个材料条目，\n汇成项目总价。"
+          "en-US": "Pick a profile.\nStart your estimate.",
+          "zh-Hans": "选好型材，\n开始算重。"
         },
-        "screenshot": "/screenshots/apple/ipad/{locale}/project.png"
+        "screenshot": "/screenshots/apple/ipad/{locale}/home.png",
+        "inverted": false,
+        "transforms": {
+          "caption": {
+            "x": 105,
+            "y": 145,
+            "width": 1854,
+            "height": 580,
+            "rotation": 0
+          },
+          "device": {
+            "x": 282,
+            "y": 760,
+            "width": 1500,
+            "height": 1948,
+            "rotation": 0
+          }
+        }
       },
       {
-        "id": "steelflow-ipad-export",
-        "layout": "device-bottom",
+        "id": "aso-101-materials-ipad",
+        "layout": "device-top",
         "label": {
-          "en-US": "CLIENT-READY OUTPUT",
-          "zh-Hans": "可直接交付"
+          "en-US": "YOUR PRICES · BUILT-IN DENSITIES",
+          "zh-Hans": "自有价格 · 内置密度"
         },
         "headline": {
-          "en-US": "A client-ready\nPDF quote.",
-          "zh-Hans": "客户可直接接收的\nPDF 报价单。"
+          "en-US": "Your materials.\nYour saved prices.",
+          "zh-Hans": "材料与价格，\n随用随查。"
         },
-        "screenshot": "/screenshots/apple/ipad/{locale}/quote.png"
+        "screenshot": "/screenshots/apple/ipad/{locale}/materials.png",
+        "inverted": false,
+        "transforms": {
+          "caption": {
+            "x": 105,
+            "y": 2190,
+            "width": 1854,
+            "height": 485,
+            "rotation": 0
+          },
+          "device": {
+            "x": 257,
+            "y": 50,
+            "width": 1550,
+            "height": 2013,
+            "rotation": 0
+          }
+        }
       },
       {
-        "id": "steelflow-ipad-materials",
+        "id": "aso-101-pricing-ipad",
         "layout": "device-bottom",
         "label": {
-          "en-US": "YOUR MATERIAL LIBRARY",
-          "zh-Hans": "你的材料库"
+          "en-US": "OFFLINE · NO ACCOUNT",
+          "zh-Hans": "离线可用 · 无需账号"
         },
         "headline": {
-          "en-US": "Built-in densities.\nYour own prices.",
-          "zh-Hans": "内置材料密度，\n保存自有价格。"
+          "en-US": "Work offline.\nKeep projects local.",
+          "zh-Hans": "离线也能算，\n项目留本机。"
         },
-        "screenshot": "/screenshots/apple/ipad/{locale}/materials.png"
+        "screenshot": "/screenshots/apple/ipad/{locale}/pricing.png",
+        "inverted": false,
+        "transforms": {
+          "caption": {
+            "x": 105,
+            "y": 145,
+            "width": 1854,
+            "height": 580,
+            "rotation": 0
+          },
+          "device": {
+            "x": 282,
+            "y": 760,
+            "width": 1500,
+            "height": 1948,
+            "rotation": 0
+          }
+        }
       }
     ],
     "android-7": [],
