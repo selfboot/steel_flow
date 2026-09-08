@@ -5,8 +5,12 @@ struct ProjectsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.locale) private var locale
     @Query(sort: \ProjectEntity.updatedAt, order: .reverse) private var projects: [ProjectEntity]
+    var onSelect: ((ProjectEntity) -> Void)? = nil
+    @State private var openedProject: ProjectEntity?
+    @State private var pendingCreated: ProjectEntity?
     @State private var showArchived = false
     @State private var search = ""
+    @State private var searchPresented = false
     @State private var sortByName = false
     @State private var showTemplates = false
     @State private var showTemplatePicker = false
@@ -29,16 +33,18 @@ struct ProjectsView: View {
         Group {
             if visibleProjects.isEmpty {
                 ContentUnavailableView {
-                    Label(showArchived ? "project.no_archived" : "project.empty", systemImage: "folder")
+                    Label(!search.isEmpty ? "ui.no_matches" : showTemplates ? "workflow.templates_empty" : showArchived ? "project.no_archived" : "project.empty", systemImage: !search.isEmpty ? "magnifyingglass" : "folder")
                 } description: {
-                    Text(showArchived ? "project.no_archived.description" : "project.empty.description")
+                    Text(search.isEmpty ? (showTemplates ? "ui.no_templates_help" : showArchived ? "project.no_archived.description" : "project.empty.description") : "ui.search_help")
+                    if !search.isEmpty { Text(search) }
                 } actions: {
-                    if !showArchived { Button("project.create") { attemptNewProject() }.buttonStyle(.borderedProminent) }
+                    if !search.isEmpty { Button("ui.clear_filters") { search = ""; searchPresented = false; showTemplates = false; showArchived = false } }
+                    else if !showArchived && !showTemplates { Button("project.create") { attemptNewProject() }.buttonStyle(.borderedProminent) }
                 }
             } else {
                 List {
                     ForEach(visibleProjects) { project in
-                        NavigationLink { ProjectDetailView(project: project) } label: { ProjectRow(project: project) }
+                        projectLink(project)
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button {
                                     if project.isArchived,
@@ -65,7 +71,7 @@ struct ProjectsView: View {
                                 }
                             }
                             .contextMenu {
-                                Button("workflow.pin", systemImage: "pin") { project.isPinned.toggle(); _ = PersistenceErrorCenter.shared.save(modelContext) }
+                                Button(project.isPinned ? "ui.unpin" : "ui.pin", systemImage: project.isPinned ? "pin.slash" : "pin") { project.isPinned.toggle(); _ = PersistenceErrorCenter.shared.save(modelContext) }
                             }
                             .swipeActions(edge: .leading) {
                                 Button { duplicate(project) } label: { Label("project.duplicate", systemImage: "plus.square.on.square") }
@@ -80,23 +86,34 @@ struct ProjectsView: View {
                 }
             }
         }
-        .searchable(text: $search, prompt: "workflow.project_search")
+        .searchable(text: $search, isPresented: $searchPresented, prompt: "workflow.project_search")
+        .safeAreaInset(edge: .top, spacing: 0) {
+            HStack {
+                Text(showTemplates ? "workflow.templates" : showArchived ? "ui.show_archived" : "ui.active_projects")
+                Spacer()
+                Text(sortByName ? "workflow.sort_name" : "ui.sort_recent")
+            }.font(.caption).foregroundStyle(.secondary).padding(.horizontal).padding(.vertical, 6).background(.bar)
+        }
         .navigationTitle("tab.projects")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button(showArchived ? "project.show_active" : "project.show_archived") { showArchived.toggle() }
+                Menu {
+                    Toggle("ui.show_archived", isOn: $showArchived)
+                    Toggle("workflow.templates", isOn: $showTemplates)
+                    Toggle("workflow.sort_name", isOn: $sortByName)
+                } label: { Label("ui.filters", systemImage: "line.3.horizontal.decrease.circle") }
+                .accessibilityIdentifier("projects.filters")
             }
             ToolbarItem(placement: .primaryAction) {
                 Menu {
                     Button("project.create", systemImage: "plus") { attemptNewProject() }
                     Button("workflow.from_template", systemImage: "doc.on.doc") { showTemplatePicker = true }
-                    Toggle("workflow.templates", isOn: $showTemplates)
-                    Toggle("workflow.sort_name", isOn: $sortByName)
-                } label: { Image(systemName: "plus") }.accessibilityIdentifier("projects.menu")
+                } label: { Label("project.create", systemImage: "plus") }.accessibilityIdentifier("projects.menu")
             }
         }
         .sheet(isPresented: $showNewProject) { ProjectEditorSheet() }
-        .sheet(isPresented: $showTemplatePicker) { TemplatePickerView() }
+        .sheet(isPresented: $showTemplatePicker, onDismiss: { openCreated() }) { TemplatePickerView { pendingCreated = $0 } }
+        .navigationDestination(item: $openedProject) { ProjectDetailView(project: $0) }
         .proPaywall(reason: $paywallReason) { if let action = pendingProAction { pendingProAction = nil; action() } }
         .alert("project.delete.confirm.title", isPresented: $showDeleteConfirmation) {
             Button("common.delete", role: .destructive) { confirmDeletion() }
@@ -104,6 +121,16 @@ struct ProjectsView: View {
         } message: {
             Text("project.delete.confirm.message")
         }
+    }
+
+    @ViewBuilder private func projectLink(_ project: ProjectEntity) -> some View {
+        if let onSelect { Button { onSelect(project) } label: { ProjectRow(project: project) }.buttonStyle(.plain) }
+        else { NavigationLink { ProjectDetailView(project: project) } label: { ProjectRow(project: project) } }
+    }
+    private func openCreated() {
+        guard let project = pendingCreated else { return }
+        pendingCreated = nil
+        if let onSelect { onSelect(project) } else { openedProject = project }
     }
 
     private func attemptNewProject() {
@@ -184,12 +211,15 @@ struct ProjectsView: View {
 private struct ProjectRow: View {
     let project: ProjectEntity
     @Environment(\.locale) private var locale
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
         let summary = ProjectCalculator.summarize(project)
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
+            let layout = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading)) : AnyLayout(HStackLayout())
+            layout {
                 Text(project.name).font(.headline).lineLimit(2).layoutPriority(1)
+                if project.isPinned { Image(systemName: "pin.fill").accessibilityLabel("ui.pinned") }
                 Spacer()
                 Text(AppFormatters.decimal(summary.pricing.total, currencyCode: project.currencyCode, locale: locale))
                     .font(.subheadline.weight(.semibold)).monospacedDigit().fixedSize(horizontal: true, vertical: false)

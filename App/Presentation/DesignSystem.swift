@@ -25,9 +25,9 @@ struct ResultMetric: View {
             Text(title).font(.caption).foregroundStyle(.secondary)
             Text(value)
                 .font(emphasized ? .title2.bold() : .headline)
-                .foregroundStyle(emphasized ? SteelFlowTheme.steelBlue : .primary)
-                .minimumScaleFactor(0.72)
-                .lineLimit(1)
+                .foregroundStyle(.primary)
+                .monospacedDigit()
+                .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
@@ -96,10 +96,11 @@ struct QuantityValueInput: View {
     init(value: Binding<Int>, range: ClosedRange<Int>) {
         _value = value
         self.range = range
-        _text = State(initialValue: String(value.wrappedValue))
+        _text = State(initialValue: value.wrappedValue == Int.min ? "" : String(value.wrappedValue))
     }
 
     var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
         CursorAtEndTextField(
             text: $text,
             keyboardType: .numberPad,
@@ -116,30 +117,29 @@ struct QuantityValueInput: View {
         }
         .contentShape(Rectangle())
         .accessibilityLabel("calculator.quantity")
+        if !range.contains(value) { InlineIssue(key: "ui.quantity_range") }
+        }
         .onChange(of: text) { _, newValue in
-            guard let parsed = Int(newValue), range.contains(parsed) else { return }
-            value = parsed
+            value = Int(newValue) ?? Int.min
         }
         .onChange(of: value) { _, newValue in
             guard !isFocused else { return }
-            text = String(clamped(newValue))
+            text = newValue == Int.min ? text : String(newValue)
         }
     }
 
     private func handleFocusChange(_ focused: Bool) {
         isFocused = focused
         guard !focused else { return }
-        let normalized = clamped(Int(text) ?? value)
-        value = normalized
-        text = String(normalized)
+        // Retain invalid input so the user can correct it; never silently clamp it.
+        value = Int(text) ?? Int.min
     }
 
-    private func clamped(_ value: Int) -> Int {
-        min(max(value, range.lowerBound), range.upperBound)
-    }
+
 }
 
 private struct CursorAtEndTextField: UIViewRepresentable {
+    @Environment(\.locale) private var locale
     @Binding var text: String
     let keyboardType: UIKeyboardType
     let accessibilityIdentifier: String
@@ -158,7 +158,10 @@ private struct CursorAtEndTextField: UIViewRepresentable {
         textField.accessibilityIdentifier = accessibilityIdentifier
         let toolbar = UIToolbar()
         let doneButton = UIBarButtonItem(title: doneTitle, style: .done, target: context.coordinator, action: #selector(Coordinator.finishEditing))
-        toolbar.items = [.flexibleSpace(), doneButton]
+        toolbar.items = [
+            UIBarButtonItem(title: AppLocalization.text("ui.previous", locale: locale), style: .plain, target: context.coordinator, action: #selector(Coordinator.previousInput)),
+            UIBarButtonItem(title: AppLocalization.text("ui.next", locale: locale), style: .plain, target: context.coordinator, action: #selector(Coordinator.nextInput)),
+            .flexibleSpace(), doneButton]
         toolbar.sizeToFit()
         textField.inputAccessoryView = toolbar
         context.coordinator.textField = textField
@@ -172,6 +175,10 @@ private struct CursorAtEndTextField: UIViewRepresentable {
         textField.keyboardType = keyboardType
         textField.accessibilityIdentifier = accessibilityIdentifier
         context.coordinator.doneButton?.title = doneTitle
+        if let toolbar = textField.inputAccessoryView as? UIToolbar {
+            toolbar.items?.first?.title = AppLocalization.text("ui.previous", locale: locale)
+            toolbar.items?.dropFirst().first?.title = AppLocalization.text("ui.next", locale: locale)
+        }
         if textField.text != text { textField.text = text }
     }
 
@@ -187,6 +194,9 @@ private struct CursorAtEndTextField: UIViewRepresentable {
         @objc func textChanged(_ textField: UITextField) {
             parent.text = textField.text ?? ""
         }
+
+        @objc func previousInput() { InputNavigation.move(-1) }
+        @objc func nextInput() { InputNavigation.move(1) }
 
         @objc func finishEditing() {
             textField?.resignFirstResponder()

@@ -6,6 +6,8 @@ struct QuotePreviewView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Environment(\.locale) private var locale
+    @Environment(\.horizontalSizeClass) private var sizeClass
+    @Environment(\.dynamicTypeSize) private var typeSize
     @Query private var companies: [CompanyProfileEntity]
     let project: ProjectEntity
     @State private var snapshot: QuoteSnapshotPayload?
@@ -15,154 +17,114 @@ struct QuotePreviewView: View {
     @State private var pdfURL: URL?
     @State private var csvURL: URL?
     @State private var exportError: String?
+    @State private var preparing = true
+#if DEBUG
+    @State private var simulatedFailureConsumed = false
+#endif
+    @State private var sharing: ShareFile?
     @State private var purchaseManager = PurchaseManager.shared
     @State private var paywallReason: ProPaywallReason?
-
-    private var summary: ProjectSummary { ProjectCalculator.summarize(project) }
+    private var wide: Bool { sizeClass == .regular && !typeSize.isAccessibilitySize }
     private var quoteLocale: Locale { Locale(identifier: project.quoteLanguage) }
-
     var body: some View {
-        let summary = self.summary
         NavigationStack {
-            List {
-                Section {
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(purchaseManager.isPro ? (companies.first.flatMap { $0.companyName.isEmpty ? nil : $0.companyName } ?? "SteelFlow") : "SteelFlow").font(.headline)
-                                Text(project.projectNumber).font(.caption.monospaced()).foregroundStyle(.secondary)
+            HStack(spacing: 0) {
+                List {
+                    if !wide { Section("quote.document") { documentPreview } }
+                    if let snapshot {
+                        Section {
+                            LabeledContent("project.number", value: snapshot.projectNumber)
+                            LabeledContent("project.customer", value: snapshot.customerName)
+                            LabeledContent("project.total") {
+                                Text(AppFormatters.decimal(snapshot.totals.total, currencyCode: snapshot.currencyCode, locale: quoteLocale)).font(.title3.bold()).foregroundStyle(.primary).monospacedDigit()
                             }
-                            Spacer()
-                            Text(AppLocalization.text("quote.title", locale: quoteLocale)).font(.title2.bold()).foregroundStyle(SteelFlowTheme.steelBlue)
+                            LabeledContent("quote.valid_until", value: AppFormatters.date(snapshot.validUntil, locale: quoteLocale))
                         }
-                        Divider()
-                        metadataRow(
-                            label: AppLocalization.text("project.customer", locale: quoteLocale),
-                            value: project.customerName.isEmpty ? "—" : project.customerName
-                        )
-                        metadataRow(
-                            label: AppLocalization.text("project.quote_language", locale: locale),
-                            value: AppLocalization.text(project.quoteLanguage == "zh-Hans" ? "language.chinese" : "language.english", locale: locale)
-                        )
-                        metadataRow(
-                            label: AppLocalization.text("settings.paper", locale: locale),
-                            value: AppLocalization.text(project.paperSize == .a4 ? "paper.a4" : "paper.letter", locale: locale)
-                        )
                     }
-                }
-                Section(AppLocalization.text("project.items", locale: quoteLocale)) {
-                    ForEach(summary.lines) { line in
-                        QuoteLineRow(
-                            title: line.item.descriptionText.isEmpty ? AppLocalization.text("profile.\(line.item.profile.rawValue)", locale: quoteLocale) : line.item.descriptionText,
-                            subtitle: lineSubtitle(line.item),
-                            mass: project.showQuoteMass ? AppFormatters.mass(line.result.totalMassKg, system: project.unitSystem, locale: quoteLocale) : "",
-                            amount: AppFormatters.decimal(line.customerQuoteAmount, currencyCode: project.currencyCode, locale: quoteLocale)
-                        )
+                    if let exportError {
+                        Section {
+                            Label(exportError, systemImage: "exclamationmark.triangle").foregroundStyle(.red)
+                            Button("ui.retry") { Task { await prepareExports() } }.accessibilityIdentifier("quote.retry")
+                        }
                     }
-                }
-                Section(AppLocalization.text("project.summary", locale: quoteLocale)) {
-                    quoteTotalRow("quote.subtotal", value: summary.pricing.preTax)
-                    quoteTotalRow("project.tax", value: summary.pricing.tax)
-                    quoteTotalRow("project.total", value: summary.pricing.total).font(.headline)
-                }
-                if let pdfURL {
-                    Section("quote.document") {
-                        NavigationLink {
-                            GeneratedPDFPreview(url: pdfURL)
-                        } label: {
-                            Label("quote.open_pdf_preview", systemImage: "doc.text.image")
+                    Section("workflow.quote_versions") {
+                        if versionSaved { Label("workflow.version_saved", systemImage: "checkmark.seal.fill").accessibilityIdentifier("quote.version_saved") }
+                        Text("ui.share_version_help").font(.caption).foregroundStyle(.secondary)
+                    }
+                    Section {
+                        DisclosureGroup("ui.more_exports") {
+                            Button("workflow.save_version") { _ = saveVersion() }.disabled(snapshotData == nil || versionSaved)
+                            if let pdfURL { ShareLink(item: pdfURL) { Label("ui.share_without_version", systemImage: "square.and.arrow.up") } }
+                            if purchaseManager.isPro {
+                                Picker("workflow.export_purpose", selection: $csvKind) { ForEach(QuoteCSVKind.allCases) { Text(LocalizedStringKey($0.title)).tag($0) } }
+                                Text("workflow.export_help").font(.caption).foregroundStyle(.secondary)
+                                if let csvURL { ShareLink(item: csvURL) { Label(LocalizedStringKey("ui.export." + csvKind.rawValue), systemImage: "tablecells") } }
+                            } else { Button("purchase.limit.csv") { paywallReason = .csv } }
                         }
                     }
                 }
-                Section("workflow.quote_versions") {
-                    Button(versionSaved ? "workflow.version_saved" : "workflow.save_version", systemImage: "clock.badge.checkmark") { saveVersion() }
-                        .disabled(snapshotData == nil || versionSaved)
-                    Text("workflow.version_help").font(.caption).foregroundStyle(.secondary)
-                }
-                Section("quote.export") {
-                    if purchaseManager.isPro {
-                        Picker("workflow.export_purpose", selection: $csvKind) {
-                            ForEach(QuoteCSVKind.allCases) { Text(LocalizedStringKey($0.title)).tag($0) }
-                        }
-                        Text("workflow.export_help").font(.caption).foregroundStyle(.secondary)
-                    }
-                    if let pdfURL {
-                        ShareLink(item: pdfURL, preview: SharePreview(pdfURL.lastPathComponent)) {
-                            Label("quote.share_pdf", systemImage: "doc.richtext").frame(maxWidth: .infinity)
-                        }
-                    }
-                    if let csvURL, purchaseManager.isPro {
-                        ShareLink(item: csvURL, preview: SharePreview(csvURL.lastPathComponent)) {
-                            Label("workflow.share_csv", systemImage: "tablecells").frame(maxWidth: .infinity)
-                        }
-                    } else if !purchaseManager.isPro {
-                        Button { paywallReason = .csv } label: {
-                            Label("purchase.limit.csv", systemImage: "lock.fill").frame(maxWidth: .infinity)
-                        }
-                    }
-                    if pdfURL == nil && csvURL == nil { ProgressView("quote.preparing") }
-                }
+                if wide { documentPreview.frame(maxWidth: .infinity, maxHeight: .infinity).padding().accessibilityIdentifier("quote.side_preview") }
             }
-            .navigationTitle("quote.preview")
+            .safeAreaInset(edge: .bottom) {
+                Button {
+                    if saveVersion(), let pdfURL { sharing = ShareFile(url: pdfURL) }
+                } label: { Label(versionSaved ? "quote.share_pdf" : "ui.save_share_pdf", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
+                    .buttonStyle(.borderedProminent).controlSize(.large).padding().background(.bar)
+                    .disabled(preparing || pdfURL == nil || snapshotData == nil).accessibilityIdentifier("quote.save_share")
+            }
+            .navigationTitle("quote.preview").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("common.done") { dismiss() } } }
-            .task { await Task.yield(); prepareExports() }
+            .task { await prepareExports() }
             .onChange(of: csvKind) { _, _ in prepareCSV() }
-            .onChange(of: purchaseManager.isPro) { _, value in if value { versionSaved = false; prepareExports() } }
+            .onChange(of: purchaseManager.isPro) { _, pro in if pro { snapshot = nil; snapshotData = nil; versionSaved = false; Task { await prepareExports() } } }
             .proPaywall(reason: $paywallReason)
-            .alert("export.error.title", isPresented: Binding(get: { exportError != nil }, set: { if !$0 { exportError = nil } })) {
-                Button("common.ok", role: .cancel) {}
-            } message: { Text(exportError ?? "") }
+            .sheet(item: $sharing) { FileShareSheet(url: $0.url) }
         }
     }
-
-    private func lineSubtitle(_ item: CalculationItemEntity) -> String {
-        let material = MaterialCatalog.localizedName(materialID: item.materialID, fallback: item.materialName, locale: quoteLocale)
-        let unit = project.unitSystem.stockLengthUnit
-        let length = AppFormatters.number(unit.fromMeters(item.lengthUnit.toMeters(item.lengthValue)), maximumFractionDigits: 4, locale: quoteLocale)
-        return [material, item.materialGrade, length + " " + unit.rawValue + " × " + String(item.quantity)].filter { !$0.isEmpty }.joined(separator: " · ")
+    private var pageCountText: String {
+        let count = pdfURL.flatMap { PDFDocument(url: $0)?.pageCount } ?? 0
+        return count == 1 ? AppLocalization.text("ui.page_single", locale: locale) : AppLocalization.format("ui.page_count", locale: locale, count)
     }
-
-    private func quoteTotalRow(_ key: String, value: Decimal) -> some View {
-        LabeledContent {
-            Text(AppFormatters.decimal(value, currencyCode: project.currencyCode, locale: quoteLocale))
-        } label: {
-            Text(AppLocalization.text(key, locale: quoteLocale))
-        }
+    @ViewBuilder private var documentPreview: some View {
+        if let pdfURL {
+            VStack(alignment: .leading) {
+                PDFKitView(url: pdfURL).frame(minHeight: wide ? 450 : 300).accessibilityLabel("quote.document")
+                NavigationLink { GeneratedPDFPreview(url: pdfURL) } label: {
+                    Label(AppLocalization.text("quote.open_pdf_preview", locale: locale) + " · " + pageCountText, systemImage: "arrow.up.left.and.arrow.down.right")
+                }.frame(minHeight: 44)
+            }
+        } else if preparing { ProgressView("quote.preparing").frame(maxWidth: .infinity, minHeight: 150) }
+        else { ContentUnavailableView("export.error.title", systemImage: "doc.badge.ellipsis") }
     }
-
-    private func metadataRow(label: String, value: String) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: 12) {
-            Text(label)
-            Spacer(minLength: 8)
-            Text(value)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.trailing)
-                .lineLimit(2)
-                .minimumScaleFactor(0.8)
-        }
-    }
-
-    private func prepareExports() {
+    private func prepareExports() async {
+        preparing = true; exportError = nil
+        await Task.yield()
         do {
-            let generatedAt = Date.now
-            let company = purchaseManager.isPro ? companies.first : nil
-            let includeBranding = !purchaseManager.isPro
-            let data = try QuoteExportService.snapshotData(for: project, company: company, generatedAt: generatedAt, includeBranding: includeBranding)
-            let frozen = try QuoteExportService.decodeSnapshot(data)
-            snapshotData = data; snapshot = frozen
-            pdfURL = try QuoteExportService.pdfURL(snapshot: frozen)
+#if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("--ui-export-error") && !simulatedFailureConsumed { simulatedFailureConsumed = true; throw CocoaError(.fileWriteUnknown) }
+#endif
+            if snapshot == nil {
+                let data = try QuoteExportService.snapshotData(for: project, company: purchaseManager.isPro ? companies.first : nil, generatedAt: .now, includeBranding: !purchaseManager.isPro)
+                snapshotData = data; snapshot = try QuoteExportService.decodeSnapshot(data)
+            }
+            if let snapshot { pdfURL = try QuoteExportService.pdfURL(snapshot: snapshot) }
             prepareCSV()
         } catch { exportError = error.localizedDescription }
+        preparing = false
     }
     private func prepareCSV() {
         guard purchaseManager.isPro, let snapshot else { return }
-        do { csvURL = try QuoteCSVRenderer.url(snapshot, kind: csvKind) } catch { exportError = error.localizedDescription }
+        do { csvURL = try QuoteCSVRenderer.url(snapshot, kind: csvKind) }
+        catch { csvURL = nil; exportError = error.localizedDescription }
     }
-    private func saveVersion() {
-        guard let snapshotData, !versionSaved else { return }
+    @discardableResult private func saveVersion() -> Bool {
+        if versionSaved { return true }
+        guard let snapshotData else { return false }
         let entity = QuoteSnapshotEntity(projectID: project.id, payload: snapshotData)
         modelContext.insert(entity)
-        do { try modelContext.save(); versionSaved = true } catch { modelContext.delete(entity); exportError = error.localizedDescription }
+        versionSaved = PersistenceErrorCenter.shared.save(modelContext)
+        if !versionSaved { modelContext.delete(entity) }
+        return versionSaved
     }
 }
 
@@ -178,7 +140,7 @@ struct GeneratedPDFPreview: View {
     }
 }
 
-private struct PDFKitView: UIViewRepresentable {
+struct PDFKitView: UIViewRepresentable {
     let url: URL
 
     func makeUIView(context: Context) -> PDFView {
@@ -192,49 +154,5 @@ private struct PDFKitView: UIViewRepresentable {
 
     func updateUIView(_ view: PDFView, context: Context) {
         if view.document?.documentURL != url { view.document = PDFDocument(url: url) }
-    }
-}
-
-private struct QuoteLineRow: View {
-    let title: String
-    let subtitle: String
-    let mass: String
-    let amount: String
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-
-    var body: some View {
-        if dynamicTypeSize.isAccessibilitySize || horizontalSizeClass == .compact {
-            VStack(alignment: .leading, spacing: 6) {
-                description
-                HStack {
-                    Text(mass).font(.caption.monospacedDigit()).fixedSize(horizontal: true, vertical: false)
-                    Spacer()
-                    Text(amount).font(.subheadline.monospacedDigit()).fixedSize(horizontal: true, vertical: false)
-                }
-            }
-        } else {
-            HStack(alignment: .top, spacing: 12) {
-                description
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                VStack(alignment: .trailing, spacing: 3) {
-                    Text(mass).font(.caption.monospacedDigit())
-                    Text(amount).font(.subheadline.monospacedDigit())
-                }
-                .fixedSize(horizontal: true, vertical: true)
-            }
-        }
-    }
-
-    private var description: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(title)
-                .font(.subheadline.weight(.semibold))
-                .fixedSize(horizontal: false, vertical: true)
-            Text(subtitle)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-        }
     }
 }

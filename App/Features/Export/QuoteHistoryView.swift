@@ -15,7 +15,7 @@ struct QuoteHistoryView: View {
                 ForEach(Array(versions.enumerated()), id: \.element.id) { index, entry in
                     if let payload = try? QuoteExportService.decodeSnapshot(entry.payload) {
                         NavigationLink {
-                            FrozenQuoteView(snapshot: payload, previous: index + 1 < versions.count ? try? QuoteExportService.decodeSnapshot(versions[index + 1].payload) : nil)
+                            FrozenQuoteView(snapshot: payload, versionNumber: versions.count - index, previous: index + 1 < versions.count ? try? QuoteExportService.decodeSnapshot(versions[index + 1].payload) : nil)
                         } label: {
                             VStack(alignment: .leading, spacing: 5) {
                                 Text("v\(versions.count - index) · " + AppFormatters.date(payload.generatedAt, locale: locale)).font(.headline)
@@ -34,6 +34,7 @@ struct QuoteHistoryView: View {
 
 struct FrozenQuoteView: View {
     let snapshot: QuoteSnapshotPayload
+    var versionNumber: Int = 1
     let previous: QuoteSnapshotPayload?
     @Environment(\.modelContext) private var modelContext
     @Environment(\.locale) private var locale
@@ -41,10 +42,13 @@ struct FrozenQuoteView: View {
     @State private var url: URL?
     @State private var error: String?
     @State private var copied = false
+    @State private var openedProject: ProjectEntity?
     @State private var paywallReason: ProPaywallReason?
     var body: some View {
         List {
             Section {
+                Label("ui.saved_version", systemImage: "checkmark.seal")
+                Text("v\(versionNumber) · " + AppFormatters.date(snapshot.generatedAt, locale: locale)).font(.headline)
                 LabeledContent("project.number", value: snapshot.projectNumber)
                 LabeledContent("quote.valid_until", value: AppFormatters.date(snapshot.validUntil, locale: locale))
                 LabeledContent("project.total", value: AppFormatters.decimal(snapshot.totals.total, currencyCode: snapshot.currencyCode, locale: locale))
@@ -57,10 +61,11 @@ struct FrozenQuoteView: View {
                     } else { Text(previous.currencyCode + " → " + snapshot.currencyCode) }
                     LabeledContent("workflow.before", value: String(previous.lines.count))
                     LabeledContent("workflow.after", value: String(snapshot.lines.count))
-                    ForEach(snapshot.lines, id: \.itemID) { line in
-                        let old = previous.lines.first { $0.itemID == line.itemID }
-                        if old == nil || old?.customerQuoteAmount != line.customerQuoteAmount || old?.quantity != line.quantity || old?.lengthValue != line.lengthValue || old?.geometry != line.geometry || old?.materialGrade != line.materialGrade {
-                            Text((line.descriptionText.isEmpty ? AppLocalization.text("profile." + line.profile, locale: locale) : line.descriptionText) + " · " + AppFormatters.decimal(line.customerQuoteAmount, currencyCode: snapshot.currencyCode, locale: locale))
+                    ForEach(QuoteComparison.changes(from: previous, to: snapshot)) { change in
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text(LocalizedStringKey("ui.change." + change.kind.rawValue)).font(.caption.bold())
+                            if let old = change.old { Text(AppLocalization.text("workflow.before", locale: locale) + ": " + lineDescription(old, currency: previous.currencyCode)).foregroundStyle(.secondary) }
+                            if let new = change.new { Text(AppLocalization.text("workflow.after", locale: locale) + ": " + lineDescription(new, currency: snapshot.currencyCode)) }
                         }
                     }
                 }
@@ -73,15 +78,31 @@ struct FrozenQuoteView: View {
                 .disabled(copied)
             if copied { Text("calculator.saved") }
         }
-        .navigationTitle("workflow.quote_history")
+        .navigationTitle(AppLocalization.text("quote.title", locale: locale) + " v\(versionNumber)")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(item: $openedProject) { ProjectDetailView(project: $0) }
         .task { do { url = try QuoteExportService.pdfURL(snapshot: snapshot) } catch { self.error = error.localizedDescription } }
         .proPaywall(reason: $paywallReason) { copyRevision() }
+    }
+    private func lineDescription(_ line: QuoteSnapshotPayload.Line, currency: String) -> String {
+        let title = line.descriptionText.isEmpty ? AppLocalization.text("profile." + line.profile, locale: locale) : line.descriptionText
+        let dimensions = ProfileKind(rawValue: line.profile)?.dimensionFields.compactMap { field in line.geometry.values[field].map { AppFormatters.number($0, locale: locale) } }.joined(separator: " × ") ?? ""
+        let price = line.unitPrice.description.replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".")
+        let priceUnit = AppLocalization.text("ui.basis." + line.priceBasis, locale: locale)
+        let unitPrice = AppLocalization.text("calculator.unit_price", locale: locale) + ": " + price + " " + currency + "/" + priceUnit
+        let waste = AppLocalization.text("calculator.waste", locale: locale) + ": " + AppFormatters.number(line.wastePercent, locale: locale) + "%"
+        let fees = AppLocalization.text("calculator.line_processing_fee", locale: locale) + ": " + AppFormatters.decimal(line.processingFee, currencyCode: currency, locale: locale)
+        let other = AppLocalization.text("calculator.line_other_fee", locale: locale) + ": " + AppFormatters.decimal(line.otherFee, currencyCode: currency, locale: locale)
+        return [title, line.materialName, line.materialGrade, dimensions + " " + (line.profile == ProfileKind.customArea.rawValue ? line.geometry.areaUnit.rawValue : line.geometry.lengthUnit.rawValue),
+                AppFormatters.number(line.lengthValue, locale: locale) + " " + line.lengthUnit + " × " + String(line.quantity),
+                AppFormatters.decimal(line.customerQuoteAmount, currencyCode: currency, locale: locale), unitPrice, waste, fees, other, line.priceSourceName, line.internalNote].filter { !$0.isEmpty }.joined(separator: " · ")
     }
     private func copyRevision() {
         guard PurchaseManager.shared.isPro else { paywallReason = .duplicate; return }
         let project = QuoteSnapshotRestorer.project(snapshot)
         modelContext.insert(project)
         copied = PersistenceErrorCenter.shared.save(modelContext)
+        if copied { openedProject = project }
     }
 }
 

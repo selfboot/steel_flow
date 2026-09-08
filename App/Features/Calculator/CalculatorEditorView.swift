@@ -8,7 +8,7 @@ struct CalculatorEditorView: View {
     @State private var library = CalculationLibrary.shared
     @State private var loaded = false
     @State private var draftCurrency: String?
-    @AppStorage("workflow.show_pricing") private var showPricing = false
+    @State private var showPricing = false
     @Environment(\.modelContext) private var modelContext
     @Environment(\.locale) private var locale
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -27,6 +27,21 @@ struct CalculatorEditorView: View {
     @State private var purchaseManager = PurchaseManager.shared
     @State private var selectedPriceEntryID: UUID?
     @State private var priceSaved = false
+    @State private var expandFees = false
+    @State private var expandSource = false
+    @State private var expandNotes = false
+    @State private var expandGeometry = false
+    @State private var expandDensity = false
+    @State private var notice: String?
+    @State private var resetUndo: DraftState?
+    @State private var lastSavedItem: CalculationItemEntity?
+    @State private var lastSavedProject: ProjectEntity?
+    @State private var openedProject: ProjectEntity?
+    @State private var keyboardVisible = false
+    @Environment(\.horizontalSizeClass) private var sizeClass
+    private var useColumns: Bool { sizeClass == .regular && !dynamicTypeSize.isAccessibilitySize }
+    private var issue: DraftIssue? { draft.firstIssue(locale: locale) }
+
 
     init(profile: ProfileKind, destinationProject: ProjectEntity? = nil, marketingPreset: Bool = false, restoredState: DraftState? = nil) {
         self.restoredState = restoredState
@@ -71,25 +86,71 @@ struct CalculatorEditorView: View {
     private var draftKey: String { (destinationProject?.id.uuidString ?? "quick") + "." + profile.rawValue }
 
     var body: some View {
+        ScrollViewReader { scroll in
+        HStack(spacing: 0) {
         Form {
-            Section { Toggle("workflow.full_pricing", isOn: $showPricing).accessibilityIdentifier("workflow.pricing_toggle") }
-            if let result {
-                Section("calculator.section.quick_result") {
-                    LazyVGrid(columns: dynamicTypeSize.isAccessibilitySize ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-                        ResultMetric("calculator.result.unit_mass", value: mass(result.unitMassKg))
-                        ResultMetric("calculator.result.total_mass", value: mass(result.totalMassKg), emphasized: true)
+            if let notice {
+                Section {
+                    StatusNotice(text: notice, actionTitle: resetUndo == nil ? "common.done" : "workflow.undo") {
+                        if let state = resetUndo { draft = state.makeDraft(locale: locale); draftCurrency = state.currency; resetUndo = nil }
+                        self.notice = nil
                     }
-                    .accessibilityIdentifier("calculation.quick_result")
-                    Text("calculator.quick_result.help")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                }.id("feedback")
+            }
+            if lastSavedItem != nil {
+                Section {
+                    StatusNotice(text: AppLocalization.text("calculator.saved", locale: locale) + " · " + (lastSavedProject?.name ?? ""), actionTitle: "ui.view_project") { openedProject = lastSavedProject }
+                    HStack {
+                        Button("workflow.undo") { undoSavedItem() }
+                        Spacer()
+                        Button("ui.same_spec") { lastSavedItem = nil; notice = AppLocalization.text("ui.same_spec_help", locale: locale) }
+                    }.buttonStyle(.borderless)
+                    Button("ui.new_spec") { resetDraft() }
+                }.id("saveFeedback")
+            }
+            if !useColumns { Section("calculator.section.quick_result") { quickResult } }
+
+            Section("calculator.section.material") {
+                AdaptiveFormRow("calculator.material") {
+                    Spacer(minLength: 0)
+                    if dynamicTypeSize.isAccessibilitySize {
+                        Menu {
+                            Picker("calculator.material", selection: materialBinding) {
+                                ForEach(materials) { material in Text(materialDisplayName(material)).tag(material.id) }
+                            }
+                        } label: {
+                            HStack(alignment: .top) {
+                                Text(materials.first(where: { $0.id == draft.selectedMaterialID }).map(materialDisplayName) ?? draft.selectedMaterialID)
+                                    .multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
+                                Image(systemName: "chevron.up.chevron.down")
+                            }.frame(minHeight: 44)
+                        }.accessibilityIdentifier("material.chooser")
+                    } else {
+                    Picker("calculator.material", selection: materialBinding) {
+                        ForEach(materials) { material in
+                            Text(materialDisplayName(material)).tag(material.id)
+                        }
+                    }
+                    .labelsHidden()
+                    }
                 }
+                DisclosureGroup("calculator.density", isExpanded: $expandDensity) {
+                AdaptiveFormRow("calculator.density") {
+                    TextField("7850", text: $draft.densityText).accessibilityIdentifier("calculator.density").accessibilityLabel("calculator.density")
+                        .keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44)
+                    Text("kg/m³").foregroundStyle(.secondary).fixedSize()
+                }
+                Text("material.note.typical").font(.caption).foregroundStyle(.secondary)
+                if issue?.field == "density" { InlineIssue(key: issue!.message) }
+                }.id("density")
             }
 
             Section("calculator.section.geometry") {
                 ForEach(profile.dimensionFields) { field in
                     AdaptiveFormRow(field.localizationKey) {
                         TextField("0", text: dimensionBinding(field))
+                            .accessibilityLabel(Text(field.localizationKey) + Text(" " + (field == .customArea ? draft.areaUnit.rawValue : draft.geometryUnit.rawValue)))
+                            .accessibilityIdentifier("dimension." + field.rawValue)
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                             .frame(minWidth: 90, maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : 160)
@@ -97,7 +158,8 @@ struct CalculatorEditorView: View {
                             .foregroundStyle(.secondary)
                             .fixedSize()
                     }
-                    .accessibilityElement(children: .combine)
+                    .id(field.rawValue)
+                    if issue?.field == field.rawValue { InlineIssue(key: issue!.message) }
                 }
 
                 if profile == .customArea {
@@ -119,18 +181,22 @@ struct CalculatorEditorView: View {
                 }
 
                 AdaptiveFormRow("calculator.length") {
-                    LengthValueInput(text: Binding(get: { draft.lengthText }, set: { draft.editStockLength($0) }))
+                    LengthValueInput(text: Binding(get: { draft.lengthText }, set: { draft.editStockLength($0) })).id("length")
                 }
+                if issue?.field == "length" { InlineIssue(key: issue!.message) }
                 Picker("calculator.length_unit", selection: lengthUnitBinding) {
                     ForEach([LengthUnit.meter, .foot, .millimeter, .inch]) { Text($0.rawValue).tag($0) }
                 }
                 .accessibilityIdentifier("length.unit")
                 AdaptiveFormRow("calculator.quantity") {
-                    QuantityValueInput(value: $draft.quantity, range: 1...1_000_000)
+                    QuantityValueInput(value: $draft.quantity, range: 1...1_000_000).id("quantity")
                 }
             }
 
-            Section("calculator.section.preview") {
+            .id("geometry")
+
+            if !useColumns { Section {
+                DisclosureGroup("calculator.section.preview", isExpanded: $expandGeometry) {
                 if let previewInput {
                     ProfileSection3DPreview(input: previewInput)
                 } else {
@@ -138,27 +204,10 @@ struct CalculatorEditorView: View {
                         .foregroundStyle(.secondary)
                 }
             }
+            } }
 
-            Section("calculator.section.material") {
-                AdaptiveFormRow("calculator.material") {
-                    Spacer(minLength: 0)
-                    Picker("calculator.material", selection: materialBinding) {
-                        ForEach(materials) { material in
-                            Text(materialDisplayName(material)).tag(material.id)
-                        }
-                    }
-                    .labelsHidden()
-                }
-                AdaptiveFormRow("calculator.density") {
-                    TextField("7850", text: $draft.densityText)
-                        .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                    Text("kg/m³").foregroundStyle(.secondary).fixedSize()
-                }
-                Text("material.note.typical").font(.caption).foregroundStyle(.secondary)
-            }
-
-            if showPricing {
-            Section("calculator.section.pricing") {
+            Section {
+            DisclosureGroup(isExpanded: $showPricing) {
                 Text("workflow.pricing_rules").font(.caption).foregroundStyle(.secondary)
                 if draft.priceNeedsReview {
                     Label("workflow.price_review", systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
@@ -166,7 +215,7 @@ struct CalculatorEditorView: View {
                     Button("workflow.clear_price") { draft.clearPrice() }
                 }
                 AdaptiveFormRow("calculator.waste") {
-                    TextField("0", text: $draft.wasteText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                    TextField("0", text: $draft.wasteText).accessibilityIdentifier("calculator.waste").accessibilityLabel("calculator.waste").keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44)
                     Text("%").foregroundStyle(.secondary).fixedSize()
                 }
                 Text("calculator.waste_pricing_help").font(.caption).foregroundStyle(.secondary)
@@ -184,17 +233,28 @@ struct CalculatorEditorView: View {
                     .labelsHidden()
                 }
                 AdaptiveFormRow("calculator.unit_price") {
-                    TextField("0", text: $draft.unitPriceText).accessibilityIdentifier("calculator.price_input").keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                    Text(currencyCode).foregroundStyle(.secondary).fixedSize()
+                    TextField("0", text: $draft.unitPriceText).accessibilityIdentifier("calculator.price_input").accessibilityLabel(Text("calculator.unit_price") + Text(" " + currencyCode + "/" + AppLocalization.text("ui.basis." + draft.priceBasis.rawValue, locale: locale))).keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44)
+                    Text(currencyCode + "/" + AppLocalization.text("ui.basis." + draft.priceBasis.rawValue, locale: locale)).foregroundStyle(.secondary).fixedSize()
                 }
+                DisclosureGroup(isExpanded: $expandFees) {
                 AdaptiveFormRow("calculator.line_processing_fee") {
-                    TextField("0", text: $draft.processingFeeText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                    TextField("0", text: $draft.processingFeeText).accessibilityIdentifier("calculator.processing").accessibilityLabel("calculator.line_processing_fee").keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44)
                 }
                 AdaptiveFormRow("calculator.line_other_fee") {
-                    TextField("0", text: $draft.otherFeeText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                    TextField("0", text: $draft.otherFeeText).accessibilityLabel("calculator.line_other_fee").keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44)
                 }
-                TextField("calculator.description", text: $draft.itemDescription)
-                TextField("calculator.internal_note", text: $draft.internalNote, axis: .vertical)
+                if issue?.field == "fees" { InlineIssue(key: issue!.message) }
+                } label: {
+                    VStack(alignment: .leading) {
+                        Text("ui.extra_fees")
+                        Text(draft.processingFeeText + " + " + draft.otherFeeText + " " + currencyCode).font(.caption).foregroundStyle(.secondary)
+                    }
+                }.id("fees")
+                DisclosureGroup("ui.notes", isExpanded: $expandNotes) {
+                    LabeledEntry("calculator.description", text: $draft.itemDescription)
+                    LabeledEntry("calculator.internal_note", text: $draft.internalNote, multiline: true)
+                }
+                DisclosureGroup(isExpanded: $expandSource) {
                 AdaptiveFormRow("calculator.price_source") {
                     Spacer(minLength: 0)
                     Picker("calculator.price_source", selection: $draft.priceSource) {
@@ -221,22 +281,36 @@ struct CalculatorEditorView: View {
                     }
                 }
                 if draft.priceSource != .history {
-                    TextField("calculator.price_source_name", text: $draft.priceSourceName)
-                    TextField("calculator.price_region", text: $draft.priceRegion)
-                    TextField("calculator.material_grade", text: $draft.materialGrade)
+                    LabeledEntry("calculator.price_source_name", text: $draft.priceSourceName)
+                    LabeledEntry("calculator.price_region", text: $draft.priceRegion)
+                    LabeledEntry("calculator.material_grade", text: $draft.materialGrade)
                     DatePicker("calculator.price_effective_date", selection: $draft.priceEffectiveAt, displayedComponents: .date)
                 }
                 Toggle("calculator.price_includes_tax", isOn: $draft.priceIncludesTax)
                 Text("calculator.price_reference_help").font(.caption).foregroundStyle(.secondary)
                 Button("workflow.save_scoped_price", systemImage: "bookmark") { saveScopedPrice() }.disabled(pricing == nil || draft.priceNeedsReview)
                 if priceSaved { Text("workflow.price_saved").font(.caption).foregroundStyle(.secondary) }
+                } label: {
+                    VStack(alignment: .leading) {
+                        Text("ui.supplier_details")
+                        Text(draft.priceSourceName.isEmpty ? AppLocalization.text("ui.optional", locale: locale) : draft.priceSourceName).font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+                if issue?.field == "price" || issue?.field == "waste" { InlineIssue(key: issue!.message) }
                 if pricing == nil {
                     Label("error.invalid_pricing", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red)
                 }
+            } label: {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("calculator.section.pricing")
+                    if let pricing {
+                        Text(AppFormatters.decimal(pricing.total, currencyCode: currencyCode, locale: locale))
+                            .font(.caption).foregroundStyle(.secondary).monospacedDigit()
+                    }
+                }
+            }.id("price")
             }
-
-            }
-            Section("calculator.section.result") {
+            Section { DisclosureGroup("calculator.section.result") {
                 if draft.priceNeedsReview && !showPricing { Label("workflow.price_review", systemImage: "exclamationmark.triangle").foregroundStyle(.orange) }
                 if let result {
                     LazyVGrid(columns: dynamicTypeSize.isAccessibilitySize ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
@@ -265,18 +339,21 @@ struct CalculatorEditorView: View {
                 }
             }
 
-            Section {
-                Button {
-                    if let destinationProject {
-                        save(to: destinationProject)
-                    }
-                    else { showSaveSheet = true }
-                } label: {
-                    Label("calculator.save_to_project", systemImage: "folder.badge.plus")
-                        .frame(maxWidth: .infinity)
-                }
-                .disabled(result == nil || pricing == nil || draft.priceNeedsReview)
             }
+        }
+        if useColumns {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    quickResult
+                    if let previewInput { ProfileSection3DPreview(input: previewInput) }
+                    if showPricing, let pricing { ResultMetric("project.total", value: AppFormatters.decimal(pricing.total, currencyCode: currencyCode, locale: locale), emphasized: true) }
+                }.padding()
+            }.frame(width: 320).accessibilityIdentifier("calculator.side_preview")
+        }
+        }
+        .safeAreaInset(edge: .bottom) { actionBar(scroll: scroll) }
+        .onChange(of: lastSavedItem?.id) { _, id in if id != nil { withAnimation { scroll.scrollTo("saveFeedback", anchor: .top) } } }
+        .onChange(of: notice) { _, value in if value != nil { withAnimation { scroll.scrollTo("feedback", anchor: .top) } } }
         }
         .keyboardDismissSupport()
         .navigationTitle(profile.localizationKey)
@@ -286,9 +363,9 @@ struct CalculatorEditorView: View {
         }
         .onDisappear { rememberCalculation() }
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) { Button("workflow.favorite", systemImage: "star") { favorite() }.disabled(result == nil) }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    Button("workflow.favorite", systemImage: "star") { library.record(storedState, favorite: true) }.disabled(result == nil)
                     Button("workflow.remember", systemImage: "clock") { rememberCalculation() }.disabled(result == nil)
                     if let result {
                         ShareLink(item: shareText(result)) {
@@ -296,8 +373,7 @@ struct CalculatorEditorView: View {
                         }
                     }
                     Button("workflow.reset", systemImage: "arrow.counterclockwise") {
-                        draft = CalculatorDraft(profile: profile, unitSystem: destinationProject?.unitSystem ?? UnitSystem(rawValue: unitSystemRaw) ?? .metric)
-                        draftCurrency = nil
+                        resetDraft()
                     }
                 } label: { Image(systemName: "ellipsis.circle") }.accessibilityIdentifier("calculator.menu")
             }
@@ -307,6 +383,7 @@ struct CalculatorEditorView: View {
             loaded = true
             if !ProcessInfo.processInfo.arguments.contains("--marketing-screen"), let state = restoredState ?? library.payload.drafts[draftKey] {
                 draft = state.makeDraft(locale: locale); draftCurrency = state.currency
+                notice = AppLocalization.text("ui.draft_restored", locale: locale)
                 if !materials.contains(where: { $0.id == draft.selectedMaterialID }) { draft.selectedMaterialID = "carbon-steel"; draft.priceNeedsReview = true }
                 return
             }
@@ -325,17 +402,76 @@ struct CalculatorEditorView: View {
             SaveToProjectSheet(projects: projects) { project in save(to: project) }
         }
         .sheet(item: $pendingCurrencyProject) { project in
-            CurrencyChangeSheet(oldCurrency: currencyCode, newCurrency: project.currencyCode) { mode, rate in
+            CurrencyChangeSheet(oldCurrency: currencyCode, newCurrency: project.currencyCode, itemToSave: draft.makeItem(materialName: "", locale: locale, sortIndex: 0)) { mode, rate in
                 commitSave(to: project, currencyMode: mode, rate: rate)
             }
         }
         .sheet(isPresented: $showDetails) {
             if let result { CalculationDetailsView(result: result) }
         }
-        .alert("calculator.saved", isPresented: $savedConfirmation) { Button("workflow.continue_adding", role: .cancel) {} }
+        .navigationDestination(item: $openedProject) { ProjectDetailView(project: $0) }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in keyboardVisible = true }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in keyboardVisible = false }
         .proPaywall(reason: $paywallReason) {
             if let project = pendingSaveProject { pendingSaveProject = nil; save(to: project) }
         }
+    }
+
+    private var quickResult: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if let result {
+                ResultMetric("calculator.result.total_mass", value: mass(result.totalMassKg), emphasized: true)
+            } else {
+                ResultMetric("calculator.result.total_mass", value: "—", emphasized: true)
+                Text("ui.complete_fields").font(.caption).foregroundStyle(.secondary)
+            }
+        }.frame(minHeight: 95, alignment: .top).accessibilityIdentifier("calculation.quick_result")
+    }
+    private func actionBar(scroll: ScrollViewProxy) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if let issue {
+                Button {
+                    if ["price", "fees", "waste"].contains(issue.field) { showPricing = true; expandFees = issue.field == "fees" }
+                    if issue.field == "density" { expandDensity = true }
+                    Task { @MainActor in
+                        await Task.yield()
+                        scroll.scrollTo(issue.field == "waste" ? "price" : issue.field, anchor: .center)
+                        try? await Task.sleep(for: .milliseconds(200))
+                        let identifier = ["length": "length.value", "quantity": "quantity.value", "price": "calculator.price_input", "fees": "calculator.processing", "waste": "calculator.waste", "density": "calculator.density"][issue.field] ?? "dimension." + issue.field
+                        InputNavigation.focus(identifier)
+                    }
+                } label: { Label(AppLocalization.text(issue.message, locale: locale), systemImage: "exclamationmark.circle").font(.caption) }
+                .frame(minHeight: 44).accessibilityIdentifier("calculator.fix_issue")
+            }
+            if dynamicTypeSize.isAccessibilitySize { saveButton } else {
+            ViewThatFits(in: .horizontal) {
+                HStack { if !keyboardVisible { Text(result.map { mass($0.totalMassKg) } ?? "—").monospacedDigit(); Spacer() }; saveButton }
+                VStack(alignment: .leading) { Text(result.map { mass($0.totalMassKg) } ?? "—").monospacedDigit(); saveButton }
+            }
+            }
+        }.padding(.horizontal).padding(.vertical, 8).background(.bar)
+    }
+    private var saveButton: some View {
+        Button { if let destinationProject { save(to: destinationProject) } else { showSaveSheet = true } } label: {
+            Label(dynamicTypeSize.isAccessibilitySize ? "common.save" : "calculator.save_to_project", systemImage: "folder.badge.plus").frame(maxWidth: .infinity)
+        }.buttonStyle(.borderedProminent).controlSize(.large).disabled(issue != nil || result == nil || pricing == nil)
+        .accessibilityIdentifier("calculator.save").accessibilityLabel("calculator.save_to_project")
+    }
+    private func favorite() {
+        resetUndo = nil
+        library.record(storedState, favorite: true)
+        notice = AppLocalization.text("ui.favorited", locale: locale)
+    }
+    private func resetDraft() {
+        resetUndo = storedState
+        draft = CalculatorDraft(profile: profile, unitSystem: destinationProject?.unitSystem ?? UnitSystem(rawValue: unitSystemRaw) ?? .metric)
+        draftCurrency = nil; lastSavedItem = nil
+        notice = AppLocalization.text("ui.draft_reset", locale: locale)
+    }
+    private func undoSavedItem() {
+        guard let item = lastSavedItem, let project = lastSavedProject else { return }
+        project.items.removeAll { $0.id == item.id }; modelContext.delete(item); project.updatedAt = .now
+        if PersistenceErrorCenter.shared.save(modelContext) { lastSavedItem = nil; notice = AppLocalization.text("ui.save_undone", locale: locale) }
     }
 
     private func dimensionBinding(_ field: DimensionField) -> Binding<String> {
@@ -438,7 +574,7 @@ struct CalculatorEditorView: View {
         if PersistenceErrorCenter.shared.save(modelContext) {
             showSaveSheet = false
             rememberCalculation()
-            savedConfirmation = true
+            lastSavedItem = item; lastSavedProject = project; notice = nil; resetUndo = nil
         }
     }
 

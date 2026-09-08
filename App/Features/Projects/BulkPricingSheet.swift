@@ -29,7 +29,7 @@ struct BulkPricingSheet: View {
     let onApply: ([ItemPricingState]) -> Void
     @State private var selection = Set<UUID>()
     @State private var filter = ""
-    @State private var updateWaste = true
+    @State private var updateWaste = false
     @State private var waste = "0"
     @State private var updatePrice = false
     @State private var price = "0"
@@ -62,22 +62,34 @@ struct BulkPricingSheet: View {
             Form {
                 Section {
                     Toggle("project.bulk.waste", isOn: $updateWaste)
-                    if updateWaste { TextField("calculator.waste", text: $waste).keyboardType(.decimalPad) }
+                    if updateWaste { LabeledEntry("calculator.waste", text: $waste, keyboard: .decimalPad); if validWaste == nil { InlineIssue(key: "ui.waste_range") } }
                     Toggle("project.bulk.price", isOn: $updatePrice)
                     if updatePrice {
                         Picker("calculator.price_basis", selection: $basis) { ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0) } }
-                        TextField("calculator.unit_price", text: $price).keyboardType(.decimalPad)
+                        LabeledEntry("calculator.unit_price", text: $price, keyboard: .decimalPad)
+                        if validPrice == nil { InlineIssue(key: "ui.nonnegative_amount") }
                         Text(project.currencyCode).foregroundStyle(.secondary)
                     }
                 }
                 Section("workflow.select_items") {
                     TextField("workflow.material_search", text: $filter)
-                    Button("workflow.select_visible") { selection = Set(visible.map(\.id)) }
+                    Button("workflow.select_visible") { selection = SelectionRules.addingVisible(visible.map(\.id), to: selection) }
                     Button("workflow.clear_selection") { selection = [] }
                     ForEach(visible) { item in
-                        Toggle(isOn: Binding(get: { selection.contains(item.id) }, set: { if $0 { selection.insert(item.id) } else { selection.remove(item.id) } })) {
-                            Text(item.descriptionText.isEmpty ? AppLocalization.text("profile." + item.profileRaw, locale: locale) + " · " + MaterialCatalog.localizedName(materialID: item.materialID, fallback: item.materialName, locale: locale) : item.descriptionText)
-                        }
+                        Button {
+                            if selection.contains(item.id) { selection.remove(item.id) } else { selection.insert(item.id) }
+                        } label: {
+                            HStack {
+                                Image(systemName: selection.contains(item.id) ? "checkmark.circle.fill" : "circle")
+                                VStack(alignment: .leading) {
+                                    Text(item.descriptionText.isEmpty ? MaterialCatalog.localizedName(materialID: item.materialID, fallback: item.materialName, locale: locale) : item.descriptionText).foregroundStyle(.primary)
+                                    Text(AppLocalization.text("profile." + item.profileRaw, locale: locale) + " · " + AppFormatters.number(item.lengthValue, locale: locale) + " " + item.lengthUnit.rawValue + " × " + String(item.quantity)).font(.caption).foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                            }.frame(minHeight: 44)
+                        }.accessibilityIdentifier("bulk.item." + item.descriptionText)
+                        .accessibilityValue(selection.contains(item.id) ? Text("ui.selected") : Text("ui.not_selected"))
+
                     }
                 }
                 Section("workflow.change_preview") {
@@ -87,15 +99,47 @@ struct BulkPricingSheet: View {
                 }
             }
             .keyboardDismissSupport()
+            .safeAreaInset(edge: .bottom) {
+                Text(AppLocalization.format("ui.selection_count", locale: locale, selection.count, visible.count))
+                    .font(.subheadline.bold()).padding().frame(maxWidth: .infinity).background(.bar)
+                    .accessibilityIdentifier("bulk.selection_count")
+            }
             .navigationTitle("project.bulk_pricing")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) { Button("project.bulk.apply") { confirm = true }.disabled(!canApply) }
             }
-            .confirmationDialog("workflow.apply_confirm", isPresented: $confirm, titleVisibility: .visible) {
-                Button("common.apply") { apply() }
+            .sheet(isPresented: $confirm) {
+                NavigationStack {
+                    List {
+                        Text(AppLocalization.format("ui.selection_count", locale: locale, selection.count, visible.count))
+                        ForEach(selected) { item in
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(item.descriptionText.isEmpty ? item.materialName : item.descriptionText).font(.headline)
+                                if updateWaste { Text(wasteChange(item)) }
+                                if updatePrice { Text(priceChange(item)) }
+                            }
+                        }
+                    }.navigationTitle("workflow.change_preview").navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { confirm = false } }
+                        ToolbarItem(placement: .confirmationAction) { Button("common.apply") { confirm = false; apply() } }
+                    }
+                }
             }
         }
+    }
+    private func wasteChange(_ item: CalculationItemEntity) -> String {
+        let title = AppLocalization.text("calculator.waste", locale: locale)
+        let old = AppFormatters.number(item.wastePercent, locale: locale)
+        return "\(title): \(old)% → \(waste)%"
+    }
+    private func priceChange(_ item: CalculationItemEntity) -> String {
+        let oldAmount = AppFormatters.decimal(item.unitPrice, currencyCode: project.currencyCode, locale: locale)
+        let oldUnit = AppLocalization.text("ui.basis." + item.priceBasis.rawValue, locale: locale)
+        let newUnit = AppLocalization.text("ui.basis." + basis.rawValue, locale: locale)
+        return oldAmount + " / " + oldUnit + " → " + price + " " + project.currencyCode + " / " + newUnit
     }
     private func apply() {
         guard canApply else { return }

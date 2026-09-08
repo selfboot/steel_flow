@@ -21,26 +21,51 @@ struct TemplatePickerView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Query private var projects: [ProjectEntity]
+    var onCreated: ((ProjectEntity) -> Void)? = nil
+    @Environment(\.locale) private var locale
+    @State private var selectedTemplate: ProjectEntity?
     @State private var name = ""
     @State private var clearPrices = true
     @State private var paywallReason: ProPaywallReason?
     @State private var pendingTemplate: ProjectEntity?
     var body: some View {
         NavigationStack {
+            ScrollViewReader { scroll in
             Form {
                 Section {
-                    TextField("project.name", text: $name)
+                    LabeledEntry("project.name", text: $name)
                     Toggle("workflow.template_clear_prices", isOn: $clearPrices)
                     Text("workflow.template_help").font(.caption).foregroundStyle(.secondary)
                 }
+                if let template = selectedTemplate {
+                    Section("ui.template_preview") {
+                        LabeledContent("project.items", value: String(template.items.count))
+                        Text(Array(Set(template.items.map { MaterialCatalog.localizedName(materialID: $0.materialID, fallback: $0.materialName, locale: locale) })).sorted().joined(separator: " · "))
+                        LabeledContent("project.tax", value: template.taxPercentText + "%")
+                        LabeledContent(template.profitMode == .markup ? "project.markup" : "project.margin", value: template.markupPercentText + "%")
+                        Text(clearPrices ? "ui.prices_will_clear" : "ui.prices_will_keep").accessibilityIdentifier("template.preview.prices")
+                    }.id("template.preview")
+                }
                 Section("workflow.templates") {
-                    if !projects.contains(where: \.isTemplate) { Text("workflow.templates_empty") }
+                    if !projects.contains(where: { $0.isTemplate && !$0.isArchived }) { Text("workflow.templates_empty") }
                     ForEach(projects.filter { $0.isTemplate && !$0.isArchived }) { template in
-                        Button(template.name) { create(template) }
+                        Button { selectedTemplate = template } label: {
+                            HStack { Text(template.name).foregroundStyle(.primary); Spacer(); Image(systemName: selectedTemplate?.id == template.id ? "checkmark.circle.fill" : "circle") }.frame(minHeight: 44)
+                        }.accessibilityIdentifier("template." + template.name)
+                        .accessibilityValue(selectedTemplate?.id == template.id ? Text("ui.selected") : Text("ui.not_selected"))
                     }
                 }
             }
+            .onChange(of: selectedTemplate?.id) { _, id in if id != nil { withAnimation { scroll.scrollTo("template.preview", anchor: .top) } } }
+            .keyboardDismissSupport()
+            }
+            .safeAreaInset(edge: .bottom) {
+                Button("ui.create_template") { if let selectedTemplate { create(selectedTemplate) } }
+                    .buttonStyle(.borderedProminent).controlSize(.large).disabled(selectedTemplate == nil)
+                    .padding().frame(maxWidth: .infinity).background(.bar).accessibilityIdentifier("template.create")
+            }
             .navigationTitle("workflow.from_template")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } } }
             .proPaywall(reason: $paywallReason) { if let template = pendingTemplate { pendingTemplate = nil; create(template) } }
         }
@@ -51,7 +76,7 @@ struct TemplatePickerView: View {
         guard ProPolicy.canActivateProject(activeProjectCount: projects.filter { !$0.isArchived && !$0.isTemplate }.count, isPro: isPro), isPro || template.items.count <= ProPolicy.freeItemsPerProjectLimit else { paywallReason = .projects; return }
         let copy = ProjectCloner.copy(template, name: name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? template.name : name, clearPrices: clearPrices)
         modelContext.insert(copy)
-        if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
+        if PersistenceErrorCenter.shared.save(modelContext) { onCreated?(copy); dismiss() }
     }
 }
 
@@ -63,10 +88,12 @@ struct CustomerPickerView: View {
     @State private var search = ""
     @State private var showNew = false
     @State private var editing: CustomerEntity?
+    private var filtered: [CustomerEntity] { customers.filter { search.isEmpty || [$0.name, $0.phone, $0.email].contains { $0.localizedStandardContains(search) } } }
     var body: some View {
         NavigationStack {
             List {
-                ForEach(customers.filter { search.isEmpty || [$0.name, $0.phone, $0.email].contains { $0.localizedStandardContains(search) } }) { customer in
+                if !search.isEmpty && filtered.isEmpty { ContentUnavailableView.search(text: search); Button("ui.clear_search") { search = "" } }
+                ForEach(filtered) { customer in
                     Button {
                         if let onSelect { onSelect(customer); dismiss() } else { editing = customer }
                     } label: {
@@ -96,13 +123,14 @@ private struct CustomerEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                TextField("project.customer", text: $name)
-                TextField("company.email", text: $email).keyboardType(.emailAddress).textInputAutocapitalization(.never)
-                TextField("company.phone", text: $phone).keyboardType(.phonePad)
-                TextField("company.address", text: $address, axis: .vertical)
+                LabeledEntry("project.customer", text: $name)
+                LabeledEntry("company.email", text: $email, keyboard: .emailAddress)
+                LabeledEntry("company.phone", text: $phone, keyboard: .phonePad)
+                LabeledEntry("company.address", text: $address, multiline: true)
             }
             .keyboardDismissSupport()
-            .navigationTitle("workflow.customers")
+            .navigationTitle(customer == nil ? "ui.new_customer" : "ui.edit_customer")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) { Button("common.save") {

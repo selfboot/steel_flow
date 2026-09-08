@@ -12,6 +12,7 @@
 		03A9FBA531619D2C7F3854AF /* SteelFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04795DF5B57D9A2BB05DE0A2 /* SteelFlowUITests.swift */; };
 		0A7F78E6E62283FD18117E4A /* MarketingCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24411F83D53BCB9DE1D5464E /* MarketingCapture.swift */; };
 		0E4FBF99CFA02AA4C3652346 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB33FEBDD0F8C3B26D218F /* RootTabView.swift */; };
+		10B98302AEF964BAE5107ADC /* InteractionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1FA9302106C07253ED98B /* InteractionRules.swift */; };
 		10CABE5CB0E3416B4C53A6AE /* ReferenceCases.json in Resources */ = {isa = PBXBuildFile; fileRef = 20D6D1B0C08DBFE52F6AD27D /* ReferenceCases.json */; };
 		133D88902A77B96E60DDB085 /* CalculatorEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8859FFF9B380FFA691F19 /* CalculatorEditorView.swift */; };
 		165172AE685CE2525DE04081 /* ProjectSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D3D3A9B13E6008D8210B7C /* ProjectSettingsSheet.swift */; };
@@ -47,6 +48,7 @@
 		A535072306FF5F83BAFC2D0A /* QuoteCSVRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33030624F9F51469EB697928 /* QuoteCSVRenderer.swift */; };
 		A743C0CEE17D5C58EA4C6BD6 /* QuotePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB72DAC0E640709F9F71F69 /* QuotePreviewView.swift */; };
 		A7702DAEB3339ED5200EB12C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8EAF6E9F63DE40D35557AAC /* Assets.xcassets */; };
+		B046C350CE613E9881A29E7C /* WorkflowUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F616E9AA5E00765BEF6519 /* WorkflowUI.swift */; };
 		B330E5E46553AD093B2909AF /* MaterialCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26358E6FFCE305FCC30BDA0 /* MaterialCatalog.swift */; };
 		B39729F62CDC02B60CDBF9EB /* MaterialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6058F1C2214E333E8CDBA4A3 /* MaterialsView.swift */; };
 		B702BD014FCC78F48AF0C9EF /* ReferenceCorpusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */; };
@@ -104,6 +106,7 @@
 		48EF519CF3E843C209C44ED5 /* SteelFlowTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SteelFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BEB33FEBDD0F8C3B26D218F /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		4C372A8D61345C59F520B92E /* CalculationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationEngine.swift; sourceTree = "<group>"; };
+		4FD1FA9302106C07253ED98B /* InteractionRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionRules.swift; sourceTree = "<group>"; };
 		504649A5D7DDE1728807CF73 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		513D90C6EEE9048760CB487B /* ProPaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPaywallView.swift; sourceTree = "<group>"; };
 		6058F1C2214E333E8CDBA4A3 /* MaterialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsView.swift; sourceTree = "<group>"; };
@@ -141,6 +144,7 @@
 		F26358E6FFCE305FCC30BDA0 /* MaterialCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialCatalog.swift; sourceTree = "<group>"; };
 		F58DBBB7944681B6C94D589A /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		F5D3D3A9B13E6008D8210B7C /* ProjectSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSettingsSheet.swift; sourceTree = "<group>"; };
+		F8F616E9AA5E00765BEF6519 /* WorkflowUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowUI.swift; sourceTree = "<group>"; };
 		F971DACC1BB58B485E6418EE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		F9744DB145F4887C3FBD0F64 /* CurrencyCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCatalogTests.swift; sourceTree = "<group>"; };
 		FA345B7BEA8F82C77DBEF253 /* Money.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
@@ -267,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				4C372A8D61345C59F520B92E /* CalculationEngine.swift */,
+				4FD1FA9302106C07253ED98B /* InteractionRules.swift */,
 				F26358E6FFCE305FCC30BDA0 /* MaterialCatalog.swift */,
 				FA345B7BEA8F82C77DBEF253 /* Money.swift */,
 				3568DCA5A6B45431715922BC /* Profile.swift */,
@@ -284,6 +289,7 @@
 				C7CD1A5A9E3B8CC6BC2E341D /* CurrencyPicker.swift */,
 				F58DBBB7944681B6C94D589A /* DesignSystem.swift */,
 				BCE9E6DA308241E2A6327023 /* KeyboardDismissSupport.swift */,
+				F8F616E9AA5E00765BEF6519 /* WorkflowUI.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -554,6 +560,7 @@
 				84291BF8624E6A014F0164BA /* DesignSystem.swift in Sources */,
 				507E2C9612FE12225B3CEF39 /* Entities.swift in Sources */,
 				207A5AF55ACB720174B1BECE /* FeedbackView.swift in Sources */,
+				10B98302AEF964BAE5107ADC /* InteractionRules.swift in Sources */,
 				3D92AF34814EAB13F32D6716 /* KeyboardDismissSupport.swift in Sources */,
 				0A7F78E6E62283FD18117E4A /* MarketingCapture.swift in Sources */,
 				B330E5E46553AD093B2909AF /* MaterialCatalog.swift in Sources */,
@@ -579,6 +586,7 @@
 				DF7F5EF6CF656AE48E71F89C /* Units.swift in Sources */,
 				E71B6D848599D63067041E6B /* WorkflowSupport.swift in Sources */,
 				A3C475B72139D5EFC12B2D7A /* WorkflowTestFixture.swift in Sources */,
+				B046C350CE613E9881A29E7C /* WorkflowUI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -672,7 +680,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 4Z5Z5TE9EX;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -742,7 +750,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4Z5Z5TE9EX;
 				ENABLE_NS_ASSERTIONS = NO;

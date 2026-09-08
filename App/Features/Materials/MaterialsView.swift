@@ -7,6 +7,9 @@ struct MaterialsView: View {
     @Query(sort: \MaterialEntity.densityKgPerM3) private var materials: [MaterialEntity]
     @Query(sort: \PriceBookEntryEntity.effectiveAt, order: .reverse) private var priceBook: [PriceBookEntryEntity]
     @State private var search = ""
+    @State private var catalog = 0
+    @State private var pendingProAction: (() -> Void)?
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @AppStorage("workflow.favorite_materials") private var favoriteMaterials = ""
     @State private var editingMaterial: MaterialEntity?
     @State private var showNew = false
@@ -30,27 +33,30 @@ struct MaterialsView: View {
     }
     var body: some View {
         List {
+            if (catalog == 0 ? filteredMaterials.isEmpty : filteredPrices.isEmpty) && !search.isEmpty {
+                ContentUnavailableView.search(text: search)
+                Button("ui.clear_search") { search = "" }
+            }
+            if catalog == 0 {
             Section("materials.built_in") {
                 ForEach(filteredMaterials.filter(\.isBuiltIn)) { material in
                     MaterialRow(material: material).contextMenu {
                         Button("workflow.copy_material", systemImage: "doc.on.doc") {
-                            if purchaseManager.isPro {
-                                let copy = MaterialEntity(name: MaterialCatalog.localizedName(materialID: material.id, fallback: material.name, locale: locale), densityKgPerM3: material.densityKgPerM3, note: material.note)
-                                modelContext.insert(copy)
-                                if PersistenceErrorCenter.shared.save(modelContext) { editingMaterial = copy }
-                            } else { paywallReason = .materials }
+                            if purchaseManager.isPro { copyMaterial(material) }
+                            else { pendingProAction = { copyMaterial(material) }; paywallReason = .materials }
                         }
-                        Button("workflow.pin", systemImage: "pin") { toggleFavorite(material.id) }
+                        Button(isFavorite(material.id) ? "workflow.unpin" : "workflow.pin", systemImage: isFavorite(material.id) ? "pin.slash" : "pin") { toggleFavorite(material.id) }
                     }
                 }
             }
             Section("materials.custom") {
-                if materials.filter({ !$0.isBuiltIn }).isEmpty {
+                if search.isEmpty && materials.filter({ !$0.isBuiltIn }).isEmpty {
                     Text("materials.custom.empty").foregroundStyle(.secondary)
                 }
                 ForEach(filteredMaterials.filter { !$0.isBuiltIn }) { material in
                     Button { editingMaterial = material } label: { MaterialRow(material: material) }
                         .buttonStyle(.plain)
+                        .contextMenu { Button(isFavorite(material.id) ? "workflow.unpin" : "workflow.pin", systemImage: "pin") { toggleFavorite(material.id) } }
                         .swipeActions(allowsFullSwipe: false) {
                             Button(role: .destructive) {
                                 pendingDeletion = .material(material)
@@ -59,11 +65,14 @@ struct MaterialsView: View {
                         }
                 }
             }
+            Section { Text("material.note.typical").font(.caption).foregroundStyle(.secondary) }
+            } else {
             Section("price_book.title") {
-                if priceBook.isEmpty { Text("price_book.empty").foregroundStyle(.secondary) }
+                if search.isEmpty && priceBook.isEmpty { Text("price_book.empty").foregroundStyle(.secondary) }
                 ForEach(filteredPrices) { entry in
                     Button { editingPrice = entry } label: {
-                        HStack {
+                        let layout = dynamicTypeSize.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading)) : AnyLayout(HStackLayout())
+                        layout {
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(entry.name).font(.headline)
                                 Text(PriceApplicability.description(profileRaw: entry.applicableProfile, geometryData: entry.applicableGeometry, locale: locale)).font(.caption).foregroundStyle(.secondary)
@@ -91,23 +100,29 @@ struct MaterialsView: View {
                 }
                 Text("price_book.help").font(.caption).foregroundStyle(.secondary)
             }
-            Section { Text("material.note.typical").font(.caption).foregroundStyle(.secondary) }
+            }
         }
-        .searchable(text: $search, prompt: "workflow.price_search")
+        .safeAreaInset(edge: .top) {
+            Picker("tab.materials", selection: $catalog) { Text("tab.materials").tag(0); Text("price_book.title").tag(1) }
+                .pickerStyle(.segmented).padding(.horizontal).padding(.vertical, 8).background(.bar)
+        }
+        .searchable(text: $search, prompt: catalog == 0 ? "ui.material_search" : "workflow.price_search")
+        .onChange(of: catalog) { _, _ in search = "" }
         .navigationTitle("tab.materials")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Menu {
-                    Button("materials.add") { if purchaseManager.isPro { showNew = true } else { paywallReason = .materials } }
-                    Button("price_book.add") { showNewPrice = true }
-                } label: { Image(systemName: "plus") }
+                Button {
+                    if catalog == 1 { showNewPrice = true }
+                    else if purchaseManager.isPro { showNew = true }
+                    else { pendingProAction = { showNew = true }; paywallReason = .materials }
+                } label: { Label(catalog == 0 ? "materials.add" : "price_book.add", systemImage: "plus") }
             }
         }
         .sheet(isPresented: $showNew) { MaterialEditorSheet() }
         .sheet(item: $editingMaterial) { MaterialEditorSheet(material: $0) }
         .sheet(isPresented: $showNewPrice) { PriceBookEditorSheet(materials: materials) }
         .sheet(item: $editingPrice) { PriceBookEditorSheet(entry: $0, materials: materials) }
-        .proPaywall(reason: $paywallReason)
+        .proPaywall(reason: $paywallReason) { let action = pendingProAction; pendingProAction = nil; action?() }
         .alert("delete.confirm.title", isPresented: $showDeleteConfirmation) {
             Button("common.delete", role: .destructive) { confirmDeletion() }
             Button("common.cancel", role: .cancel) { pendingDeletion = nil }
@@ -115,6 +130,14 @@ struct MaterialsView: View {
             Text("delete.confirm.message")
         }
     }
+
+    private func copyMaterial(_ material: MaterialEntity) {
+        let copy = MaterialEntity(name: MaterialCatalog.localizedName(materialID: material.id, fallback: material.name, locale: locale), densityKgPerM3: material.densityKgPerM3, note: material.note)
+        modelContext.insert(copy)
+        if PersistenceErrorCenter.shared.save(modelContext) { editingMaterial = copy }
+    }
+
+    private func isFavorite(_ id: String) -> Bool { favoriteMaterials.split(separator: "|").contains(Substring(id)) }
 
     private func toggleFavorite(_ id: String) {
         var ids = Set(favoriteMaterials.split(separator: "|").map(String.init))
@@ -124,9 +147,11 @@ struct MaterialsView: View {
 
     @ViewBuilder
     private func MaterialRow(material: MaterialEntity) -> some View {
-        HStack {
+        let layout = dynamicTypeSize.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading)) : AnyLayout(HStackLayout())
+        layout {
             VStack(alignment: .leading, spacing: 3) {
                 if let key = material.nameKey { Text(LocalizedStringKey(key)).font(.headline).lineLimit(2) } else { Text(material.name).font(.headline).lineLimit(2) }
+                if isFavorite(material.id) { Label("workflow.pinned", systemImage: "pin.fill").font(.caption).foregroundStyle(.secondary) }
                 Text(material.isBuiltIn ? "materials.preset" : "materials.custom.label").font(.caption).foregroundStyle(.secondary)
             }
             .layoutPriority(1)
@@ -185,7 +210,7 @@ private struct PriceBookEditorSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                TextField("price_book.name", text: $name)
+                LabeledEntry("price_book.name", text: $name)
                 if let entry, entry.applicableProfile != nil {
                     Text(PriceApplicability.description(profileRaw: entry.applicableProfile, geometryData: entry.applicableGeometry, locale: locale)).font(.caption)
                     if let length = entry.applicableLengthMeters { Text(AppFormatters.number(length, locale: locale) + " m").font(.caption) }
@@ -198,9 +223,9 @@ private struct PriceBookEditorSheet: View {
                         Text(material.nameKey.map { AppLocalization.text($0, locale: locale) } ?? material.name).tag(material.id)
                     }
                 }
-                TextField("calculator.material_grade", text: $grade)
-                TextField("price_book.supplier", text: $supplier)
-                TextField("calculator.price_region", text: $region)
+                LabeledEntry("calculator.material_grade", text: $grade)
+                LabeledEntry("price_book.supplier", text: $supplier)
+                LabeledEntry("calculator.price_region", text: $region)
                 CurrencyPickerRow(selection: $currency)
                 Picker("calculator.price_basis", selection: Binding(get: { basis }, set: { newBasis in
                     if let value = validPrice, let converted = PriceBasisConversion.convert(value, from: basis, to: newBasis) { price = converted.description.replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".") }
@@ -210,11 +235,11 @@ private struct PriceBookEditorSheet: View {
                 HStack {
                     Text("calculator.unit_price")
                     Spacer()
-                    TextField("0", text: $price).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                    LabeledEntry("0", text: $price).keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44)
                 }
                 Toggle("calculator.price_includes_tax", isOn: $includesTax)
                 DatePicker("calculator.price_effective_date", selection: $effectiveAt, displayedComponents: .date)
-                TextField("materials.note", text: $note, axis: .vertical)
+                LabeledEntry("materials.note", text: $note, multiline: true)
                 if normalizedCurrency == nil { Label("error.invalid_currency", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
                 if validPrice == nil { Label("error.invalid_pricing", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
                 Text("price_book.reference_disclaimer").font(.caption).foregroundStyle(.secondary)
@@ -290,26 +315,28 @@ private struct MaterialEditorSheet: View {
     @State private var name = ""
     @State private var density = "7850"
     @State private var note = ""
-    @State private var validationError = false
+    private var validDensity: Bool { DecimalParser.double(density, locale: locale).map { $0.finitePositive && $0 < 100_000 } ?? false }
 
     var body: some View {
         NavigationStack {
             Form {
-                TextField("materials.name", text: $name)
+                LabeledEntry("materials.name", text: $name)
                 HStack {
                     Text("calculator.density")
                     Spacer()
-                    TextField("7850", text: $density).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                    LabeledEntry("7850", text: $density).keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44)
                     Text("kg/m³").foregroundStyle(.secondary)
                 }
-                TextField("materials.note", text: $note, axis: .vertical).lineLimit(3...6)
+                LabeledEntry("materials.note", text: $note, multiline: true).lineLimit(3...6)
+                if !validDensity { InlineIssue(key: "materials.invalid_density") }
+                if name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { InlineIssue(key: "ui.name_required") }
                 Text("materials.density.help").font(.caption).foregroundStyle(.secondary)
             }
             .keyboardDismissSupport()
             .navigationTitle(material == nil ? "materials.add" : "materials.edit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) { Button("common.save") { save() }.disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) }
+                ToolbarItem(placement: .confirmationAction) { Button("common.save") { save() }.disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !validDensity) }
             }
             .onAppear {
                 guard let material else { return }
@@ -317,12 +344,12 @@ private struct MaterialEditorSheet: View {
                 density = AppFormatters.number(material.densityKgPerM3, maximumFractionDigits: 2, locale: locale)
                 note = material.note
             }
-            .alert("materials.invalid_density", isPresented: $validationError) { Button("common.ok", role: .cancel) {} }
+
         }
     }
 
     private func save() {
-        guard let value = DecimalParser.double(density, locale: locale), value.finitePositive, value < 100_000 else { validationError = true; return }
+        guard let value = DecimalParser.double(density, locale: locale), value.finitePositive, value < 100_000 else { return }
         if let material {
             material.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
             material.densityKgPerM3 = value

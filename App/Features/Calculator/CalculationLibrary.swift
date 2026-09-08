@@ -73,6 +73,10 @@ final class CalculationLibrary {
     private(set) var payload = CalculationLibraryPayload()
     private let defaults: UserDefaults
     private let key = "workflow.calculation_library.v1"
+    var latestQuickDraft: DraftState? {
+        guard let key = defaults.string(forKey: "ui.latest_quick_draft") else { return nil }
+        return payload.drafts[key]
+    }
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
@@ -85,6 +89,7 @@ final class CalculationLibrary {
     var exportData: Data? { try? JSONEncoder().encode(payload) }
     func saveDraft(_ state: DraftState, key: String) {
         payload.drafts[key] = state
+        if key.hasPrefix("quick.") { defaults.set(key, forKey: "ui.latest_quick_draft") }
         if payload.drafts.count > 100, let old = payload.drafts.keys.sorted().first(where: { $0 != key }) { payload.drafts.removeValue(forKey: old) }
         persist()
     }

@@ -264,11 +264,11 @@ private struct CompanyProfileForm: View {
     var body: some View {
         Form {
             Section {
-                TextField("company.name", text: $companyName)
-                TextField("company.contact", text: $contactName)
-                TextField("company.email", text: $email).keyboardType(.emailAddress).textInputAutocapitalization(.never)
-                TextField("company.phone", text: $phone).keyboardType(.phonePad)
-                TextField("company.address", text: $address, axis: .vertical).lineLimit(2...5)
+                LabeledEntry("company.name", text: $companyName)
+                LabeledEntry("company.contact", text: $contactName)
+                LabeledEntry("company.email", text: $email).keyboardType(.emailAddress).textInputAutocapitalization(.never)
+                LabeledEntry("company.phone", text: $phone).keyboardType(.phonePad)
+                LabeledEntry("company.address", text: $address, multiline: true).lineLimit(2...5)
             }
             Section("workflow.branding") {
                 if let data = logoData, let image = UIImage(data: data) {

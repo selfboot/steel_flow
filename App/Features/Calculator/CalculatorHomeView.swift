@@ -32,36 +32,28 @@ struct CalculatorHomeView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
 
+                if let draft = library.latestQuickDraft {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("ui.continue_draft").font(.headline)
+                        NavigationLink { CalculatorEditorView(profile: draft.profile, restoredState: draft) } label: {
+                            SavedCalculationRow(record: SavedCalculation(state: draft))
+                        }.buttonStyle(PressableCardStyle()).accessibilityIdentifier("home.continue")
+                    }
+                }
+                if !library.records.filter(\.isFavorite).isEmpty {
+                    librarySection(favorites: true, limit: 3)
+                }
+                Text("ui.new_calculation").font(.headline)
                 LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
                     ForEach(ProfileKind.allCases) { profile in
-                        NavigationLink(value: profile) {
-                            ProfileCard(profile: profile)
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel(Text(profile.localizationKey))
-                        .accessibilityIdentifier("profile.\(profile.rawValue)")
+                        NavigationLink(value: profile) { ProfileCard(profile: profile) }
+                            .buttonStyle(PressableCardStyle())
+                            .accessibilityLabel(Text(profile.localizationKey))
+                            .accessibilityIdentifier("profile.\(profile.rawValue)")
                     }
                 }
+                if !library.records.filter({ !$0.isFavorite }).isEmpty { librarySection(favorites: false, limit: 4) }
 
-                ForEach([true, false], id: \.self) { favorites in
-                    let records = library.records.filter { $0.isFavorite == favorites }
-                    if !records.isEmpty {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text(favorites ? "workflow.favorites" : "calculator.recent").font(.headline)
-                            ForEach(Array(records.prefix(favorites ? 100 : 20))) { record in
-                                NavigationLink {
-                                    CalculatorEditorView(profile: record.state.profile, restoredState: record.state)
-                                } label: {
-                                    SavedCalculationRow(record: record)
-                                }
-                                .contextMenu {
-                                    Button("workflow.toggle_favorite", systemImage: "star") { library.toggleFavorite(record.id) }
-                                    Button("common.delete", role: .destructive) { library.remove(record.id) }
-                                }
-                            }
-                        }
-                    }
-                }
                 if library.records.isEmpty && !recentItems.isEmpty {
                     Text("calculator.recent").font(.headline)
                     ForEach(recentItems.prefix(5)) { item in
@@ -80,6 +72,20 @@ struct CalculatorHomeView: View {
         .navigationTitle("tab.calculate")
         .navigationDestination(for: ProfileKind.self) { CalculatorEditorView(profile: $0) }
     }
+    private func librarySection(favorites: Bool, limit: Int) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text(favorites ? "workflow.favorites" : "calculator.recent").font(.headline)
+                Spacer()
+                NavigationLink("ui.view_all") { CalculationLibraryList(favorites: favorites) }.frame(minHeight: 44)
+            }
+            ForEach(Array(library.records.filter { $0.isFavorite == favorites }.prefix(limit))) { record in
+                NavigationLink { CalculatorEditorView(profile: record.state.profile, restoredState: record.state) } label: { SavedCalculationRow(record: record) }
+                    .buttonStyle(PressableCardStyle())
+            }
+        }
+    }
+
 }
 
 private struct ProfileCard: View {
@@ -143,18 +149,60 @@ private struct RecentCalculationRow: View {
 private struct SavedCalculationRow: View {
     let record: SavedCalculation
     @Environment(\.locale) private var locale
-    private var title: String { record.state.description.isEmpty ? AppLocalization.text("profile." + record.state.profile.rawValue, locale: locale) : record.state.description }
+    @AppStorage("app.unitSystem") private var unitRaw = UnitSystem.metric.rawValue
+    @Query private var materials: [MaterialEntity]
+    private var draft: CalculatorDraft { record.state.makeDraft(locale: locale) }
     private var subtitle: String {
-        let geometry = record.state.profile.dimensionFields.compactMap { record.state.dimensions[$0.rawValue] }.joined(separator: " × ") + " " + (record.state.profile == .customArea ? record.state.areaUnit.rawValue : record.state.geometryUnit.rawValue)
-        let length = record.state.length + " " + record.state.lengthUnit.rawValue + " × " + String(record.state.quantity)
-        return geometry + " · " + length
+        let d = draft
+        let geometry = d.profile.dimensionFields.compactMap { d.dimensionTexts[$0] }.joined(separator: " × ")
+        return geometry + " " + (d.profile == .customArea ? d.areaUnit.rawValue : d.geometryUnit.rawValue) + " · " + d.lengthText + " " + d.lengthUnit.rawValue + " × " + (d.quantity == Int.min ? "—" : String(d.quantity))
     }
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title).font(.headline)
-            Text(subtitle).font(.caption)
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(record.state.description.isEmpty ? AppLocalization.text("profile." + record.state.profile.rawValue, locale: locale) : record.state.description).font(.headline)
+                Spacer()
+                if record.isFavorite { Image(systemName: "star.fill").foregroundStyle(.orange).accessibilityLabel("workflow.favorites") }
+            }
+            Text(subtitle).font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+            let name = materials.first { $0.id == record.state.materialID }?.name ?? record.state.materialID
+            Text(MaterialCatalog.localizedName(materialID: record.state.materialID, fallback: name, locale: locale)).font(.caption).foregroundStyle(.secondary)
+            if case .success(let result) = draft.result(locale: locale) {
+                Text(AppFormatters.mass(result.totalMassKg, system: UnitSystem(rawValue: unitRaw) ?? .metric, locale: locale)).font(.subheadline.bold()).monospacedDigit()
+            }
+        }.foregroundStyle(.primary).frame(maxWidth: .infinity, alignment: .leading).padding(12)
+            .background(.background, in: RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+private struct CalculationLibraryList: View {
+    let favorites: Bool
+    @State private var library = CalculationLibrary.shared
+    @State private var search = ""
+    @Environment(\.locale) private var locale
+    @Query private var materials: [MaterialEntity]
+    private var visible: [SavedCalculation] {
+        library.records.filter { record in
+            let name = materials.first(where: { $0.id == record.state.materialID })?.name ?? record.state.materialID
+            let terms = [record.state.description, record.state.grade,
+                         AppLocalization.text("profile." + record.state.profile.rawValue, locale: locale),
+                         MaterialCatalog.localizedName(materialID: record.state.materialID, fallback: name, locale: locale)]
+            return (!favorites || record.isFavorite) && (search.isEmpty || terms.contains { $0.localizedStandardContains(search) })
         }
-        .frame(maxWidth: .infinity, alignment: .leading).padding(12)
-        .background(.background, in: RoundedRectangle(cornerRadius: 12))
+    }
+    var body: some View {
+        List {
+            if visible.isEmpty {
+                if search.isEmpty { ContentUnavailableView(favorites ? "ui.favorites_empty" : "ui.recent_empty", systemImage: favorites ? "star" : "clock") }
+                else { ContentUnavailableView.search(text: search); Button("ui.clear_search") { search = "" } }
+            }
+            ForEach(visible) { record in
+                VStack {
+                    NavigationLink { CalculatorEditorView(profile: record.state.profile, restoredState: record.state) } label: { SavedCalculationRow(record: record) }
+                    Button(record.isFavorite ? "ui.unfavorite" : "workflow.favorite", systemImage: record.isFavorite ? "star.slash" : "star") { library.toggleFavorite(record.id) }.frame(minHeight: 44)
+                }
+                .swipeActions { Button("common.delete", role: .destructive) { library.remove(record.id) } }
+            }
+        }.searchable(text: $search).navigationTitle(favorites ? "workflow.favorites" : "calculator.recent")
     }
 }

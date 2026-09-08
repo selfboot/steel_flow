@@ -202,4 +202,43 @@ import PDFKit
         XCTAssertEqual(restored.applicableGeometry, data); XCTAssertEqual(restored.applicableProfile, "squareTube")
     }
 
+    func testInvalidDraftIdentifiesGeometryQuantityAndMoneyWithoutClamping() {
+        let draft = CalculatorDraft(profile: .squareTube)
+        draft.dimensionTexts[.outerSide] = "50"
+        draft.dimensionTexts[.wallThickness] = "25"
+        XCTAssertEqual(draft.firstIssue(locale: locale)?.field, DimensionField.wallThickness.rawValue)
+        draft.dimensionTexts[.wallThickness] = "3"
+        draft.quantity = 1_000_001
+        XCTAssertEqual(draft.firstIssue(locale: locale)?.field, "quantity")
+        XCTAssertEqual(draft.quantity, 1_000_001)
+        draft.quantity = 1; draft.lengthText = ""
+        XCTAssertEqual(draft.firstIssue(locale: locale)?.field, "length")
+        draft.lengthText = "2"; draft.processingFeeText = "-1"
+        XCTAssertEqual(draft.firstIssue(locale: locale)?.field, "fees")
+        draft.processingFeeText = "0"
+        XCTAssertNil(draft.firstIssue(locale: locale))
+    }
+    func testSelectingVisibleItemsPreservesEarlierHiddenSelections() {
+        let a = UUID(), b = UUID(), c = UUID()
+        let first = SelectionRules.addingVisible([a, b], to: [])
+        let second = SelectionRules.addingVisible([b, c], to: first)
+        XCTAssertEqual(second, [a, b, c])
+        XCTAssertEqual(SelectionRules.addingVisible([], to: second), second)
+    }
+    func testQuoteComparisonReportsDeletedAddedAndModifiedLines() throws {
+        let p = project()
+        let removed = item(); p.items.append(removed)
+        let old = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: p))
+        p.items.removeLast(); p.items[0].quantity += 1
+        let added = item(); p.items.append(added)
+        let new = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: p))
+        let changes = QuoteComparison.changes(from: old, to: new)
+        XCTAssertEqual(changes.count, 3)
+        XCTAssertEqual(changes.first(where: { $0.id == removed.id })?.kind, .removed)
+        XCTAssertEqual(changes.first(where: { $0.id == added.id })?.kind, .added)
+        let modified = try XCTUnwrap(changes.first(where: { $0.kind == .modified }))
+        XCTAssertEqual(modified.old?.quantity, 4); XCTAssertEqual(modified.new?.quantity, 5)
+        XCTAssertTrue(QuoteComparison.changes(from: old, to: old).isEmpty)
+    }
+
 }

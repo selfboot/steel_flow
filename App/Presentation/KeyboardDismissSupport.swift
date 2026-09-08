@@ -20,6 +20,8 @@ private struct KeyboardDismissSupport: ViewModifier {
             .onSubmit { KeyboardDismissAction.perform() }
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
+                    Button("ui.previous") { InputNavigation.move(-1) }
+                    Button("ui.next") { InputNavigation.move(1) }
                     Spacer()
                     Button("common.done") { KeyboardDismissAction.perform() }
                 }
@@ -76,7 +78,7 @@ private struct KeyboardOutsideTapObserver: UIViewRepresentable {
         func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
             var touchedView = touch.view
             while let view = touchedView {
-                if view is UITextField || view is UITextView { return false }
+                if view is UITextField || view is UITextView || view is UIToolbar || view is UIInputView { return false }
                 touchedView = view.superview
             }
             return true

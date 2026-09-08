@@ -171,10 +171,27 @@ struct CurrencyChangeSheet: View {
     @Environment(\.locale) private var locale
     let oldCurrency: String
     let newCurrency: String
+    var itemToSave: CalculationItemEntity? = nil
     let apply: (CurrencyChangeMode, Decimal?) -> Void
     @State private var mode = CurrencyChangeMode.clearAmounts
     @State private var rateText = ""
 
+    private var convertedItem: CalculationItemEntity? {
+        guard let itemToSave else { return nil }
+        let copy = itemToSave.copyItem()
+        return PriceBasisConversion.migrate(copy, from: oldCurrency, to: newCurrency, mode: mode, rate: rate) ? copy : nil
+    }
+    private func currencyAmountRow(_ key: String, old: Decimal, new: Decimal?) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(LocalizedStringKey(key)).font(.caption).foregroundStyle(.secondary)
+            Text(amountChange(old: old, new: new)).monospacedDigit()
+        }
+    }
+    private func amountChange(old: Decimal, new: Decimal?) -> String {
+        let oldAmount = old.description.replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".")
+        let newAmount = new.map { $0.description.replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".") + " " + newCurrency } ?? "—"
+        return "\(oldAmount) \(oldCurrency) → \(newAmount)"
+    }
     private var rate: Decimal? {
         guard let value = PricingInputValidator.nonnegative(rateText, locale: locale), value > 0 else { return nil }
         return value
@@ -184,8 +201,16 @@ struct CurrencyChangeSheet: View {
         NavigationStack {
             Form {
                 Section {
-                    LabeledContent("currency_change.from", value: oldCurrency)
-                    LabeledContent("currency_change.to", value: newCurrency)
+                    LabeledContent(itemToSave == nil ? "currency_change.from" : "ui.calculation_currency", value: oldCurrency)
+                    LabeledContent(itemToSave == nil ? "currency_change.to" : "ui.project_currency", value: newCurrency)
+                    if itemToSave != nil { Text("ui.currency_item_only").font(.subheadline) }
+                }
+                if let itemToSave {
+                    Section("workflow.change_preview") {
+                        currencyAmountRow("calculator.unit_price", old: itemToSave.unitPrice, new: convertedItem?.unitPrice)
+                        currencyAmountRow("calculator.line_processing_fee", old: itemToSave.processingFee, new: convertedItem?.processingFee)
+                        currencyAmountRow("calculator.line_other_fee", old: itemToSave.otherFee, new: convertedItem?.otherFee)
+                    }
                 }
                 Section("currency_change.action") {
                     Picker("currency_change.action", selection: $mode) {
@@ -194,24 +219,27 @@ struct CurrencyChangeSheet: View {
                     .pickerStyle(.inline)
                     if mode == .convert {
                         HStack {
-                            Text("currency_change.rate")
+                            Text("1 " + oldCurrency + " =")
                             Spacer()
                             TextField("1", text: $rateText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
                             Text(newCurrency).foregroundStyle(.secondary)
                         }
                     }
-                    Text(mode == .keepAmounts ? "currency_change.keep_warning" : mode == .convert ? "currency_change.convert_help" : "currency_change.clear_help")
+                    Text(itemToSave != nil ? (mode == .clearAmounts ? "ui.currency_clear_item" : mode == .convert ? "ui.currency_convert_item" : "ui.currency_keep_item") : (mode == .keepAmounts ? "currency_change.keep_warning" : mode == .convert ? "currency_change.convert_help" : "currency_change.clear_help"))
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }
             .keyboardDismissSupport()
-            .navigationTitle("currency_change.title")
+            .navigationTitle(itemToSave == nil ? "ui.currency_project_title" : "ui.currency_mismatch")
+            .navigationBarTitleDisplayMode(.inline)
+            .safeAreaInset(edge: .bottom) {
+                    Button(itemToSave == nil ? "common.apply" : mode == .convert ? "ui.convert_save" : mode == .clearAmounts ? "ui.clear_save" : "ui.keep_save") { apply(mode, mode == .convert ? rate : nil); dismiss() }
+                        .disabled(mode == .convert && rate == nil)
+                        .buttonStyle(.borderedProminent).controlSize(.large).padding().frame(maxWidth: .infinity).background(.bar)
+            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("common.apply") { apply(mode, mode == .convert ? rate : nil); dismiss() }
-                        .disabled(mode == .convert && rate == nil)
-                }
+
             }
         }
     }
