@@ -85,12 +85,11 @@ struct ProjectsView: View {
                         }
                     }
                 }
-                .contentMargins(.top, 8, for: .scrollContent)
             }
         }
         .searchable(text: $search, isPresented: $searchPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "workflow.project_search")
         .navigationTitle("tab.projects")
-        .navigationBarTitleDisplayMode(.inline)
+        .modifier(RootTabLayout())
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Menu {

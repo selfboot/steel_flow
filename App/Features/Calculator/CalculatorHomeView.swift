@@ -68,12 +68,14 @@ struct CalculatorHomeView: View {
                 }
 
             }
-            .padding()
+            .padding(.horizontal, 16)
+            .padding(.bottom, 16)
             .frame(maxWidth: horizontalSizeClass == .regular ? 760 : .infinity)
             .frame(maxWidth: .infinity)
         }
         .background(Color(uiColor: .systemGroupedBackground))
         .navigationTitle("tab.calculate")
+        .modifier(RootTabLayout())
         .navigationDestination(for: ProfileKind.self) { CalculatorEditorView(profile: $0) }
     }
     private func librarySection(favorites: Bool, limit: Int) -> some View {

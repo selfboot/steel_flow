@@ -106,6 +106,7 @@ struct SettingsView: View {
         }
         .navigationDestination(isPresented: $showCompany) { CompanyProfileView() }
         .navigationTitle("tab.settings")
+        .modifier(RootTabLayout())
         .task { await purchaseManager.load() }
         .proPaywall(reason: $paywallReason) { if let action = pendingProAction { pendingProAction = nil; action() } }
         .fileExporter(isPresented: $showExporter, document: backupDocument, contentType: .steelFlowBackup, defaultFilename: "SteelFlow-Backup") { result in

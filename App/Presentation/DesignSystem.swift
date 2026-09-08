@@ -12,6 +12,15 @@ enum SteelFlowTheme {
     static let surface = Color(uiColor: .secondarySystemGroupedBackground)
 }
 
+/// Shared navigation and content spacing for the four root tabs.
+struct RootTabLayout: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .navigationBarTitleDisplayMode(.inline)
+            .contentMargins(.top, 8, for: .scrollContent)
+    }
+}
+
 struct PrimaryActionStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
     func makeBody(configuration: Configuration) -> some View {

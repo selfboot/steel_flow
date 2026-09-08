@@ -102,13 +102,14 @@ struct MaterialsView: View {
             }
             }
         }
-        .safeAreaInset(edge: .top) {
+        .safeAreaInset(edge: .top, spacing: 0) {
             Picker("tab.materials", selection: $catalog) { Text("tab.materials").tag(0); Text("price_book.title").tag(1) }
                 .pickerStyle(.segmented).padding(.horizontal).padding(.vertical, 8).background(.bar)
         }
-        .searchable(text: $search, prompt: catalog == 0 ? "ui.material_search" : "workflow.price_search")
+        .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: catalog == 0 ? "ui.material_search" : "workflow.price_search")
         .onChange(of: catalog) { _, _ in search = "" }
         .navigationTitle("tab.materials")
+        .modifier(RootTabLayout())
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
