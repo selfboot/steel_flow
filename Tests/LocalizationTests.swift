@@ -21,16 +21,21 @@ final class LocalizationTests: XCTestCase {
 
     func testCriticalKeysExistInEnglishAndSimplifiedChinese() throws {
         let dynamicKeys =
-            ProfileKind.allCases.map { "profile.\($0.rawValue)" } +
+            ProfileKind.allCases.flatMap { ["profile.\($0.rawValue)", "profile.\($0.rawValue).summary"] } +
             DimensionField.allCases.map { "dimension.\($0.rawValue)" } +
             MaterialCatalog.presets.flatMap { [$0.nameKey, $0.noteKey] }
         let fixedKeys = [
             "tab.calculate", "tab.projects", "tab.materials", "tab.settings",
             "calculator.hero.title", "calculator.result.total_mass", "calculator.save_to_project",
-            "project.create", "project.total", "quote.title", "quote.share_pdf", "quote.share_csv",
+            "calculator.section.preview", "preview.invalid", "preview.scale_note",
+            "preview.equivalent_square_note", "preview.accessibility_label",
+            "project.create", "project.total", "project.delete.confirm.title", "project.delete.confirm.message",
+            "quote.title", "quote.share_pdf", "quote.share_csv",
             "materials.custom", "settings.language", "settings.company_profile", "backup.export",
             "backup.import", "purchase.restore", "disclaimer.title", "error.invalid_pricing",
+            "purchase.paywall.title", "purchase.paywall.buy_format", "purchase.paywall.footer",
             "error.invalid_currency", "error.web_too_thick", "price_book.title", "currency_change.title",
+            "currency.selector.title", "currency.selector.search", "currency.selector.recent", "currency.selector.all",
             "profit_mode.markup", "profit_mode.margin", "price_source.manual", "price_source.history", "price_source.market_reference",
             "common.retry", "data.store_unavailable.title", "data.store_unavailable.message", "data.error.title",
             "delete.confirm.title", "delete.confirm.message", "quote.subtotal",

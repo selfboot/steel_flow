@@ -76,7 +76,7 @@ final class BackupTests: XCTestCase {
         XCTAssertEqual(snapshots.first?.payload, Data("snapshot".utf8))
     }
 
-    func testNewBackupsUseCompleteSchemaVersionThreeAndStillReadLegacyVersionOneGeometry() throws {
+    func testNewBackupsUseSchemaVersionFourAndStillReadLegacyVersionOneGeometry() throws {
         let project = ProjectEntity(name: "Schema")
         project.items.append(CalculationItemEntity(
             profile: .plate,
@@ -95,10 +95,10 @@ final class BackupTests: XCTestCase {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let envelope = try decoder.decode(BackupEnvelope.self, from: document.data)
-        XCTAssertEqual(envelope.schemaVersion, 3)
+        XCTAssertEqual(envelope.schemaVersion, 4)
 
         var versionOneText = String(decoding: document.data, as: UTF8.self)
-            .replacingOccurrences(of: "\"schemaVersion\":3", with: "\"schemaVersion\":1")
+            .replacingOccurrences(of: "\"schemaVersion\":4", with: "\"schemaVersion\":1")
             .replacingOccurrences(
                 of: "\"values\":{\"thickness\":10,\"width\":100}",
                 with: "\"values\":[\"width\",100,\"thickness\",10]"

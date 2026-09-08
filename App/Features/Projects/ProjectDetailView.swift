@@ -6,17 +6,23 @@ struct ProjectDetailView: View {
     @Environment(\.locale) private var locale
     @Bindable var project: ProjectEntity
     @State private var showEdit = false
+    @State private var deletedCopies: [CalculationItemEntity] = []
+    @State private var bulkUndo: [ItemPricingState] = []
+    @State private var showHistory = false
+    @State private var pendingDuplicate: CalculationItemEntity?
+    @State private var pendingProAction: (() -> Void)?
     @State private var showQuote = false
     @State private var showBulkPricing = false
     @State private var pendingDeleteItems: [CalculationItemEntity] = []
     @State private var showDeleteConfirmation = false
-    @State private var showProLimit = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
 
     private var sortedItems: [CalculationItemEntity] { project.items.sorted { $0.sortIndex < $1.sortIndex } }
     private var summary: ProjectSummary { ProjectCalculator.summarize(project) }
 
     var body: some View {
+        let summary = self.summary
         List {
             Section {
                 LabeledContent("project.number", value: project.projectNumber)
@@ -29,21 +35,33 @@ struct ProjectDetailView: View {
                     Text("project.items.empty").foregroundStyle(.secondary)
                 } else {
                     ForEach(sortedItems) { item in
-                        NavigationLink { ProjectItemDetailView(item: item, currencyCode: project.currencyCode) } label: {
-                            ProjectItemRow(item: item, currencyCode: project.currencyCode)
+                        NavigationLink { ProjectItemDetailView(item: item, project: project) } label: {
+                            ProjectItemRow(item: item, currencyCode: project.currencyCode, unitSystem: project.unitSystem)
+                        }
+                        .swipeActions(edge: .leading) {
+                            Button("workflow.copy_item", systemImage: "plus.square.on.square") { duplicateItem(item) }.tint(.blue)
                         }
                     }
                     .onDelete(perform: requestDeleteItems)
                     .onMove(perform: moveItems)
                 }
-                NavigationLink {
-                    ProfilePickerForProject(project: project)
-                } label: { Label("project.add_item", systemImage: "plus.circle") }
+                if purchaseManager.isPro || project.items.count < ProPolicy.freeItemsPerProjectLimit {
+                    NavigationLink {
+                        ProfilePickerForProject(project: project)
+                    } label: { Label("project.add_item", systemImage: "plus.circle") }
+                } else {
+                    Button { paywallReason = .items } label: {
+                        Label("project.add_item", systemImage: "lock.fill")
+                    }
+                }
             }
 
+            if !deletedCopies.isEmpty || !bulkUndo.isEmpty {
+                Section { Button("workflow.undo", systemImage: "arrow.uturn.backward") { undoLastChange() } }
+            }
             Section("project.summary") {
-                ProjectSummaryRow("calculator.result.total_mass", value: "\(AppFormatters.number(summary.netMassKg, maximumFractionDigits: 2, locale: locale)) kg")
-                ProjectSummaryRow("calculator.result.with_waste", value: "\(AppFormatters.number(summary.adjustedMassKg, maximumFractionDigits: 2, locale: locale)) kg")
+                ProjectSummaryRow("calculator.result.total_mass", value: AppFormatters.mass(summary.netMassKg, system: project.unitSystem, locale: locale))
+                ProjectSummaryRow("calculator.result.with_waste", value: AppFormatters.mass(summary.adjustedMassKg, system: project.unitSystem, locale: locale))
                 ProjectSummaryRow("project.material_subtotal", value: money(summary.pricing.materialSubtotal))
                 ProjectSummaryRow("project.fees", value: money(summary.pricing.fees))
                 ProjectSummaryRow(project.profitMode == .markup ? "project.markup" : "project.margin", value: money(summary.pricing.profit))
@@ -75,26 +93,37 @@ struct ProjectDetailView: View {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
                     Button("common.edit") { showEdit = true }
-                    Button("project.bulk_pricing") {
-                        if purchaseManager.isPro { showBulkPricing = true } else { showProLimit = true }
+                    Button("workflow.quote_history", systemImage: "clock") { showHistory = true }
+                    Button("workflow.save_template", systemImage: "doc.badge.plus") {
+                        if purchaseManager.isPro { saveTemplate() }
+                        else { pendingProAction = { saveTemplate() }; paywallReason = .duplicate }
                     }
-                } label: { Image(systemName: "ellipsis.circle") }
+                    Button("project.bulk_pricing") {
+                        if purchaseManager.isPro { showBulkPricing = true } else { pendingProAction = { showBulkPricing = true }; paywallReason = .bulkPricing }
+                    }
+                } label: { Image(systemName: "ellipsis.circle") }.accessibilityIdentifier("project.menu")
             }
         }
         .sheet(isPresented: $showEdit) { ProjectSettingsSheet(project: project) }
         .sheet(isPresented: $showQuote) { QuotePreviewView(project: project) }
-        .sheet(isPresented: $showBulkPricing) { BulkPricingSheet(project: project) }
+        .sheet(isPresented: $showHistory) { QuoteHistoryView(project: project) }
+        .sheet(isPresented: $showBulkPricing) { BulkPricingSheet(project: project) { states in bulkUndo = states; deletedCopies = [] } }
+        .proPaywall(reason: $paywallReason) {
+            if let item = pendingDuplicate { pendingDuplicate = nil; duplicateItem(item) }
+            else if let action = pendingProAction { pendingProAction = nil; action() }
+        }
         .alert("delete.confirm.title", isPresented: $showDeleteConfirmation) {
             Button("common.delete", role: .destructive) { confirmDeleteItems() }
             Button("common.cancel", role: .cancel) { pendingDeleteItems = [] }
         } message: {
             Text("delete.confirm.message")
         }
-        .alert("purchase.limit.title", isPresented: $showProLimit) {
-            Button("common.ok", role: .cancel) {}
-        } message: {
-            Text("purchase.limit.bulk_pricing")
-        }
+    }
+
+    private func saveTemplate() {
+        let copy = ProjectCloner.copy(project, name: project.name, clearPrices: true)
+        copy.isTemplate = true; copy.customerName = ""; copy.customerContact = ""
+        modelContext.insert(copy); _ = PersistenceErrorCenter.shared.save(modelContext)
     }
 
     private func money(_ value: Decimal) -> String { AppFormatters.decimal(value, currencyCode: project.currencyCode, locale: locale) }
@@ -105,10 +134,25 @@ struct ProjectDetailView: View {
     }
 
     private func confirmDeleteItems() {
-        for item in pendingDeleteItems { modelContext.delete(item) }
+        deletedCopies = pendingDeleteItems.map { $0.copyItem() }; bulkUndo = []
+        for item in pendingDeleteItems { project.items.removeAll { $0.id == item.id }; modelContext.delete(item) }
         project.updatedAt = .now
         _ = PersistenceErrorCenter.shared.save(modelContext)
         pendingDeleteItems = []
+    }
+
+    private func duplicateItem(_ item: CalculationItemEntity) {
+        guard purchaseManager.isPro || project.items.count < ProPolicy.freeItemsPerProjectLimit else { pendingDuplicate = item; paywallReason = .items; return }
+        let copy = item.copyItem(sortIndex: (project.items.map(\.sortIndex).max() ?? -1) + 1)
+        project.items.append(copy); modelContext.insert(copy); project.updatedAt = .now
+        _ = PersistenceErrorCenter.shared.save(modelContext)
+    }
+
+    private func undoLastChange() {
+        for copy in deletedCopies { project.items.append(copy); modelContext.insert(copy) }
+        for state in bulkUndo { if let item = project.items.first(where: { $0.id == state.id }) { state.restore(item) } }
+        project.updatedAt = .now
+        if PersistenceErrorCenter.shared.save(modelContext) { deletedCopies = []; bulkUndo = [] }
     }
 
     private func moveItems(from source: IndexSet, to destination: Int) {
@@ -155,6 +199,7 @@ private struct ProjectSummaryRow: View {
 private struct ProjectItemRow: View {
     let item: CalculationItemEntity
     let currencyCode: String
+    var unitSystem: UnitSystem = .metric
     @Environment(\.locale) private var locale
 
     var body: some View {
@@ -172,7 +217,7 @@ private struct ProjectItemRow: View {
             if item.isPricingValid, let result = try? item.calculation() {
                 let subtotal = PricingCalculator.lineSubtotal(unitPrice: item.unitPrice, basis: item.priceBasis, result: result, lengthMeters: item.lengthUnit.toMeters(item.lengthValue), quantity: item.quantity, currencyCode: currencyCode)
                 VStack(alignment: .trailing) {
-                    Text("\(AppFormatters.number(result.totalMassKg, maximumFractionDigits: 2, locale: locale)) kg").font(.caption.monospacedDigit())
+                    Text(AppFormatters.mass(result.totalMassKg, system: unitSystem, locale: locale)).font(.caption.monospacedDigit())
                     Text(AppFormatters.decimal(subtotal, currencyCode: currencyCode, locale: locale)).font(.caption2).foregroundStyle(.secondary)
                 }
                 .fixedSize(horizontal: true, vertical: false)
@@ -227,11 +272,13 @@ private struct ProjectItemDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     let item: CalculationItemEntity
-    let currencyCode: String
+    let project: ProjectEntity
+    private var currencyCode: String { project.currencyCode }
     @Environment(\.locale) private var locale
     @Query(sort: \MaterialEntity.createdAt) private var materials: [MaterialEntity]
     @Query(sort: \PriceBookEntryEntity.effectiveAt, order: .reverse) private var priceBook: [PriceBookEntryEntity]
     @State private var selectedPriceEntryID: UUID?
+    @State private var priceNeedsReview = false
     @State private var dimensionTexts: [DimensionField: String] = [:]
     @State private var geometryUnit = LengthUnit.millimeter
     @State private var areaUnit = AreaUnit.squareMillimeter
@@ -255,7 +302,7 @@ private struct ProjectItemDetailView: View {
     @State private var internalNote = ""
 
     private var availablePriceEntries: [PriceBookEntryEntity] {
-        priceBook.filter { $0.currencyCode == currencyCode && ($0.materialID.isEmpty || $0.materialID == selectedMaterialID) }
+        priceBook.filter { $0.currencyCode == currencyCode && ($0.materialID.isEmpty || $0.materialID == selectedMaterialID) && PriceApplicability.matches(profile: item.profile, geometry: parsedGeometry, entryProfile: $0.applicableProfile, entryGeometry: $0.applicableGeometry, lengthMeters: parsedLength.map { lengthUnit.toMeters($0) }, entryLengthMeters: $0.applicableLengthMeters) }
     }
     private var parsedDensity: Double? { DecimalParser.double(densityText, locale: locale) }
     private var parsedLength: Double? { DecimalParser.double(lengthText, locale: locale) }
@@ -270,6 +317,16 @@ private struct ProjectItemDetailView: View {
             values[field] = value
         }
         return GeometryInput(values: values, lengthUnit: geometryUnit, areaUnit: areaUnit)
+    }
+    private var previewInput: ProfilePreviewInput? {
+        guard let geometry = parsedGeometry, let length = parsedLength else { return nil }
+        return ProfilePreviewInput.make(
+            profile: item.profile,
+            geometry: geometry,
+            lengthValue: length,
+            lengthUnit: lengthUnit,
+            locale: locale
+        )
     }
     private var calculation: Result<CalculationResult, CalculationError>? {
         guard let geometry = parsedGeometry, let density = parsedDensity, let length = parsedLength, let waste = parsedWaste else { return nil }
@@ -319,6 +376,14 @@ private struct ProjectItemDetailView: View {
                     }
                 }
             }
+            Section("calculator.section.preview") {
+                if let previewInput {
+                    ProfileSection3DPreview(input: previewInput)
+                } else {
+                    Label("preview.invalid", systemImage: "cube")
+                        .foregroundStyle(.secondary)
+                }
+            }
             Section("calculator.section.material") {
                 Picker("calculator.material", selection: $selectedMaterialID) {
                     if !materials.contains(where: { $0.id == item.materialID }) {
@@ -331,6 +396,7 @@ private struct ProjectItemDetailView: View {
                 .onChange(of: selectedMaterialID) { oldID, id in
                     guard !oldID.isEmpty else { return }
                     guard let material = materials.first(where: { $0.id == id }) else { return }
+                    if unitPriceText != "0" || !priceSourceName.isEmpty { priceNeedsReview = true }
                     densityText = AppFormatters.number(material.densityKgPerM3, maximumFractionDigits: 3, locale: locale)
                 }
                 HStack {
@@ -341,18 +407,34 @@ private struct ProjectItemDetailView: View {
                 }
             }
             Section("calculator.section.pricing") {
-                HStack {
-                    Text("calculator.length")
-                    Spacer()
-                    TextField("0", text: $lengthText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                    Picker("calculator.length_unit", selection: lengthUnitBinding) {
-                        ForEach(LengthUnit.allCases) { Text($0.rawValue).tag($0) }
-                    }.labelsHidden().frame(width: 78)
+                Text("workflow.pricing_rules").font(.caption).foregroundStyle(.secondary)
+                if priceNeedsReview {
+                    Label("workflow.price_review", systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
+                    Button("workflow.confirm_price") { priceNeedsReview = false }
+                    Button("workflow.clear_price") {
+                        unitPriceText = "0"; priceSource = .manual; priceSourceName = ""; priceRegion = ""; materialGrade = ""; priceIncludesTax = false; priceNeedsReview = false
+                    }
                 }
-                Stepper(value: $quantity, in: 1...1_000_000) { LabeledContent("calculator.quantity", value: "\(quantity)") }
+                AdaptiveFormRow("calculator.length") {
+                    LengthValueInput(text: Binding(get: { lengthText }, set: {
+                        if $0 != lengthText && priceBasis == .perPiece && priceSource == .history && unitPriceText != "0" { priceNeedsReview = true }
+                        lengthText = $0
+                    }))
+                }
+                Picker("calculator.length_unit", selection: lengthUnitBinding) {
+                    ForEach(LengthUnit.allCases) { Text($0.rawValue).tag($0) }
+                }
+                .accessibilityIdentifier("length.unit")
+                AdaptiveFormRow("calculator.quantity") {
+                    QuantityValueInput(value: $quantity, range: 1...1_000_000)
+                }
                 HStack { Text("calculator.waste"); Spacer(); TextField("0", text: $wasteText).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text("%") }
                 Text("calculator.waste_pricing_help").font(.caption).foregroundStyle(.secondary)
-                Picker("calculator.price_basis", selection: $priceBasis) {
+                Picker("calculator.price_basis", selection: Binding(get: { priceBasis }, set: { newBasis in
+                    if let price = parsedUnitPrice, let converted = PriceBasisConversion.convert(price, from: priceBasis, to: newBasis) { unitPriceText = converted.description.replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".") }
+                    else if priceBasis != newBasis && unitPriceText != "0" { priceNeedsReview = true }
+                    priceBasis = newBasis
+                })) {
                     ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0) }
                 }
                 HStack { Text("calculator.unit_price"); Spacer(); TextField("0", text: $unitPriceText).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text(currencyCode).foregroundStyle(.secondary) }
@@ -368,6 +450,7 @@ private struct ProjectItemDetailView: View {
                     }
                     .onChange(of: selectedPriceEntryID) { _, id in
                         guard let id, let entry = priceBook.first(where: { $0.id == id }) else { return }
+                        priceNeedsReview = false
                         unitPriceText = entry.unitPrice.description
                         priceBasis = entry.priceBasis
                         priceSourceName = entry.supplier.isEmpty ? entry.name : entry.supplier
@@ -389,8 +472,8 @@ private struct ProjectItemDetailView: View {
             }
             if let result {
                 Section("calculator.section.result") {
-                    LabeledContent("calculator.result.unit_mass", value: "\(AppFormatters.number(result.unitMassKg, maximumFractionDigits: 3, locale: locale)) kg")
-                    LabeledContent("calculator.result.total_mass", value: "\(AppFormatters.number(result.totalMassKg, maximumFractionDigits: 3, locale: locale)) kg")
+                    LabeledContent("calculator.result.unit_mass", value: AppFormatters.mass(result.unitMassKg, system: project.unitSystem, locale: locale))
+                    LabeledContent("calculator.result.total_mass", value: AppFormatters.mass(result.totalMassKg, system: project.unitSystem, locale: locale))
                     if let unitPrice = parsedUnitPrice, let length = parsedLength {
                         let subtotal = PricingCalculator.lineSubtotal(unitPrice: unitPrice, basis: priceBasis, result: result, lengthMeters: lengthUnit.toMeters(length), quantity: quantity, currencyCode: currencyCode)
                         LabeledContent("calculator.result.material_subtotal", value: AppFormatters.decimal(subtotal, currencyCode: currencyCode, locale: locale))
@@ -404,10 +487,11 @@ private struct ProjectItemDetailView: View {
                 Section { Label("calculator.invalid_input", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
             }
         }
+        .keyboardDismissSupport()
         .navigationTitle(item.profile.localizationKey)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
-            ToolbarItem(placement: .confirmationAction) { Button("common.done") { save() }.disabled(!canSave) }
+            ToolbarItem(placement: .confirmationAction) { Button("common.done") { save() }.disabled(!canSave || priceNeedsReview) }
         }
         .onAppear(perform: load)
     }
@@ -419,7 +503,7 @@ private struct ProjectItemDetailView: View {
                 let oldUnit = lengthUnit
                 guard newUnit != oldUnit else { return }
                 if let value = parsedLength {
-                    lengthText = AppFormatters.number(newUnit.fromMeters(oldUnit.toMeters(value)), maximumFractionDigits: 6, locale: locale)
+                    lengthText = AppFormatters.number(newUnit.fromMeters(oldUnit.toMeters(value)), maximumFractionDigits: 12, locale: locale)
                 }
                 lengthUnit = newUnit
             }
@@ -427,7 +511,10 @@ private struct ProjectItemDetailView: View {
     }
 
     private func dimensionBinding(_ field: DimensionField) -> Binding<String> {
-        Binding(get: { dimensionTexts[field] ?? "" }, set: { dimensionTexts[field] = $0 })
+        Binding(get: { dimensionTexts[field] ?? "" }, set: {
+            if priceSource == .history && unitPriceText != "0" { priceNeedsReview = true }
+            dimensionTexts[field] = $0
+        })
     }
 
     private var geometryUnitBinding: Binding<LengthUnit> {
@@ -438,7 +525,7 @@ private struct ProjectItemDetailView: View {
                 var converted = dimensionTexts
                 for field in item.profile.dimensionFields where field != .customArea {
                     guard let text = dimensionTexts[field], let value = DecimalParser.double(text, locale: locale) else { return }
-                    converted[field] = AppFormatters.number(newUnit.fromMeters(geometryUnit.toMeters(value)), maximumFractionDigits: 6, locale: locale)
+                    converted[field] = AppFormatters.number(newUnit.fromMeters(geometryUnit.toMeters(value)), maximumFractionDigits: 12, locale: locale)
                 }
                 dimensionTexts = converted
                 geometryUnit = newUnit
@@ -455,7 +542,7 @@ private struct ProjectItemDetailView: View {
                       let value = DecimalParser.double(text, locale: locale) else { return }
                 dimensionTexts[.customArea] = AppFormatters.number(
                     newUnit.fromSquareMeters(areaUnit.toSquareMeters(value)),
-                    maximumFractionDigits: 6,
+                    maximumFractionDigits: 12,
                     locale: locale
                 )
                 areaUnit = newUnit
@@ -465,12 +552,12 @@ private struct ProjectItemDetailView: View {
 
     private func load() {
         let geometry = item.geometry
-        dimensionTexts = geometry.values.mapValues { AppFormatters.number($0, maximumFractionDigits: 6, locale: locale) }
+        dimensionTexts = geometry.values.mapValues { AppFormatters.number($0, maximumFractionDigits: 12, locale: locale) }
         geometryUnit = geometry.lengthUnit
         areaUnit = geometry.areaUnit
         selectedMaterialID = item.materialID
         densityText = AppFormatters.number(item.densityKgPerM3, maximumFractionDigits: 3, locale: locale)
-        lengthText = AppFormatters.number(item.lengthValue, maximumFractionDigits: 6, locale: locale)
+        lengthText = AppFormatters.number(item.lengthValue, maximumFractionDigits: 12, locale: locale)
         lengthUnit = item.lengthUnit
         quantity = item.quantity
         wasteText = AppFormatters.number(item.wastePercent, maximumFractionDigits: 3, locale: locale)
@@ -516,57 +603,6 @@ private struct ProjectItemDetailView: View {
         item.descriptionText = descriptionText
         item.internalNote = internalNote
         item.updatedAt = .now
-        if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
-    }
-}
-
-private struct BulkPricingSheet: View {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext
-    @Environment(\.locale) private var locale
-    @Bindable var project: ProjectEntity
-    @State private var updateWaste = true
-    @State private var waste = "0"
-    @State private var updatePrice = false
-    @State private var price = "0"
-    @State private var basis = PriceBasis.perKilogram
-
-    private var validWaste: Double? {
-        guard let value = DecimalParser.double(waste, locale: locale), value >= 0, value <= 1_000 else { return nil }
-        return value
-    }
-    private var validPrice: Decimal? { PricingInputValidator.nonnegative(price, locale: locale) }
-    private var canApply: Bool { (!updateWaste || validWaste != nil) && (!updatePrice || validPrice != nil) && (updateWaste || updatePrice) }
-
-    var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    Toggle("project.bulk.waste", isOn: $updateWaste)
-                    if updateWaste { HStack { Text("calculator.waste"); Spacer(); TextField("0", text: $waste).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text("%") } }
-                    Toggle("project.bulk.price", isOn: $updatePrice)
-                    if updatePrice {
-                        Picker("calculator.price_basis", selection: $basis) { ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0) } }
-                        HStack { Text("calculator.unit_price"); Spacer(); TextField("0", text: $price).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text(project.currencyCode) }
-                    }
-                }
-                Section { Text("project.bulk.help").font(.caption).foregroundStyle(.secondary) }
-                if !canApply { Section { Label("error.invalid_pricing", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) } }
-            }
-            .navigationTitle("project.bulk_pricing")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) { Button("project.bulk.apply") { apply() }.disabled(!canApply) }
-            }
-        }
-    }
-
-    private func apply() {
-        for item in project.items {
-            if updateWaste, let value = validWaste { item.wastePercent = value }
-            if updatePrice, let value = validPrice { item.unitPriceText = value.description; item.priceBasisRaw = basis.rawValue; item.priceSource = .manual; item.priceEffectiveAt = .now }
-            item.updatedAt = .now
-        }
         project.updatedAt = .now
         if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
     }

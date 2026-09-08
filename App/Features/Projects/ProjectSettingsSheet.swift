@@ -6,6 +6,10 @@ struct ProjectSettingsSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.locale) private var locale
     let project: ProjectEntity
+    @State private var showCustomers = false
+    @State private var customerContact = ""
+    @State private var showMass = true
+    @State private var showUnitPrice = false
     @State private var name = ""
     @State private var projectNumber = ""
     @State private var customerName = ""
@@ -21,7 +25,7 @@ struct ProjectSettingsSheet: View {
     @State private var profitMode = ProfitMode.markup
     @State private var showCurrencyChange = false
     @State private var showCurrencyError = false
-    @State private var showProTerms = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
 
     private var normalizedCurrency: String? { CurrencyRules.normalizedCode(currencyDraft) }
@@ -40,6 +44,8 @@ struct ProjectSettingsSheet: View {
                     TextField("project.name", text: $name)
                     TextField("project.number", text: $projectNumber)
                     TextField("project.customer", text: $customerName)
+                    Button("workflow.choose_customer") { showCustomers = true }
+                    TextField("workflow.customer_contact", text: $customerContact, axis: .vertical)
                     Picker("project.quote_language", selection: $quoteLanguage) {
                         Text("language.english").tag("en")
                         Text("language.chinese").tag("zh-Hans")
@@ -47,11 +53,15 @@ struct ProjectSettingsSheet: View {
                     Picker("settings.unit_system", selection: $unitSystem) {
                         ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0) }
                     }
-                    TextField("settings.currency", text: $currencyDraft).textInputAutocapitalization(.characters)
+                    CurrencyPickerRow(selection: $currencyDraft)
                     Picker("settings.paper", selection: $paperSize) {
                         Text("paper.a4").tag(PaperSize.a4)
                         Text("paper.letter").tag(PaperSize.letter)
                     }
+                }
+                Section("workflow.quote_columns") {
+                    Toggle("workflow.show_mass", isOn: $showMass)
+                    Toggle("workflow.show_sales_price", isOn: $showUnitPrice)
                 }
                 Section("project.pricing") {
                     Picker("project.profit_mode", selection: $profitMode) { ForEach(ProfitMode.allCases) { Text($0.localizationKey).tag($0) } }
@@ -64,13 +74,14 @@ struct ProjectSettingsSheet: View {
                     if purchaseManager.isPro {
                         TextField("project.terms", text: $terms, axis: .vertical).lineLimit(3...8)
                     } else {
-                        Button { showProTerms = true } label: {
+                        Button { paywallReason = .terms } label: {
                             Label("purchase.limit.terms", systemImage: "lock.fill")
                         }
                     }
                     TextField("project.notes", text: $notes, axis: .vertical).lineLimit(3...8)
                 }
             }
+            .keyboardDismissSupport()
             .navigationTitle("project.edit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
@@ -82,6 +93,8 @@ struct ProjectSettingsSheet: View {
                 }
             }
             .onAppear {
+                customerContact = project.customerContact
+                showMass = project.showQuoteMass; showUnitPrice = project.showQuoteUnitPrice
                 name = project.name
                 projectNumber = project.projectNumber
                 customerName = project.customerName
@@ -95,6 +108,12 @@ struct ProjectSettingsSheet: View {
                 taxDraft = project.taxPercentText
                 profitDraft = project.markupPercentText
                 profitMode = project.profitMode
+            }
+            .sheet(isPresented: $showCustomers) {
+                CustomerPickerView { customer in
+                    customerName = customer.name
+                    customerContact = [customer.phone, customer.email, customer.address].filter { !$0.isEmpty }.joined(separator: " · ")
+                }
             }
             .sheet(isPresented: $showCurrencyChange) {
                 if let newCurrency = normalizedCurrency {
@@ -112,11 +131,7 @@ struct ProjectSettingsSheet: View {
             } message: {
                 Text("currency_change.failed.message")
             }
-            .alert("purchase.limit.title", isPresented: $showProTerms) {
-                Button("common.ok", role: .cancel) {}
-            } message: {
-                Text("purchase.limit.terms")
-            }
+            .proPaywall(reason: $paywallReason)
         }
     }
 
@@ -128,6 +143,8 @@ struct ProjectSettingsSheet: View {
 
     private func finishSave() {
         guard let tax = validTax, let profit = validProfit else { return }
+        project.customerContact = customerContact
+        project.showQuoteMass = showMass; project.showQuoteUnitPrice = showUnitPrice
         project.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
         project.projectNumber = projectNumber.trimmingCharacters(in: .whitespacesAndNewlines)
         project.customerName = customerName.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -149,7 +166,7 @@ struct ProjectSettingsSheet: View {
     }
 }
 
-private struct CurrencyChangeSheet: View {
+struct CurrencyChangeSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.locale) private var locale
     let oldCurrency: String
@@ -187,6 +204,7 @@ private struct CurrencyChangeSheet: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }
+            .keyboardDismissSupport()
             .navigationTitle("currency_change.title")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }

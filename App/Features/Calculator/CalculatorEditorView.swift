@@ -4,6 +4,11 @@ import SwiftData
 struct CalculatorEditorView: View {
     let profile: ProfileKind
     let destinationProject: ProjectEntity?
+    let restoredState: DraftState?
+    @State private var library = CalculationLibrary.shared
+    @State private var loaded = false
+    @State private var draftCurrency: String?
+    @AppStorage("workflow.show_pricing") private var showPricing = false
     @Environment(\.modelContext) private var modelContext
     @Environment(\.locale) private var locale
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -14,13 +19,17 @@ struct CalculatorEditorView: View {
     @AppStorage("app.currency") private var defaultCurrency = "USD"
     @State private var draft: CalculatorDraft
     @State private var showSaveSheet = false
+    @State private var pendingCurrencyProject: ProjectEntity?
+    @State private var pendingSaveProject: ProjectEntity?
     @State private var showDetails = false
     @State private var savedConfirmation = false
-    @State private var showProLimit = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
     @State private var selectedPriceEntryID: UUID?
+    @State private var priceSaved = false
 
-    init(profile: ProfileKind, destinationProject: ProjectEntity? = nil, marketingPreset: Bool = false) {
+    init(profile: ProfileKind, destinationProject: ProjectEntity? = nil, marketingPreset: Bool = false, restoredState: DraftState? = nil) {
+        self.restoredState = restoredState
         self.profile = profile
         self.destinationProject = destinationProject
         let draft = CalculatorDraft(profile: profile)
@@ -38,17 +47,45 @@ struct CalculatorEditorView: View {
         guard case .success(let value) = calculation else { return nil }
         return value
     }
-    private var currencyCode: String { destinationProject?.currencyCode ?? defaultCurrency }
+    private var currencyCode: String { draftCurrency ?? destinationProject?.currencyCode ?? defaultCurrency }
     private var pricing: PricingResult? {
         guard let result else { return nil }
         return draft.pricing(locale: locale, result: result, currencyCode: currencyCode)
     }
     private var availablePriceEntries: [PriceBookEntryEntity] {
-        priceBook.filter { $0.currencyCode == currencyCode && ($0.materialID.isEmpty || $0.materialID == draft.selectedMaterialID) }
+        priceBook.filter { $0.currencyCode == currencyCode && ($0.materialID.isEmpty || $0.materialID == draft.selectedMaterialID) && PriceApplicability.matches(profile: profile, geometry: draft.geometry(locale: locale), entryProfile: $0.applicableProfile, entryGeometry: $0.applicableGeometry, lengthMeters: DecimalParser.double(draft.lengthText, locale: locale).map { draft.lengthUnit.toMeters($0) }, entryLengthMeters: $0.applicableLengthMeters) }
     }
+    private var previewInput: ProfilePreviewInput? {
+        guard let geometry = draft.geometry(locale: locale),
+              let length = DecimalParser.double(draft.lengthText, locale: locale) else { return nil }
+        return ProfilePreviewInput.make(
+            profile: profile,
+            geometry: geometry,
+            lengthValue: length,
+            lengthUnit: draft.lengthUnit,
+            locale: locale
+        )
+    }
+
+    private var storedState: DraftState { DraftState(draft, currency: currencyCode, locale: locale) }
+    private var draftKey: String { (destinationProject?.id.uuidString ?? "quick") + "." + profile.rawValue }
 
     var body: some View {
         Form {
+            Section { Toggle("workflow.full_pricing", isOn: $showPricing).accessibilityIdentifier("workflow.pricing_toggle") }
+            if let result {
+                Section("calculator.section.quick_result") {
+                    LazyVGrid(columns: dynamicTypeSize.isAccessibilitySize ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                        ResultMetric("calculator.result.unit_mass", value: mass(result.unitMassKg))
+                        ResultMetric("calculator.result.total_mass", value: mass(result.totalMassKg), emphasized: true)
+                    }
+                    .accessibilityIdentifier("calculation.quick_result")
+                    Text("calculator.quick_result.help")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
             Section("calculator.section.geometry") {
                 ForEach(profile.dimensionFields) { field in
                     AdaptiveFormRow(field.localizationKey) {
@@ -82,15 +119,23 @@ struct CalculatorEditorView: View {
                 }
 
                 AdaptiveFormRow("calculator.length") {
-                    TextField("0", text: $draft.lengthText)
-                        .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                    Picker("calculator.length_unit", selection: lengthUnitBinding) {
-                        ForEach([LengthUnit.meter, .foot, .millimeter, .inch]) { Text($0.rawValue).tag($0) }
-                    }
-                    .labelsHidden().frame(minWidth: 78)
+                    LengthValueInput(text: Binding(get: { draft.lengthText }, set: { draft.editStockLength($0) }))
                 }
-                Stepper(value: $draft.quantity, in: 1...1_000_000) {
-                    LabeledContent("calculator.quantity", value: "\(draft.quantity)")
+                Picker("calculator.length_unit", selection: lengthUnitBinding) {
+                    ForEach([LengthUnit.meter, .foot, .millimeter, .inch]) { Text($0.rawValue).tag($0) }
+                }
+                .accessibilityIdentifier("length.unit")
+                AdaptiveFormRow("calculator.quantity") {
+                    QuantityValueInput(value: $draft.quantity, range: 1...1_000_000)
+                }
+            }
+
+            Section("calculator.section.preview") {
+                if let previewInput {
+                    ProfileSection3DPreview(input: previewInput)
+                } else {
+                    Label("preview.invalid", systemImage: "cube")
+                        .foregroundStyle(.secondary)
                 }
             }
 
@@ -112,7 +157,14 @@ struct CalculatorEditorView: View {
                 Text("material.note.typical").font(.caption).foregroundStyle(.secondary)
             }
 
+            if showPricing {
             Section("calculator.section.pricing") {
+                Text("workflow.pricing_rules").font(.caption).foregroundStyle(.secondary)
+                if draft.priceNeedsReview {
+                    Label("workflow.price_review", systemImage: "exclamationmark.triangle").foregroundStyle(.orange)
+                    Button("workflow.confirm_price") { draft.priceNeedsReview = false }
+                    Button("workflow.clear_price") { draft.clearPrice() }
+                }
                 AdaptiveFormRow("calculator.waste") {
                     TextField("0", text: $draft.wasteText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
                     Text("%").foregroundStyle(.secondary).fixedSize()
@@ -120,13 +172,19 @@ struct CalculatorEditorView: View {
                 Text("calculator.waste_pricing_help").font(.caption).foregroundStyle(.secondary)
                 AdaptiveFormRow("calculator.price_basis") {
                     Spacer(minLength: 0)
-                    Picker("calculator.price_basis", selection: $draft.priceBasis) {
+                    Picker("calculator.price_basis", selection: Binding(get: { draft.priceBasis }, set: { newBasis in
+                        if let value = PricingInputValidator.nonnegative(draft.unitPriceText, locale: locale),
+                           let converted = PriceBasisConversion.convert(value, from: draft.priceBasis, to: newBasis) {
+                            draft.unitPriceText = converted.description.replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".")
+                        } else if draft.priceBasis != newBasis && draft.unitPriceText != "0" { draft.priceNeedsReview = true }
+                        draft.priceBasis = newBasis
+                    })) {
                         ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0) }
                     }
                     .labelsHidden()
                 }
                 AdaptiveFormRow("calculator.unit_price") {
-                    TextField("0", text: $draft.unitPriceText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                    TextField("0", text: $draft.unitPriceText).accessibilityIdentifier("calculator.price_input").keyboardType(.decimalPad).multilineTextAlignment(.trailing)
                     Text(currencyCode).foregroundStyle(.secondary).fixedSize()
                 }
                 AdaptiveFormRow("calculator.line_processing_fee") {
@@ -156,7 +214,7 @@ struct CalculatorEditorView: View {
                         .labelsHidden()
                     }
                     .onChange(of: selectedPriceEntryID) { _, id in
-                        if let id, let entry = priceBook.first(where: { $0.id == id }) { draft.apply(priceEntry: entry) }
+                        if let id, let entry = priceBook.first(where: { $0.id == id }) { draft.apply(priceEntry: entry); draft.unitPriceText = entry.unitPrice.description.replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".") }
                     }
                     if availablePriceEntries.isEmpty {
                         Text("calculator.price_history.empty").font(.caption).foregroundStyle(.secondary)
@@ -170,12 +228,16 @@ struct CalculatorEditorView: View {
                 }
                 Toggle("calculator.price_includes_tax", isOn: $draft.priceIncludesTax)
                 Text("calculator.price_reference_help").font(.caption).foregroundStyle(.secondary)
+                Button("workflow.save_scoped_price", systemImage: "bookmark") { saveScopedPrice() }.disabled(pricing == nil || draft.priceNeedsReview)
+                if priceSaved { Text("workflow.price_saved").font(.caption).foregroundStyle(.secondary) }
                 if pricing == nil {
                     Label("error.invalid_pricing", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red)
                 }
             }
 
+            }
             Section("calculator.section.result") {
+                if draft.priceNeedsReview && !showPricing { Label("workflow.price_review", systemImage: "exclamationmark.triangle").foregroundStyle(.orange) }
                 if let result {
                     LazyVGrid(columns: dynamicTypeSize.isAccessibilitySize ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                         ResultMetric("calculator.result.unit_mass", value: mass(result.unitMassKg))
@@ -206,19 +268,48 @@ struct CalculatorEditorView: View {
             Section {
                 Button {
                     if let destinationProject {
-                        if canAdd(to: destinationProject) { save(to: destinationProject) } else { showProLimit = true }
+                        save(to: destinationProject)
                     }
                     else { showSaveSheet = true }
                 } label: {
                     Label("calculator.save_to_project", systemImage: "folder.badge.plus")
                         .frame(maxWidth: .infinity)
                 }
-                .disabled(result == nil || pricing == nil)
+                .disabled(result == nil || pricing == nil || draft.priceNeedsReview)
             }
         }
+        .keyboardDismissSupport()
         .navigationTitle(profile.localizationKey)
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: storedState) { _, state in
+            if loaded && !ProcessInfo.processInfo.arguments.contains("--marketing-screen") { library.saveDraft(state, key: draftKey) }
+        }
+        .onDisappear { rememberCalculation() }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    Button("workflow.favorite", systemImage: "star") { library.record(storedState, favorite: true) }.disabled(result == nil)
+                    Button("workflow.remember", systemImage: "clock") { rememberCalculation() }.disabled(result == nil)
+                    if let result {
+                        ShareLink(item: shareText(result)) {
+                            Label("workflow.share_result", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                    Button("workflow.reset", systemImage: "arrow.counterclockwise") {
+                        draft = CalculatorDraft(profile: profile, unitSystem: destinationProject?.unitSystem ?? UnitSystem(rawValue: unitSystemRaw) ?? .metric)
+                        draftCurrency = nil
+                    }
+                } label: { Image(systemName: "ellipsis.circle") }.accessibilityIdentifier("calculator.menu")
+            }
+        }
         .onAppear {
+            guard !loaded else { return }
+            loaded = true
+            if !ProcessInfo.processInfo.arguments.contains("--marketing-screen"), let state = restoredState ?? library.payload.drafts[draftKey] {
+                draft = state.makeDraft(locale: locale); draftCurrency = state.currency
+                if !materials.contains(where: { $0.id == draft.selectedMaterialID }) { draft.selectedMaterialID = "carbon-steel"; draft.priceNeedsReview = true }
+                return
+            }
             let preferred = destinationProject?.unitSystem ?? UnitSystem(rawValue: unitSystemRaw) ?? .metric
             if draft.geometryUnit == .millimeter && preferred == .imperial {
                 draft.convertGeometry(to: preferred.lengthUnit, locale: locale)
@@ -228,18 +319,30 @@ struct CalculatorEditorView: View {
             }
             if let material = materials.first(where: { $0.id == draft.selectedMaterialID }) { draft.apply(material: material, locale: locale) }
         }
-        .sheet(isPresented: $showSaveSheet) {
+        .sheet(isPresented: $showSaveSheet, onDismiss: {
+            if let project = pendingSaveProject, project.currencyCode != currencyCode { pendingSaveProject = nil; pendingCurrencyProject = project }
+        }) {
             SaveToProjectSheet(projects: projects) { project in save(to: project) }
+        }
+        .sheet(item: $pendingCurrencyProject) { project in
+            CurrencyChangeSheet(oldCurrency: currencyCode, newCurrency: project.currencyCode) { mode, rate in
+                commitSave(to: project, currencyMode: mode, rate: rate)
+            }
         }
         .sheet(isPresented: $showDetails) {
             if let result { CalculationDetailsView(result: result) }
         }
-        .alert("calculator.saved", isPresented: $savedConfirmation) { Button("common.ok", role: .cancel) {} }
-        .alert("purchase.limit.title", isPresented: $showProLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.items") }
+        .alert("calculator.saved", isPresented: $savedConfirmation) { Button("workflow.continue_adding", role: .cancel) {} }
+        .proPaywall(reason: $paywallReason) {
+            if let project = pendingSaveProject { pendingSaveProject = nil; save(to: project) }
+        }
     }
 
     private func dimensionBinding(_ field: DimensionField) -> Binding<String> {
-        Binding(get: { draft.dimensionTexts[field] ?? "" }, set: { draft.dimensionTexts[field] = $0 })
+        Binding(get: { draft.dimensionTexts[field] ?? "" }, set: {
+            if draft.priceSource == .history && draft.unitPriceText != "0" { draft.priceNeedsReview = true }
+            draft.dimensionTexts[field] = $0
+        })
     }
 
     private var geometryUnitBinding: Binding<LengthUnit> {
@@ -289,15 +392,52 @@ struct CalculatorEditorView: View {
         }
     }
 
+    private func saveScopedPrice() {
+        guard let unitPrice = PricingInputValidator.nonnegative(draft.unitPriceText, locale: locale), let geometry = draft.geometry(locale: locale), let data = try? JSONEncoder().encode(geometry), !draft.priceNeedsReview else { return }
+        let entry = PriceBookEntryEntity(name: draft.itemDescription.isEmpty ? AppLocalization.text("profile." + profile.rawValue, locale: locale) : draft.itemDescription,
+            materialID: draft.selectedMaterialID, materialGrade: draft.materialGrade, supplier: draft.priceSourceName, region: draft.priceRegion,
+            currencyCode: currencyCode, priceBasis: draft.priceBasis, unitPrice: unitPrice, includesTax: draft.priceIncludesTax, effectiveAt: draft.priceEffectiveAt)
+        entry.applicableProfile = profile.rawValue; entry.applicableGeometry = data
+        if draft.priceBasis == .perPiece, let length = DecimalParser.double(draft.lengthText, locale: locale) { entry.applicableLengthMeters = draft.lengthUnit.toMeters(length) }
+        modelContext.insert(entry); priceSaved = PersistenceErrorCenter.shared.save(modelContext)
+    }
+
+    private func shareText(_ result: CalculationResult) -> String {
+        let title = AppLocalization.text("profile." + profile.rawValue, locale: locale)
+        let size = draft.lengthText + " " + draft.lengthUnit.rawValue + " × " + String(draft.quantity)
+        return [title, draft.itemDescription, size, mass(result.totalMassKg)].filter { !$0.isEmpty }.joined(separator: " · ")
+    }
+
+    private func rememberCalculation() {
+        guard !ProcessInfo.processInfo.arguments.contains("--marketing-screen") else { return }
+        if result != nil && pricing != nil { library.record(storedState) }
+        if loaded { library.saveDraft(storedState, key: draftKey) }
+    }
+
     private func save(to project: ProjectEntity) {
-        guard canAdd(to: project) else { showProLimit = true; return }
+        guard canAdd(to: project) else { pendingSaveProject = project; paywallReason = .items; return }
+        guard !draft.priceNeedsReview else { return }
+        if project.currencyCode != currencyCode {
+            if showSaveSheet { showSaveSheet = false; pendingSaveProject = project }
+            else { pendingCurrencyProject = project }
+            return
+        }
+        commitSave(to: project)
+    }
+
+    private func commitSave(to project: ProjectEntity, currencyMode: CurrencyChangeMode = .keepAmounts, rate: Decimal? = nil) {
+        guard canAdd(to: project), !draft.priceNeedsReview else { return }
         guard let material = materials.first(where: { $0.id == draft.selectedMaterialID }),
-              let item = draft.makeItem(materialName: materialDisplayName(material), locale: locale, sortIndex: project.items.count) else { return }
+              let item = draft.makeItem(materialName: materialDisplayName(material), locale: locale, sortIndex: (project.items.map(\.sortIndex).max() ?? -1) + 1) else { return }
+        if project.currencyCode != currencyCode {
+            guard PriceBasisConversion.migrate(item, from: currencyCode, to: project.currencyCode, mode: currencyMode, rate: rate) else { return }
+        }
         project.items.append(item)
         project.updatedAt = .now
         modelContext.insert(item)
         if PersistenceErrorCenter.shared.save(modelContext) {
             showSaveSheet = false
+            rememberCalculation()
             savedConfirmation = true
         }
     }
@@ -317,23 +457,23 @@ private struct SaveToProjectSheet: View {
     @AppStorage("app.paper") private var defaultPaperRaw = PaperSize.a4.rawValue
     let projects: [ProjectEntity]
     let onSelect: (ProjectEntity) -> Void
+    @State private var pendingSelection: ProjectEntity?
     @State private var newName = ""
-    @State private var showProjectLimit = false
-    @State private var showItemLimit = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
 
     var body: some View {
         NavigationStack {
             List {
                 Section("project.choose") {
-                    ForEach(projects.filter { !$0.isArchived }) { project in
+                    ForEach(projects.filter { !$0.isArchived && !$0.isTemplate }) { project in
                         Button {
                             if purchaseManager.isPro || project.items.count < ProPolicy.freeItemsPerProjectLimit { onSelect(project) }
-                            else { showItemLimit = true }
+                            else { pendingSelection = project; paywallReason = .items }
                         } label: {
                             VStack(alignment: .leading) {
                                 Text(project.name).foregroundStyle(.primary)
-                                Text(project.projectNumber).font(.caption).foregroundStyle(.secondary)
+                                Text("\(project.projectNumber) · \(project.currencyCode)").font(.caption).foregroundStyle(.secondary)
                             }
                         }
                     }
@@ -342,10 +482,10 @@ private struct SaveToProjectSheet: View {
                     TextField("project.name", text: $newName)
                     Button("project.create_and_add") {
                         if !ProPolicy.canActivateProject(
-                            activeProjectCount: projects.filter({ !$0.isArchived }).count,
+                            activeProjectCount: projects.filter({ !$0.isArchived && !$0.isTemplate }).count,
                             isPro: purchaseManager.isPro
                         ) {
-                            showProjectLimit = true
+                            paywallReason = .projects
                         } else {
                             let trimmedName = newName.trimmingCharacters(in: .whitespacesAndNewlines)
                             let project = ProjectEntity(
@@ -361,10 +501,12 @@ private struct SaveToProjectSheet: View {
                     }
                 }
             }
+            .keyboardDismissSupport()
             .navigationTitle("calculator.save_to_project")
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } } }
-            .alert("purchase.limit.title", isPresented: $showProjectLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.projects") }
-            .alert("purchase.limit.title", isPresented: $showItemLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.items") }
+            .proPaywall(reason: $paywallReason) {
+                if let project = pendingSelection { pendingSelection = nil; onSelect(project) }
+            }
         }
     }
 }

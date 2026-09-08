@@ -38,6 +38,33 @@ final class ReliabilityTests: XCTestCase {
         XCTAssertTrue(ProPolicy.canActivateProject(activeProjectCount: 2, isPro: true))
     }
 
+    func testDeletingProjectPermanentlyCascadesToItsItems() throws {
+        let container = try Self.inMemoryContainer()
+        let context = container.mainContext
+        let project = ProjectEntity(name: "Delete me")
+        project.items = [CalculationItemEntity(
+            profile: .plate,
+            geometry: GeometryInput(values: [.width: 100, .thickness: 10]),
+            materialID: "carbon-steel",
+            materialName: "Carbon steel",
+            densityKgPerM3: 7_850,
+            lengthValue: 6,
+            lengthUnit: .meter,
+            quantity: 1,
+            wastePercent: 0,
+            priceBasis: .perKilogram,
+            unitPrice: 1
+        )]
+        context.insert(project)
+        try context.save()
+
+        context.delete(project)
+        try context.save()
+
+        XCTAssertEqual(try context.fetch(FetchDescriptor<ProjectEntity>()).count, 0)
+        XCTAssertEqual(try context.fetch(FetchDescriptor<CalculationItemEntity>()).count, 0)
+    }
+
     func testPersistenceErrorCenterReportsFailureAndClearsAfterSuccess() {
         let center = PersistenceErrorCenter()
         XCTAssertFalse(center.perform { throw TestFailure.expected })

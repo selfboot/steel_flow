@@ -1,5 +1,7 @@
 # SteelFlow App Store launch kit
 
+2026-09-05 上线后复查：[ASO 搜索基线与优化建议](ASO-Audit-2026-09-05.md)、[可复制的关键词与截图草案](Metadata/aso-proposal-2026-09-05.json)。草案未应用到 App Store Connect；实时搜索和商店截图证据保存在 `Research/2026-09-05/`。
+
 本目录包含 2026-08-28 准备的双语上架素材：
 
 - `ASO-Research-2026-08-28.md`：中国大陆、美国及英语市场交叉验证的关键词与竞品报告。

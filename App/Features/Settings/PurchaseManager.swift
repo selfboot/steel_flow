@@ -19,7 +19,16 @@ final class PurchaseManager {
     private var package: Package?
     private var updatesTask: Task<Void, Never>?
 
+    private var usesWorkflowFixture: Bool {
+#if DEBUG
+        ProcessInfo.processInfo.arguments.contains("--workflow-tests")
+#else
+        false
+#endif
+    }
+
     init(startListening: Bool = true) {
+        if usesWorkflowFixture { isPro = !ProcessInfo.processInfo.arguments.contains("--workflow-free"); return }
         guard startListening else { return }
         guard configureRevenueCatIfNeeded() else {
             availabilityMessage = AppLocalization.text("purchase.configuration_missing")
@@ -33,6 +42,7 @@ final class PurchaseManager {
     var isPurchaseAvailable: Bool { package != nil && Purchases.isConfigured }
 
     func load() async {
+        if usesWorkflowFixture { return }
         guard configureRevenueCatIfNeeded() else {
             availabilityMessage = AppLocalization.text("purchase.configuration_missing")
             return
@@ -99,6 +109,7 @@ final class PurchaseManager {
     }
 
     func refreshEntitlement() async {
+        if usesWorkflowFixture { return }
         guard configureRevenueCatIfNeeded() else { return }
         do {
             apply(try await Purchases.shared.customerInfo())

@@ -29,6 +29,7 @@ struct BackupEnvelope: Codable, Sendable {
 }
 
 struct BackupPayload: Codable, Sendable {
+    var libraryData: Data? = nil
     let materials: [MaterialBackup]
     let projects: [ProjectBackup]
     let company: CompanyBackup?
@@ -70,6 +71,7 @@ struct BackupPreview: Equatable {
 }
 
 struct BackupImportResult {
+    var libraryData: Data? = nil
     let projects: Int
     let materials: Int
     let customers: Int
@@ -78,6 +80,9 @@ struct BackupImportResult {
 }
 
 struct PriceBookBackup: Codable, Sendable {
+    var applicableProfile: String? = nil
+    var applicableGeometry: Data? = nil
+    var applicableLengthMeters: Double? = nil
     let name: String
     let materialID: String
     let materialName: String
@@ -100,6 +105,11 @@ struct MaterialBackup: Codable, Sendable {
 }
 
 struct ProjectBackup: Codable, Sendable {
+    var isPinned: Bool? = nil
+    var isTemplate: Bool? = nil
+    var showQuoteMass: Bool? = nil
+    var showQuoteUnitPrice: Bool? = nil
+    var customerContact: String? = nil
     let id: UUID?
     let name: String
     let projectNumber: String
@@ -144,6 +154,8 @@ struct ItemBackup: Codable, Sendable {
 }
 
 struct CompanyBackup: Codable, Sendable {
+    var logoData: Data? = nil
+    var defaultTerms: String? = nil
     let companyName: String
     let contactName: String
     let email: String
@@ -166,7 +178,7 @@ enum BackupError: LocalizedError, Equatable {
 
 @MainActor
 enum BackupService {
-    private static let currentSchemaVersion = 3
+    private static let currentSchemaVersion = 4
     private static let supportedSchemaVersions = 1...currentSchemaVersion
 
     static func makeDocument(
@@ -176,15 +188,17 @@ enum BackupService {
         priceBook: [PriceBookEntryEntity] = [],
         customers: [CustomerEntity] = [],
         quoteSnapshots: [QuoteSnapshotEntity] = [],
-        preferences: PreferencesBackup? = nil
+        preferences: PreferencesBackup? = nil,
+        libraryData: Data? = nil
     ) throws -> SteelFlowBackupDocument {
         let projectIDs = Set(projects.map(\.id))
         let payload = BackupPayload(
+            libraryData: libraryData,
             materials: materials.filter { !$0.isBuiltIn }.map { .init(id: $0.id, name: $0.name, densityKgPerM3: $0.densityKgPerM3, note: $0.note) },
             projects: projects.map(projectBackup),
-            company: company.map { .init(companyName: $0.companyName, contactName: $0.contactName, email: $0.email, phone: $0.phone, address: $0.address) },
+            company: company.map { .init(logoData: $0.logoData, defaultTerms: $0.defaultTerms, companyName: $0.companyName, contactName: $0.contactName, email: $0.email, phone: $0.phone, address: $0.address) },
             priceBook: priceBook.map {
-                .init(name: $0.name, materialID: $0.materialID, materialName: $0.materialName, materialGrade: $0.materialGrade,
+                .init(applicableProfile: $0.applicableProfile, applicableGeometry: $0.applicableGeometry, applicableLengthMeters: $0.applicableLengthMeters, name: $0.name, materialID: $0.materialID, materialName: $0.materialName, materialGrade: $0.materialGrade,
                       supplier: $0.supplier, region: $0.region, currencyCode: $0.currencyCode, priceBasisRaw: $0.priceBasisRaw,
                       unitPriceText: $0.unitPriceText, includesTax: $0.includesTax, effectiveAt: $0.effectiveAt, note: $0.note)
             },
@@ -268,6 +282,9 @@ enum BackupService {
             guard project.isPricingPolicyValid else { throw BackupError.corrupt }
             project.validDays = source.validDays
             project.terms = source.terms
+            project.isPinned = source.isPinned ?? false; project.isTemplate = source.isTemplate ?? false
+            project.showQuoteMass = source.showQuoteMass ?? true; project.showQuoteUnitPrice = source.showQuoteUnitPrice ?? false
+            project.customerContact = source.customerContact ?? ""
             project.notes = source.notes
             project.isArchived = source.isArchived
             for sourceItem in source.items {
@@ -347,12 +364,30 @@ enum BackupService {
                   PaperSize(rawValue: preferences.paperSizeRaw) != nil else { throw BackupError.corrupt }
         }
 
+        var importedLibraryData: Data?
+        if let data = envelope.payload.libraryData {
+            var library = try JSONDecoder().decode(CalculationLibraryPayload.self, from: data)
+            guard library.records.count <= 10_000, library.drafts.count <= 100 else { throw BackupError.corrupt }
+            func remap(_ original: DraftState) -> DraftState {
+                var state = original; state.materialID = materialIDMap[state.materialID] ?? state.materialID; return state
+            }
+            library.records = library.records.map { entry in
+                var value = entry; value.id = UUID(); value.state = remap(entry.state); return value
+            }
+            library.drafts = Dictionary(uniqueKeysWithValues: library.drafts.map { key, state in
+                let parts = key.split(separator: ".", maxSplits: 1)
+                let target = parts.first.flatMap { UUID(uuidString: String($0)) }.flatMap { projectIDMap[$0] }
+                return (target.map { $0.uuidString + "." + String(parts.last ?? "") } ?? key, remap(state))
+            })
+            importedLibraryData = try JSONEncoder().encode(library)
+        }
+
         for source in envelope.payload.priceBook ?? [] {
             guard let currency = CurrencyRules.normalizedCode(source.currencyCode),
                   let priceBasis = PriceBasis(rawValue: source.priceBasisRaw),
                   !source.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                   let price = PricingInputValidator.nonnegative(source.unitPriceText, locale: Locale(identifier: "en_US_POSIX")) else { throw BackupError.corrupt }
-            importedPrices.append(PriceBookEntryEntity(
+            let priceEntry = PriceBookEntryEntity(
                 name: source.name,
                 materialID: materialIDMap[source.materialID] ?? source.materialID,
                 materialName: source.materialName,
@@ -365,12 +400,22 @@ enum BackupService {
                 includesTax: source.includesTax,
                 effectiveAt: source.effectiveAt,
                 note: source.note
-            ))
+            )
+            if let raw = source.applicableProfile {
+                guard let profile = ProfileKind(rawValue: raw) else { throw BackupError.corrupt }
+                if let data = source.applicableGeometry {
+                    guard let geometry = try? JSONDecoder().decode(GeometryInput.self, from: data), (try? CalculationEngine.area(for: profile, geometry: geometry)) != nil else { throw BackupError.corrupt }
+                }
+            } else if source.applicableGeometry != nil { throw BackupError.corrupt }
+            if let length = source.applicableLengthMeters, !length.finitePositive { throw BackupError.corrupt }
+            priceEntry.applicableLengthMeters = source.applicableLengthMeters
+            priceEntry.applicableProfile = source.applicableProfile; priceEntry.applicableGeometry = source.applicableGeometry
+            importedPrices.append(priceEntry)
         }
 
         let existingCompany = try context.fetch(FetchDescriptor<CompanyProfileEntity>()).first
         let shouldImportCompany = existingCompany.map {
-            $0.companyName.isEmpty && $0.contactName.isEmpty && $0.email.isEmpty && $0.phone.isEmpty && $0.address.isEmpty
+            $0.companyName.isEmpty && $0.contactName.isEmpty && $0.email.isEmpty && $0.phone.isEmpty && $0.address.isEmpty && $0.logoData == nil && $0.defaultTerms.isEmpty
         } ?? true
 
         do {
@@ -383,6 +428,7 @@ enum BackupService {
             if let source = envelope.payload.company {
                 if shouldImportCompany {
                     let company = existingCompany ?? CompanyProfileEntity()
+                    company.logoData = source.logoData; company.defaultTerms = source.defaultTerms ?? ""
                     company.companyName = source.companyName
                     company.contactName = source.contactName
                     company.email = source.email
@@ -400,6 +446,7 @@ enum BackupService {
         }
 
         return .init(
+            libraryData: importedLibraryData,
             projects: envelope.payload.projects.count,
             materials: envelope.payload.materials.count,
             customers: envelope.payload.customers?.count ?? 0,
@@ -468,6 +515,7 @@ enum BackupService {
 
     private static func projectBackup(_ project: ProjectEntity) -> ProjectBackup {
         .init(
+            isPinned: project.isPinned, isTemplate: project.isTemplate, showQuoteMass: project.showQuoteMass, showQuoteUnitPrice: project.showQuoteUnitPrice, customerContact: project.customerContact,
             id: project.id, name: project.name, projectNumber: project.projectNumber, customerName: project.customerName,
             quoteLanguage: project.quoteLanguage, unitSystemRaw: project.unitSystemRaw, currencyCode: project.currencyCode,
             paperSizeRaw: project.paperSizeRaw, taxPercentText: project.taxPercentText, markupPercentText: project.markupPercentText, profitModeRaw: project.profitModeRaw,

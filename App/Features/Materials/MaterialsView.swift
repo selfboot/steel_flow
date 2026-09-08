@@ -6,25 +6,49 @@ struct MaterialsView: View {
     @Environment(\.locale) private var locale
     @Query(sort: \MaterialEntity.densityKgPerM3) private var materials: [MaterialEntity]
     @Query(sort: \PriceBookEntryEntity.effectiveAt, order: .reverse) private var priceBook: [PriceBookEntryEntity]
+    @State private var search = ""
+    @AppStorage("workflow.favorite_materials") private var favoriteMaterials = ""
     @State private var editingMaterial: MaterialEntity?
     @State private var showNew = false
     @State private var showNewPrice = false
     @State private var editingPrice: PriceBookEntryEntity?
-    @State private var showProLimit = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
     @State private var pendingDeletion: CatalogDeletion?
     @State private var showDeleteConfirmation = false
 
+    private var filteredMaterials: [MaterialEntity] {
+        materials.filter { search.isEmpty || [$0.name, MaterialCatalog.localizedName(materialID: $0.id, fallback: $0.name, locale: locale)].contains { $0.localizedStandardContains(search) } }
+            .sorted { a, b in
+                let favoriteA = favoriteMaterials.split(separator: "|").contains(Substring(a.id))
+                let favoriteB = favoriteMaterials.split(separator: "|").contains(Substring(b.id))
+                return favoriteA != favoriteB ? favoriteA : a.densityKgPerM3 < b.densityKgPerM3
+            }
+    }
+    private var filteredPrices: [PriceBookEntryEntity] {
+        priceBook.filter { search.isEmpty || [$0.name, $0.supplier, $0.region, $0.materialGrade, $0.currencyCode].contains { $0.localizedStandardContains(search) } }
+    }
     var body: some View {
         List {
             Section("materials.built_in") {
-                ForEach(materials.filter(\.isBuiltIn)) { material in MaterialRow(material: material) }
+                ForEach(filteredMaterials.filter(\.isBuiltIn)) { material in
+                    MaterialRow(material: material).contextMenu {
+                        Button("workflow.copy_material", systemImage: "doc.on.doc") {
+                            if purchaseManager.isPro {
+                                let copy = MaterialEntity(name: MaterialCatalog.localizedName(materialID: material.id, fallback: material.name, locale: locale), densityKgPerM3: material.densityKgPerM3, note: material.note)
+                                modelContext.insert(copy)
+                                if PersistenceErrorCenter.shared.save(modelContext) { editingMaterial = copy }
+                            } else { paywallReason = .materials }
+                        }
+                        Button("workflow.pin", systemImage: "pin") { toggleFavorite(material.id) }
+                    }
+                }
             }
             Section("materials.custom") {
                 if materials.filter({ !$0.isBuiltIn }).isEmpty {
                     Text("materials.custom.empty").foregroundStyle(.secondary)
                 }
-                ForEach(materials.filter { !$0.isBuiltIn }) { material in
+                ForEach(filteredMaterials.filter { !$0.isBuiltIn }) { material in
                     Button { editingMaterial = material } label: { MaterialRow(material: material) }
                         .buttonStyle(.plain)
                         .swipeActions(allowsFullSwipe: false) {
@@ -37,11 +61,14 @@ struct MaterialsView: View {
             }
             Section("price_book.title") {
                 if priceBook.isEmpty { Text("price_book.empty").foregroundStyle(.secondary) }
-                ForEach(priceBook) { entry in
+                ForEach(filteredPrices) { entry in
                     Button { editingPrice = entry } label: {
                         HStack {
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(entry.name).font(.headline)
+                                Text(PriceApplicability.description(profileRaw: entry.applicableProfile, geometryData: entry.applicableGeometry, locale: locale)).font(.caption).foregroundStyle(.secondary)
+                                Text(AppFormatters.date(entry.effectiveAt, locale: locale)).font(.caption).foregroundStyle(.secondary)
+                                if Date.now.timeIntervalSince(entry.effectiveAt) > 30 * 86400 { Label("workflow.old_price", systemImage: "clock.badge.exclamationmark").font(.caption).foregroundStyle(.orange) }
                                 Text([entry.supplier, entry.region, entry.materialGrade].filter { !$0.isEmpty }.joined(separator: " · "))
                                     .font(.caption).foregroundStyle(.secondary).lineLimit(1)
                             }
@@ -66,11 +93,12 @@ struct MaterialsView: View {
             }
             Section { Text("material.note.typical").font(.caption).foregroundStyle(.secondary) }
         }
+        .searchable(text: $search, prompt: "workflow.price_search")
         .navigationTitle("tab.materials")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
-                    Button("materials.add") { if purchaseManager.isPro { showNew = true } else { showProLimit = true } }
+                    Button("materials.add") { if purchaseManager.isPro { showNew = true } else { paywallReason = .materials } }
                     Button("price_book.add") { showNewPrice = true }
                 } label: { Image(systemName: "plus") }
             }
@@ -79,13 +107,19 @@ struct MaterialsView: View {
         .sheet(item: $editingMaterial) { MaterialEditorSheet(material: $0) }
         .sheet(isPresented: $showNewPrice) { PriceBookEditorSheet(materials: materials) }
         .sheet(item: $editingPrice) { PriceBookEditorSheet(entry: $0, materials: materials) }
-        .alert("purchase.limit.title", isPresented: $showProLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.materials") }
+        .proPaywall(reason: $paywallReason)
         .alert("delete.confirm.title", isPresented: $showDeleteConfirmation) {
             Button("common.delete", role: .destructive) { confirmDeletion() }
             Button("common.cancel", role: .cancel) { pendingDeletion = nil }
         } message: {
             Text("delete.confirm.message")
         }
+    }
+
+    private func toggleFavorite(_ id: String) {
+        var ids = Set(favoriteMaterials.split(separator: "|").map(String.init))
+        if ids.contains(id) { ids.remove(id) } else { ids.insert(id) }
+        favoriteMaterials = ids.sorted().joined(separator: "|")
     }
 
     @ViewBuilder
@@ -128,6 +162,8 @@ private struct PriceBookEditorSheet: View {
     var entry: PriceBookEntryEntity?
     let materials: [MaterialEntity]
     @AppStorage("app.currency") private var defaultCurrency = "USD"
+    @State private var clearScope = false
+    @State private var needsReview = false
     @State private var name = ""
     @State private var materialID = ""
     @State private var grade = ""
@@ -150,6 +186,12 @@ private struct PriceBookEditorSheet: View {
         NavigationStack {
             Form {
                 TextField("price_book.name", text: $name)
+                if let entry, entry.applicableProfile != nil {
+                    Text(PriceApplicability.description(profileRaw: entry.applicableProfile, geometryData: entry.applicableGeometry, locale: locale)).font(.caption)
+                    if let length = entry.applicableLengthMeters { Text(AppFormatters.number(length, locale: locale) + " m").font(.caption) }
+                    Toggle("workflow.clear_scope", isOn: $clearScope)
+                }
+                if needsReview { Text("workflow.price_review").foregroundStyle(.orange); Button("workflow.confirm_price") { needsReview = false } }
                 Picker("calculator.material", selection: $materialID) {
                     Text("price_book.any_material").tag("")
                     ForEach(materials) { material in
@@ -159,12 +201,12 @@ private struct PriceBookEditorSheet: View {
                 TextField("calculator.material_grade", text: $grade)
                 TextField("price_book.supplier", text: $supplier)
                 TextField("calculator.price_region", text: $region)
-                HStack {
-                    Text("settings.currency")
-                    Spacer()
-                    TextField("USD", text: $currency).textInputAutocapitalization(.characters).multilineTextAlignment(.trailing)
-                }
-                Picker("calculator.price_basis", selection: $basis) { ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0) } }
+                CurrencyPickerRow(selection: $currency)
+                Picker("calculator.price_basis", selection: Binding(get: { basis }, set: { newBasis in
+                    if let value = validPrice, let converted = PriceBasisConversion.convert(value, from: basis, to: newBasis) { price = converted.description.replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".") }
+                    else if basis != newBasis && !price.isEmpty { needsReview = true }
+                    basis = newBasis
+                })) { ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0) } }
                 HStack {
                     Text("calculator.unit_price")
                     Spacer()
@@ -177,10 +219,11 @@ private struct PriceBookEditorSheet: View {
                 if validPrice == nil { Label("error.invalid_pricing", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
                 Text("price_book.reference_disclaimer").font(.caption).foregroundStyle(.secondary)
             }
+            .keyboardDismissSupport()
             .navigationTitle(entry == nil ? "price_book.add" : "price_book.edit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) { Button("common.save") { save() }.disabled(!canSave) }
+                ToolbarItem(placement: .confirmationAction) { Button("common.save") { save() }.disabled(!canSave || needsReview) }
             }
             .onAppear { load() }
         }
@@ -205,6 +248,7 @@ private struct PriceBookEditorSheet: View {
         guard let currencyCode = normalizedCurrency, let unitPrice = validPrice else { return }
         let material = materials.first(where: { $0.id == materialID })
         if let entry {
+            if clearScope { entry.applicableProfile = nil; entry.applicableGeometry = nil; entry.applicableLengthMeters = nil }
             entry.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
             entry.materialID = materialID
             entry.materialName = material?.name ?? ""
@@ -261,6 +305,7 @@ private struct MaterialEditorSheet: View {
                 TextField("materials.note", text: $note, axis: .vertical).lineLimit(3...6)
                 Text("materials.density.help").font(.caption).foregroundStyle(.secondary)
             }
+            .keyboardDismissSupport()
             .navigationTitle(material == nil ? "materials.add" : "materials.edit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }

@@ -40,6 +40,11 @@ final class ProjectEntity {
     var validDays: Int
     var terms: String
     var notes: String
+    var isPinned: Bool = false
+    var isTemplate: Bool = false
+    var showQuoteMass: Bool = true
+    var showQuoteUnitPrice: Bool = false
+    var customerContact: String = ""
     var isArchived: Bool
     var createdAt: Date
     var updatedAt: Date
@@ -228,6 +233,9 @@ final class CalculationItemEntity {
 
 @Model
 final class PriceBookEntryEntity {
+    var applicableProfile: String?
+    var applicableGeometry: Data?
+    var applicableLengthMeters: Double?
     @Attribute(.unique) var id: UUID
     var name: String
     var materialID: String
@@ -305,6 +313,8 @@ final class CustomerEntity {
 @Model
 final class CompanyProfileEntity {
     @Attribute(.unique) var id: String
+    var logoData: Data?
+    var defaultTerms: String = ""
     var companyName: String
     var contactName: String
     var email: String

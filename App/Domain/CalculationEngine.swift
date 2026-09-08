@@ -42,7 +42,7 @@ struct CalculationTrace: Sendable, Equatable {
 }
 
 enum CalculationEngine {
-    static let version = 1
+    static let version = 2
 
     static func calculate(_ request: CalculationRequest) throws -> CalculationResult {
         guard request.lengthValue.finitePositive else { throw CalculationError.invalidLength }
@@ -116,6 +116,10 @@ enum CalculationEngine {
         case .hexBar:
             let f = try put(.acrossFlats)
             area = sqrt(3) * f * f / 2; formula = "A = √3 × across-flats² ÷ 2"
+        case .octagonalBar:
+            let f = try put(.acrossFlats)
+            area = 2 * (sqrt(2) - 1) * f * f
+            formula = "A = 2 × (√2 − 1) × across-flats²"
         case .roundTube:
             let d = try put(.outerDiameter), t = try put(.wallThickness)
             guard 2 * t < d else { throw CalculationError.wallTooThick }
@@ -148,6 +152,12 @@ enum CalculationEngine {
             guard tw <= f else { throw CalculationError.webTooThick }
             area = 2 * f * tf + (h - 2 * tf) * tw
             formula = "A = 2×flange + web"
+        case .tSection:
+            let h = try put(.height), f = try put(.flangeWidth), tw = try put(.webThickness), tf = try put(.flangeThickness)
+            guard tf < h else { throw CalculationError.flangeTooThick }
+            guard tw <= f else { throw CalculationError.webTooThick }
+            area = f * tf + (h - tf) * tw
+            formula = "A = flange + web"
         case .customArea:
             area = try put(.customArea)
             formula = "A = custom cross-sectional area"

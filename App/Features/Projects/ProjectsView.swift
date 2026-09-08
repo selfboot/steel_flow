@@ -6,12 +6,24 @@ struct ProjectsView: View {
     @Environment(\.locale) private var locale
     @Query(sort: \ProjectEntity.updatedAt, order: .reverse) private var projects: [ProjectEntity]
     @State private var showArchived = false
+    @State private var search = ""
+    @State private var sortByName = false
+    @State private var showTemplates = false
+    @State private var showTemplatePicker = false
     @State private var showNewProject = false
-    @State private var showProLimit = false
-    @State private var showProFeatureLimit = false
+    @State private var paywallReason: ProPaywallReason?
     @State private var purchaseManager = PurchaseManager.shared
+    @State private var pendingProAction: (() -> Void)?
+    @State private var pendingDeletion: ProjectEntity?
+    @State private var showDeleteConfirmation = false
 
-    private var visibleProjects: [ProjectEntity] { projects.filter { $0.isArchived == showArchived } }
+    private var visibleProjects: [ProjectEntity] {
+        projects.filter { $0.isArchived == showArchived && $0.isTemplate == showTemplates && (search.isEmpty || [$0.name, $0.customerName, $0.projectNumber].contains { $0.localizedStandardContains(search) }) }
+            .sorted { a, b in
+                if a.isPinned != b.isPinned { return a.isPinned }
+                return sortByName ? a.name.localizedStandardCompare(b.name) == .orderedAscending : a.updatedAt > b.updatedAt
+            }
+    }
 
     var body: some View {
         Group {
@@ -27,14 +39,15 @@ struct ProjectsView: View {
                 List {
                     ForEach(visibleProjects) { project in
                         NavigationLink { ProjectDetailView(project: project) } label: { ProjectRow(project: project) }
-                            .swipeActions(edge: .trailing) {
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button {
                                     if project.isArchived,
                                        !ProPolicy.canActivateProject(
-                                        activeProjectCount: projects.filter({ !$0.isArchived }).count,
+                                        activeProjectCount: projects.filter({ !$0.isArchived && !$0.isTemplate }).count,
                                         isPro: purchaseManager.isPro
                                        ) {
-                                        showProLimit = true
+                                        pendingProAction = { project.isArchived = false; project.updatedAt = .now; _ = PersistenceErrorCenter.shared.save(modelContext) }
+                                        paywallReason = .projects
                                         return
                                     }
                                     project.isArchived.toggle()
@@ -44,6 +57,15 @@ struct ProjectsView: View {
                                     Label(project.isArchived ? "project.restore" : "project.archive", systemImage: project.isArchived ? "arrow.uturn.backward" : "archivebox")
                                 }
                                 .tint(.orange)
+                                Button(role: .destructive) {
+                                    pendingDeletion = project
+                                    showDeleteConfirmation = true
+                                } label: {
+                                    Label("common.delete", systemImage: "trash")
+                                }
+                            }
+                            .contextMenu {
+                                Button("workflow.pin", systemImage: "pin") { project.isPinned.toggle(); _ = PersistenceErrorCenter.shared.save(modelContext) }
                             }
                             .swipeActions(edge: .leading) {
                                 Button { duplicate(project) } label: { Label("project.duplicate", systemImage: "plus.square.on.square") }
@@ -58,34 +80,49 @@ struct ProjectsView: View {
                 }
             }
         }
+        .searchable(text: $search, prompt: "workflow.project_search")
         .navigationTitle("tab.projects")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(showArchived ? "project.show_active" : "project.show_archived") { showArchived.toggle() }
             }
-            ToolbarItem(placement: .primaryAction) { Button { attemptNewProject() } label: { Image(systemName: "plus") } }
+            ToolbarItem(placement: .primaryAction) {
+                Menu {
+                    Button("project.create", systemImage: "plus") { attemptNewProject() }
+                    Button("workflow.from_template", systemImage: "doc.on.doc") { showTemplatePicker = true }
+                    Toggle("workflow.templates", isOn: $showTemplates)
+                    Toggle("workflow.sort_name", isOn: $sortByName)
+                } label: { Image(systemName: "plus") }.accessibilityIdentifier("projects.menu")
+            }
         }
         .sheet(isPresented: $showNewProject) { ProjectEditorSheet() }
-        .alert("purchase.limit.title", isPresented: $showProLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.projects") }
-        .alert("purchase.limit.title", isPresented: $showProFeatureLimit) { Button("common.ok", role: .cancel) {} } message: { Text("purchase.limit.duplicate") }
+        .sheet(isPresented: $showTemplatePicker) { TemplatePickerView() }
+        .proPaywall(reason: $paywallReason) { if let action = pendingProAction { pendingProAction = nil; action() } }
+        .alert("project.delete.confirm.title", isPresented: $showDeleteConfirmation) {
+            Button("common.delete", role: .destructive) { confirmDeletion() }
+            Button("common.cancel", role: .cancel) { pendingDeletion = nil }
+        } message: {
+            Text("project.delete.confirm.message")
+        }
     }
 
     private func attemptNewProject() {
-        let activeCount = projects.filter { !$0.isArchived }.count
-        if !ProPolicy.canActivateProject(activeProjectCount: activeCount, isPro: purchaseManager.isPro) { showProLimit = true }
+        let activeCount = projects.filter { !$0.isArchived && !$0.isTemplate }.count
+        if !ProPolicy.canActivateProject(activeProjectCount: activeCount, isPro: purchaseManager.isPro) { pendingProAction = { showNewProject = true }; paywallReason = .projects }
         else { showNewProject = true }
     }
 
     private func duplicate(_ source: ProjectEntity) {
         guard purchaseManager.isPro else {
-            showProFeatureLimit = true
+            pendingProAction = { duplicate(source) }
+            paywallReason = .duplicate
             return
         }
         if !ProPolicy.canActivateProject(
-            activeProjectCount: projects.filter({ !$0.isArchived }).count,
+            activeProjectCount: projects.filter({ !$0.isArchived && !$0.isTemplate }).count,
             isPro: purchaseManager.isPro
         ) {
-            showProLimit = true
+            paywallReason = .projects
             return
         }
         let copy = ProjectEntity(
@@ -102,6 +139,9 @@ struct ProjectsView: View {
         copy.validDays = source.validDays
         copy.terms = source.terms
         copy.notes = source.notes
+        copy.customerContact = source.customerContact
+        copy.showQuoteMass = source.showQuoteMass
+        copy.showQuoteUnitPrice = source.showQuoteUnitPrice
         for item in source.items.sorted(by: { $0.sortIndex < $1.sortIndex }) {
             let cloned = CalculationItemEntity(
                 profile: item.profile,
@@ -131,6 +171,13 @@ struct ProjectsView: View {
         }
         modelContext.insert(copy)
         PersistenceErrorCenter.shared.save(modelContext)
+    }
+
+    private func confirmDeletion() {
+        guard let pendingDeletion else { return }
+        modelContext.delete(pendingDeletion)
+        _ = PersistenceErrorCenter.shared.save(modelContext)
+        self.pendingDeletion = nil
     }
 }
 
@@ -167,6 +214,9 @@ struct ProjectEditorSheet: View {
     @AppStorage("app.currency") private var defaultCurrency = "USD"
     @AppStorage("app.language") private var appLanguage = "system"
     @AppStorage("app.paper") private var defaultPaperRaw = PaperSize.a4.rawValue
+    @Query private var companies: [CompanyProfileEntity]
+    @State private var showCustomers = false
+    @State private var customerContact = ""
     @State private var name = ""
     @State private var customer = ""
     @State private var currency = "USD"
@@ -180,6 +230,7 @@ struct ProjectEditorSheet: View {
             Form {
                 TextField("project.name", text: $name)
                 TextField("project.customer", text: $customer)
+                Button("workflow.choose_customer") { showCustomers = true }
                 Picker("project.quote_language", selection: $quoteLanguage) {
                     Text("language.english").tag("en")
                     Text("language.chinese").tag("zh-Hans")
@@ -187,13 +238,13 @@ struct ProjectEditorSheet: View {
                 Picker("settings.unit_system", selection: $unitSystem) {
                     ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0) }
                 }
-                TextField("settings.currency", text: $currency).textInputAutocapitalization(.characters)
-                if normalizedCurrency == nil { Label("error.invalid_currency", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
+                CurrencyPickerRow(selection: $currency)
                 Picker("settings.paper", selection: $paper) {
                     Text("paper.a4").tag(PaperSize.a4)
                     Text("paper.letter").tag(PaperSize.letter)
                 }
             }
+            .keyboardDismissSupport()
             .navigationTitle("project.create")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
@@ -207,12 +258,17 @@ struct ProjectEditorSheet: View {
                             currencyCode: normalizedCurrency ?? defaultCurrency,
                             paperSize: paper
                         )
+                        project.customerContact = customerContact
+                        if PurchaseManager.shared.isPro { project.terms = companies.first?.defaultTerms ?? "" }
                         modelContext.insert(project)
                         if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
                     }
                     .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || normalizedCurrency == nil)
                 }
             }
+            .sheet(isPresented: $showCustomers) { CustomerPickerView { value in
+                customer = value.name; customerContact = [value.phone, value.email, value.address].filter { !$0.isEmpty }.joined(separator: " · ")
+            } }
             .onAppear {
                 currency = defaultCurrency
                 unitSystem = UnitSystem(rawValue: defaultUnitRaw) ?? .metric

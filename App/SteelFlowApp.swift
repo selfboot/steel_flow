@@ -27,6 +27,7 @@ struct SteelFlowApp: App {
                     }
                 }
             }
+            .keyboardOutsideTapSupport()
             .environment(\.locale, languageCode == "system" ? .autoupdatingCurrent : Locale(identifier: languageCode))
             .task { await PurchaseManager.shared.refreshEntitlement() }
             .onChange(of: scenePhase) { _, phase in
@@ -68,6 +69,9 @@ final class AppDataStore {
         do {
             let container = try makeContainer()
             try SeedData.ensure(in: container.mainContext)
+#if DEBUG
+            try WorkflowTestFixture.seed(container.mainContext)
+#endif
             self.container = container
             errorDescription = ""
         } catch {
@@ -92,7 +96,12 @@ final class AppDataStore {
             QuoteSnapshotEntity.self,
             AppPreferenceEntity.self
         ])
-        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+#if DEBUG
+        let inMemory = ProcessInfo.processInfo.arguments.contains("--workflow-tests")
+#else
+        let inMemory = false
+#endif
+        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: inMemory)
         return try ModelContainer(for: schema, configurations: [configuration])
     }
 }

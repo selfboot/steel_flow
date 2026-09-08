@@ -8,15 +8,21 @@ struct QuotePreviewView: View {
     @Environment(\.locale) private var locale
     @Query private var companies: [CompanyProfileEntity]
     let project: ProjectEntity
+    @State private var snapshot: QuoteSnapshotPayload?
+    @State private var snapshotData: Data?
+    @State private var versionSaved = false
+    @State private var csvKind = QuoteCSVKind.customer
     @State private var pdfURL: URL?
     @State private var csvURL: URL?
     @State private var exportError: String?
     @State private var purchaseManager = PurchaseManager.shared
+    @State private var paywallReason: ProPaywallReason?
 
     private var summary: ProjectSummary { ProjectCalculator.summarize(project) }
     private var quoteLocale: Locale { Locale(identifier: project.quoteLanguage) }
 
     var body: some View {
+        let summary = self.summary
         NavigationStack {
             List {
                 Section {
@@ -48,8 +54,8 @@ struct QuotePreviewView: View {
                     ForEach(summary.lines) { line in
                         QuoteLineRow(
                             title: line.item.descriptionText.isEmpty ? AppLocalization.text("profile.\(line.item.profile.rawValue)", locale: quoteLocale) : line.item.descriptionText,
-                            subtitle: "\(MaterialCatalog.localizedName(materialID: line.item.materialID, fallback: line.item.materialName, locale: quoteLocale)) · × \(line.item.quantity)",
-                            mass: "\(AppFormatters.number(line.result.totalMassKg, maximumFractionDigits: 2, locale: quoteLocale)) kg",
+                            subtitle: lineSubtitle(line.item),
+                            mass: project.showQuoteMass ? AppFormatters.mass(line.result.totalMassKg, system: project.unitSystem, locale: quoteLocale) : "",
                             amount: AppFormatters.decimal(line.customerQuoteAmount, currencyCode: project.currencyCode, locale: quoteLocale)
                         )
                     }
@@ -68,7 +74,18 @@ struct QuotePreviewView: View {
                         }
                     }
                 }
+                Section("workflow.quote_versions") {
+                    Button(versionSaved ? "workflow.version_saved" : "workflow.save_version", systemImage: "clock.badge.checkmark") { saveVersion() }
+                        .disabled(snapshotData == nil || versionSaved)
+                    Text("workflow.version_help").font(.caption).foregroundStyle(.secondary)
+                }
                 Section("quote.export") {
+                    if purchaseManager.isPro {
+                        Picker("workflow.export_purpose", selection: $csvKind) {
+                            ForEach(QuoteCSVKind.allCases) { Text(LocalizedStringKey($0.title)).tag($0) }
+                        }
+                        Text("workflow.export_help").font(.caption).foregroundStyle(.secondary)
+                    }
                     if let pdfURL {
                         ShareLink(item: pdfURL, preview: SharePreview(pdfURL.lastPathComponent)) {
                             Label("quote.share_pdf", systemImage: "doc.richtext").frame(maxWidth: .infinity)
@@ -76,21 +93,33 @@ struct QuotePreviewView: View {
                     }
                     if let csvURL, purchaseManager.isPro {
                         ShareLink(item: csvURL, preview: SharePreview(csvURL.lastPathComponent)) {
-                            Label("quote.share_csv", systemImage: "tablecells").frame(maxWidth: .infinity)
+                            Label("workflow.share_csv", systemImage: "tablecells").frame(maxWidth: .infinity)
                         }
                     } else if !purchaseManager.isPro {
-                        Label("purchase.limit.csv", systemImage: "lock.fill").foregroundStyle(.secondary)
+                        Button { paywallReason = .csv } label: {
+                            Label("purchase.limit.csv", systemImage: "lock.fill").frame(maxWidth: .infinity)
+                        }
                     }
                     if pdfURL == nil && csvURL == nil { ProgressView("quote.preparing") }
                 }
             }
             .navigationTitle("quote.preview")
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("common.done") { dismiss() } } }
-            .task { prepareExports() }
+            .task { await Task.yield(); prepareExports() }
+            .onChange(of: csvKind) { _, _ in prepareCSV() }
+            .onChange(of: purchaseManager.isPro) { _, value in if value { versionSaved = false; prepareExports() } }
+            .proPaywall(reason: $paywallReason)
             .alert("export.error.title", isPresented: Binding(get: { exportError != nil }, set: { if !$0 { exportError = nil } })) {
                 Button("common.ok", role: .cancel) {}
             } message: { Text(exportError ?? "") }
         }
+    }
+
+    private func lineSubtitle(_ item: CalculationItemEntity) -> String {
+        let material = MaterialCatalog.localizedName(materialID: item.materialID, fallback: item.materialName, locale: quoteLocale)
+        let unit = project.unitSystem.stockLengthUnit
+        let length = AppFormatters.number(unit.fromMeters(item.lengthUnit.toMeters(item.lengthValue)), maximumFractionDigits: 4, locale: quoteLocale)
+        return [material, item.materialGrade, length + " " + unit.rawValue + " × " + String(item.quantity)].filter { !$0.isEmpty }.joined(separator: " · ")
     }
 
     private func quoteTotalRow(_ key: String, value: Decimal) -> some View {
@@ -118,22 +147,33 @@ struct QuotePreviewView: View {
             let generatedAt = Date.now
             let company = purchaseManager.isPro ? companies.first : nil
             let includeBranding = !purchaseManager.isPro
-            let snapshot = try QuoteExportService.snapshotData(for: project, company: company, generatedAt: generatedAt, includeBranding: includeBranding)
-            pdfURL = try QuoteExportService.pdfURL(for: project, company: company, generatedAt: generatedAt, includeBranding: includeBranding)
-            csvURL = purchaseManager.isPro ? try QuoteExportService.csvURL(for: project, generatedAt: generatedAt) : nil
-            modelContext.insert(QuoteSnapshotEntity(projectID: project.id, payload: snapshot))
-            try modelContext.save()
+            let data = try QuoteExportService.snapshotData(for: project, company: company, generatedAt: generatedAt, includeBranding: includeBranding)
+            let frozen = try QuoteExportService.decodeSnapshot(data)
+            snapshotData = data; snapshot = frozen
+            pdfURL = try QuoteExportService.pdfURL(snapshot: frozen)
+            prepareCSV()
         } catch { exportError = error.localizedDescription }
+    }
+    private func prepareCSV() {
+        guard purchaseManager.isPro, let snapshot else { return }
+        do { csvURL = try QuoteCSVRenderer.url(snapshot, kind: csvKind) } catch { exportError = error.localizedDescription }
+    }
+    private func saveVersion() {
+        guard let snapshotData, !versionSaved else { return }
+        let entity = QuoteSnapshotEntity(projectID: project.id, payload: snapshotData)
+        modelContext.insert(entity)
+        do { try modelContext.save(); versionSaved = true } catch { modelContext.delete(entity); exportError = error.localizedDescription }
     }
 }
 
-private struct GeneratedPDFPreview: View {
+struct GeneratedPDFPreview: View {
     let url: URL
 
     var body: some View {
         PDFKitView(url: url)
             .background(Color(uiColor: .secondarySystemBackground))
             .navigationTitle("quote.document")
+        .toolbar { Text("\(PDFDocument(url: url)?.pageCount ?? 0)").accessibilityLabel("workflow.page_count") }
             .navigationBarTitleDisplayMode(.inline)
     }
 }

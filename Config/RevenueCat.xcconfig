@@ -1,0 +1,3 @@
+// Safe repository default. A local ignored file may override this value.
+REVENUECAT_API_KEY = REVENUECAT_API_KEY_NOT_CONFIGURED
+#include? "RevenueCat.local.xcconfig"

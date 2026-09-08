@@ -30,6 +30,14 @@
 
 不要把真实 key 写入 `project.yml` 或提交 Git。Apple 正式 key 必须是 `appl_` 开头；`test_` key 仅可用于 Debug。
 
+本机 Xcode 构建可新建被 Git 忽略的 `Config/RevenueCat.local.xcconfig`：
+
+```xcconfig
+REVENUECAT_API_KEY = appl_your_steelflow_public_sdk_key
+```
+
+`Config/RevenueCat.xcconfig` 会在没有本地文件时继续使用安全占位值，因此克隆仓库和 CI 不会因缺少私密配置文件而失败。CI/归档也可以继续通过命令行构建设置或受保护的环境变量注入。
+
 命令行示例：
 
 ```bash

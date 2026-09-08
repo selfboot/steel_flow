@@ -1,0 +1,51 @@
+{
+  "status": "submitted_with_version_1.0.1_build_8",
+  "appId": "6806282417",
+  "researchDate": "2026-09-05",
+  "baselineNote": "Published names, subtitles and hidden keywords were verified directly in App Store Connect before editing a separate 1.0.1 draft.",
+  "experimentNote": "The user authorized one combined optimization release: metadata, screenshot order and a live weight preview. Ranking and conversion changes cannot be attributed to one component independently; impact has not yet been measured.",
+  "localizations": {
+    "en-US": {
+      "name": "SteelFlow: Metal Calculator",
+      "subtitle": "Weight, Cost & PDF Quotes",
+      "keywords": "steel,pipe,tube,plate,bar,beam,angle,aluminum,stainless,copper,brass,material,mass,estimate,imperial",
+      "rationale": "Retain the relevant title and subtitle. Replace cutlist, workshop, section and fabrication with material and unit terms more closely tied to supported weight calculations. New term demand remains unmeasured."
+    },
+    "zh-Hans": {
+      "name": "SteelFlow 钢材重量计算器",
+      "subtitle": "钢管钢板算重，材料成本与PDF报价单",
+      "keywords": "金属,圆管,方管,角钢,槽钢,工字钢,H型钢,不锈钢,铝材,铜材,圆钢,扁钢,算料",
+      "rationale": "Retain the exact core title. Move pipe and plate tasks plus material cost into the subtitle; remove duplicate pipe wording from the keyword field and cover round/flat bar. Chinese token combinations are hypotheses and must be measured. 算料 is retained for continuity at low priority; its results include cutting-layout products."
+    }
+  },
+  "screenshotExperiment": {
+    "status": "24_new_screenshots_submitted_with_version_1.0.1_build_8",
+    "firstThree": [
+      {
+        "position": 1,
+        "en-US": "Metal weight. Calculated.",
+        "zh-Hans": "输入尺寸，即刻算重。",
+        "visual": "Real calculation with a visible unit/total weight preview and dimension inputs."
+      },
+      {
+        "position": 2,
+        "en-US": "Every cost. One clear total.",
+        "zh-Hans": "损耗与费用，逐项汇总。",
+        "visual": "Project summary with waste-adjusted mass, material costs, fees, tax and total."
+      },
+      {
+        "position": 3,
+        "en-US": "A PDF quote. Ready to share.",
+        "zh-Hans": "生成报价单，直接发客户。",
+        "visual": "Actual quote preview with PDF preview/share controls; Pro branding identified in the caption."
+      }
+    ],
+    "remainingOrder": [
+      "Supported profiles and materials",
+      "Metric/imperial and saved material prices",
+      "Offline, no account, one-time Pro"
+    ]
+  },
+  "submittedAt": "2026-09-05 13:16:38 UTC+8",
+  "reviewSubmissionId": "18ae6526-a9fe-471a-957d-78fdd5419e83"
+}

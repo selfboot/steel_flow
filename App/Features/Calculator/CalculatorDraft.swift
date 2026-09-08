@@ -24,6 +24,7 @@ final class CalculatorDraft {
     var materialGrade: String
     var priceIncludesTax: Bool
     var priceEffectiveAt: Date
+    var priceNeedsReview = false
     var itemDescription: String
     var internalNote: String
 
@@ -144,6 +145,7 @@ final class CalculatorDraft {
     }
 
     func apply(priceEntry: PriceBookEntryEntity) {
+        priceNeedsReview = false
         unitPriceText = priceEntry.unitPrice.description
         priceBasis = priceEntry.priceBasis
         priceSource = .history
@@ -155,6 +157,7 @@ final class CalculatorDraft {
     }
 
     func apply(material: MaterialEntity, locale: Locale = .current) {
+        if selectedMaterialID != material.id && (unitPriceText != "0" || !priceSourceName.isEmpty) { priceNeedsReview = true }
         selectedMaterialID = material.id
         densityText = AppFormatters.number(material.densityKgPerM3, maximumFractionDigits: 1, locale: locale)
     }
@@ -177,14 +180,14 @@ final class CalculatorDraft {
         for field in profile.dimensionFields where field != .customArea {
             guard let text = dimensionTexts[field], let value = DecimalParser.double(text, locale: locale) else { continue }
             let meters = geometryUnit.toMeters(value)
-            dimensionTexts[field] = AppFormatters.number(newUnit.fromMeters(meters), maximumFractionDigits: 6, locale: locale)
+            dimensionTexts[field] = AppFormatters.number(newUnit.fromMeters(meters), maximumFractionDigits: 12, locale: locale)
         }
         geometryUnit = newUnit
     }
 
     func convertLength(to newUnit: LengthUnit, locale: Locale) {
         guard newUnit != lengthUnit, let value = DecimalParser.double(lengthText, locale: locale) else { return }
-        lengthText = AppFormatters.number(newUnit.fromMeters(lengthUnit.toMeters(value)), maximumFractionDigits: 6, locale: locale)
+        lengthText = AppFormatters.number(newUnit.fromMeters(lengthUnit.toMeters(value)), maximumFractionDigits: 12, locale: locale)
         lengthUnit = newUnit
     }
 
@@ -193,7 +196,7 @@ final class CalculatorDraft {
               let text = dimensionTexts[.customArea],
               let value = DecimalParser.double(text, locale: locale) else { return }
         let squareMeters = areaUnit.toSquareMeters(value)
-        dimensionTexts[.customArea] = AppFormatters.number(newUnit.fromSquareMeters(squareMeters), maximumFractionDigits: 6, locale: locale)
+        dimensionTexts[.customArea] = AppFormatters.number(newUnit.fromSquareMeters(squareMeters), maximumFractionDigits: 12, locale: locale)
         areaUnit = newUnit
     }
 
@@ -204,12 +207,14 @@ final class CalculatorDraft {
         case .roundBar: metric = [.diameter: 20]
         case .squareBar: metric = [.side: 20]
         case .hexBar: metric = [.acrossFlats: 20]
+        case .octagonalBar: metric = [.acrossFlats: 20]
         case .roundTube: metric = [.outerDiameter: 60.3, .wallThickness: 3.2]
         case .squareTube: metric = [.outerSide: 50, .wallThickness: 3]
         case .rectangularTube: metric = [.width: 80, .height: 40, .wallThickness: 3]
         case .angle: metric = [.width: 50, .height: 50, .wallThickness: 5]
         case .channel: metric = [.height: 100, .flangeWidth: 50, .webThickness: 5, .flangeThickness: 7]
         case .iSection: metric = [.height: 200, .flangeWidth: 100, .webThickness: 6, .flangeThickness: 9]
+        case .tSection: metric = [.height: 100, .flangeWidth: 50, .webThickness: 5, .flangeThickness: 7]
         case .customArea: return [.customArea: system == .metric ? 1_000 : 1.55]
         }
         guard system == .imperial else { return metric }

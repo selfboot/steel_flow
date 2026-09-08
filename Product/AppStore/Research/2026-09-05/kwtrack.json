@@ -1,0 +1,46 @@
+[
+  {
+    "term": "metal calculator",
+    "country": "us",
+    "popularity": 61,
+    "difficulty": 23,
+    "opportunity": 55,
+    "estimatedDailySearches": 430,
+    "classification": null,
+    "queriedAt": "2026-09-05T04:28:56.365086+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "metal weight calculator",
+    "country": "us",
+    "popularity": 51,
+    "difficulty": 31,
+    "opportunity": 46,
+    "estimatedDailySearches": 218,
+    "classification": null,
+    "queriedAt": "2026-09-05T04:29:00.614170+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "steel weight calculator",
+    "country": "us",
+    "popularity": 34,
+    "difficulty": 26,
+    "opportunity": 35,
+    "estimatedDailySearches": 51,
+    "classification": null,
+    "queriedAt": "2026-09-05T04:29:11.437770+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "pipe weight calculator",
+    "country": "us",
+    "popularity": 17,
+    "difficulty": 16,
+    "opportunity": 19,
+    "estimatedDailySearches": 7,
+    "classification": null,
+    "queriedAt": "2026-09-05T04:29:17.077572+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  }
+]

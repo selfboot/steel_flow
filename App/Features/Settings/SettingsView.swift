@@ -1,5 +1,7 @@
 import SwiftUI
 import SwiftData
+import PhotosUI
+import UIKit
 
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
@@ -15,6 +17,11 @@ struct SettingsView: View {
     @AppStorage("app.currency") private var currencyCode = "USD"
     @AppStorage("app.paper") private var paperRaw = PaperSize.a4.rawValue
     @State private var purchaseManager = PurchaseManager.shared
+    @AppStorage("workflow.last_backup") private var lastBackup: Double = 0
+    @AppStorage("workflow.last_restore") private var lastRestore: Double = 0
+    @State private var showCompany = false
+    @State private var pendingProAction: (() -> Void)?
+    @State private var showCustomers = false
     @State private var showExporter = false
     @State private var showImporter = false
     @State private var backupDocument = SteelFlowBackupDocument()
@@ -23,8 +30,7 @@ struct SettingsView: View {
     @State private var pendingImportPreview: BackupPreview?
     @State private var showImportConfirmation = false
     @State private var showDeleteConfirmation = false
-    @State private var showProLimit = false
-    @State private var currencyDraft = ""
+    @State private var paywallReason: ProPaywallReason?
 
     var body: some View {
         Form {
@@ -37,8 +43,7 @@ struct SettingsView: View {
                 Picker("settings.unit_system", selection: $unitSystemRaw) {
                     ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0.rawValue) }
                 }
-                TextField("settings.currency", text: $currencyDraft).textInputAutocapitalization(.characters)
-                if CurrencyRules.normalizedCode(currencyDraft) == nil { Label("error.invalid_currency", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
+                CurrencyPickerRow(selection: $currencyCode)
                 Picker("settings.paper", selection: $paperRaw) {
                     Text("paper.a4").tag(PaperSize.a4.rawValue)
                     Text("paper.letter").tag(PaperSize.letter.rawValue)
@@ -46,10 +51,11 @@ struct SettingsView: View {
             }
 
             Section("settings.quote") {
+                Button("workflow.customers") { showCustomers = true }
                 if purchaseManager.isPro {
-                    NavigationLink("settings.company_profile") { CompanyProfileView() }
+                    Button("settings.company_profile") { showCompany = true }
                 } else {
-                    Button { showProLimit = true } label: { Label("settings.company_profile", systemImage: "lock.fill") }
+                    Button { pendingProAction = { showCompany = true }; paywallReason = .companyProfile } label: { Label("settings.company_profile", systemImage: "lock.fill") }
                 }
             }
 
@@ -60,32 +66,36 @@ struct SettingsView: View {
                     if let price = purchaseManager.localizedPrice, !purchaseManager.isPro { Text(price).foregroundStyle(.secondary) }
                 }
                 if !purchaseManager.isPro {
-                    Button("purchase.buy") { Task { await purchaseManager.purchase() } }
-                        .disabled(!purchaseManager.isPurchaseAvailable || purchaseManager.isLoading)
-                }
-                Button("purchase.restore") { Task { await purchaseManager.restore() } }
-                    .disabled(purchaseManager.isLoading)
-                if purchaseManager.isLoading { ProgressView() }
-                if let message = purchaseManager.availabilityMessage {
-                    Label(message, systemImage: "exclamationmark.triangle")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    Button("purchase.buy") { paywallReason = .general }
                 }
                 Text("purchase.help").font(.caption).foregroundStyle(.secondary)
             }
 
             Section("settings.data") {
+                if lastBackup > 0 { LabeledContent("workflow.last_backup", value: AppFormatters.date(Date(timeIntervalSince1970: lastBackup), locale: locale)) }
+                else { Text("workflow.backup_never").foregroundStyle(.secondary) }
+                if lastRestore > 0 { LabeledContent("workflow.last_restore", value: AppFormatters.date(Date(timeIntervalSince1970: lastRestore), locale: locale)) }
+                if !projects.isEmpty && Date.now.timeIntervalSince1970 - lastBackup > 30 * 86400 { Label("workflow.backup_reminder", systemImage: "externaldrive.badge.exclamationmark").font(.caption).foregroundStyle(.orange) }
+                Text("workflow.backup_contents").font(.caption).foregroundStyle(.secondary)
                 Button {
-                    if purchaseManager.isPro { exportBackup() } else { showProLimit = true }
+                    if purchaseManager.isPro { exportBackup() } else { pendingProAction = { exportBackup() }; paywallReason = .backups }
                 } label: {
                     Label("backup.export", systemImage: purchaseManager.isPro ? "square.and.arrow.up" : "lock.fill")
                 }
                 Button {
-                    if purchaseManager.isPro { showImporter = true } else { showProLimit = true }
+                    if purchaseManager.isPro { showImporter = true } else { pendingProAction = { showImporter = true }; paywallReason = .backups }
                 } label: {
                     Label("backup.import", systemImage: purchaseManager.isPro ? "square.and.arrow.down" : "lock.fill")
                 }
                 Button(role: .destructive) { showDeleteConfirmation = true } label: { Label("settings.delete_all", systemImage: "trash") }
+            }
+
+            Section("settings.support") {
+                NavigationLink {
+                    FeedbackView()
+                } label: {
+                    Label("feedback.entry", systemImage: "envelope")
+                }
             }
 
             Section("settings.about") {
@@ -94,11 +104,14 @@ struct SettingsView: View {
                 LabeledContent("settings.privacy", value: AppLocalization.text("settings.privacy.value", locale: locale))
             }
         }
+        .navigationDestination(isPresented: $showCompany) { CompanyProfileView() }
         .navigationTitle("tab.settings")
         .task { await purchaseManager.load() }
+        .proPaywall(reason: $paywallReason) { if let action = pendingProAction { pendingProAction = nil; action() } }
         .fileExporter(isPresented: $showExporter, document: backupDocument, contentType: .steelFlowBackup, defaultFilename: "SteelFlow-Backup") { result in
-            if case .failure(let error) = result { backupMessage = error.localizedDescription }
+            switch result { case .success: lastBackup = Date.now.timeIntervalSince1970; case .failure(let error): backupMessage = error.localizedDescription }
         }
+        .sheet(isPresented: $showCustomers) { CustomerPickerView() }
         .fileImporter(isPresented: $showImporter, allowedContentTypes: [.steelFlowBackup, .json]) { result in importBackup(result) }
         .alert("backup.import.confirm", isPresented: $showImportConfirmation) {
             Button("common.cancel", role: .cancel) { clearPendingImport() }
@@ -136,19 +149,7 @@ struct SettingsView: View {
                 snapshots.count
             ))
         }
-        .onAppear { currencyDraft = currencyCode }
-        .onChange(of: currencyDraft) { _, value in
-            if let code = CurrencyRules.normalizedCode(value) { currencyCode = code }
-        }
         .onChange(of: languageCode) { _, _ in Task { await purchaseManager.load() } }
-        .alert("purchase.limit.title", isPresented: $showProLimit) {
-            Button("common.ok", role: .cancel) {}
-        } message: {
-            Text("purchase.limit.pro_feature")
-        }
-        .alert(purchaseManager.alertTitle, isPresented: Binding(get: { purchaseManager.alertMessage != nil }, set: { if !$0 { purchaseManager.alertMessage = nil } })) {
-            Button("common.ok", role: .cancel) {}
-        } message: { Text(purchaseManager.alertMessage ?? "") }
     }
 
     private func exportBackup() {
@@ -160,7 +161,8 @@ struct SettingsView: View {
                 priceBook: priceBook,
                 customers: customers,
                 quoteSnapshots: snapshots,
-                preferences: .init(languageCode: languageCode, unitSystemRaw: unitSystemRaw, currencyCode: currencyCode, paperSizeRaw: paperRaw)
+                preferences: .init(languageCode: languageCode, unitSystemRaw: unitSystemRaw, currencyCode: currencyCode, paperSizeRaw: paperRaw),
+                libraryData: CalculationLibrary.shared.exportData
             )
             showExporter = true
         } catch { backupMessage = error.localizedDescription }
@@ -182,11 +184,12 @@ struct SettingsView: View {
         guard let data = pendingImportData else { return }
         do {
             let imported = try BackupService.importCopy(data: data, into: modelContext)
+            if let libraryData = imported.libraryData { try CalculationLibrary.shared.merge(libraryData) }
+            lastRestore = Date.now.timeIntervalSince1970
             if importPreferences, let preferences = imported.preferences {
                 languageCode = preferences.languageCode
                 unitSystemRaw = preferences.unitSystemRaw
                 currencyCode = preferences.currencyCode
-                currencyDraft = preferences.currencyCode
                 paperRaw = preferences.paperSizeRaw
             }
             let messageLocale = importPreferences && imported.preferences?.languageCode != "system"
@@ -216,9 +219,11 @@ struct SettingsView: View {
         snapshots.forEach(modelContext.delete)
         priceBook.forEach(modelContext.delete)
         for company in companies {
+            company.logoData = nil; company.defaultTerms = ""
             company.companyName = ""; company.contactName = ""; company.email = ""; company.phone = ""; company.address = ""; company.updatedAt = .now
         }
         if PersistenceErrorCenter.shared.save(modelContext) {
+            CalculationLibrary.shared.clear(); lastBackup = 0; lastRestore = 0
             backupMessage = AppLocalization.text("settings.delete_all.done", locale: locale)
         }
     }
@@ -246,6 +251,10 @@ private struct CompanyProfileForm: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     let company: CompanyProfileEntity
+    @State private var logoData: Data?
+    @State private var selectedLogo: PhotosPickerItem?
+    @State private var defaultTerms = ""
+    @State private var logoError = false
     @State private var companyName = ""
     @State private var contactName = ""
     @State private var email = ""
@@ -261,13 +270,34 @@ private struct CompanyProfileForm: View {
                 TextField("company.phone", text: $phone).keyboardType(.phonePad)
                 TextField("company.address", text: $address, axis: .vertical).lineLimit(2...5)
             }
+            Section("workflow.branding") {
+                if let data = logoData, let image = UIImage(data: data) {
+                    Image(uiImage: image).resizable().scaledToFit().frame(maxWidth: 180, maxHeight: 80)
+                    Button("workflow.remove_logo", role: .destructive) { logoData = nil }
+                }
+                PhotosPicker(selection: $selectedLogo, matching: .images) { Label("workflow.choose_logo", systemImage: "photo") }
+                TextField("workflow.default_terms", text: $defaultTerms, axis: .vertical).lineLimit(3...10)
+            }
             Section { Text("company.help").font(.caption).foregroundStyle(.secondary) }
         }
+        .keyboardDismissSupport()
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
             ToolbarItem(placement: .confirmationAction) { Button("common.save") { save() } }
         }
+        .task(id: selectedLogo) {
+            guard let selectedLogo else { return }
+            do {
+                guard let data = try await selectedLogo.loadTransferable(type: Data.self), data.count <= 20_000_000, let image = UIImage(data: data) else { logoError = true; return }
+                let scale = min(1, 600 / max(image.size.width, image.size.height))
+                let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+                let renderer = UIGraphicsImageRenderer(size: size)
+                logoData = renderer.pngData { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
+            } catch { logoError = true }
+        }
+        .alert("workflow.logo_error", isPresented: $logoError) { Button("common.ok", role: .cancel) {} }
         .onAppear {
+            logoData = company.logoData; defaultTerms = company.defaultTerms
             companyName = company.companyName
             contactName = company.contactName
             email = company.email
@@ -277,6 +307,7 @@ private struct CompanyProfileForm: View {
     }
 
     private func save() {
+        company.logoData = logoData; company.defaultTerms = defaultTerms
         company.companyName = companyName.trimmingCharacters(in: .whitespacesAndNewlines)
         company.contactName = contactName.trimmingCharacters(in: .whitespacesAndNewlines)
         company.email = email.trimmingCharacters(in: .whitespacesAndNewlines)
