@@ -1,43 +1,30 @@
-# SteelFlow App Store screenshot design notes
+# SteelFlow App Store 截图设计记录
 
-Date: 2026-08-28
+日期：2026-09-05；适用版本：1.0.1（8）。
 
-## Reference audit
+本轮将搜索访问者最关心的算重结果放到第一张，把项目成本与 PDF 报价提前到第二、三张。标题使用短句，画面只陈述 App 实际支持的功能。保留 SteelFlow 蓝色体系，PDF 页反转为深蓝底白字；修正深色页标签对比度和设备下方标签间距。
 
-The final deck studies established App Store patterns without copying their artwork:
+采用独立页面，便于用户在搜索和详情页单独理解每张图。第一张 iPhone 有意放大设备并裁去底部，突出顶部重量与尺寸输入；其他页面完整容纳设备。相邻页在标题上置和设备上置之间交替。
 
-- [Things 3](https://apps.apple.com/us/app/things-3/id904237743): restrained copy, generous negative space, and real product UI as the proof.
-- [Flighty](https://apps.apple.com/us/app/flighty-live-flight-tracker/id1358823008): outcome-first headlines backed by visible, specific data.
-- [Arc Search](https://apps.apple.com/us/app/arc-search-find-it-faster/id6472513080): short, oversized benefit statements that remain readable at thumbnail size.
-- [Gentler Streak](https://apps.apple.com/us/app/gentler-streak-workout-tracker/id1576857102): one brand system across the full sequence while each frame demonstrates a different feature.
-
-## Layout rule
-
-All six SteelFlow screens use the same information hierarchy:
-
-1. Small feature label.
-2. One short, outcome-led headline.
-3. One real iPhone screen anchored at the bottom.
-
-The phone no longer alternates between the top and bottom. Continuity comes from the shared blue surface and fixed hierarchy; variation comes from the actual workflow shown inside the device. This prevents decorative layout changes from competing with a technical quoting product.
-
-## Story and evidence mapping
-
-| Screen | Store claim | Matching in-app evidence | Raw asset |
+| 顺序 | 内容 | 真实界面 | 版式 |
 | --- | --- | --- | --- |
-| 1 | Steel weight, ready to quote | Profile-based calculation home | `{locale}-home.png` |
-| 2 | Dimensions produce weight and cost | Calculated unit mass, total mass, waste-adjusted mass, and subtotal | `{locale}-calculation.png` |
-| 3 | Waste, fees, and supplier prices are accounted for | Geometry, material, waste, price basis, unit price, and line fees | `{locale}-pricing.png` |
-| 4 | Every steel item rolls into one project total | Three steel items plus mass, fees, markup, tax, and total | `{locale}-project.png` |
-| 5 | Client-ready PDF quote | Quote preview with itemized totals and PDF share action | `{locale}-quote.png` |
-| 6 | Built-in densities and saved custom prices | Built-in/custom material density list and saved price history | `{locale}-materials.png` |
+| 1 | 输入尺寸，即刻算重 | 顶部单件/总重量及尺寸输入 | Hero |
+| 2 | 损耗与费用，逐项汇总 | 项目重量、材料、加工、税额与总价 | Device top |
+| 3 | 生成报价单，直接发客户 | 报价预览、PDF 预览与分享入口 | Device bottom，深色 |
+| 4 | 选好型材，开始算重 | 13 种型材入口 | Hero |
+| 5 | 材料与价格，随用随查 | 内置密度、自定义材料及保存价格 | Device top |
+| 6 | 离线也能算，项目留本机 | 真实尺寸、型材预览与材料计价 | Device bottom |
 
-Both `en-US` and `zh-Hans` use locale-specific names, currencies, suppliers, and quote content. Screens are captured from the real SwiftUI views through a deterministic Debug-only marketing route and UI test.
+PDF 页标签区分 Pro 品牌定制；基本 PDF 分享可免费使用。材料/供应商名称属于确定性演示项目数据，价格不是实时行情。iPad 第 1、6 页可同时容纳较多表单内容，允许显示同一完整页面。
 
-## Export contract
+中英文 iPhone 和 iPad 均重新运行真实截图测试。逐张检查无系统弹窗、标题截断或遮挡；第一次 iPad 采集曾出现系统账号验证弹窗，整组废弃后重新采集并检查。
 
-- Locales: `en-US`, `zh-Hans`
-- Screens per locale: 6
-- iPhone sizes: 1320×2868, 1284×2778, 1206×2622, 1125×2436
-- Final bundle: `Exports/SteelFlow-AppStore-Screenshots.zip`
-- Total output: 48 PNG files
+## 导出
+
+编辑器原有 HTML 导出流程生成 72 张 PNG：2 语言 ×（iPhone 4 尺寸 + iPad 2 尺寸）× 6 页。iPhone：1320×2868、1284×2778、1206×2622、1125×2436；iPad：2064×2752、2048×2732。
+
+上传使用 1320×2868、2064×2752，共 24 张。仅规范 PNG 为 RGB 编码，移除全不透明 alpha 通道，保持颜色像素不变。上传顺序、源文件 MD5 与 Apple 的 COMPLETE 状态逐项核验。
+
+- 总素材包：`Exports/SteelFlow-AppStore-Screenshots.zip`
+- 预览：`Exports/ASO-2026-09-05/`
+- 可编辑状态：`ScreenshotsEditor/app-store-screenshots.json`

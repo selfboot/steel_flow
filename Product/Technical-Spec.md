@@ -102,12 +102,14 @@ enum ProfileKind: String, Codable, CaseIterable {
     case roundBar
     case squareBar
     case hexBar
+    case octagonalBar
     case roundTube
     case squareTube
     case rectangularTube
     case angle
     case channel
     case iSection
+    case tSection
     case customArea
 }
 ```
@@ -215,12 +217,14 @@ Raw user input
 | Round bar | `π × diameter² / 4` |
 | Square bar | `side²` |
 | Hex bar, across flats F | `√3 × F² / 2` |
+| Octagonal bar, across flats F | `2 × (√2 - 1) × F²` |
 | Round tube | `π × (OD² - ID²) / 4`, `ID = OD - 2t` |
 | Square tube | `outer² - inner²`, `inner = outer - 2t` |
 | Rectangular tube | `W×H - (W-2t)(H-2t)` |
 | Equal/custom angle | two rectangles minus overlap; radii ignored only when clearly disclosed |
 | Channel | web rectangle + two flange rectangles; radii ignored in generic mode |
 | I/H section | web rectangle + two flange rectangles; radii ignored in generic mode |
+| T section | web rectangle + one flange rectangle; radii ignored in generic mode |
 | Custom area | user-provided area converted to m² |
 
 对于标准型钢，若未来导入经授权的理论重量表，可提供两种结果：
@@ -234,7 +238,7 @@ Raw user input
 
 - 所有长度必须大于 0，并设置合理上限防止输入单位错误。
 - 管材 `2 × wallThickness < outerDimension`。
-- I/H/槽钢翼缘总厚度不得超过高度。
+- I/H/槽钢的两块翼缘总厚度不得超过高度；T 型钢翼缘厚度不得达到高度。
 - 数量为 1…1,000,000，超范围需确认而非直接崩溃。
 - 密度必须大于 0；偏离常用材料范围时显示警告但允许专家继续。
 - 单位转换后出现非有限值、溢出或负面积时返回错误，不显示结果。
@@ -281,6 +285,8 @@ UI 的“计算详情”和 PDF 内部审计页来自同一 trace，避免另写
 rectangularTube: 矩形管, rectangular tube, RHS, box section
 squareTube: 方管, square tube, SHS, box section
 iSection: 工字钢, H型钢, I-beam, H-beam, universal beam
+tSection: T型钢, T section, tee section
+octagonalBar: 八角钢, octagonal bar, octagon bar
 ```
 
 ## 7. 本地化实现

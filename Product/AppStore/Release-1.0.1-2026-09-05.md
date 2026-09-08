@@ -44,15 +44,15 @@
 
 ## 文件与复盘
 
-本次源码位于 `/Users/daemonzhao/Documents/SteelFlow/Build/ASORelease-20260905`，主工作区原有未提交修改未混入发布。
+发布时使用 `/Users/daemonzhao/Documents/SteelFlow/Build/ASORelease-20260905` 独立工作区，主工作区原有未提交修改未混入发布。2026-09-08 已将发布提交 `3b27f8e` 的完整历史和素材合并至 `main`；当前主工作区代码为 1.1.0。
 
-- [可编辑商店字段](/Users/daemonzhao/Documents/SteelFlow/Build/ASORelease-20260905/Product/AppStore/Metadata/metadata.json)
-- [截图设计记录](/Users/daemonzhao/Documents/SteelFlow/Build/ASORelease-20260905/Product/AppStore/Screenshot-Design-Notes.md)
-- [72 张完整尺寸截图包](/Users/daemonzhao/Documents/SteelFlow/Build/ASORelease-20260905/Product/AppStore/Exports/SteelFlow-AppStore-Screenshots.zip)
-- [中文 iPhone 预览](/Users/daemonzhao/Documents/SteelFlow/Build/ASORelease-20260905/Product/AppStore/Exports/ASO-2026-09-05/iphone-zh-Hans.jpg)
-- [英文 iPhone 预览](/Users/daemonzhao/Documents/SteelFlow/Build/ASORelease-20260905/Product/AppStore/Exports/ASO-2026-09-05/iphone-en-US.jpg)
-- [中文 iPad 预览](/Users/daemonzhao/Documents/SteelFlow/Build/ASORelease-20260905/Product/AppStore/Exports/ASO-2026-09-05/ipad-zh-Hans.jpg)
-- [英文 iPad 预览](/Users/daemonzhao/Documents/SteelFlow/Build/ASORelease-20260905/Product/AppStore/Exports/ASO-2026-09-05/ipad-en-US.jpg)
+- [可编辑商店字段](Metadata/metadata.json)
+- [截图设计记录](Screenshot-Design-Notes.md)
+- [72 张完整尺寸截图包](Exports/SteelFlow-AppStore-Screenshots.zip)
+- [中文 iPhone 预览](Exports/ASO-2026-09-05/iphone-zh-Hans.jpg)
+- [英文 iPhone 预览](Exports/ASO-2026-09-05/iphone-en-US.jpg)
+- [中文 iPad 预览](Exports/ASO-2026-09-05/ipad-zh-Hans.jpg)
+- [英文 iPad 预览](Exports/ASO-2026-09-05/ipad-en-US.jpg)
 
 上传 IPA 的 SHA-256：`79aaea2f2558734505fd2f152073d6afb69f314d1c848a8d21dd0e3baa3613c1`。本机 API 回执、构建与测试日志位于 `Build/ASO-20260905/`，未纳入源码提交。
 

@@ -93,13 +93,15 @@ SteelFlow is a pocket material calculator and quoting tool for fabricators, meta
 2. 圆钢 / Round bar
 3. 方钢 / Square bar
 4. 六角钢 / Hex bar
-5. 圆管 / Round tube or pipe by OD and wall thickness
-6. 方管 / Square tube
-7. 矩形管 / Rectangular tube
-8. 角钢 / Equal or custom angle
-9. 槽钢 / Channel with user-entered geometry
-10. 工字/H 型截面 / I/H section with user-entered geometry
-11. 自定义截面积 / Custom cross-sectional area
+5. 八角钢 / Octagonal bar
+6. 圆管 / Round tube or pipe by OD and wall thickness
+7. 方管 / Square tube
+8. 矩形管 / Rectangular tube
+9. 角钢 / Equal or custom angle
+10. 槽钢 / Channel with user-entered geometry
+11. 工字/H 型截面 / I/H section with user-entered geometry
+12. T 型钢 / T section with user-entered geometry
+13. 自定义截面积 / Custom cross-sectional area
 
 每个条目支持：
 

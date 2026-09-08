@@ -8,10 +8,14 @@
     "ageRating": "4+",
     "price": "Free",
     "copyright": "© 2026 SteelFlow",
+    "releaseType": "AFTER_APPROVAL",
     "privacy": {
       "dataCollection": {
         "type": "Purchase History",
-        "purposes": ["App Functionality", "Analytics"],
+        "purposes": [
+          "App Functionality",
+          "Analytics"
+        ],
         "linkedToIdentity": false,
         "usedForTracking": false,
         "note": "RevenueCat processes anonymous purchase and entitlement information; project and quote content is not collected."
@@ -26,31 +30,51 @@
       "name": "SteelFlow: Metal Calculator",
       "subtitle": "Weight, Cost & PDF Quotes",
       "promotionalText": "From dimensions to a client-ready quote. Calculate metal weight and cost, organize projects, then export PDF quotes and CSV lists offline—no account required.",
-      "keywords": "steel,pipe,tube,plate,bar,beam,angle,fabrication,estimate,material,mass,section,cutlist,workshop",
+      "keywords": "steel,pipe,tube,plate,bar,beam,angle,aluminum,stainless,copper,brass,material,mass,estimate,imperial",
       "descriptionFile": "en-US.md",
-      "whatsNew": "Meet SteelFlow: calculate metal weight and cost, organize project items, and create PDF quotes or CSV material lists. Version 1.0 also includes metric and imperial units, custom materials, local backup, and bilingual English/Chinese support."
+      "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
+      "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
+      "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy",
+      "whatsNew": "See unit and total metal weight at the top of the calculator while you adjust dimensions. The weight preview updates with your quantity and material, making everyday estimates easier to check."
     },
     "zh-Hans": {
       "name": "SteelFlow 钢材重量计算器",
-      "subtitle": "成本、损耗与PDF报价清单",
+      "subtitle": "钢管钢板算重，材料成本与PDF报价单",
       "promotionalText": "从尺寸到报价单：计算钢材理论重量与成本，管理项目条目，并导出 PDF 报价单和 CSV 清单。无需账号，核心功能离线可用。",
-      "keywords": "钢铁,金属,钢管,圆管,方管,角钢,槽钢,工字钢,H型钢,不锈钢,铝材,铜材,算料",
+      "keywords": "金属,圆管,方管,角钢,槽钢,工字钢,H型钢,不锈钢,铝材,铜材,圆钢,扁钢,算料",
       "descriptionFile": "zh-Hans.md",
-      "whatsNew": "SteelFlow 1.0 正式上线：支持钢材与常见金属型材算重、项目成本核算、PDF 报价单和 CSV 清单；同时提供公英制单位、自定义材料、本地备份及中英文界面。"
+      "supportUrl": "https://docs.puzzles-game.com/zh/steelflow/support",
+      "marketingUrl": "https://docs.puzzles-game.com/zh/steelflow",
+      "privacyPolicyUrl": "https://docs.puzzles-game.com/zh/steelflow/privacy",
+      "whatsNew": "计算页顶部新增重量预览，调整尺寸时即可查看单件重量和总重量。预览会随数量、材料实时更新，日常算重核对更方便。"
     }
   },
+  "reviewNotes": "Version 1.0.1 adds a live weight summary at the top of the calculator. Choose Calculate > Plate / flat bar, then change dimensions or quantity to see unit mass and total mass update immediately. These values are theoretical net weight before waste. Existing calculation and pricing logic is unchanged. The App Store screenshots and English/Chinese metadata have also been refreshed.\n\nNo demo account is required. SteelFlow opens directly and core calculations work without sign-in.\n\nTo review the non-consumable purchase:\n1. Open Settings.\n2. Tap Company profile, or tap Unlock Pro in the SteelFlow Pro section.\n3. The SteelFlow Pro screen loads the App Store product com.steelflow.app.pro.lifetime and its localized one-time price.\n4. Tap Unlock Pro to purchase. Restore purchase is available on the same screen.\n\nSteelFlow Pro unlocks unlimited projects and items, custom materials, company details and quote terms, CSV export, unbranded PDF quotes, versioned backup, and bulk pricing. There is no subscription.\n\nThe app does not require an account. Project, quote, customer and material data stays on the device. RevenueCat receives anonymous purchase and entitlement information only.",
   "inAppPurchase": {
     "productId": "com.steelflow.app.pro.lifetime",
     "type": "Non-Consumable",
     "pricing": {
       "model": "Free + Non-Consumable Lifetime Pro",
-      "standard": {"CNY": 58, "USD": 14.99},
-      "launchWindow": {"durationDays": "30-45", "CNY": 38, "USD": 9.99},
+      "standard": {
+        "CNY": 58,
+        "USD": 14.99
+      },
+      "launchWindow": {
+        "durationDays": "30-45",
+        "CNY": 38,
+        "USD": 9.99
+      },
       "note": "Use territory-specific App Store price points; do not auto-convert from one base currency."
     },
     "localizations": {
-      "en-US": {"displayName": "SteelFlow Pro Lifetime", "description": "Unlimited projects, quotes, and full exports"},
-      "zh-Hans": {"displayName": "SteelFlow Pro 永久版", "description": "无限项目、自定义报价与完整导出"}
+      "en-US": {
+        "displayName": "SteelFlow Pro Lifetime",
+        "description": "Unlimited projects, quotes, and full exports"
+      },
+      "zh-Hans": {
+        "displayName": "SteelFlow Pro 永久版",
+        "description": "无限项目、自定义报价与完整导出"
+      }
     }
   }
 }

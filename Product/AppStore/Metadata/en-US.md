@@ -1,10 +1,10 @@
 # SteelFlow: Metal Calculator
 
-SteelFlow turns dimensions into a clear, verifiable metal estimate—and turns that estimate into a client-ready quote.
+Calculate metal weight from dimensions, check material costs, and turn a project into a PDF quote. SteelFlow works offline with no account required.
 
 CALCULATE METAL WEIGHT
 
-Choose a profile, enter dimensions and quantity, and see unit weight, total weight, surface area, volume, and the formula behind the result. SteelFlow supports common profiles including plate and flat bar, round and square bar, hex bar, round, square and rectangular tube, angle, channel, I/H sections, C/Z sections, and rebar.
+Choose a profile, enter dimensions and quantity, and see unit weight, total weight, surface area, volume, and the formula behind the result. SteelFlow supports common profiles including plate and flat bar, round, square, hexagonal and octagonal bar, round, square and rectangular tube, angle, channel, I/H sections, T sections, and custom cross-sectional area.
 
 ESTIMATE REAL PROJECT COST
 
@@ -28,7 +28,7 @@ No account is required. Project and material data stays on your device by defaul
 
 FREE TO START, ONE-TIME PRO UPGRADE
 
-Quick calculations and essential profiles are free. SteelFlow Pro unlocks unlimited projects and items, custom quote branding and terms, complete PDF/CSV export, backup, batch tools, and advanced profiles with one non-consumable purchase—no subscription.
+Quick calculations and essential project tools are free. SteelFlow Pro unlocks unlimited projects and items, custom materials, company details and quote terms, CSV export, unbranded PDF quotes, versioned backup, and bulk pricing with one non-consumable purchase—no subscription.
 
 IMPORTANT
 
