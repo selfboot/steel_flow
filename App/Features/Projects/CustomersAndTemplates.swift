@@ -22,6 +22,9 @@ struct TemplatePickerView: View {
     @Environment(\.dismiss) private var dismiss
     @Query private var projects: [ProjectEntity]
     var onCreated: ((ProjectEntity) -> Void)? = nil
+    var onNewProject: (() -> Void)? = nil
+    private var templates: [ProjectEntity] { projects.filter { $0.isTemplate && !$0.isArchived } }
+    private var sourceProjects: [ProjectEntity] { projects.filter { !$0.isTemplate && !$0.isArchived } }
     @Environment(\.locale) private var locale
     @State private var selectedTemplate: ProjectEntity?
     @State private var name = ""
@@ -32,6 +35,27 @@ struct TemplatePickerView: View {
         NavigationStack {
             ScrollViewReader { scroll in
             Form {
+                if templates.isEmpty {
+                    Section {
+                        Label("ui.templates_none", systemImage: "doc.on.doc").font(.headline)
+                        Text("ui.template_first_help").foregroundStyle(.secondary)
+                        if sourceProjects.isEmpty {
+                            Button("project.create") { onNewProject?(); dismiss() }.buttonStyle(PrimaryActionStyle())
+                        }
+                    }
+                    if !sourceProjects.isEmpty {
+                        Section("ui.template_choose_source") {
+                            ForEach(sourceProjects) { project in
+                                Button { saveFirstTemplate(project) } label: {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(project.name).foregroundStyle(.primary)
+                                        Text("workflow.save_template").font(.caption)
+                                    }.frame(minHeight: 44)
+                                }.accessibilityIdentifier("template.source." + project.name)
+                            }
+                        }
+                    }
+                } else {
                 Section {
                     LabeledEntry("project.name", text: $name)
                     Toggle("workflow.template_clear_prices", isOn: $clearPrices)
@@ -47,8 +71,7 @@ struct TemplatePickerView: View {
                     }.id("template.preview")
                 }
                 Section("workflow.templates") {
-                    if !projects.contains(where: { $0.isTemplate && !$0.isArchived }) { Text("workflow.templates_empty") }
-                    ForEach(projects.filter { $0.isTemplate && !$0.isArchived }) { template in
+                    ForEach(templates) { template in
                         Button { selectedTemplate = template } label: {
                             HStack { Text(template.name).foregroundStyle(.primary); Spacer(); Image(systemName: selectedTemplate?.id == template.id ? "checkmark.circle.fill" : "circle") }.frame(minHeight: 44)
                         }.accessibilityIdentifier("template." + template.name)
@@ -56,19 +79,30 @@ struct TemplatePickerView: View {
                     }
                 }
             }
+            }
             .onChange(of: selectedTemplate?.id) { _, id in if id != nil { withAnimation { scroll.scrollTo("template.preview", anchor: .top) } } }
             .keyboardDismissSupport()
             }
             .safeAreaInset(edge: .bottom) {
-                Button("ui.create_template") { if let selectedTemplate { create(selectedTemplate) } }
-                    .buttonStyle(.borderedProminent).controlSize(.large).disabled(selectedTemplate == nil)
-                    .padding().frame(maxWidth: .infinity).background(.bar).accessibilityIdentifier("template.create")
+                if !templates.isEmpty {
+                    VStack(spacing: 8) {
+                        if selectedTemplate == nil { Text("ui.template_select_first").font(.caption).foregroundStyle(.secondary) }
+                        Button { if let selectedTemplate { create(selectedTemplate) } } label: { Text("ui.create_template").frame(maxWidth: .infinity) }
+                            .buttonStyle(PrimaryActionStyle()).disabled(selectedTemplate == nil).accessibilityIdentifier("template.create")
+                    }.padding().background(.bar)
+                }
             }
             .navigationTitle("workflow.from_template")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } } }
             .proPaywall(reason: $paywallReason) { if let template = pendingTemplate { pendingTemplate = nil; create(template) } }
         }
+    }
+    private func saveFirstTemplate(_ project: ProjectEntity) {
+        let template = ProjectCloner.copy(project, name: project.name, clearPrices: true)
+        template.isTemplate = true; template.customerName = ""; template.customerContact = ""
+        modelContext.insert(template)
+        if PersistenceErrorCenter.shared.save(modelContext) { selectedTemplate = template }
     }
     private func create(_ template: ProjectEntity) {
         let isPro = PurchaseManager.shared.isPro

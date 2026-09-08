@@ -95,14 +95,16 @@ struct ProjectDetailView: View {
 
         }
         .navigationTitle(project.name)
+        .navigationBarTitleDisplayMode(.large)
         .environment(\.editMode, $editMode)
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: 4) {
                 if !deletedCopies.isEmpty || !bulkUndo.isEmpty {
                     Button("workflow.undo", systemImage: "arrow.uturn.backward") { undoLastChange() }.frame(minHeight: 44)
                 }
-            Button { showQuote = true } label: { Label("quote.preview", systemImage: "doc.text.magnifyingglass").frame(maxWidth: .infinity).frame(minHeight: 44) }
-                .buttonStyle(.borderedProminent).disabled(sortedItems.isEmpty || summary.invalidItemCount > 0 || !summary.isPricingPolicyValid)
+            if sortedItems.isEmpty { Text("ui.quote_add_first").font(.caption).foregroundStyle(.secondary).padding(.top, 8) }
+            Button { showQuote = true } label: { Label("quote.preview", systemImage: "doc.text.magnifyingglass").frame(maxWidth: .infinity) }
+                .buttonStyle(PrimaryActionStyle()).disabled(sortedItems.isEmpty || summary.invalidItemCount > 0 || !summary.isPricingPolicyValid)
                 .padding(.horizontal).padding(.vertical, 8)
             }.background(.bar)
         }
@@ -258,7 +260,12 @@ private struct ProjectItemRow: View {
 
 private struct ProfilePickerForProject: View {
     let project: ProjectEntity
-    let columns = [GridItem(.adaptive(minimum: 140), spacing: 12)]
+    @Environment(\.horizontalSizeClass) private var sizeClass
+    @Environment(\.dynamicTypeSize) private var typeSize
+    private var columns: [GridItem] {
+        if typeSize.isAccessibilitySize { return [GridItem(.flexible())] }
+        return sizeClass == .regular ? [GridItem(.adaptive(minimum: 190), spacing: 12)] : [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)]
+    }
 
     var body: some View {
         ScrollView {
@@ -266,26 +273,15 @@ private struct ProfilePickerForProject: View {
                 ForEach(ProfileKind.allCases) { profile in
                     NavigationLink {
                         ProjectCalculatorEditorHost(profile: profile, project: project)
-                    } label: { ProfilePickerCard(profile: profile) }
-                    .buttonStyle(.plain)
+                    } label: { ProfileCard(profile: profile) }
+                    .buttonStyle(PressableCardStyle()).accessibilityIdentifier("project.profile." + profile.rawValue)
                 }
             }
             .padding()
         }
+        .background(Color(uiColor: .systemGroupedBackground))
         .navigationTitle("project.add_item")
-    }
-}
-
-private struct ProfilePickerCard: View {
-    let profile: ProfileKind
-    var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: profile.symbol).font(.title).foregroundStyle(SteelFlowTheme.steelBlue)
-            Text(profile.localizationKey).font(.subheadline.weight(.semibold)).multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity, minHeight: 100)
-        .padding(12)
-        .background(SteelFlowTheme.surface, in: RoundedRectangle(cornerRadius: 14))
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -540,7 +536,7 @@ private struct ProjectItemDetailView: View {
         .safeAreaInset(edge: .bottom) {
             VStack(alignment: .leading) {
                 if let issue { InlineIssue(key: issue.message) }
-                Button("common.save") { save() }.buttonStyle(.borderedProminent).controlSize(.large).disabled(!canSave)
+                Button("common.save") { save() }.buttonStyle(PrimaryActionStyle()).controlSize(.large).disabled(!canSave)
                     .frame(maxWidth: .infinity)
             }.padding().background(.bar)
         }

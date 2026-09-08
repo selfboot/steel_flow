@@ -235,7 +235,7 @@ struct CurrencyChangeSheet: View {
             .safeAreaInset(edge: .bottom) {
                     Button(itemToSave == nil ? "common.apply" : mode == .convert ? "ui.convert_save" : mode == .clearAmounts ? "ui.clear_save" : "ui.keep_save") { apply(mode, mode == .convert ? rate : nil); dismiss() }
                         .disabled(mode == .convert && rate == nil)
-                        .buttonStyle(.borderedProminent).controlSize(.large).padding().frame(maxWidth: .infinity).background(.bar)
+                        .buttonStyle(PrimaryActionStyle()).controlSize(.large).padding().frame(maxWidth: .infinity).background(.bar)
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }

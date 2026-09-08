@@ -7,6 +7,7 @@ struct ProjectsView: View {
     @Query(sort: \ProjectEntity.updatedAt, order: .reverse) private var projects: [ProjectEntity]
     var onSelect: ((ProjectEntity) -> Void)? = nil
     @State private var openedProject: ProjectEntity?
+    @State private var createAfterTemplate = false
     @State private var pendingCreated: ProjectEntity?
     @State private var showArchived = false
     @State private var search = ""
@@ -39,7 +40,7 @@ struct ProjectsView: View {
                     if !search.isEmpty { Text(search) }
                 } actions: {
                     if !search.isEmpty { Button("ui.clear_filters") { search = ""; searchPresented = false; showTemplates = false; showArchived = false } }
-                    else if !showArchived && !showTemplates { Button("project.create") { attemptNewProject() }.buttonStyle(.borderedProminent) }
+                    else if !showArchived && !showTemplates { Button("project.create") { attemptNewProject() }.buttonStyle(PrimaryActionStyle()) }
                 }
             } else {
                 List {
@@ -84,17 +85,12 @@ struct ProjectsView: View {
                         }
                     }
                 }
+                .contentMargins(.top, 8, for: .scrollContent)
             }
         }
-        .searchable(text: $search, isPresented: $searchPresented, prompt: "workflow.project_search")
-        .safeAreaInset(edge: .top, spacing: 0) {
-            HStack {
-                Text(showTemplates ? "workflow.templates" : showArchived ? "ui.show_archived" : "ui.active_projects")
-                Spacer()
-                Text(sortByName ? "workflow.sort_name" : "ui.sort_recent")
-            }.font(.caption).foregroundStyle(.secondary).padding(.horizontal).padding(.vertical, 6).background(.bar)
-        }
+        .searchable(text: $search, isPresented: $searchPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "workflow.project_search")
         .navigationTitle("tab.projects")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Menu {
@@ -112,7 +108,7 @@ struct ProjectsView: View {
             }
         }
         .sheet(isPresented: $showNewProject) { ProjectEditorSheet() }
-        .sheet(isPresented: $showTemplatePicker, onDismiss: { openCreated() }) { TemplatePickerView { pendingCreated = $0 } }
+        .sheet(isPresented: $showTemplatePicker, onDismiss: { openCreated() }) { TemplatePickerView(onCreated: { pendingCreated = $0 }, onNewProject: { createAfterTemplate = true }) }
         .navigationDestination(item: $openedProject) { ProjectDetailView(project: $0) }
         .proPaywall(reason: $paywallReason) { if let action = pendingProAction { pendingProAction = nil; action() } }
         .alert("project.delete.confirm.title", isPresented: $showDeleteConfirmation) {
@@ -128,6 +124,7 @@ struct ProjectsView: View {
         else { NavigationLink { ProjectDetailView(project: project) } label: { ProjectRow(project: project) } }
     }
     private func openCreated() {
+        if createAfterTemplate { createAfterTemplate = false; attemptNewProject(); return }
         guard let project = pendingCreated else { return }
         pendingCreated = nil
         if let onSelect { onSelect(project) } else { openedProject = project }

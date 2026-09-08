@@ -81,7 +81,7 @@ struct ProPaywallView: View {
 
                         if purchaseManager.isPro {
                             Button("common.done") { dismiss() }
-                                .buttonStyle(.borderedProminent)
+                                .buttonStyle(PrimaryActionStyle())
                                 .controlSize(.large)
                                 .frame(maxWidth: .infinity)
                         } else {
@@ -102,7 +102,7 @@ struct ProPaywallView: View {
                                 }
                                 .frame(maxWidth: .infinity)
                             }
-                            .buttonStyle(.borderedProminent)
+                            .buttonStyle(PrimaryActionStyle())
                             .controlSize(.large)
                             .disabled(!purchaseManager.isPurchaseAvailable || purchaseManager.isLoading)
 

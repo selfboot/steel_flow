@@ -36,7 +36,11 @@ struct CalculatorHomeView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("ui.continue_draft").font(.headline)
                         NavigationLink { CalculatorEditorView(profile: draft.profile, restoredState: draft) } label: {
-                            SavedCalculationRow(record: SavedCalculation(state: draft))
+                            HStack(spacing: 12) {
+                                Image(systemName: draft.profile.symbol).font(.title2).foregroundStyle(SteelFlowTheme.steelBlue).frame(width: 42, height: 42)
+                                SavedCalculationRow(record: SavedCalculation(state: draft), isEmbedded: true)
+                                Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                            }.padding(14).background(SteelFlowTheme.surface, in: RoundedRectangle(cornerRadius: 16))
                         }.buttonStyle(PressableCardStyle()).accessibilityIdentifier("home.continue")
                     }
                 }
@@ -88,7 +92,7 @@ struct CalculatorHomeView: View {
 
 }
 
-private struct ProfileCard: View {
+struct ProfileCard: View {
     let profile: ProfileKind
 
     var body: some View {
@@ -103,11 +107,11 @@ private struct ProfileCard: View {
                 Text(profile.localizationKey)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.primary)
-                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
                 Text(profile.summaryKey)
                     .font(.caption2)
                     .foregroundStyle(.secondary)
-                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             .multilineTextAlignment(.leading)
             .layoutPriority(1)
@@ -142,12 +146,13 @@ private struct RecentCalculationRow: View {
             }
         }
         .padding(12)
-        .background(.background, in: RoundedRectangle(cornerRadius: 12))
+        .background(SteelFlowTheme.surface, in: RoundedRectangle(cornerRadius: 14))
     }
 }
 
 private struct SavedCalculationRow: View {
     let record: SavedCalculation
+    var isEmbedded = false
     @Environment(\.locale) private var locale
     @AppStorage("app.unitSystem") private var unitRaw = UnitSystem.metric.rawValue
     @Query private var materials: [MaterialEntity]
@@ -170,8 +175,8 @@ private struct SavedCalculationRow: View {
             if case .success(let result) = draft.result(locale: locale) {
                 Text(AppFormatters.mass(result.totalMassKg, system: UnitSystem(rawValue: unitRaw) ?? .metric, locale: locale)).font(.subheadline.bold()).monospacedDigit()
             }
-        }.foregroundStyle(.primary).frame(maxWidth: .infinity, alignment: .leading).padding(12)
-            .background(.background, in: RoundedRectangle(cornerRadius: 12))
+        }.foregroundStyle(.primary).frame(maxWidth: .infinity, alignment: .leading).padding(isEmbedded ? 0 : 12)
+            .background(isEmbedded ? Color.clear : SteelFlowTheme.surface, in: RoundedRectangle(cornerRadius: 14))
     }
 }
 

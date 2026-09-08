@@ -4,9 +4,25 @@ import Observation
 import UIKit
 
 enum SteelFlowTheme {
-    static let steelBlue = Color(red: 0.04, green: 0.43, blue: 0.62)
+    static let steelBlue = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark ? UIColor(red: 0.24, green: 0.68, blue: 0.91, alpha: 1) : UIColor(red: 0.04, green: 0.43, blue: 0.62, alpha: 1)
+    })
+    static let actionFill = Color(red: 0.04, green: 0.43, blue: 0.62)
     static let deepSteel = Color(red: 0.03, green: 0.20, blue: 0.27)
     static let surface = Color(uiColor: .secondarySystemGroupedBackground)
+}
+
+struct PrimaryActionStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.body.weight(.semibold))
+            .foregroundStyle(isEnabled ? Color.white : Color(uiColor: .secondaryLabel))
+            .padding(.horizontal, 16).padding(.vertical, 12)
+            .frame(minHeight: 48)
+            .background(isEnabled ? SteelFlowTheme.actionFill : Color(uiColor: .tertiarySystemFill), in: RoundedRectangle(cornerRadius: 14))
+            .opacity(configuration.isPressed && isEnabled ? 0.8 : 1)
+    }
 }
 
 struct ResultMetric: View {

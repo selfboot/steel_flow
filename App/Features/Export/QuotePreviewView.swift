@@ -69,7 +69,7 @@ struct QuotePreviewView: View {
                 Button {
                     if saveVersion(), let pdfURL { sharing = ShareFile(url: pdfURL) }
                 } label: { Label(versionSaved ? "quote.share_pdf" : "ui.save_share_pdf", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
-                    .buttonStyle(.borderedProminent).controlSize(.large).padding().background(.bar)
+                    .buttonStyle(PrimaryActionStyle()).controlSize(.large).padding().background(.bar)
                     .disabled(preparing || pdfURL == nil || snapshotData == nil).accessibilityIdentifier("quote.save_share")
             }
             .navigationTitle("quote.preview").navigationBarTitleDisplayMode(.inline)

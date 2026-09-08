@@ -454,7 +454,7 @@ struct CalculatorEditorView: View {
     private var saveButton: some View {
         Button { if let destinationProject { save(to: destinationProject) } else { showSaveSheet = true } } label: {
             Label(dynamicTypeSize.isAccessibilitySize ? "common.save" : "calculator.save_to_project", systemImage: "folder.badge.plus").frame(maxWidth: .infinity)
-        }.buttonStyle(.borderedProminent).controlSize(.large).disabled(issue != nil || result == nil || pricing == nil)
+        }.buttonStyle(PrimaryActionStyle()).controlSize(.large).disabled(issue != nil || result == nil || pricing == nil)
         .accessibilityIdentifier("calculator.save").accessibilityLabel("calculator.save_to_project")
     }
     private func favorite() {

@@ -119,7 +119,7 @@ private struct DataStoreFailureView: View {
                 Text(errorDescription).font(.caption).textSelection(.enabled)
             }
         } actions: {
-            Button("common.retry", action: retry).buttonStyle(.borderedProminent)
+            Button("common.retry", action: retry).buttonStyle(PrimaryActionStyle())
         }
     }
 }

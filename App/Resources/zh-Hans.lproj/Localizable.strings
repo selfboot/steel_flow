@@ -568,3 +568,9 @@
 
 "ui.favorites_empty" = "暂无收藏规格";
 "ui.recent_empty" = "暂无已保存的计算";
+
+"ui.quote_add_first" = "添加条目后即可预览报价。";
+"ui.templates_none" = "还没有项目模板";
+"ui.template_first_help" = "先将已有项目保存为模板，再用模板创建新项目。";
+"ui.template_choose_source" = "选择项目保存为模板";
+"ui.template_select_first" = "请先选择一个模板。";

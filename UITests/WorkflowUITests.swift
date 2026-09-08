@@ -40,6 +40,43 @@ import XCTest
         app.buttons["Cancel"].tap()
         XCTAssertTrue(app.buttons["Save to project"].waitForExistence(timeout: 5))
     }
+    func testDarkEmptyProjectAndMatchingProfileCards() {
+        let app = launch(extra: ["--ui-dark", "--ui-empty-project"])
+        openProject(app)
+        XCTAssertTrue(app.staticTexts["Add an item to preview your quote."].exists)
+        XCTAssertFalse(app.buttons["Quote preview"].isEnabled)
+        capture(app, "dark-empty-project")
+        app.swipeUp()
+        tap(app.buttons["Add item"], in: app)
+        let plate = app.descendants(matching: .any)["project.profile.plate"].firstMatch
+        XCTAssertTrue(plate.waitForExistence(timeout: 5))
+        capture(app, "matching-profile-cards")
+        plate.tap()
+        XCTAssertTrue(app.buttons["calculator.save"].waitForExistence(timeout: 5))
+    }
+    func testEmptyTemplateCanBeCreatedFromExistingProject() {
+        let app = launch(extra: ["--ui-dark"])
+        selectTab("Projects", in: app)
+        capture(app, "compact-project-list")
+        app.buttons["projects.menu"].tap(); app.buttons["Create from template"].tap()
+        XCTAssertTrue(app.staticTexts["No templates yet"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["template.create"].exists)
+        capture(app, "template-empty-action")
+        app.buttons["template.source.Workflow Quote"].tap()
+        let create = app.buttons["template.create"]
+        XCTAssertTrue(create.waitForExistence(timeout: 5)); XCTAssertTrue(create.isEnabled)
+        create.tap()
+        XCTAssertTrue(app.navigationBars["Workflow Quote"].waitForExistence(timeout: 5))
+    }
+    func testTemplateWithoutProjectsOffersNewProject() {
+        let app = launch(extra: ["--ui-dark", "--ui-no-projects"])
+        selectTab("Projects", in: app)
+        app.buttons["projects.menu"].tap(); app.buttons["Create from template"].tap()
+        XCTAssertTrue(app.staticTexts["No templates yet"].waitForExistence(timeout: 5))
+        let newProject = app.buttons.matching(identifier: "New project").allElementsBoundByIndex.first { $0.isHittable }
+        XCTAssertNotNil(newProject); newProject?.tap()
+        XCTAssertTrue(app.navigationBars["New project"].waitForExistence(timeout: 5))
+    }
     func testFavoriteCalculationCanBeReopenedWithoutSavingProject() {
         let app = launch()
         app.descendants(matching: .any)["profile.plate"].tap()

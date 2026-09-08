@@ -568,3 +568,9 @@
 
 "ui.favorites_empty" = "No favorite specifications";
 "ui.recent_empty" = "No saved calculations";
+
+"ui.quote_add_first" = "Add an item to preview your quote.";
+"ui.templates_none" = "No templates yet";
+"ui.template_first_help" = "Save an existing project as a template, then create a new project from it.";
+"ui.template_choose_source" = "Choose a project to save as a template";
+"ui.template_select_first" = "Select a template to continue.";
