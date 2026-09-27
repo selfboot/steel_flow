@@ -1,0 +1,22 @@
+[
+  {
+    "locale": "en-US",
+    "key": "01-weight",
+    "source": "/Users/daemonzhao/.codex/generated_images/01a0e14f-5d8a-7a82-b2d7-92c5e4394e89/exec-d111679d-1f1b-49d8-bcc3-c1bb25d8e0a2.png"
+  },
+  {
+    "locale": "zh-Hans",
+    "key": "02-project",
+    "source": "/Users/daemonzhao/.codex/generated_images/01a0e14f-5d8a-7a82-b2d7-92c5e4394e89/exec-789e9179-cda2-45b8-a383-15372776f0ed.png"
+  },
+  {
+    "locale": "zh-Hans",
+    "key": "04-profiles",
+    "source": "/Users/daemonzhao/.codex/generated_images/01a0e14f-5d8a-7a82-b2d7-92c5e4394e89/exec-d4d747cd-6301-48cb-b6e2-daf42fa54f7e.png"
+  },
+  {
+    "locale": "zh-Hans",
+    "key": "05-materials",
+    "source": "/Users/daemonzhao/.codex/generated_images/01a0e14f-5d8a-7a82-b2d7-92c5e4394e89/exec-9e364930-d4b5-4936-9d7d-ea1f1c134b99.png"
+  }
+]

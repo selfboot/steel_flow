@@ -1,0 +1,74 @@
+[
+  {
+    "path": "exports/iphone/1320x2868/en-US/01-weight.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "f0ed1ec753eb932708bb397a930cc50e4be372c73b789517b531f6e8d6595874"
+  },
+  {
+    "path": "exports/iphone/1320x2868/en-US/02-project.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "5e0d510b0b02f7793b9fce75e7bdfb13b234367fe68e7bf216e811436b687580"
+  },
+  {
+    "path": "exports/iphone/1320x2868/en-US/03-quote.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "f91983a0a1dc492cef1f05970f8c80d9c139c3d77d99ded56b77739ad22ab3d5"
+  },
+  {
+    "path": "exports/iphone/1320x2868/en-US/04-profiles.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "2132ffd91e03f5b08d6e84b9f60effff76faa3ffe790ccf4caaa7f92a2c88eac"
+  },
+  {
+    "path": "exports/iphone/1320x2868/en-US/05-materials.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "c67d6d483edb3abb4a34bbb7484251e011fc8d4ac8abbe58f2d1832cb014bc22"
+  },
+  {
+    "path": "exports/iphone/1320x2868/en-US/06-pricing.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "2c9ab384b1536b207d954c730b6b87c0ea860a16e12c50b9635e08f15179ea36"
+  },
+  {
+    "path": "exports/iphone/1320x2868/zh-Hans/01-weight.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "9025628958eebbf5aaff40e7d174a660d615e4371e3ae8c2897fb27688e6f018"
+  },
+  {
+    "path": "exports/iphone/1320x2868/zh-Hans/02-project.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "1e71e23ee5c51dfc04b172fa18a4f7a21e83559c57381e7474d7de21fb400a16"
+  },
+  {
+    "path": "exports/iphone/1320x2868/zh-Hans/03-quote.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "fdac97e79f924c68f746b09fa89aae8dcde08a47ea8266ba0f48ea80e2abd68c"
+  },
+  {
+    "path": "exports/iphone/1320x2868/zh-Hans/04-profiles.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "a30aad29e916108fe487e07fc1a57cf2cac5935b08b89f5923400ebe96966c49"
+  },
+  {
+    "path": "exports/iphone/1320x2868/zh-Hans/05-materials.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "8363dda488c94fe720e6deee337ca19faf840595c99f15ff83a2e1b70978cb4b"
+  },
+  {
+    "path": "exports/iphone/1320x2868/zh-Hans/06-pricing.png",
+    "width": 1320,
+    "height": 2868,
+    "sha256": "93b3b7f63b71b5479ec3533dd117147eef3e3070be8a6b8420f7857c06355006"
+  }
+]

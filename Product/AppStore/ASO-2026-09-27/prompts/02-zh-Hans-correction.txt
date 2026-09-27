@@ -1,0 +1,2 @@
+Make a precise, minimal correction to this poster only. Preserve EVERYTHING about the composition, typography, background, phone, and other UI.
+In the second visible project item row (立柱圆管 Ø88.9), the small gray subtitle incorrectly reads "碳钢 · 6 m × 12". Change ONLY that subtitle to "碳钢 · 6 m × 24". The actual item has quantity 24. Leave its mass 1,206.007 kg and amount ¥8,482.99 unchanged. Do not alter any other numbers or text, and do not enlarge the marketing heading. Output the same 851x1848 portrait proportions.
