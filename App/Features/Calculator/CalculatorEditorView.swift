@@ -385,7 +385,6 @@ struct CalculatorEditorView: View {
             defer { initialReviewState = storedState }
             if !ProcessInfo.processInfo.arguments.contains("--marketing-screen"), let state = restoredState ?? library.payload.drafts[draftKey] {
                 draft = state.makeDraft(locale: locale); draftCurrency = state.currency
-                notice = AppLocalization.text("ui.draft_restored", locale: locale)
                 if !materials.contains(where: { $0.id == draft.selectedMaterialID }) { draft.selectedMaterialID = "carbon-steel"; draft.priceNeedsReview = true }
                 return
             }

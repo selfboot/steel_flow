@@ -91,6 +91,50 @@ import XCTest
         XCTAssertTrue(app.buttons["calculator.menu"].waitForExistence(timeout: 4))
         XCTAssertTrue(app.staticTexts["47.1 kg"].firstMatch.exists)
     }
+
+    func testHomeFavoriteCanBeRemovedWithoutOpeningCalculation() {
+        let app = launch()
+        app.descendants(matching: .any)["profile.plate"].tap()
+        app.buttons["Save specification to favorites"].tap()
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        let favorite = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "home.favorite.")).firstMatch
+        XCTAssertTrue(favorite.waitForExistence(timeout: 4))
+        capture(app, "home-favorite-trailing-button")
+        favorite.tap()
+        XCTAssertFalse(favorite.exists)
+        XCTAssertFalse(app.staticTexts["Favorite specifications"].exists)
+        XCTAssertFalse(app.buttons["calculator.menu"].exists)
+        tap(app.buttons["View all"].firstMatch, in: app)
+        XCTAssertTrue(app.navigationBars["Recent calculations"].waitForExistence(timeout: 4))
+        XCTAssertTrue(app.staticTexts["Plate / flat bar"].exists, "Removing a favorite must keep the calculation")
+    }
+
+    func testLibraryFavoriteTogglesWithoutOpeningCalculation() {
+        let app = launch()
+        app.descendants(matching: .any)["profile.plate"].tap()
+        XCTAssertTrue(app.buttons["calculator.menu"].waitForExistence(timeout: 4))
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        tap(app.buttons["View all"].firstMatch, in: app)
+        let recent = app.navigationBars["Recent calculations"]
+        XCTAssertTrue(recent.waitForExistence(timeout: 4))
+        let favorite = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "library.favorite.")).firstMatch
+        XCTAssertTrue(favorite.waitForExistence(timeout: 3))
+        let initialLabel = favorite.label
+        favorite.tap()
+        XCTAssertTrue(recent.exists, "The star must not open the calculation")
+        XCTAssertNotEqual(favorite.label, initialLabel)
+        capture(app, "library-favorite-single-row")
+        favorite.tap()
+        XCTAssertEqual(favorite.label, initialLabel)
+        app.staticTexts["Plate / flat bar"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["calculator.menu"].waitForExistence(timeout: 4))
+        XCTAssertEqual(Decimal(string: app.textFields["dimension.width"].value as? String ?? ""), Decimal(100))
+        XCTAssertFalse(app.staticTexts["Your last inputs have been restored."].exists)
+        capture(app, "restored-calculation-without-banner")
+        selectTab("Settings", in: app)
+        XCTAssertTrue(app.staticTexts["App language"].waitForExistence(timeout: 4))
+        capture(app, "polished-settings-icons")
+    }
     func testQuoteVersionCanBeSavedAndReopened() {
         let app = launch(); openProject(app)
         tap(app.buttons["Quote preview"], in: app)
