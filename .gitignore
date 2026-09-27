@@ -7,3 +7,6 @@ xcuserdata/
 
 # Local RevenueCat SDK key override. Never commit this file.
 Config/RevenueCat.local.xcconfig
+
+# Local browser automation logs and snapshots.
+/.playwright-cli/
