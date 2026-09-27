@@ -1,0 +1,7 @@
+# 工字钢 + kg：纯色背景
+
+生成方式：内置 imagegen，以正式旧图标作为 edit target。
+
+提示词：
+
+Use case: precise-object-edit. Asset type: final iOS App Store icon, square 1024x1024, full bleed opaque background. Edit the supplied SteelFlow app icon. Preserve the same distinctive upright metallic dark graphite I-beam cross-section, its subtle silver beveled edges and dimensional realistic metal shading, the blue double-headed horizontal width measurement arrow above it, the blue double-headed vertical height measurement arrow to its left, and the exact lowercase blue text "kg" at lower right. REMOVE the entire document/PDF paper motif: no sheet, no folded corner, no paper border, no inset rounded rectangle, no document silhouette. Replace that removed document and the canvas background with one uniform flat pale cool gray color #EDF2F5, completely solid edge-to-edge, no gradient, no texture, no white halo. Recompose and enlarge the retained I-beam, two measurement arrows and kg as a balanced cohesive central icon occupying approximately 80–84% of the square with comfortable 8–10% margins. Preserve their relative layout and original blue/graphite color identities. The I-beam is the dominant hero and should be visibly larger than in the source image. Only the metallic object has material shading; the backdrop must remain perfectly uniform solid color. Crisp clean professional industrial utility app icon, excellent small-size legibility. No extra objects, no other text, no corner rounding baked into the square image.

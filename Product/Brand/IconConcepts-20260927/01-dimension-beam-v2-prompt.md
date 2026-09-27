@@ -1,0 +1,5 @@
+# 尺寸工字钢 v2
+
+内置 imagegen 编辑。将等号替换为两行加减乘除符号，移除折角上的白色箭头。
+
+Edit this SteelFlow app icon with exactly two local changes. 1. Replace the blue equals sign in the lower-right of the document with four blue arithmetic symbols in a compact balanced 2 by 2 layout: top row + and −, bottom row × and ÷. Use true multiplication and division symbols, bold rounded strokes, equal optical size, even spacing and aligned centers. Keep this symbol group confined to the original lower-right area with comfortable margins, no surrounding keypad, no extra box. 2. Remove only the white northeast arrow from the blue folded corner at the upper right, seamlessly filling it with the existing blue gradient so the fold is plain blue. Preserve everything else precisely: square canvas, near-white background, light document outline, blue folded-corner geometry and shadow, dark steel I-beam shape, horizontal and vertical blue dimension arrows, their position, scale and proportions, original colors, shading and overall composition. Do not remove dimension arrows. No new text or extra elements.

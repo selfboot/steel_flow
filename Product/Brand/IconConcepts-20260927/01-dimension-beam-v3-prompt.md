@@ -1,0 +1,5 @@
+# 尺寸工字钢 v3
+
+内置 imagegen 编辑：将右下角四则符号简化为上下排列的加减符号。
+
+Precisely edit the supplied SteelFlow app icon. Change ONLY the lower-right arithmetic symbol cluster: remove the four-symbol + − × ÷ grid and replace it with one compact, elegant plus-over-minus calculation mark, resembling a clean ± symbol. One blue plus centered above one blue horizontal minus, same width, carefully aligned, uniform moderately bold rounded strokes, comfortable small gap. The total new mark should be about 65% of the width of the old four-symbol cluster and stay optically centered in that same lower-right area. No box, no keypad, no dots, no multiplication or division signs, no extra details. It must read as a very simple calculation symbol at small app-icon size. Preserve everything else exactly: I-beam, both blue dimension arrows and all dimension endpoint ticks, plain blue folded corner without any white export arrow, pale document outline, white background, original shading, proportions, framing and colors. Do not redesign the rest.
