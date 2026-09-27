@@ -1,7 +1,19 @@
 import XCTest
+import StoreKitTest
 
 @MainActor
 final class SteelFlowUITests: XCTestCase {
+    private var storeKitSession: SKTestSession?
+
+    private func configureStoreKit() throws {
+        let configuration = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "SteelFlow", withExtension: "storekit"))
+        let session = try SKTestSession(contentsOf: configuration)
+        session.resetToDefaultState()
+        session.clearTransactions()
+        session.disableDialogs = false
+        storeKitSession = session
+    }
+
     private func launchApp(extraArguments: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["--reset-workflow", "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en", "-app.unitSystem", "metric"] + extraArguments
@@ -175,8 +187,9 @@ final class SteelFlowUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Open email app"].exists)
     }
 
-    func testLockedFeatureOpensPurchaseLandingPageWithStoreProduct() {
+    func testLockedFeatureOpensPurchaseLandingPageWithStoreProduct() throws {
         continueAfterFailure = false
+        try configureStoreKit()
         let app = XCUIApplication()
         app.launchArguments = [
             "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
@@ -201,8 +214,9 @@ final class SteelFlowUITests: XCTestCase {
         attachScreenshot(named: "pro-purchase-landing-page")
     }
 
-    func testPurchaseInvokesStoreKitAndCancellationIsHandledCleanly() {
+    func testPurchaseInvokesStoreKitAndCancellationIsHandledCleanly() throws {
         continueAfterFailure = false
+        try configureStoreKit()
         let app = XCUIApplication()
         app.launchArguments = [
             "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",

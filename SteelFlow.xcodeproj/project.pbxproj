@@ -31,6 +31,7 @@
 		5F9A3E2153A3CD3FF8A9E837 /* BackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66115356606D5FD6B8DEAF9B /* BackupTests.swift */; };
 		61D35950341A5376A5D0823F /* CalculatorDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021C20F77172EB287ACF742F /* CalculatorDraft.swift */; };
 		61F77F6870ACCF6548DD5E5D /* CalculatorHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1037BB719770368AC4AADAED /* CalculatorHomeView.swift */; };
+		635D83CED02B375186E35E92 /* SteelFlow.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 17E0004AD401C5A55190ADD3 /* SteelFlow.storekit */; };
 		660013A3EAC22B0F760EF706 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B52CAF00D414FA5E96E86B0 /* PurchaseManager.swift */; };
 		84291BF8624E6A014F0164BA /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58DBBB7944681B6C94D589A /* DesignSystem.swift */; };
 		8C8E050DA16D0BA8EEC66006 /* ProfileSection3DPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DE5AF3E3652E30A118DCCF /* ProfileSection3DPreview.swift */; };
@@ -96,6 +97,7 @@
 		137B187341BEE42D970EBB85 /* WorkflowTestFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowTestFixture.swift; sourceTree = "<group>"; };
 		13853DB5AE8124C7BA2CB030 /* SteelFlowUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SteelFlowUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B9CFAE1CC59169A250AC3D /* QuoteExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteExportService.swift; sourceTree = "<group>"; };
+		17E0004AD401C5A55190ADD3 /* SteelFlow.storekit */ = {isa = PBXFileReference; path = SteelFlow.storekit; sourceTree = "<group>"; };
 		20D6D1B0C08DBFE52F6AD27D /* ReferenceCases.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ReferenceCases.json; sourceTree = "<group>"; };
 		24411F83D53BCB9DE1D5464E /* MarketingCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingCapture.swift; sourceTree = "<group>"; };
 		2FC079E1F68CDFA8C34C6F9A /* BulkPricingSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkPricingSheet.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 		2708428C13072C6C599360BE = {
 			isa = PBXGroup;
 			children = (
+				17E0004AD401C5A55190ADD3 /* SteelFlow.storekit */,
 				1997A5267D0BAE758E972886 /* App */,
 				AACFAD699D0234B9DCF04406 /* Config */,
 				EAB87F2849F55E70B5DAF2CC /* Fixtures */,
@@ -397,6 +400,7 @@
 			buildConfigurationList = FDAF2C2808EF5DF0DD0C0A3E /* Build configuration list for PBXNativeTarget "SteelFlowUITests" */;
 			buildPhases = (
 				A4222C8BD8065E515CE38AA6 /* Sources */,
+				0F6E40C961688B00341F7248 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -505,6 +509,14 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0F6E40C961688B00341F7248 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				635D83CED02B375186E35E92 /* SteelFlow.storekit in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A65119C7E607822429BC4592 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
