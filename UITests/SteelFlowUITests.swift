@@ -469,23 +469,30 @@ final class SteelFlowUITests: XCTestCase {
             XCTAssertTrue(target.isHittable, "Weight preview must be visible before scrolling")
         case "pricing":
             XCTAssertTrue(app.navigationBars[chinese ? "钢板 / 扁钢" : "Plate / flat bar"].waitForExistence(timeout: 8))
+            let pricingTitle = chinese ? "计价" : "Pricing"
+            let disclosure = app.buttons.matching(NSPredicate(format: "label == %@ OR label BEGINSWITH %@ OR label BEGINSWITH %@", pricingTitle, pricingTitle + ",", pricingTitle + "、")).firstMatch
+            for _ in 0..<4 where !disclosure.isHittable { app.swipeUp() }
+            XCTAssertTrue(disclosure.isHittable)
+            disclosure.tap()
             let target = app.staticTexts[chinese ? "损耗" : "Waste"]
             for _ in 0..<3 where !target.isHittable { app.swipeUp() }
             XCTAssertTrue(target.waitForExistence(timeout: 3))
+            let price = app.textFields["calculator.price_input"]
+            for _ in 0..<3 where !price.isHittable { app.swipeUp() }
+            XCTAssertTrue(price.isHittable)
         case "project":
             XCTAssertTrue(app.navigationBars[chinese ? "港区雨棚" : "Harbor Canopy"].waitForExistence(timeout: 10))
             let total = app.staticTexts[chinese ? "总价" : "Total"]
             for _ in 0..<3 where !total.isHittable { app.swipeUp() }
         case "quote":
             XCTAssertTrue(app.navigationBars[chinese ? "报价预览" : "Quote preview"].waitForExistence(timeout: 10))
-            let share = app.staticTexts[chinese ? "分享 PDF 报价单" : "Share PDF quote"]
-            for _ in 0..<4 where !share.isHittable { app.swipeUp() }
-            _ = share.waitForExistence(timeout: 5)
+            let share = app.buttons[chinese ? "保存版本并分享 PDF" : "Save version & share PDF"].firstMatch
+            XCTAssertTrue(share.waitForExistence(timeout: 5))
         case "materials":
             XCTAssertTrue(app.navigationBars[chinese ? "材料" : "Materials"].waitForExistence(timeout: 8))
-            let priceBook = app.staticTexts[chinese ? "Q235B 华东现货" : "Q235B regional spot"]
-            for _ in 0..<4 where !priceBook.isHittable { app.swipeUp() }
-            XCTAssertTrue(priceBook.waitForExistence(timeout: 3))
+            let builtIn = app.staticTexts[chinese ? "碳钢" : "Carbon steel"].firstMatch
+            XCTAssertTrue(builtIn.waitForExistence(timeout: 3))
+            XCTAssertTrue(builtIn.isHittable, "Capture the material catalog before switching to saved prices")
         default:
             XCTFail("Unknown marketing screen: \(screen)")
         }
