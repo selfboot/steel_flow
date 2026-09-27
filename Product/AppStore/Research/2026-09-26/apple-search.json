@@ -1,0 +1,42 @@
+[
+  {
+    "country": "us",
+    "term": "SteelFlow",
+    "queriedAt": "2026-09-26T08:21:41.748620+00:00",
+    "requestedLimit": 200,
+    "source": "Apple Search API; ordinal is not a verified iPhone organic rank",
+    "error": "Network failure for https://itunes.apple.com/search?term=SteelFlow&country=us&entity=software&limit=200: <urlopen error [Errno 1] Operation not permitted>"
+  },
+  {
+    "country": "us",
+    "term": "metal calculator",
+    "queriedAt": "2026-09-26T08:21:47.986569+00:00",
+    "requestedLimit": 200,
+    "source": "Apple Search API; ordinal is not a verified iPhone organic rank",
+    "error": "Network failure for https://itunes.apple.com/search?term=metal+calculator&country=us&entity=software&limit=200: <urlopen error [Errno 1] Operation not permitted>"
+  },
+  {
+    "country": "us",
+    "term": "metal weight calculator",
+    "queriedAt": "2026-09-26T08:21:54.204476+00:00",
+    "requestedLimit": 200,
+    "source": "Apple Search API; ordinal is not a verified iPhone organic rank",
+    "error": "Network failure for https://itunes.apple.com/search?term=metal+weight+calculator&country=us&entity=software&limit=200: <urlopen error [Errno 1] Operation not permitted>"
+  },
+  {
+    "country": "us",
+    "term": "steel weight calculator",
+    "queriedAt": "2026-09-26T08:22:00.419393+00:00",
+    "requestedLimit": 200,
+    "source": "Apple Search API; ordinal is not a verified iPhone organic rank",
+    "error": "Network failure for https://itunes.apple.com/search?term=steel+weight+calculator&country=us&entity=software&limit=200: <urlopen error [Errno 1] Operation not permitted>"
+  },
+  {
+    "country": "us",
+    "term": "pipe weight calculator",
+    "queriedAt": "2026-09-26T08:22:06.640005+00:00",
+    "requestedLimit": 200,
+    "source": "Apple Search API; ordinal is not a verified iPhone organic rank",
+    "error": "Network failure for https://itunes.apple.com/search?term=pipe+weight+calculator&country=us&entity=software&limit=200: <urlopen error [Errno 1] Operation not permitted>"
+  }
+]
