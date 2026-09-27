@@ -218,6 +218,7 @@
 "settings.data" = "数据";
 "settings.support" = "支持";
 "settings.about" = "关于";
+"settings.rate_app" = "评价 App";
 "settings.delete_all" = "删除全部用户数据";
 "settings.delete_all.confirm" = "删除全部用户数据？";
 "settings.delete_all.message" = "将删除 %lld 个项目、%lld 个自定义材料、%lld 条历史参考价格、%lld 个客户、%lld 个报价快照和公司资料。内置材料会保留。";

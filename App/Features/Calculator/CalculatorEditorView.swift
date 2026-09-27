@@ -38,6 +38,7 @@ struct CalculatorEditorView: View {
     @State private var lastSavedProject: ProjectEntity?
     @State private var openedProject: ProjectEntity?
     @State private var keyboardVisible = false
+    @State private var initialReviewState: DraftState?
     @Environment(\.horizontalSizeClass) private var sizeClass
     private var useColumns: Bool { sizeClass == .regular && !dynamicTypeSize.isAccessibilitySize }
     private var issue: DraftIssue? { draft.firstIssue(locale: locale) }
@@ -381,6 +382,7 @@ struct CalculatorEditorView: View {
         .onAppear {
             guard !loaded else { return }
             loaded = true
+            defer { initialReviewState = storedState }
             if !ProcessInfo.processInfo.arguments.contains("--marketing-screen"), let state = restoredState ?? library.payload.drafts[draftKey] {
                 draft = state.makeDraft(locale: locale); draftCurrency = state.currency
                 notice = AppLocalization.text("ui.draft_restored", locale: locale)
@@ -415,6 +417,14 @@ struct CalculatorEditorView: View {
         .proPaywall(reason: $paywallReason) {
             if let project = pendingSaveProject { pendingSaveProject = nil; save(to: project) }
         }
+        .modifier(CalculationReviewModifier(
+            state: storedState,
+            isReady: initialReviewState != nil && initialReviewState != storedState
+                && result != nil && issue == nil && pricing != nil
+                && !keyboardVisible && !showSaveSheet && pendingCurrencyProject == nil
+                && !showDetails && paywallReason == nil && openedProject == nil
+                && PersistenceErrorCenter.shared.message == nil
+        ))
     }
 
     private var quickResult: some View {

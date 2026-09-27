@@ -218,6 +218,7 @@
 "settings.data" = "Data";
 "settings.support" = "Support";
 "settings.about" = "About";
+"settings.rate_app" = "Rate SteelFlow";
 "settings.delete_all" = "Delete all user data";
 "settings.delete_all.confirm" = "Delete all user data?";
 "settings.delete_all.message" = "This removes %lld projects, %lld custom materials, %lld saved prices, %lld customers, %lld quote snapshots, and company details. Built-in materials remain.";

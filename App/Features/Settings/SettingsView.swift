@@ -99,6 +99,10 @@ struct SettingsView: View {
             }
 
             Section("settings.about") {
+                Link(destination: AppReviewPrompt.reviewURL) {
+                    Label("settings.rate_app", systemImage: "star.bubble")
+                }
+                .accessibilityIdentifier("settings.rate_app")
                 LabeledContent("settings.version", value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
                 NavigationLink("settings.calculation_disclaimer") { DisclaimerView() }
                 LabeledContent("settings.privacy", value: AppLocalization.text("settings.privacy.value", locale: locale))
