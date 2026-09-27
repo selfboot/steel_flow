@@ -49,6 +49,7 @@ struct MaterialsView: View {
                     }
                 }
             }
+            .listRowBackground(Color.clear)
             Section("materials.custom") {
                 if search.isEmpty && materials.filter({ !$0.isBuiltIn }).isEmpty {
                     Text("materials.custom.empty").foregroundStyle(.secondary)
@@ -65,7 +66,9 @@ struct MaterialsView: View {
                         }
                 }
             }
+            .listRowBackground(Color.clear)
             Section { Text("material.note.typical").font(.caption).foregroundStyle(.secondary) }
+                .listRowBackground(Color.clear)
             } else {
             Section("price_book.title") {
                 if search.isEmpty && priceBook.isEmpty { Text("price_book.empty").foregroundStyle(.secondary) }
@@ -100,11 +103,16 @@ struct MaterialsView: View {
                 }
                 Text("price_book.help").font(.caption).foregroundStyle(.secondary)
             }
+            .listRowBackground(Color.clear)
             }
         }
+        .scrollContentBackground(.hidden)
+        .modifier(MaterialsScrollEdgeStyle())
+        .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
+        .toolbarBackground(.hidden, for: .navigationBar)
         .safeAreaInset(edge: .top, spacing: 0) {
             Picker("tab.materials", selection: $catalog) { Text("tab.materials").tag(0); Text("price_book.title").tag(1) }
-                .pickerStyle(.segmented).padding(.horizontal).padding(.vertical, 8).background(.bar)
+                .pickerStyle(.segmented).padding(.horizontal).padding(.vertical, 8).background(Color(uiColor: .systemGroupedBackground))
         }
         .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: catalog == 0 ? "ui.material_search" : "workflow.price_search")
         .onChange(of: catalog) { _, _ in search = "" }
@@ -173,6 +181,16 @@ struct MaterialsView: View {
         }
         _ = PersistenceErrorCenter.shared.save(modelContext)
         self.pendingDeletion = nil
+    }
+}
+
+private struct MaterialsScrollEdgeStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content.scrollEdgeEffectHidden(true, for: .top)
+        } else {
+            content
+        }
     }
 }
 
