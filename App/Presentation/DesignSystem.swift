@@ -58,14 +58,6 @@ struct PolishedSymbol: View {
     }
 }
 
-struct SteelLabelStyle: LabelStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        Label { configuration.title } icon: {
-            configuration.icon.modifier(SteelSymbolFinish())
-        }
-    }
-}
-
 /// Steel-colored glass tiles used by settings and Pro benefits.
 struct SteelIconTile: View {
     let systemName: String

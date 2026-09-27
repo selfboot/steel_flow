@@ -27,7 +27,6 @@ struct SteelFlowApp: App {
                     }
                 }
             }
-            .labelStyle(SteelLabelStyle())
             .keyboardOutsideTapSupport()
             .environment(\.locale, languageCode == "system" ? .autoupdatingCurrent : Locale(identifier: languageCode))
             .task { await PurchaseManager.shared.refreshEntitlement() }
