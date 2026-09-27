@@ -1,6 +1,16 @@
 # SteelFlow App Store 素材
 
-当前 App 代码为 1.1.0（构建 9），发布与测试记录见 [1.1.0 发布记录](Release-1.1.0-2026-09-08.md)。1.0.1 的原始提交历史和本轮改动统一保存在 `main`。
+当前 App 代码为 1.2（构建 19），发布与测试记录见 [1.2 中心高光与收藏交互](Release-1.2-19-2026-09-27.md)。历史记录保留在本目录。
+
+## 苹果上传网络
+
+按用户 2026-09-27 的要求，后续苹果上传使用本机 Clash 的「香港」节点。当前代理端口为 `127.0.0.1:7890`，配置为 `~/.config/clash/Mine.yaml`。上传前检查以下域名规则仍指向「香港」，并在 Clash 连接记录中核实实际链路；其余网站沿用原有路由。
+
+- `appstoreconnect.apple.com`（域名后缀）
+- `contentdelivery.itunes.apple.com`、`itunesconnect.apple.com`（精确域名）
+- `upload.itunes.apple.com`、`blobstore.apple.com`、`object-storage.apple.com`（域名后缀）
+
+Apple 的文件上传会使用 `northamerica-1.object-storage.apple.com` 等存储地址，仅配置 App Store Connect API 不足以覆盖传输。控制器使用现有鉴权，凭据不写入本仓库。发布日志中的临时签名上传链接不要公开。
 
 本目录商店截图与元数据对应 2026-09-05 的 1.0.1（构建 8）ASO 更新，历史发布状态见 [1.0.1 发布记录](Release-1.0.1-2026-09-05.md)。上线后复查资料见 [ASO 搜索基线与优化建议](ASO-Audit-2026-09-05.md)，实时搜索和商店截图证据保存在 `Research/2026-09-05/`。
 
