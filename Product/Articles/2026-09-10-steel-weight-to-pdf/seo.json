@@ -1,0 +1,21 @@
+{
+  "title": "钢材重量怎么算、报价单怎么做？用 SteelFlow 从尺寸算到 PDF",
+  "description": "用一组钢板尺寸算出理论重量，再把多种规格汇总成项目，添加计价与费用，导出 PDF 报价单。附 SteelFlow 真实界面与示例文件。",
+  "suggestedSlug": "steel-weight-calculator-pdf-quote",
+  "primaryIntent": "手机钢材理论算重与 PDF 报价",
+  "primaryKeyword": "钢材重量计算",
+  "relatedKeywords": [
+    "钢板重量怎么算",
+    "钢材报价单",
+    "PDF 报价单",
+    "iPhone 钢材计算器"
+  ],
+  "author": "SteelFlow",
+  "date": "2026-09-10",
+  "publicationState": "draft",
+  "canonical": "set only after actual publication",
+  "internalLinks": [
+    "https://docs.puzzles-game.com/zh/steelflow",
+    "https://docs.puzzles-game.com/zh/steelflow/support"
+  ]
+}

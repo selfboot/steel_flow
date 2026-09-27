@@ -1,0 +1,70 @@
+{
+  "screenshots/calculation.png": {
+    "bytes": 332965,
+    "sha256": "ef66594f31cfaa70fbdb3964c715c8e15f7bd63756582e52a2c9d8435fcd2227",
+    "dimensions": [
+      1206,
+      2622
+    ]
+  },
+  "screenshots/projects.png": {
+    "bytes": 162293,
+    "sha256": "3b1e093144f6d1e68665d87d5b86196882ac9702285043a605ea8efba7b8f11d",
+    "dimensions": [
+      1206,
+      2622
+    ]
+  },
+  "screenshots/home.png": {
+    "bytes": 292242,
+    "sha256": "1fd949e74a68809373586269e628d123b00af20517110a0b3c02311afc5adb0a",
+    "dimensions": [
+      1206,
+      2622
+    ]
+  },
+  "screenshots/project.png": {
+    "bytes": 339308,
+    "sha256": "d410af59416a3b141e406f176ea97c9b06e66a850d66481e7150f3b9fe3c8049",
+    "dimensions": [
+      1206,
+      2622
+    ]
+  },
+  "screenshots/quote.png": {
+    "bytes": 409933,
+    "sha256": "6d09654ca9c7ec17970d3d1621c24304070104cca0a1f1b1b05a94eeaae0c2fd",
+    "dimensions": [
+      1206,
+      2622
+    ]
+  },
+  "screenshots/materials.png": {
+    "bytes": 433963,
+    "sha256": "8c438b679bf7e653d8563359e2c149fe3834412fc7ff5f3820872041005e8dc7",
+    "dimensions": [
+      1206,
+      2622
+    ]
+  },
+  "assets/feature-overview.png": {
+    "bytes": 1634831,
+    "sha256": "20566affb97a11cdcc320e5dbb372f3f2fa3e59ab6413e2ba5ae9276dccbad81",
+    "dimensions": [
+      2400,
+      3829
+    ]
+  },
+  "assets/sample-quote.pdf": {
+    "bytes": 46251,
+    "sha256": "acdd960a2faf080de70d00afc6c687492a45042875b98c85b98a3f2a96695d25"
+  },
+  "assets/app-icon.png": {
+    "bytes": 1001680,
+    "sha256": "adc5c09f4d8d15284f3d39258eadaddf49f4de64f6a5cb286b4ae297b077c0b1",
+    "dimensions": [
+      1024,
+      1024
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "captured": "2026-09-12",
+  "version": "1.1.0 (13)",
+  "device": "SteelFlow UI Fix iPhone 20260908 / iPhone 16 Pro / iOS 26.5 simulator",
+  "language": "en_US",
+  "appearance": "light",
+  "method": "Isolated DEBUG demo fixtures, production SwiftUI views; CalculatorDraft.makeItem and QuoteExportService; native simctl screenshots. No automated end-to-end tap test claimed.",
+  "edits": "Proportional scaling and external labels only. PDF detail crop removes page whitespace and footer; full PNG and original PDF retained. No UI text repainting.",
+  "case": "Flat Bar Order Q-FLAT-10010: 100 x 10 mm, 6 m, 18 bars, carbon steel 7850 kg/m3, USD 0.74/kg, no waste/fees/markup/tax. Fictional demo values.",
+  "verification": "Snapshot totals and one-line PDF text verified; original screenshots and layouts reviewed. Quote preview uses --workflow-free.",
+  "sourceCommit": "594d301"
+}

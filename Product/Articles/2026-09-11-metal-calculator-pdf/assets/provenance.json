@@ -1,0 +1,20 @@
+{
+  "captured": "2026-09-10",
+  "version": "1.1.0 (13)",
+  "sourceCommit": "594d301",
+  "device": "iPhone 16 Pro / iOS 26.5 simulator",
+  "language": "English",
+  "method": "simctl screenshot; existing DEBUG MarketingCaptureRoot renders actual production SwiftUI views without main tab shell",
+  "data": "Fictional demo prices and customers. Materials/projects captured with isolated in-memory demo data to exclude prior Chinese examples.",
+  "appearance": "light",
+  "screens": [
+    "home",
+    "calculation",
+    "materials",
+    "projects",
+    "project",
+    "quote"
+  ],
+  "statusBar": "9:41 cosmetic normalization",
+  "imageEditing": "Original screenshots preserved. HTML/CSS layout and proportional scaling for collage; no UI text repainting."
+}

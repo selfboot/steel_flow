@@ -1,0 +1,19 @@
+{
+  "captured": "2026-09-10",
+  "version": "1.1.0 (13)",
+  "sourceCommit": "594d301",
+  "device": "iPhone 16 Pro / iOS 26.5 simulator",
+  "method": "simctl screenshot of running DEBUG app; existing MarketingCaptureRoot routes render production SwiftUI views",
+  "data": "bundled fictional marketing example, not a real customer order or current supplier price",
+  "appearance": "light",
+  "statusBar": "9:41 / Wi-Fi / 100%, cosmetic normalization only",
+  "screens": [
+    "home",
+    "calculation",
+    "projects",
+    "project",
+    "quote",
+    "materials"
+  ],
+  "textSize": "standard Large, reset from prior accessibility test"
+}

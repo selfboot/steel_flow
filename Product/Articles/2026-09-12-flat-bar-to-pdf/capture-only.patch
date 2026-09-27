@@ -1,0 +1,179 @@
+--- a/App/Marketing/MarketingCapture.swift
++++ b/App/Marketing/MarketingCapture.swift
+@@ -66,8 +66,8 @@
+ 
+ @MainActor
+ enum MarketingDemoData {
+-    static let projectNumber = "Q-2026-0828"
+-    static var projectName: String { isChinese ? "港区雨棚" : "Harbor Canopy" }
++    static let projectNumber = "Q-FLAT-10010"
++    static var projectName: String { isChinese ? "港区雨棚" : "Flat Bar Order" }
+ 
+     private static var isChinese: Bool {
+         let arguments = ProcessInfo.processInfo.arguments
+@@ -81,88 +81,29 @@
+         if existingProjects.contains(where: { $0.projectNumber == projectNumber && $0.name == projectName }) { return }
+ 
+         let chinese = isChinese
+-        let currency = chinese ? "CNY" : "USD"
+-        let project = ProjectEntity(
+-            name: projectName,
+-            projectNumber: projectNumber,
+-            customerName: chinese ? "北辰钢构" : "Northline Fabrication",
+-            quoteLanguage: chinese ? "zh-Hans" : "en",
+-            unitSystem: .metric,
+-            currencyCode: currency,
+-            paperSize: .a4
+-        )
+-        project.taxPercentText = chinese ? "13" : "8.25"
+-        project.markupPercentText = chinese ? "12" : "18"
++        let currency = "USD"
++        let priceScale = Decimal(string: "0.74")!
++        let project = ProjectEntity(name: projectName, projectNumber: projectNumber,
++            customerName: "Demo Workshop", quoteLanguage: "en", unitSystem: .metric,
++            currencyCode: currency, paperSize: .a4)
++        project.taxPercentText = "0"
++        project.markupPercentText = "0"
+         project.validDays = 21
+-        project.terms = chinese ? "报价有效期 21 天" : "Quote valid for 21 days"
+-
+-        let priceScale = chinese ? Decimal(string: "5.32")! : Decimal(string: "0.74")!
+-        let plate = CalculationItemEntity(
+-            profile: .plate,
+-            geometry: GeometryInput(values: [.width: 200, .thickness: 12]),
+-            materialID: "carbon-steel",
+-            materialName: "Carbon steel",
+-            densityKgPerM3: 7_850,
+-            lengthValue: 6,
+-            lengthUnit: .meter,
+-            quantity: 18,
+-            wastePercent: 5,
+-            priceBasis: .perKilogram,
+-            unitPrice: priceScale,
+-            processingFee: chinese ? 680 : 95,
+-            otherFee: chinese ? 120 : 18,
+-            priceSource: .manual,
+-            priceSourceName: chinese ? "华东现货" : "Regional spot",
+-            priceRegion: chinese ? "上海" : "US Midwest",
+-            materialGrade: "Q235B",
+-            priceEffectiveAt: Date(timeIntervalSince1970: 1_787_875_200),
+-            description: chinese ? "底板 200 × 12" : "Base plate 200 × 12",
+-            sortIndex: 0
+-        )
+-        let tube = CalculationItemEntity(
+-            profile: .roundTube,
+-            geometry: GeometryInput(values: [.outerDiameter: 88.9, .wallThickness: 4]),
+-            materialID: "carbon-steel",
+-            materialName: "Carbon steel",
+-            densityKgPerM3: 7_850,
+-            lengthValue: 6,
+-            lengthUnit: .meter,
+-            quantity: 24,
+-            wastePercent: 4,
+-            priceBasis: .perKilogram,
+-            unitPrice: chinese ? 5.68 : 0.81,
+-            processingFee: chinese ? 960 : 135,
+-            priceSource: .manual,
+-            priceSourceName: chinese ? "供应商报价" : "Supplier quote",
+-            priceRegion: chinese ? "江苏" : "US Midwest",
+-            materialGrade: "Q355B",
+-            priceEffectiveAt: Date(timeIntervalSince1970: 1_787_875_200),
+-            description: chinese ? "立柱圆管 Ø88.9" : "Column tube Ø88.9",
+-            sortIndex: 1
+-        )
+-        let angle = CalculationItemEntity(
+-            profile: .angle,
+-            geometry: GeometryInput(values: [.width: 75, .height: 75, .wallThickness: 6]),
+-            materialID: "carbon-steel",
+-            materialName: "Carbon steel",
+-            densityKgPerM3: 7_850,
+-            lengthValue: 6,
+-            lengthUnit: .meter,
+-            quantity: 30,
+-            wastePercent: 6,
+-            priceBasis: .perKilogram,
+-            unitPrice: chinese ? 5.46 : 0.78,
+-            processingFee: chinese ? 520 : 72,
+-            priceSource: .manual,
+-            priceSourceName: chinese ? "供应商报价" : "Supplier quote",
+-            priceRegion: chinese ? "江苏" : "US Midwest",
+-            materialGrade: "Q235B",
+-            priceEffectiveAt: Date(timeIntervalSince1970: 1_787_875_200),
+-            description: chinese ? "连接角钢 L75 × 6" : "Connection angle L75 × 6",
+-            sortIndex: 2
+-        )
+-        project.items = [plate, tube, angle]
++        project.terms = "Demonstration only. Price is not a supplier offer."
++        let draft = CalculatorDraft(profile: .plate)
++        draft.applyMarketingPreset(chinese: false)
++        if let item = draft.makeItem(materialName: "Carbon steel", locale: Locale(identifier: "en_US"), sortIndex: 0) {
++            project.items = [item]
++        }
+         context.insert(project)
++        if let data = try? QuoteExportService.snapshotData(for: project, includeBranding: true) {
++            try? data.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("article-snapshot.json"))
++        }
++        if let url = try? QuoteExportService.pdfURL(for: project, company: nil, includeBranding: true) {
++            let dest = FileManager.default.temporaryDirectory.appendingPathComponent("flat-bar-quote.pdf")
++            try? FileManager.default.removeItem(at: dest)
++            try? FileManager.default.copyItem(at: url, to: dest)
++        }
+ 
+         let customMaterial = MaterialEntity(
+             id: chinese ? "weathering-steel-demo-zh" : "weathering-steel-demo-en",
+--- a/App/Features/Calculator/CalculatorDraft.swift
++++ b/App/Features/Calculator/CalculatorDraft.swift
+@@ -164,15 +164,23 @@
+ 
+     func applyMarketingPreset(chinese: Bool) {
+         quantity = 18
+-        wasteText = "5"
+-        unitPriceText = chinese ? "5.32" : "0.74"
+-        processingFeeText = chinese ? "680" : "95"
+-        otherFeeText = chinese ? "120" : "18"
++        dimensionTexts[.width] = "100"
++        dimensionTexts[.thickness] = "10"
++        lengthText = "6"
++        lengthUnit = .meter
++        geometryUnit = .millimeter
++        selectedMaterialID = "carbon-steel"
++        densityText = "7850"
++        wasteText = "0"
++        unitPriceText = "0.74"
++        processingFeeText = "0"
++        otherFeeText = "0"
+         priceSource = .manual
+-        priceSourceName = chinese ? "华东现货" : "Regional spot"
+-        priceRegion = chinese ? "上海" : "US Midwest"
+-        materialGrade = "Q235B"
+-        itemDescription = chinese ? "底板 200 × 12" : "Base plate 200 × 12"
++        priceSourceName = "Demo rate"
++        priceRegion = ""
++        materialGrade = ""
++        itemDescription = "Flat bar 100 x 10 mm"
++
+     }
+ 
+     func convertGeometry(to newUnit: LengthUnit, locale: Locale) {
+--- a/App/Features/Calculator/CalculatorEditorView.swift
++++ b/App/Features/Calculator/CalculatorEditorView.swift
+@@ -352,6 +352,19 @@
+         }
+         }
+         .safeAreaInset(edge: .bottom) { actionBar(scroll: scroll) }
++#if DEBUG
++        .task {
++            if ProcessInfo.processInfo.arguments.contains("--article-pricing") {
++                showPricing = true
++                try? await Task.sleep(for: .milliseconds(700))
++                scroll.scrollTo("price", anchor: .top)
++            } else if ProcessInfo.processInfo.arguments.contains("--article-input") {
++                try? await Task.sleep(for: .milliseconds(700))
++                scroll.scrollTo("geometry", anchor: .top)
++            }
++        }
++#endif
++
+         .onChange(of: lastSavedItem?.id) { _, id in if id != nil { withAnimation { scroll.scrollTo("saveFeedback", anchor: .top) } } }
+         .onChange(of: notice) { _, value in if value != nil { withAnimation { scroll.scrollTo("feedback", anchor: .top) } } }
+         }
