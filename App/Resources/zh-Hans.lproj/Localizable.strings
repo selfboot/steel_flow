@@ -226,7 +226,7 @@
 "settings.version" = "版本";
 "settings.calculation_disclaimer" = "计算说明";
 "settings.privacy" = "数据收集";
-"settings.privacy.value" = "不收集";
+"settings.privacy.value" = "匿名购买信息";
 "feedback.entry" = "问题反馈与功能建议";
 "feedback.title" = "反馈";
 "feedback.type.section" = "反馈类型";

@@ -226,7 +226,7 @@
 "settings.version" = "Version";
 "settings.calculation_disclaimer" = "Calculation notes";
 "settings.privacy" = "Data collection";
-"settings.privacy.value" = "None";
+"settings.privacy.value" = "Anonymous purchase info";
 "feedback.entry" = "Feedback & feature requests";
 "feedback.title" = "Feedback";
 "feedback.type.section" = "Feedback type";
