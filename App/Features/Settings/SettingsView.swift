@@ -6,6 +6,7 @@ import UIKit
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.locale) private var locale
+    @Environment(\.dynamicTypeSize) private var typeSize
     @Query(sort: \ProjectEntity.createdAt) private var projects: [ProjectEntity]
     @Query(sort: \MaterialEntity.createdAt) private var materials: [MaterialEntity]
     @Query private var companies: [CompanyProfileEntity]
@@ -34,80 +35,118 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
+            Section {
+                if purchaseManager.isPro {
+                    membershipCard
+                } else {
+                    Button { paywallReason = .general } label: { membershipCard }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("settings.membership")
+                }
+            }
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.clear)
+
             Section("settings.region") {
-                Picker("settings.language", selection: $languageCode) {
+                Picker(selection: $languageCode) {
                     Text("language.system").tag("system")
                     Text("language.chinese").tag("zh-Hans")
                     Text("language.english").tag("en")
+                } label: {
+                    SettingsLabel("settings.language", systemImage: "globe")
                 }
-                Picker("settings.unit_system", selection: $unitSystemRaw) {
+                Picker(selection: $unitSystemRaw) {
                     ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0.rawValue) }
+                } label: {
+                    SettingsLabel("settings.unit_system", systemImage: "ruler")
                 }
-                CurrencyPickerRow(selection: $currencyCode)
-                Picker("settings.paper", selection: $paperRaw) {
+                NavigationLink {
+                    CurrencySelectionView(selection: $currencyCode)
+                } label: {
+                    LabeledContent {
+                        Text(currencyCode)
+                    } label: {
+                        SettingsLabel("settings.currency", systemImage: "banknote")
+                    }
+                }
+                Picker(selection: $paperRaw) {
                     Text("paper.a4").tag(PaperSize.a4.rawValue)
                     Text("paper.letter").tag(PaperSize.letter.rawValue)
+                } label: {
+                    SettingsLabel("settings.paper", systemImage: "doc")
                 }
             }
+            .pickerStyle(.navigationLink)
 
             Section("settings.quote") {
-                Button("workflow.customers") { showCustomers = true }
-                if purchaseManager.isPro {
-                    Button("settings.company_profile") { showCompany = true }
-                } else {
-                    Button { pendingProAction = { showCompany = true }; paywallReason = .companyProfile } label: { Label("settings.company_profile", systemImage: "lock.fill") }
+                Button { showCustomers = true } label: {
+                    SettingsActionLabel("workflow.customers", systemImage: "person.2")
+                }
+                Button {
+                    if purchaseManager.isPro {
+                        showCompany = true
+                    } else {
+                        pendingProAction = { showCompany = true }
+                        paywallReason = .companyProfile
+                    }
+                } label: {
+                    SettingsActionLabel("settings.company_profile", systemImage: "building.2", locked: !purchaseManager.isPro)
                 }
             }
 
-            Section("settings.pro") {
-                HStack {
-                    Label(purchaseManager.isPro ? "purchase.pro_active" : "purchase.free", systemImage: purchaseManager.isPro ? "checkmark.seal.fill" : "seal")
-                    Spacer()
-                    if let price = purchaseManager.localizedPrice, !purchaseManager.isPro { Text(price).foregroundStyle(.secondary) }
-                }
-                if !purchaseManager.isPro {
-                    Button("purchase.buy") { paywallReason = .general }
-                }
-                Text("purchase.help").font(.caption).foregroundStyle(.secondary)
-            }
-
-            Section("settings.data") {
-                if lastBackup > 0 { LabeledContent("workflow.last_backup", value: AppFormatters.date(Date(timeIntervalSince1970: lastBackup), locale: locale)) }
-                else { Text("workflow.backup_never").foregroundStyle(.secondary) }
-                if lastRestore > 0 { LabeledContent("workflow.last_restore", value: AppFormatters.date(Date(timeIntervalSince1970: lastRestore), locale: locale)) }
-                if !projects.isEmpty && Date.now.timeIntervalSince1970 - lastBackup > 30 * 86400 { Label("workflow.backup_reminder", systemImage: "externaldrive.badge.exclamationmark").font(.caption).foregroundStyle(.orange) }
-                Text("workflow.backup_contents").font(.caption).foregroundStyle(.secondary)
+            Section {
                 Button {
                     if purchaseManager.isPro { exportBackup() } else { pendingProAction = { exportBackup() }; paywallReason = .backups }
                 } label: {
-                    Label("backup.export", systemImage: purchaseManager.isPro ? "square.and.arrow.up" : "lock.fill")
+                    SettingsActionLabel("backup.export", systemImage: "square.and.arrow.up", locked: !purchaseManager.isPro)
                 }
                 Button {
                     if purchaseManager.isPro { showImporter = true } else { pendingProAction = { showImporter = true }; paywallReason = .backups }
                 } label: {
-                    Label("backup.import", systemImage: purchaseManager.isPro ? "square.and.arrow.down" : "lock.fill")
+                    SettingsActionLabel("backup.import", systemImage: "square.and.arrow.down", locked: !purchaseManager.isPro)
                 }
-                Button(role: .destructive) { showDeleteConfirmation = true } label: { Label("settings.delete_all", systemImage: "trash") }
-            }
-
-            Section("settings.support") {
-                NavigationLink {
-                    FeedbackView()
-                } label: {
-                    Label("feedback.entry", systemImage: "envelope")
+                Button(role: .destructive) { showDeleteConfirmation = true } label: {
+                    SettingsLabel("settings.delete_all", systemImage: "trash", destructive: true)
+                }
+            } header: {
+                Text("settings.data")
+            } footer: {
+                if lastBackup > 0 || lastRestore > 0 {
+                    VStack(alignment: .leading, spacing: 4) {
+                        if lastBackup > 0 {
+                            Text("\(AppLocalization.text("workflow.last_backup", locale: locale)): \(AppFormatters.date(Date(timeIntervalSince1970: lastBackup), locale: locale))")
+                        }
+                        if lastRestore > 0 {
+                            Text("\(AppLocalization.text("workflow.last_restore", locale: locale)): \(AppFormatters.date(Date(timeIntervalSince1970: lastRestore), locale: locale))")
+                        }
+                    }
                 }
             }
 
             Section("settings.about") {
                 Link(destination: AppReviewPrompt.reviewURL) {
-                    Label("settings.rate_app", systemImage: "star.bubble")
+                    SettingsActionLabel("settings.rate_app", systemImage: "star.bubble")
                 }
                 .accessibilityIdentifier("settings.rate_app")
-                LabeledContent("settings.version", value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
-                NavigationLink("settings.calculation_disclaimer") { DisclaimerView() }
-                LabeledContent("settings.privacy", value: AppLocalization.text("settings.privacy.value", locale: locale))
+                NavigationLink { FeedbackView() } label: {
+                    SettingsLabel("feedback.entry", systemImage: "envelope")
+                }
+                NavigationLink { DisclaimerView() } label: {
+                    SettingsLabel("settings.calculation_disclaimer", systemImage: "doc.text")
+                }
+                LabeledContent {
+                    Text(AppLocalization.text("settings.privacy.value", locale: locale))
+                } label: {
+                    SettingsLabel("settings.privacy", systemImage: "hand.raised")
+                }
+                LabeledContent {
+                    Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
+                } label: {
+                    SettingsLabel("settings.version", systemImage: "info.circle")
+                }
             }
         }
+        .environment(\.defaultMinListRowHeight, 54)
         .navigationDestination(isPresented: $showCompany) { CompanyProfileView() }
         .navigationTitle("tab.settings")
         .modifier(RootTabLayout())
@@ -155,6 +194,56 @@ struct SettingsView: View {
             ))
         }
         .onChange(of: languageCode) { _, _ in Task { await purchaseManager.load() } }
+    }
+
+    private var membershipCard: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            HStack(spacing: 12) {
+                if !typeSize.isAccessibilitySize {
+                    ProEmblem(isActive: purchaseManager.isPro, size: 44)
+                }
+                Text("settings.pro")
+                    .font(.title3.weight(.bold))
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+                PolishedSymbol(systemName: purchaseManager.isPro ? "checkmark.circle.fill" : "arrow.up.right")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(SteelFlowTheme.proHighlight)
+                    .accessibilityHidden(true)
+            }
+            VStack(alignment: .leading, spacing: 6) {
+                Text(purchaseManager.isPro ? "purchase.pro_active" : "purchase.entry.title")
+                    .font(.headline)
+                Text(purchaseManager.isPro ? "purchase.paywall.active_subtitle" : "purchase.entry.subtitle")
+                    .font(.subheadline)
+                    .foregroundStyle(Color.white.opacity(0.8))
+            }
+            .fixedSize(horizontal: false, vertical: true)
+            if !purchaseManager.isPro {
+                let layout = typeSize.isAccessibilitySize
+                    ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+                    : AnyLayout(HStackLayout())
+                layout {
+                    Text("purchase.paywall.one_time")
+                        .font(.caption)
+                        .foregroundStyle(Color.white.opacity(0.8))
+                    if !typeSize.isAccessibilitySize { Spacer(minLength: 8) }
+                    Text("purchase.entry.action")
+                        .font(.caption.weight(.semibold))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 7)
+                        .background(Color.white.opacity(0.12), in: Capsule())
+                }
+            }
+        }
+        .foregroundStyle(.white)
+        .padding(20)
+        .background(SteelFlowTheme.proGradient, in: RoundedRectangle(cornerRadius: 22))
+        .overlay {
+            RoundedRectangle(cornerRadius: 22).strokeBorder(Color.white.opacity(0.12))
+        }
+        .contentShape(RoundedRectangle(cornerRadius: 22))
+        .accessibilityElement(children: .combine)
     }
 
     private func exportBackup() {
@@ -231,6 +320,74 @@ struct SettingsView: View {
             CalculationLibrary.shared.clear(); lastBackup = 0; lastRestore = 0
             backupMessage = AppLocalization.text("settings.delete_all.done", locale: locale)
         }
+    }
+}
+
+/// A fixed icon column keeps labels aligned across pickers, links and actions.
+private struct SettingsLabel: View {
+    let title: LocalizedStringKey
+    let systemImage: String
+    var destructive = false
+
+    init(_ title: LocalizedStringKey, systemImage: String, destructive: Bool = false) {
+        self.title = title
+        self.systemImage = systemImage
+        self.destructive = destructive
+    }
+
+    var body: some View {
+        HStack(spacing: 12) {
+            SteelIconTile(
+                systemName: systemImage,
+                base: destructive ? Color.red.opacity(0.12) : SteelFlowTheme.settingsIconFill,
+                foreground: destructive ? .red : .white
+            )
+            Text(title)
+                .foregroundStyle(destructive ? Color.red : Color.primary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .alignmentGuide(.listRowSeparatorLeading) { dimensions in dimensions[.leading] + 44 }
+    }
+}
+
+private struct SettingsActionLabel: View {
+    let title: LocalizedStringKey
+    let systemImage: String
+    var locked = false
+
+    init(_ title: LocalizedStringKey, systemImage: String, locked: Bool = false) {
+        self.title = title
+        self.systemImage = systemImage
+        self.locked = locked
+    }
+
+    var body: some View {
+        HStack(spacing: 12) {
+            SettingsLabel(title, systemImage: systemImage)
+            Spacer(minLength: 8)
+            if locked {
+                Text("Pro")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(SteelFlowTheme.steelBlue)
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 3)
+                    .background(SteelFlowTheme.steelBlue.opacity(0.1), in: Capsule())
+            }
+            SettingsChevron()
+        }
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(title)
+        .accessibilityValue(locked ? "Pro" : "")
+    }
+}
+
+private struct SettingsChevron: View {
+    var body: some View {
+        PolishedSymbol(systemName: "chevron.right")
+            .font(.system(size: 13, weight: .semibold))
+            .foregroundStyle(Color(uiColor: .tertiaryLabel))
+            .accessibilityHidden(true)
     }
 }
 

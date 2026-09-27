@@ -212,10 +212,10 @@
 "currency.selector.recent" = "最近使用";
 "currency.selector.all" = "所有货币";
 "settings.paper" = "纸张尺寸";
-"settings.quote" = "报价身份";
+"settings.quote" = "报价设置";
 "settings.company_profile" = "公司资料";
 "settings.pro" = "SteelFlow Pro";
-"settings.data" = "数据";
+"settings.data" = "数据管理";
 "settings.support" = "支持";
 "settings.about" = "关于";
 "settings.rate_app" = "评价 App";
@@ -224,7 +224,7 @@
 "settings.delete_all.message" = "将删除 %lld 个项目、%lld 个自定义材料、%lld 条历史参考价格、%lld 个客户、%lld 个报价快照和公司资料。内置材料会保留。";
 "settings.delete_all.done" = "已删除全部用户数据。";
 "settings.version" = "版本";
-"settings.calculation_disclaimer" = "计算说明与免责声明";
+"settings.calculation_disclaimer" = "计算说明";
 "settings.privacy" = "数据收集";
 "settings.privacy.value" = "不收集";
 "feedback.entry" = "问题反馈与功能建议";
@@ -284,7 +284,7 @@
 "purchase.restore.empty.message" = "当前 Apple 账户没有有效的 SteelFlow Pro 购买记录。";
 "purchase.paywall.navigation_title" = "SteelFlow Pro";
 "purchase.paywall.title" = "解锁 SteelFlow Pro";
-"purchase.paywall.subtitle" = "一次购买，永久使用。";
+"purchase.paywall.subtitle" = "从重量计算到专业报价，让每一步更从容。";
 "purchase.paywall.active_subtitle" = "本设备已经可以使用全部 Pro 功能。";
 "purchase.paywall.lifetime" = "永久使用权";
 "purchase.paywall.one_time" = "一次性购买 · 无订阅";
@@ -306,8 +306,8 @@
 "purchase.limit.csv" = "CSV 导出需要 SteelFlow Pro";
 "purchase.limit.terms" = "自定义报价条款需要 SteelFlow Pro。";
 
-"backup.export" = "导出版本化备份";
-"backup.import" = "将备份导入为副本";
+"backup.export" = "导出备份";
+"backup.import" = "导入备份";
 "backup.import.confirm" = "导入这个备份？";
 "backup.import_copy" = "导入为副本";
 "backup.import_copy_and_settings" = "导入副本和设置";
@@ -451,8 +451,8 @@
 "workflow.csv.cutting" = "下料清单 CSV";
 "workflow.csv.internalCosts" = "内部成本 CSV";
 "workflow.page_count" = "PDF 页数";
-"workflow.last_backup" = "上次成功备份";
-"workflow.last_restore" = "上次成功恢复";
+"workflow.last_backup" = "上次备份";
+"workflow.last_restore" = "上次恢复";
 "workflow.backup_never" = "尚无成功备份记录";
 "workflow.backup_reminder" = "建议将近期数据备份到“文件”。";
 "workflow.backup_contents" = "包含项目、模板、客户、报价版本、价格、公司 Logo、常用计算与草稿。";
@@ -575,3 +575,19 @@
 "ui.template_first_help" = "先将已有项目保存为模板，再用模板创建新项目。";
 "ui.template_choose_source" = "选择项目保存为模板";
 "ui.template_select_first" = "请先选择一个模板。";
+
+"purchase.entry.title" = "项目不设限，报价更专业";
+"purchase.entry.subtitle" = "解锁无限项目、公司抬头与完整导出。";
+"purchase.entry.action" = "了解 Pro";
+"purchase.paywall.included" = "一次解锁，包含全部 Pro 权益";
+"purchase.paywall.feature.projects.title" = "项目与条目，不设上限";
+"purchase.paywall.feature.projects.detail" = "无限进行中项目与条目，支持快速复制项目。";
+"purchase.paywall.feature.materials.title" = "材料与计价，灵活掌控";
+"purchase.paywall.feature.materials.detail" = "自定义材料、批量计价与专属报价条款。";
+"purchase.paywall.feature.quotes.title" = "带上品牌，专业交付";
+"purchase.paywall.feature.quotes.detail" = "公司信息与标志，完整 PDF / CSV 导出。";
+"purchase.paywall.feature.backups.title" = "工作成果，随时备份";
+"purchase.paywall.feature.backups.detail" = "导出与导入备份，为项目留一份底。";
+"purchase.paywall.loading" = "正在获取价格…";
+"purchase.paywall.price_unavailable" = "价格暂不可用";
+"purchase.paywall.unavailable" = "暂时无法获取购买信息，请重试。";

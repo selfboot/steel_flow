@@ -212,10 +212,10 @@
 "currency.selector.recent" = "Recently Used";
 "currency.selector.all" = "All Currencies";
 "settings.paper" = "Paper size";
-"settings.quote" = "Quote identity";
+"settings.quote" = "Quotes";
 "settings.company_profile" = "Company profile";
 "settings.pro" = "SteelFlow Pro";
-"settings.data" = "Data";
+"settings.data" = "Data management";
 "settings.support" = "Support";
 "settings.about" = "About";
 "settings.rate_app" = "Rate SteelFlow";
@@ -224,7 +224,7 @@
 "settings.delete_all.message" = "This removes %lld projects, %lld custom materials, %lld saved prices, %lld customers, %lld quote snapshots, and company details. Built-in materials remain.";
 "settings.delete_all.done" = "All user data was deleted.";
 "settings.version" = "Version";
-"settings.calculation_disclaimer" = "Calculation notes and disclaimer";
+"settings.calculation_disclaimer" = "Calculation notes";
 "settings.privacy" = "Data collection";
 "settings.privacy.value" = "None";
 "feedback.entry" = "Feedback & feature requests";
@@ -284,7 +284,7 @@
 "purchase.restore.empty.message" = "No active SteelFlow Pro purchase was found for this Apple Account.";
 "purchase.paywall.navigation_title" = "SteelFlow Pro";
 "purchase.paywall.title" = "Unlock SteelFlow Pro";
-"purchase.paywall.subtitle" = "One purchase. Yours to use forever.";
+"purchase.paywall.subtitle" = "From your first calculation to a quote ready to send.";
 "purchase.paywall.active_subtitle" = "Every Pro feature is available on this device.";
 "purchase.paywall.lifetime" = "Lifetime access";
 "purchase.paywall.one_time" = "One-time purchase · No subscription";
@@ -306,8 +306,8 @@
 "purchase.limit.csv" = "CSV export requires SteelFlow Pro";
 "purchase.limit.terms" = "Custom quote terms require SteelFlow Pro.";
 
-"backup.export" = "Export versioned backup";
-"backup.import" = "Import backup as a copy";
+"backup.export" = "Export backup";
+"backup.import" = "Import backup";
 "backup.import.confirm" = "Import this backup?";
 "backup.import_copy" = "Import as copy";
 "backup.import_copy_and_settings" = "Import copies and settings";
@@ -451,8 +451,8 @@
 "workflow.csv.cutting" = "Cut list CSV";
 "workflow.csv.internalCosts" = "Internal costs CSV";
 "workflow.page_count" = "PDF page count";
-"workflow.last_backup" = "Last completed backup";
-"workflow.last_restore" = "Last completed restore";
+"workflow.last_backup" = "Last backup";
+"workflow.last_restore" = "Last restore";
 "workflow.backup_never" = "No completed backup recorded";
 "workflow.backup_reminder" = "Save a backup to Files to protect your recent work.";
 "workflow.backup_contents" = "Includes projects, templates, customers, quote versions, prices, company logo, favorite calculations and drafts.";
@@ -575,3 +575,19 @@
 "ui.template_first_help" = "Save an existing project as a template, then create a new project from it.";
 "ui.template_choose_source" = "Choose a project to save as a template";
 "ui.template_select_first" = "Select a template to continue.";
+
+"purchase.entry.title" = "More room for every project";
+"purchase.entry.subtitle" = "Unlimited projects. Quotes with your company identity.";
+"purchase.entry.action" = "Explore Pro";
+"purchase.paywall.included" = "Everything included with Pro";
+"purchase.paywall.feature.projects.title" = "Projects without limits";
+"purchase.paywall.feature.projects.detail" = "Unlimited active projects and items. Duplicate in a tap.";
+"purchase.paywall.feature.materials.title" = "Pricing that fits your work";
+"purchase.paywall.feature.materials.detail" = "Custom materials, batch pricing and quote terms.";
+"purchase.paywall.feature.quotes.title" = "Quotes with your identity";
+"purchase.paywall.feature.quotes.detail" = "Company details and logo, plus full PDF/CSV exports.";
+"purchase.paywall.feature.backups.title" = "Keep a copy of your work";
+"purchase.paywall.feature.backups.detail" = "Export backups and import them when you need them.";
+"purchase.paywall.loading" = "Loading price…";
+"purchase.paywall.price_unavailable" = "Price unavailable";
+"purchase.paywall.unavailable" = "Unable to load purchase details. Please try again.";

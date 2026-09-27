@@ -62,7 +62,7 @@ struct CurrencyPickerRow: View {
     }
 }
 
-private struct CurrencySelectionView: View {
+struct CurrencySelectionView: View {
     @Binding var selection: String
     @Environment(\.dismiss) private var dismiss
     @Environment(\.locale) private var locale
