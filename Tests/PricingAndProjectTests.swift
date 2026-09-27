@@ -318,6 +318,42 @@ final class PricingAndProjectTests: XCTestCase {
         XCTAssertEqual(document.numberOfPages, 2)
     }
 
+    func testLocalizedPDFKeepsItemColumnsSeparateAndHidesInternalPricing() throws {
+        for language in ["en", "zh-Hans"] {
+            let chinese = language == "zh-Hans"
+            let locale = Locale(identifier: language)
+            let project = ProjectEntity(name: "Layout check", quoteLanguage: language, currencyCode: chinese ? "CNY" : "USD")
+            project.markupPercentText = "25"
+            let item = makeItem(quantity: 2, unitPrice: 2, processing: 10)
+            item.descriptionText = chinese ? "圆管批次" : "Pipe batch"
+            project.items.append(item)
+            let payload = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project, company: nil))
+            let line = try XCTUnwrap(payload.lines.first)
+            let pdf = try XCTUnwrap(PDFDocument(url: QuotePDFRenderer.render(payload)))
+            let page = try XCTUnwrap(pdf.page(at: 0))
+            let text = try XCTUnwrap(pdf.string)
+            XCTAssertTrue(text.contains(chinese ? "报价单" : "QUOTE"))
+            XCTAssertTrue(text.contains(chinese ? "税前小计" : "Subtotal"))
+            for hidden in ["Material subtotal", "Processing and other fees", "Markup", "材料小计", "加工及其他费用", "加价金额"] {
+                XCTAssertFalse(text.contains(hidden), "Customer PDFs must hide internal pricing: \(hidden)")
+            }
+            let expected = [
+                item.descriptionText,
+                AppFormatters.mass(line.totalMassKg, system: .metric, locale: locale),
+                AppFormatters.decimal(line.customerQuoteAmount, currencyCode: project.currencyCode, locale: locale)
+            ]
+            let bounds = try expected.map { value in
+                let selection = try XCTUnwrap(pdf.findString(value, withOptions: []).first, "Missing PDF value: \(value)")
+                let rect = selection.bounds(for: page)
+                XCTAssertFalse(rect.isEmpty)
+                XCTAssertTrue(page.bounds(for: .mediaBox).contains(rect), "PDF value must fit the page: \(value)")
+                return rect
+            }
+            XCTAssertFalse(bounds[0].intersects(bounds[1]), "Description must not overlap mass")
+            XCTAssertFalse(bounds[1].intersects(bounds[2]), "Mass must not overlap amount")
+        }
+    }
+
     func testQuoteSnapshotFreezesInputsResultsAndPrices() throws {
         let fixedDate = Date(timeIntervalSince1970: 1_700_000_000)
         let project = ProjectEntity(name: "Snapshot", currencyCode: "USD")

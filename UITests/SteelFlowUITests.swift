@@ -97,6 +97,12 @@ final class SteelFlowUITests: XCTestCase {
             app.launch()
 
             let preview = app.descendants(matching: .any)["calculator.profile_preview"]
+            if !preview.exists {
+                let disclosure = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "3D profile preview")).firstMatch
+                for _ in 0..<6 where !disclosure.isHittable { app.swipeUp() }
+                XCTAssertTrue(disclosure.isHittable)
+                disclosure.tap()
+            }
             for _ in 0..<6 where !preview.isHittable { app.swipeUp() }
             XCTAssertTrue(preview.waitForExistence(timeout: 3), "Missing 3D preview for \(profile)")
             XCTAssertTrue(preview.isHittable, "3D preview is off-screen for \(profile)")
@@ -253,14 +259,19 @@ final class SteelFlowUITests: XCTestCase {
         plate.tap()
 
         XCTAssertTrue(app.navigationBars["Plate / flat bar"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.otherElements.matching(NSPredicate(format: "label CONTAINS 'Width'")).firstMatch.waitForExistence(timeout: 3))
+        let width = app.textFields["dimension.width"]
+        for _ in 0..<12 where !width.isHittable { app.swipeUp() }
+        XCTAssertTrue(width.isHittable, "Width input must remain reachable at the largest text size")
+        width.tap()
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3))
         attachScreenshot(named: "accessibility-xxxl-calculator")
     }
 
-    func testChineseQuoteRowsDoNotOverlapOnCompactPhone() {
+    func testChineseQuoteSummaryAndPDFRemainAccessibleOnCompactPhone() {
         continueAfterFailure = false
         let app = XCUIApplication()
         app.launchArguments = [
+            "--workflow-tests", "--workflow-free",
             "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "zh-Hans",
             "-app.unitSystem", "metric", "-app.currency", "CNY",
             "--marketing-screen", "quote", "--marketing-locale", "zh-Hans"
@@ -268,36 +279,34 @@ final class SteelFlowUITests: XCTestCase {
         app.launch()
 
         XCTAssertTrue(app.navigationBars["报价预览"].waitForExistence(timeout: 8))
-        let title = app.staticTexts["连接角钢 L75 × 6"]
-        let mass = app.staticTexts["1,220.83 kg"]
-        let amount = app.staticTexts["¥8,495.98"]
+        let title = app.staticTexts["总价、¥35,228.94"]
         XCTAssertTrue(title.waitForExistence(timeout: 3))
-        XCTAssertTrue(mass.waitForExistence(timeout: 3))
-        XCTAssertTrue(amount.waitForExistence(timeout: 3))
-        XCTAssertFalse(title.frame.intersects(mass.frame), "The item title must not overlap the mass column")
-        XCTAssertFalse(mass.frame.intersects(amount.frame), "Mass and amount must remain separately readable")
-        XCTAssertGreaterThanOrEqual(mass.frame.minX, app.windows.firstMatch.frame.minX)
-        XCTAssertLessThanOrEqual(amount.frame.maxX, app.windows.firstMatch.frame.maxX)
+        XCTAssertGreaterThanOrEqual(title.frame.minX, app.windows.firstMatch.frame.minX)
+        XCTAssertLessThanOrEqual(title.frame.maxX, app.windows.firstMatch.frame.maxX)
+        XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
         attachScreenshot(named: "compact-chinese-quote")
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "打开 PDF 预览")).firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["生成的 PDF"].waitForExistence(timeout: 3))
     }
 
-    func testEnglishQuoteRowsKeepAmountsInsideCompactPhone() {
+    func testEnglishQuoteSummaryAndPDFRemainAccessibleOnCompactPhone() {
         continueAfterFailure = false
         let app = XCUIApplication()
         app.launchArguments = [
+            "--workflow-tests", "--workflow-free",
             "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
             "--marketing-screen", "quote", "--marketing-locale", "en-US"
         ]
         app.launch()
 
         XCTAssertTrue(app.navigationBars["Quote preview"].waitForExistence(timeout: 8))
-        let title = app.staticTexts["Connection angle L75 × 6"]
-        let amount = app.staticTexts["$1,276.03"]
+        let title = app.staticTexts["Total, $5,015.25"]
         XCTAssertTrue(title.waitForExistence(timeout: 3))
-        XCTAssertTrue(amount.waitForExistence(timeout: 3))
-        XCTAssertFalse(title.frame.intersects(amount.frame))
-        XCTAssertLessThanOrEqual(amount.frame.maxX, app.windows.firstMatch.frame.maxX)
+        XCTAssertLessThanOrEqual(title.frame.maxX, app.windows.firstMatch.frame.maxX)
+        XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
         attachScreenshot(named: "compact-english-quote")
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Open PDF preview")).firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["Generated PDF"].waitForExistence(timeout: 3))
     }
 
     func testChineseProjectSummaryKeepsLongLabelsAndValuesReadable() {
@@ -310,6 +319,10 @@ final class SteelFlowUITests: XCTestCase {
         app.launch()
 
         XCTAssertTrue(app.navigationBars["港区雨棚"].waitForExistence(timeout: 8))
+        let breakdown = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "费用明细")).firstMatch
+        for _ in 0..<4 where !breakdown.isHittable { app.swipeUp() }
+        XCTAssertTrue(breakdown.isHittable)
+        breakdown.tap()
         let label = app.staticTexts["加工及其他费用"]
         let amount = app.staticTexts["¥2,280.00"]
         for _ in 0..<4 where !label.isHittable { app.swipeUp() }
@@ -320,18 +333,20 @@ final class SteelFlowUITests: XCTestCase {
         attachScreenshot(named: "compact-chinese-project-summary")
     }
 
-    func testQuoteBodyUsesProjectLanguageAndDoesNotExposeInternalPricing() {
+    func testQuoteSummaryUsesProjectCurrencyWithEnglishAppLanguage() {
         continueAfterFailure = false
         let app = XCUIApplication()
         app.launchArguments = [
+            "--workflow-tests", "--workflow-free",
             "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
             "--marketing-screen", "quote", "--marketing-locale", "zh-Hans"
         ]
         app.launch()
 
         XCTAssertTrue(app.navigationBars["Quote preview"].waitForExistence(timeout: 8))
-        XCTAssertTrue(app.staticTexts["报价单"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["税前小计"].waitForExistence(timeout: 3))
+        let total = app.staticTexts["Total, ¥35,228.94"]
+        XCTAssertTrue(total.waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
         XCTAssertFalse(app.staticTexts["Material subtotal"].exists)
         XCTAssertFalse(app.staticTexts["Markup"].exists)
         attachScreenshot(named: "quote-language-and-customer-safe-pricing")
@@ -341,12 +356,14 @@ final class SteelFlowUITests: XCTestCase {
         continueAfterFailure = false
         let app = XCUIApplication()
         app.launchArguments = [
+            "--workflow-tests", "--workflow-free",
             "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en",
             "--marketing-screen", "materials", "--marketing-locale", "en-US"
         ]
         app.launch()
 
-        let price = app.staticTexts["Q235B regional spot"]
+        app.buttons["Saved price history"].tap()
+        let price = app.staticTexts["Q235B regional spot"].firstMatch
         for _ in 0..<4 where !price.isHittable { app.swipeUp() }
         XCTAssertTrue(price.waitForExistence(timeout: 5))
         price.swipeLeft()
