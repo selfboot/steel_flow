@@ -73,7 +73,7 @@ struct TemplatePickerView: View {
                 Section("workflow.templates") {
                     ForEach(templates) { template in
                         Button { selectedTemplate = template } label: {
-                            HStack { Text(template.name).foregroundStyle(.primary); Spacer(); Image(systemName: selectedTemplate?.id == template.id ? "checkmark.circle.fill" : "circle") }.frame(minHeight: 44)
+                            HStack { Text(template.name).foregroundStyle(.primary); Spacer(); PolishedSymbol(systemName: selectedTemplate?.id == template.id ? "checkmark.circle.fill" : "circle") }.frame(minHeight: 44)
                         }.accessibilityIdentifier("template." + template.name)
                         .accessibilityValue(selectedTemplate?.id == template.id ? Text("ui.selected") : Text("ui.not_selected"))
                     }

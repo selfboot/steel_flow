@@ -215,7 +215,7 @@ private struct ProjectRow: View {
             let layout = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading)) : AnyLayout(HStackLayout())
             layout {
                 Text(project.name).font(.headline).lineLimit(2).layoutPriority(1)
-                if project.isPinned { Image(systemName: "pin.fill").accessibilityLabel("ui.pinned") }
+                if project.isPinned { PolishedSymbol(systemName: "pin.fill").accessibilityLabel("ui.pinned") }
                 Spacer()
                 Text(AppFormatters.decimal(summary.pricing.total, currencyCode: project.currencyCode, locale: locale))
                     .font(.subheadline.weight(.semibold)).monospacedDigit().fixedSize(horizontal: true, vertical: false)

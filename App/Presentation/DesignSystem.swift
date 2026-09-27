@@ -7,9 +7,179 @@ enum SteelFlowTheme {
     static let steelBlue = Color(uiColor: UIColor { traits in
         traits.userInterfaceStyle == .dark ? UIColor(red: 0.24, green: 0.68, blue: 0.91, alpha: 1) : UIColor(red: 0.04, green: 0.43, blue: 0.62, alpha: 1)
     })
+    /// Neutral steel tones for supporting iconography, distinct from action tint.
+    static let steelGray = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark ? UIColor(red: 0.74, green: 0.76, blue: 0.78, alpha: 1) : UIColor(red: 0.38, green: 0.40, blue: 0.42, alpha: 1)
+    })
+    static let steelGraySurface = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark ? UIColor(red: 0.19, green: 0.20, blue: 0.21, alpha: 1) : UIColor(red: 0.93, green: 0.94, blue: 0.95, alpha: 1)
+    })
+    /// The graphite-blue of the app icon, with white symbols for crisp settings tiles.
+    static let settingsIconFill = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark ? UIColor(red: 0.26, green: 0.36, blue: 0.43, alpha: 1) : UIColor(red: 0.28, green: 0.39, blue: 0.47, alpha: 1)
+    })
+    static let proGradient = LinearGradient(
+        colors: [Color(red: 0.19, green: 0.29, blue: 0.37), Color(red: 0.07, green: 0.15, blue: 0.22)],
+        startPoint: .topLeading, endPoint: .bottomTrailing
+    )
+    static let proHighlight = Color(red: 0.57, green: 0.82, blue: 0.98)
     static let actionFill = Color(red: 0.04, green: 0.43, blue: 0.62)
     static let deepSteel = Color(red: 0.03, green: 0.20, blue: 0.27)
     static let surface = Color(uiColor: .secondarySystemGroupedBackground)
+}
+
+/// A restrained highlight on symbol silhouettes; inherited tint keeps warning and disabled roles intact.
+struct SteelSymbolFinish: ViewModifier {
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
+    func body(content: Content) -> some View {
+        content.overlay {
+            if isEnabled && !reduceTransparency {
+                EllipticalGradient(
+                    stops: [.init(color: .white.opacity(0.34), location: 0),
+                            .init(color: .white.opacity(0.12), location: 0.35),
+                            .init(color: .clear, location: 0.65),
+                            .init(color: .black.opacity(0.12), location: 1)],
+                    center: .center, startRadiusFraction: 0, endRadiusFraction: 0.7
+                )
+                .mask(content)
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+            }
+        }
+    }
+}
+
+struct PolishedSymbol: View {
+    let systemName: String
+    var body: some View {
+        Image(systemName: systemName).modifier(SteelSymbolFinish())
+    }
+}
+
+struct SteelLabelStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        Label { configuration.title } icon: {
+            configuration.icon.modifier(SteelSymbolFinish())
+        }
+    }
+}
+
+/// Steel-colored glass tiles used by settings and Pro benefits.
+struct SteelIconTile: View {
+    let systemName: String
+    var size: CGFloat = 32
+    var base: Color = SteelFlowTheme.settingsIconFill
+    var foreground: Color = .white
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
+    var body: some View {
+        let shape = RoundedRectangle(cornerRadius: size * 0.27, style: .continuous)
+        PolishedSymbol(systemName: systemName)
+            .font(.system(size: size * 0.48, weight: .semibold))
+            .foregroundStyle(foreground)
+            .shadow(color: .black.opacity(0.16), radius: 0.5, y: 0.5)
+            .frame(width: size, height: size)
+            .background {
+                shape.fill(base)
+                    .overlay {
+                        if !reduceTransparency {
+                            shape.fill(RadialGradient(
+                                stops: [.init(color: .white.opacity(0.46), location: 0),
+                                        .init(color: .white.opacity(0.25), location: 0.3),
+                                        .init(color: .white.opacity(0.04), location: 0.63),
+                                        .init(color: .black.opacity(0.23), location: 1)],
+                                center: .center, startRadius: 0, endRadius: size * 0.7
+                            ))
+                        }
+                    }
+                    .overlay {
+                        shape.strokeBorder(.white.opacity(0.28), lineWidth: 0.75)
+                    }
+                    .shadow(color: base.opacity(0.24), radius: 1.5, y: 1.5)
+            }
+            .accessibilityHidden(true)
+    }
+}
+
+/// Keep the existing cutout artwork, with a small specular lift and contact shadow.
+struct ProfileMaterialIcon: View {
+    let profile: ProfileKind
+    var width: CGFloat = 48
+    var height: CGFloat = 48
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
+    private var artwork: some View {
+        Image("ProfileMaterial-\(profile.rawValue)")
+            .resizable().scaledToFit()
+            .frame(width: width, height: height)
+    }
+
+    var body: some View {
+        artwork
+            .overlay {
+                if !reduceTransparency {
+                    EllipticalGradient(
+                        stops: [.init(color: .white.opacity(colorScheme == .dark ? 0.30 : 0.22), location: 0),
+                                .init(color: .white.opacity(0.06), location: 0.48),
+                                .init(color: .clear, location: 0.72),
+                                .init(color: .black.opacity(0.08), location: 1)],
+                        center: .center, startRadiusFraction: 0, endRadiusFraction: 0.7
+                    )
+                    .mask(artwork)
+                }
+            }
+            .shadow(color: .black.opacity(colorScheme == .dark ? 0.20 : 0.12), radius: 0.8, y: 1)
+            .accessibilityHidden(true)
+    }
+}
+
+/// UIKit tab bars retain original-rendered SF Symbols, including their steel highlights.
+@MainActor enum SteelTabImage {
+    private static var cache: [String: UIImage] = [:]
+
+    static func image(_ name: String, selected: Bool, dark: Bool) -> UIImage {
+        let key = "\(name)-\(selected)-\(dark)"
+        if let image = cache[key] { return image }
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
+        guard let symbol = UIImage(systemName: name, withConfiguration: config) else { return UIImage() }
+        let colors: [UIColor]
+        if selected {
+            colors = [UIColor(red: 0.36, green: 0.76, blue: 0.94, alpha: 1),
+                      UIColor(red: 0.10, green: 0.51, blue: 0.70, alpha: 1),
+                      UIColor(red: 0.03, green: 0.34, blue: 0.51, alpha: 1)]
+        } else if dark {
+            colors = [UIColor(white: 0.91, alpha: 1), UIColor(white: 0.69, alpha: 1), UIColor(white: 0.48, alpha: 1)]
+        } else {
+            colors = [UIColor(red: 0.54, green: 0.62, blue: 0.68, alpha: 1),
+                      UIColor(red: 0.32, green: 0.41, blue: 0.47, alpha: 1),
+                      UIColor(red: 0.18, green: 0.25, blue: 0.31, alpha: 1)]
+        }
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 3
+        let image = UIGraphicsImageRenderer(size: symbol.size, format: format).image { renderer in
+            symbol.withTintColor(.black, renderingMode: .alwaysOriginal).draw(at: .zero)
+            let context = renderer.cgContext
+            context.setBlendMode(.sourceAtop)
+            let center = CGPoint(x: symbol.size.width / 2, y: symbol.size.height / 2)
+            let radius = max(symbol.size.width, symbol.size.height) * 0.65
+            if let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors.map(\.cgColor) as CFArray, locations: [0, 0.48, 1]) {
+                context.drawRadialGradient(gradient, startCenter: center, startRadius: 0,
+                                           endCenter: center, endRadius: radius,
+                                           options: [.drawsAfterEndLocation])
+            }
+            let reflection = [UIColor(white: 1, alpha: 0.30), UIColor(white: 1, alpha: 0.08), UIColor(white: 1, alpha: 0)]
+            if let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: reflection.map(\.cgColor) as CFArray, locations: [0, 0.45, 1]) {
+                context.drawRadialGradient(gradient, startCenter: center, startRadius: 0,
+                                           endCenter: center, endRadius: radius,
+                                           options: [.drawsAfterEndLocation])
+            }
+        }.withRenderingMode(.alwaysOriginal)
+        cache[key] = image
+        return image
+    }
 }
 
 /// Shared navigation and content spacing for the four root tabs.

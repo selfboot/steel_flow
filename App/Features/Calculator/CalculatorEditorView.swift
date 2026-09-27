@@ -123,7 +123,7 @@ struct CalculatorEditorView: View {
                             HStack(alignment: .top) {
                                 Text(materials.first(where: { $0.id == draft.selectedMaterialID }).map(materialDisplayName) ?? draft.selectedMaterialID)
                                     .multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
-                                Image(systemName: "chevron.up.chevron.down")
+                                PolishedSymbol(systemName: "chevron.up.chevron.down")
                             }.frame(minHeight: 44)
                         }.accessibilityIdentifier("material.chooser")
                     } else {
@@ -376,7 +376,7 @@ struct CalculatorEditorView: View {
                     Button("workflow.reset", systemImage: "arrow.counterclockwise") {
                         resetDraft()
                     }
-                } label: { Image(systemName: "ellipsis.circle") }.accessibilityIdentifier("calculator.menu")
+                } label: { PolishedSymbol(systemName: "ellipsis.circle") }.accessibilityIdentifier("calculator.menu")
             }
         }
         .onAppear {

@@ -121,7 +121,7 @@ struct ProjectDetailView: View {
                     Button("project.bulk_pricing") {
                         if purchaseManager.isPro { showBulkPricing = true } else { pendingProAction = { showBulkPricing = true }; paywallReason = .bulkPricing }
                     }
-                } label: { Image(systemName: "ellipsis.circle") }.accessibilityIdentifier("project.menu")
+                } label: { PolishedSymbol(systemName: "ellipsis.circle") }.accessibilityIdentifier("project.menu")
             }
         }
         .navigationDestination(item: $openedTemplate) { ProjectDetailView(project: $0) }
@@ -233,7 +233,7 @@ private struct ProjectItemRow: View {
     var body: some View {
         let layout = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8)) : AnyLayout(HStackLayout(spacing: 12))
         layout {
-            Image(systemName: item.profile.symbol).foregroundStyle(SteelFlowTheme.steelBlue).frame(width: 30)
+            ProfileMaterialIcon(profile: item.profile, width: 38, height: 40)
             VStack(alignment: .leading, spacing: 3) {
                 Text(item.descriptionText.isEmpty ? AppLocalization.text("profile.\(item.profile.rawValue)", locale: locale) : item.descriptionText)
                     .font(.subheadline.weight(.semibold))
@@ -251,7 +251,7 @@ private struct ProjectItemRow: View {
                 }
                 .fixedSize(horizontal: true, vertical: false)
             } else {
-                Image(systemName: "exclamationmark.triangle").foregroundStyle(.orange)
+                PolishedSymbol(systemName: "exclamationmark.triangle").foregroundStyle(.orange)
             }
         }
         .padding(.vertical, 2)

@@ -82,7 +82,7 @@ private struct CurrencySelectionView: View {
         List {
             Section {
                 HStack(spacing: 10) {
-                    Image(systemName: "magnifyingglass")
+                    PolishedSymbol(systemName: "magnifyingglass")
                         .foregroundStyle(.secondary)
 
                     TextField("currency.selector.search", text: $searchText)
@@ -94,7 +94,7 @@ private struct CurrencySelectionView: View {
                         Button {
                             searchText = ""
                         } label: {
-                            Image(systemName: "xmark.circle.fill")
+                            PolishedSymbol(systemName: "xmark.circle.fill")
                                 .foregroundStyle(.tertiary)
                         }
                         .buttonStyle(.plain)
@@ -145,7 +145,7 @@ private struct CurrencySelectionView: View {
                 }
                 Spacer()
                 if code == selection {
-                    Image(systemName: "checkmark").foregroundStyle(Color.accentColor)
+                    PolishedSymbol(systemName: "checkmark").foregroundStyle(Color.accentColor)
                 }
             }
             .contentShape(Rectangle())

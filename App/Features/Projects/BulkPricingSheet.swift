@@ -80,7 +80,7 @@ struct BulkPricingSheet: View {
                             if selection.contains(item.id) { selection.remove(item.id) } else { selection.insert(item.id) }
                         } label: {
                             HStack {
-                                Image(systemName: selection.contains(item.id) ? "checkmark.circle.fill" : "circle")
+                                PolishedSymbol(systemName: selection.contains(item.id) ? "checkmark.circle.fill" : "circle")
                                 VStack(alignment: .leading) {
                                     Text(item.descriptionText.isEmpty ? MaterialCatalog.localizedName(materialID: item.materialID, fallback: item.materialName, locale: locale) : item.descriptionText).foregroundStyle(.primary)
                                     Text(AppLocalization.text("profile." + item.profileRaw, locale: locale) + " · " + AppFormatters.number(item.lengthValue, locale: locale) + " " + item.lengthUnit.rawValue + " × " + String(item.quantity)).font(.caption).foregroundStyle(.secondary)
