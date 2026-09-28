@@ -615,6 +615,99 @@ final class LocalizationUITests: XCTestCase {
         app.terminate()
     }
 
+    func testGermanEditingAndPaywall() {
+        verifyEuropeanEditing("de", settings: "Einstellungen", projects: "Projekte", materials: "Materialien", projectSettings: "Projekteinstellungen", done: "Fertig", save: "Speichern", history: "Gespeicherte Preise", restore: "Kauf wiederherstellen")
+    }
+
+    func testSpanishEditingAndPaywall() {
+        verifyEuropeanEditing("es", settings: "Ajustes", projects: "Proyectos", materials: "Materiales", projectSettings: "Ajustes del proyecto", done: "Listo", save: "Guardar", history: "Historial de precios", restore: "Restaurar compra")
+    }
+
+    func testFrenchEditingAndPaywall() {
+        verifyEuropeanEditing("fr", settings: "Réglages", projects: "Projets", materials: "Matériaux", projectSettings: "Réglages du projet", done: "Terminé", save: "Enregistrer", history: "Historique des prix", restore: "Restaurer l’achat")
+    }
+
+    private func verifyEuropeanEditing(_ language: String, settings: String, projects: String, materials: String, projectSettings: String, done: String, save: String, history: String, restore: String) {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        let arguments = ["--workflow-tests", "--reset-workflow", "--ui-decimal-values", "-AppleLanguages", "(\(language))", "-AppleLocale", language, "-app.language", language, "-app.unitSystem", "metric", "-app.currency", "CNY"]
+        app.launchArguments = arguments
+        app.launch()
+        func reveal(_ element: XCUIElement) {
+            for _ in 0..<12 where !element.isHittable { app.swipeUp() }
+            XCTAssertTrue(element.isHittable, element.debugDescription)
+        }
+        app.tabBars.buttons[projects].tap()
+        app.staticTexts["Workflow Quote"].firstMatch.tap()
+        for _ in 0..<2 {
+            app.buttons["project.menu"].tap(); app.buttons[projectSettings].tap()
+            let tax = app.textFields["project.tax"]
+            reveal(tax)
+            XCTAssertEqual(tax.value as? String, "0,125")
+            XCTAssertEqual(app.textFields["project.profit"].value as? String, "7,5")
+            capture("europe-\(language)-project-pricing")
+            app.buttons[done].tap()
+        }
+        app.tabBars.buttons[materials].tap()
+        app.segmentedControls.buttons[history].tap()
+        for _ in 0..<2 {
+            app.staticTexts["Precision price"].firstMatch.tap()
+            let price = app.textFields["price_book.price"]
+            reveal(price)
+            XCTAssertEqual(price.value as? String, "2,345")
+            capture("europe-\(language)-saved-price")
+            app.buttons[save].tap()
+        }
+        app.tabBars.buttons.element(boundBy: 0).tap()
+        app.descendants(matching: .any)["profile.plate"].tap()
+        XCTAssertTrue(app.staticTexts["47,1 kg"].firstMatch.waitForExistence(timeout: 3))
+        let materialName = ["de": "Kohlenstoffstahl", "es": "Acero al carbono", "fr": "Acier au carbone"][language]!
+        let stainlessName = ["de": "Edelstahl 304", "es": "Acero inoxidable 304", "fr": "Acier inoxydable 304"][language]!
+        let chooser = app.buttons["material.chooser"]
+        XCTAssertTrue(chooser.label.contains(materialName))
+        chooser.tap(); app.buttons[stainlessName].tap()
+        XCTAssertTrue(chooser.label.contains(stainlessName))
+        chooser.tap(); app.buttons[materialName].tap()
+        capture("europe-\(language)-material-name")
+        let length = app.textFields["length.value"]
+        reveal(length)
+        length.tap()
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3))
+        length.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 8) + "0")
+        app.buttons[done].tap()
+        XCTAssertFalse(app.buttons["calculator.save"].isEnabled)
+        capture("europe-\(language)-invalid-input")
+        length.tap()
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3))
+        length.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 8) + "6,125")
+        app.buttons[done].tap()
+        XCTAssertTrue(app.staticTexts["48,081 kg"].firstMatch.waitForExistence(timeout: 3))
+        app.buttons["calculator.save"].tap()
+        app.staticTexts["Workflow Quote"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["calculator.save"].waitForExistence(timeout: 3))
+        app.tabBars.buttons[projects].tap()
+        let savedProfile = app.staticTexts[["de": "Blech / Flachstahl", "es": "Placa / barra plana", "fr": "Tôle / plat"][language]!].firstMatch
+        reveal(savedProfile)
+        XCTAssertTrue(savedProfile.exists, "Saved calculation must appear in the project")
+        capture("europe-\(language)-saved-calculation")
+        app.terminate()
+
+        for dark in [false, true] {
+            app.launchArguments = arguments + ["--workflow-free"] + (dark ? ["--ui-dark"] : [])
+            app.launch()
+            app.tabBars.buttons[settings].tap()
+            app.buttons["settings.membership"].tap()
+            XCTAssertTrue(app.navigationBars["SteelFlow Pro"].waitForExistence(timeout: 4))
+            capture("europe-\(language)-paywall-\(dark ? "dark" : "light")")
+            let detail = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@ AND label CONTAINS %@", "PDF", "SteelFlow")).firstMatch
+            reveal(detail)
+            XCTAssertTrue(detail.exists)
+            reveal(app.buttons[restore])
+            capture("europe-\(language)-paywall-details-\(dark ? "dark" : "light")")
+            app.terminate()
+        }
+    }
+
     func testGermanCalculatorAtLargestTextSize() {
         continueAfterFailure = false
         let app = XCUIApplication()

@@ -129,26 +129,19 @@ struct CalculatorEditorView: View {
             Section("calculator.section.material") {
                 AdaptiveFormRow("calculator.material") {
                     Spacer(minLength: 0)
-                    if dynamicTypeSize.isAccessibilitySize {
-                        Menu {
-                            Picker("calculator.material", selection: materialBinding) {
-                                ForEach(materials) { material in Text(materialDisplayName(material)).tag(material.id) }
-                            }
-                        } label: {
-                            HStack(alignment: .top) {
-                                Text(materials.first(where: { $0.id == draft.selectedMaterialID }).map(materialDisplayName) ?? draft.selectedMaterialID)
-                                    .multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
-                                PolishedSymbol(systemName: "chevron.up.chevron.down")
-                            }.frame(minHeight: 44)
-                        }.accessibilityIdentifier("material.chooser")
-                    } else {
-                    Picker("calculator.material", selection: materialBinding) {
-                        ForEach(materials) { material in
-                            Text(materialDisplayName(material)).tag(material.id)
+                    Menu {
+                        Picker("calculator.material", selection: materialBinding) {
+                            ForEach(materials) { material in Text(materialDisplayName(material)).tag(material.id) }
                         }
+                    } label: {
+                        HStack(alignment: .top) {
+                            Text(materials.first(where: { $0.id == draft.selectedMaterialID }).map(materialDisplayName) ?? draft.selectedMaterialID)
+                                .multilineTextAlignment(dynamicTypeSize.isAccessibilitySize ? .leading : .trailing)
+                                .fixedSize(horizontal: false, vertical: true)
+                            PolishedSymbol(systemName: "chevron.up.chevron.down")
+                        }.frame(minHeight: 44)
                     }
-                    .labelsHidden()
-                    }
+                    .accessibilityIdentifier("material.chooser")
                 }
                 DisclosureGroup("calculator.density", isExpanded: $expandDensity) {
                 AdaptiveFormRow("calculator.density") {
