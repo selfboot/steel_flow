@@ -162,7 +162,6 @@
 "project.markup_percent" = "Recargo";
 "project.tax_percent" = "Impuesto";
 "project.valid_days" = "Válido durante";
-"project.terms" = "Condiciones";
 "project.notes" = "Notas internas";
 "project.bulk_pricing" = "Precios por lote";
 "project.bulk.waste" = "Actualizar merma de las partidas seleccionadas";
@@ -290,7 +289,7 @@
 "purchase.paywall.one_time" = "Compra única · Sin suscripción";
 "purchase.paywall.buy_format" = "Activar Pro · %@";
 "purchase.paywall.benefit.projects" = "Proyectos activos y partidas ilimitados";
-"purchase.paywall.benefit.materials" = "Materiales personalizados, precios por lote y condiciones del presupuesto";
+"purchase.paywall.benefit.materials" = "Materiales personalizados y precios por lote";
 "purchase.paywall.benefit.quotes" = "Datos de empresa y exportaciones completas en PDF/CSV";
 "purchase.paywall.benefit.backups" = "Exportación e importación de copias de seguridad versionadas";
 "purchase.paywall.footer" = "Apple procesa el pago. Puede restaurar la compra con la misma cuenta de Apple.";
@@ -304,7 +303,6 @@
 "purchase.limit.items" = "La versión gratuita permite hasta 10 partidas por proyecto. Active Pro para añadir partidas ilimitadas.";
 "purchase.limit.materials" = "SteelFlow Pro incluye materiales personalizados. Los materiales incluidos siguen disponibles en la versión gratuita.";
 "purchase.limit.csv" = "Exportar CSV requiere SteelFlow Pro";
-"purchase.limit.terms" = "Las condiciones personalizadas requieren SteelFlow Pro.";
 
 "backup.export" = "Exportar copia de seguridad";
 "backup.import" = "Importar copia de seguridad";
@@ -425,7 +423,7 @@
 "workflow.from_template" = "Crear desde plantilla";
 "workflow.sort_name" = "Ordenar por nombre";
 "workflow.template_clear_prices" = "Borrar precios y gastos anteriores";
-"workflow.template_help" = "Las plantillas reutilizan especificaciones y condiciones. Revise los precios del proveedor antes de enviar un nuevo presupuesto.";
+"workflow.template_help" = "Las plantillas reutilizan especificaciones y ajustes de precios. Revise los precios del proveedor antes de enviar un nuevo presupuesto.";
 "workflow.templates_empty" = "Guarde un proyecto como plantilla desde su menú.";
 "workflow.customers" = "Clientes";
 "workflow.customer_new" = "Añadir cliente";
@@ -456,10 +454,9 @@
 "workflow.backup_never" = "No hay copias de seguridad completadas";
 "workflow.backup_reminder" = "Guarde una copia de seguridad en Archivos para proteger su trabajo reciente.";
 "workflow.backup_contents" = "Incluye proyectos, plantillas, clientes, versiones de presupuestos, precios, logotipo, cálculos favoritos y borradores.";
-"workflow.branding" = "Logotipo y condiciones predeterminadas";
+"workflow.branding" = "Logotipo de la empresa";
 "workflow.choose_logo" = "Elegir logotipo de empresa";
 "workflow.remove_logo" = "Quitar logotipo";
-"workflow.default_terms" = "Condiciones para proyectos nuevos";
 "workflow.logo_error" = "No se pudo cargar el logotipo. Elija una imagen de menos de 20 MB.";
 "workflow.copy_material" = "Copiar como material personalizado";
 "workflow.old_price" = "Más de 30 días: verifique antes de presupuestar";
@@ -583,7 +580,7 @@
 "purchase.paywall.feature.projects.title" = "Proyectos sin límites";
 "purchase.paywall.feature.projects.detail" = "Proyectos activos y partidas ilimitados. Duplique con un toque.";
 "purchase.paywall.feature.materials.title" = "Precios a su medida";
-"purchase.paywall.feature.materials.detail" = "Materiales personalizados, precios por lote y condiciones del presupuesto.";
+"purchase.paywall.feature.materials.detail" = "Materiales personalizados y precios por lote";
 "purchase.paywall.feature.quotes.title" = "Presupuestos con su identidad";
 "purchase.paywall.feature.quotes.detail" = "Datos y logotipo de empresa, exportaciones completas PDF/CSV y PDF sin la marca SteelFlow.";
 "purchase.paywall.feature.backups.title" = "Conserve una copia de su trabajo";
@@ -592,6 +589,7 @@
 "purchase.paywall.price_unavailable" = "Precio no disponible";
 "purchase.paywall.unavailable" = "No se pudieron cargar los datos de compra. Reinténtelo.";
 
+/* Quote document styles */
 "quote.style.title" = "Estilo del presupuesto";
 "quote.style.help" = "Elige un estilo solo para este presupuesto. Al volver a abrir la vista previa se usa el estilo predeterminado de Ajustes. Las versiones guardadas conservan su estilo.";
 "quote.style.classic" = "Clásico";
@@ -602,7 +600,9 @@
 "quote.style.forest.detail" = "Sutiles acentos verdes y un total claro y destacado.";
 "quote.style.minimal" = "Minimalista";
 "quote.style.minimal.detail" = "Tipografía limpia para impresión en blanco y negro.";
+
 "quote.issued_on" = "Fecha de emisión";
+
 "quote.style.executive" = "Formal";
 "quote.style.executive.detail" = "Encabezado centrado y líneas finas para presupuestos formales.";
 "quote.style.modern" = "Enfoque moderno";

@@ -417,7 +417,6 @@ private struct CompanyProfileForm: View {
     let company: CompanyProfileEntity
     @State private var logoData: Data?
     @State private var selectedLogo: PhotosPickerItem?
-    @State private var defaultTerms = ""
     @State private var logoError = false
     @State private var companyName = ""
     @State private var contactName = ""
@@ -440,7 +439,6 @@ private struct CompanyProfileForm: View {
                     Button("workflow.remove_logo", role: .destructive) { logoData = nil }
                 }
                 PhotosPicker(selection: $selectedLogo, matching: .images) { Label("workflow.choose_logo", systemImage: "photo") }
-                TextField("workflow.default_terms", text: $defaultTerms, axis: .vertical).lineLimit(3...10)
             }
             Section { Text("company.help").font(.caption).foregroundStyle(.secondary) }
         }
@@ -461,7 +459,7 @@ private struct CompanyProfileForm: View {
         }
         .alert("workflow.logo_error", isPresented: $logoError) { Button("common.ok", role: .cancel) {} }
         .onAppear {
-            logoData = company.logoData; defaultTerms = company.defaultTerms
+            logoData = company.logoData
             companyName = company.companyName
             contactName = company.contactName
             email = company.email
@@ -471,7 +469,7 @@ private struct CompanyProfileForm: View {
     }
 
     private func save() {
-        company.logoData = logoData; company.defaultTerms = defaultTerms
+        company.logoData = logoData
         company.companyName = companyName.trimmingCharacters(in: .whitespacesAndNewlines)
         company.contactName = contactName.trimmingCharacters(in: .whitespacesAndNewlines)
         company.email = email.trimmingCharacters(in: .whitespacesAndNewlines)

@@ -162,7 +162,6 @@
 "project.markup_percent" = "Majoration";
 "project.tax_percent" = "Taxe";
 "project.valid_days" = "Durée de validité";
-"project.terms" = "Conditions";
 "project.notes" = "Notes internes";
 "project.bulk_pricing" = "Tarification groupée";
 "project.bulk.waste" = "Modifier les pertes des lignes sélectionnées";
@@ -290,7 +289,7 @@
 "purchase.paywall.one_time" = "Achat unique · Sans abonnement";
 "purchase.paywall.buy_format" = "Activer Pro · %@";
 "purchase.paywall.benefit.projects" = "Projets actifs et lignes illimités";
-"purchase.paywall.benefit.materials" = "Matériaux personnalisés, tarification groupée et conditions des devis";
+"purchase.paywall.benefit.materials" = "Matériaux personnalisés et tarification groupée";
 "purchase.paywall.benefit.quotes" = "Identité de l’entreprise et exports PDF/CSV complets";
 "purchase.paywall.benefit.backups" = "Export et import de sauvegardes versionnées";
 "purchase.paywall.footer" = "Le paiement est traité par Apple. La restauration est disponible avec le même compte Apple.";
@@ -304,7 +303,6 @@
 "purchase.limit.items" = "La version gratuite permet jusqu’à 10 lignes par projet. Activez Pro pour des lignes illimitées.";
 "purchase.limit.materials" = "Les matériaux personnalisés sont inclus dans SteelFlow Pro. Les matériaux prédéfinis restent disponibles gratuitement.";
 "purchase.limit.csv" = "L’export CSV nécessite SteelFlow Pro";
-"purchase.limit.terms" = "Les conditions personnalisées des devis nécessitent SteelFlow Pro.";
 
 "backup.export" = "Exporter une sauvegarde";
 "backup.import" = "Importer une sauvegarde";
@@ -425,7 +423,7 @@
 "workflow.from_template" = "Créer à partir d’un modèle";
 "workflow.sort_name" = "Trier par nom";
 "workflow.template_clear_prices" = "Effacer les anciens prix et frais";
-"workflow.template_help" = "Les modèles reprennent les spécifications et conditions. Vérifiez les prix fournisseur avant d’envoyer un nouveau devis.";
+"workflow.template_help" = "Les modèles reprennent les spécifications et les paramètres de tarification. Vérifiez les prix fournisseur avant d’envoyer un nouveau devis.";
 "workflow.templates_empty" = "Enregistrez un projet comme modèle depuis son menu.";
 "workflow.customers" = "Clients";
 "workflow.customer_new" = "Ajouter un client";
@@ -456,10 +454,9 @@
 "workflow.backup_never" = "Aucune sauvegarde terminée enregistrée";
 "workflow.backup_reminder" = "Enregistrez une sauvegarde dans Fichiers pour protéger votre travail récent.";
 "workflow.backup_contents" = "Comprend projets, modèles, clients, versions de devis, prix, logo, calculs favoris et brouillons.";
-"workflow.branding" = "Logo et conditions par défaut";
+"workflow.branding" = "Logo de l’entreprise";
 "workflow.choose_logo" = "Choisir le logo de l’entreprise";
 "workflow.remove_logo" = "Supprimer le logo";
-"workflow.default_terms" = "Conditions des nouveaux projets";
 "workflow.logo_error" = "Impossible de charger le logo. Choisissez une image de moins de 20 Mo.";
 "workflow.copy_material" = "Copier comme matériau personnalisé";
 "workflow.old_price" = "Plus de 30 jours : à vérifier avant devis";
@@ -583,7 +580,7 @@
 "purchase.paywall.feature.projects.title" = "Des projets sans limites";
 "purchase.paywall.feature.projects.detail" = "Projets actifs et lignes illimités. Dupliquez d’un geste.";
 "purchase.paywall.feature.materials.title" = "Une tarification adaptée";
-"purchase.paywall.feature.materials.detail" = "Matériaux personnalisés, tarification groupée et conditions des devis.";
+"purchase.paywall.feature.materials.detail" = "Matériaux personnalisés et tarification groupée";
 "purchase.paywall.feature.quotes.title" = "Des devis à votre image";
 "purchase.paywall.feature.quotes.detail" = "Coordonnées et logo de l’entreprise, exports PDF/CSV complets et PDF sans la marque SteelFlow.";
 "purchase.paywall.feature.backups.title" = "Gardez une copie de votre travail";
@@ -592,6 +589,7 @@
 "purchase.paywall.price_unavailable" = "Prix indisponible";
 "purchase.paywall.unavailable" = "Impossible de charger les informations d’achat. Veuillez réessayer.";
 
+/* Quote document styles */
 "quote.style.title" = "Style du devis";
 "quote.style.help" = "Choisissez un style pour ce devis uniquement. À la réouverture de l’aperçu, le style par défaut des Réglages est utilisé. Les versions enregistrées conservent leur style.";
 "quote.style.classic" = "Classique";
@@ -602,7 +600,9 @@
 "quote.style.forest.detail" = "De fins accents verts et un total clairement mis en valeur.";
 "quote.style.minimal" = "Minimaliste";
 "quote.style.minimal.detail" = "Une typographie sobre pour l’impression en noir et blanc.";
+
 "quote.issued_on" = "Date d’émission";
+
 "quote.style.executive" = "Formel";
 "quote.style.executive.detail" = "En-tête centré et lignes fines pour les devis formels.";
 "quote.style.modern" = "Moderne";

@@ -162,7 +162,6 @@
 "project.markup_percent" = "Markup";
 "project.tax_percent" = "Tax";
 "project.valid_days" = "Valid for";
-"project.terms" = "Terms";
 "project.notes" = "Internal notes";
 "project.bulk_pricing" = "Batch pricing";
 "project.bulk.waste" = "Update waste for selected items";
@@ -290,7 +289,7 @@
 "purchase.paywall.one_time" = "One-time purchase · No subscription";
 "purchase.paywall.buy_format" = "Unlock Pro · %@";
 "purchase.paywall.benefit.projects" = "Unlimited active projects and items";
-"purchase.paywall.benefit.materials" = "Custom materials, batch pricing, and quote terms";
+"purchase.paywall.benefit.materials" = "Custom materials and batch pricing";
 "purchase.paywall.benefit.quotes" = "Company identity and complete PDF/CSV exports";
 "purchase.paywall.benefit.backups" = "Versioned backup export and import";
 "purchase.paywall.footer" = "Payment is processed by Apple. Restore is available for the same Apple Account.";
@@ -304,7 +303,6 @@
 "purchase.limit.items" = "The free plan supports up to 10 items per project. Unlock Pro for unlimited items.";
 "purchase.limit.materials" = "Custom materials are included with SteelFlow Pro. Built-in materials remain available on the free plan.";
 "purchase.limit.csv" = "CSV export requires SteelFlow Pro";
-"purchase.limit.terms" = "Custom quote terms require SteelFlow Pro.";
 
 "backup.export" = "Export backup";
 "backup.import" = "Import backup";
@@ -425,7 +423,7 @@
 "workflow.from_template" = "Create from template";
 "workflow.sort_name" = "Sort by name";
 "workflow.template_clear_prices" = "Clear old prices and fees";
-"workflow.template_help" = "Templates reuse specifications and terms. Check supplier prices before sending a new quote.";
+"workflow.template_help" = "Templates reuse specifications and pricing settings. Check supplier prices before sending a new quote.";
 "workflow.templates_empty" = "Save a project as a template from its menu.";
 "workflow.customers" = "Customers";
 "workflow.customer_new" = "Add customer";
@@ -456,10 +454,9 @@
 "workflow.backup_never" = "No completed backup recorded";
 "workflow.backup_reminder" = "Save a backup to Files to protect your recent work.";
 "workflow.backup_contents" = "Includes projects, templates, customers, quote versions, prices, company logo, favorite calculations and drafts.";
-"workflow.branding" = "Logo and default terms";
+"workflow.branding" = "Company logo";
 "workflow.choose_logo" = "Choose company logo";
 "workflow.remove_logo" = "Remove logo";
-"workflow.default_terms" = "Default terms for new projects";
 "workflow.logo_error" = "Could not load the logo. Choose an image under 20 MB.";
 "workflow.copy_material" = "Copy as custom material";
 "workflow.old_price" = "Over 30 days old — verify before quoting";
@@ -583,7 +580,7 @@
 "purchase.paywall.feature.projects.title" = "Projects without limits";
 "purchase.paywall.feature.projects.detail" = "Unlimited active projects and items. Duplicate in a tap.";
 "purchase.paywall.feature.materials.title" = "Pricing that fits your work";
-"purchase.paywall.feature.materials.detail" = "Custom materials, batch pricing and quote terms.";
+"purchase.paywall.feature.materials.detail" = "Custom materials and batch pricing";
 "purchase.paywall.feature.quotes.title" = "Quotes with your identity";
 "purchase.paywall.feature.quotes.detail" = "Company details and logo, full PDF/CSV exports, and PDFs without SteelFlow branding.";
 "purchase.paywall.feature.backups.title" = "Keep a copy of your work";
@@ -592,6 +589,7 @@
 "purchase.paywall.price_unavailable" = "Price unavailable";
 "purchase.paywall.unavailable" = "Unable to load purchase details. Please try again.";
 
+/* Quote document styles */
 "quote.style.title" = "Quote style";
 "quote.style.help" = "Choose a style for this quote only. Reopening the preview uses the default style from Settings. Saved versions keep their own style.";
 "quote.style.classic" = "Classic";
@@ -602,7 +600,9 @@
 "quote.style.forest.detail" = "Fine green accents and a clear, bold total.";
 "quote.style.minimal" = "Minimal";
 "quote.style.minimal.detail" = "Clean typography for monochrome printing.";
+
 "quote.issued_on" = "Issued on";
+
 "quote.style.executive" = "Executive";
 "quote.style.executive.detail" = "Centered letterhead and fine rules for formal quotations.";
 "quote.style.modern" = "Modern Focus";

@@ -8,7 +8,6 @@ enum ProPaywallReason: String, Identifiable {
     case items = "purchase.limit.items"
     case materials = "purchase.limit.materials"
     case csv = "purchase.limit.csv"
-    case terms = "purchase.limit.terms"
     case companyProfile = "purchase.limit.company_profile"
     case backups = "purchase.limit.backups"
 

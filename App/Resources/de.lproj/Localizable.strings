@@ -162,7 +162,6 @@
 "project.markup_percent" = "Aufschlag";
 "project.tax_percent" = "Steuer";
 "project.valid_days" = "Gültigkeitsdauer";
-"project.terms" = "Bedingungen";
 "project.notes" = "Interne Notizen";
 "project.bulk_pricing" = "Sammelpreise";
 "project.bulk.waste" = "Verschnitt für Auswahl ändern";
@@ -290,7 +289,7 @@
 "purchase.paywall.one_time" = "Einmalkauf · Kein Abo";
 "purchase.paywall.buy_format" = "Pro freischalten · %@";
 "purchase.paywall.benefit.projects" = "Unbegrenzte aktive Projekte und Positionen";
-"purchase.paywall.benefit.materials" = "Eigene Materialien, Sammelpreise und Angebotsbedingungen";
+"purchase.paywall.benefit.materials" = "Eigene Materialien und Sammelpreise";
 "purchase.paywall.benefit.quotes" = "Firmendaten und vollständige PDF-/CSV-Exporte";
 "purchase.paywall.benefit.backups" = "Versionierte Sicherungen exportieren und importieren";
 "purchase.paywall.footer" = "Die Zahlung erfolgt über Apple. Käufe können mit demselben Apple Account wiederhergestellt werden.";
@@ -304,7 +303,6 @@
 "purchase.limit.items" = "Die kostenlose Version erlaubt bis zu 10 Positionen pro Projekt. Mit Pro sind Positionen unbegrenzt.";
 "purchase.limit.materials" = "Eigene Materialien sind in SteelFlow Pro enthalten. Vordefinierte Materialien bleiben kostenlos verfügbar.";
 "purchase.limit.csv" = "CSV-Export erfordert SteelFlow Pro";
-"purchase.limit.terms" = "Eigene Angebotsbedingungen erfordern SteelFlow Pro.";
 
 "backup.export" = "Sicherung exportieren";
 "backup.import" = "Sicherung importieren";
@@ -425,7 +423,7 @@
 "workflow.from_template" = "Aus Vorlage erstellen";
 "workflow.sort_name" = "Nach Name sortieren";
 "workflow.template_clear_prices" = "Alte Preise und Kosten löschen";
-"workflow.template_help" = "Vorlagen übernehmen Spezifikationen und Bedingungen. Vor dem Versand eines neuen Angebots Lieferantenpreise prüfen.";
+"workflow.template_help" = "Vorlagen übernehmen Spezifikationen und Preiseinstellungen. Prüfen Sie die Lieferantenpreise, bevor Sie ein neues Angebot senden.";
 "workflow.templates_empty" = "Ein Projekt über sein Menü als Vorlage speichern.";
 "workflow.customers" = "Kunden";
 "workflow.customer_new" = "Kunden hinzufügen";
@@ -456,10 +454,9 @@
 "workflow.backup_never" = "Keine abgeschlossene Sicherung erfasst";
 "workflow.backup_reminder" = "Eine Sicherung in „Dateien“ speichern, um Ihre Arbeit zu schützen.";
 "workflow.backup_contents" = "Enthält Projekte, Vorlagen, Kunden, Angebotsversionen, Preise, Firmenlogo, bevorzugte Berechnungen und Entwürfe.";
-"workflow.branding" = "Logo und Standardbedingungen";
+"workflow.branding" = "Firmenlogo";
 "workflow.choose_logo" = "Firmenlogo wählen";
 "workflow.remove_logo" = "Logo entfernen";
-"workflow.default_terms" = "Standardbedingungen für neue Projekte";
 "workflow.logo_error" = "Logo konnte nicht geladen werden. Ein Bild unter 20 MB wählen.";
 "workflow.copy_material" = "Als eigenes Material kopieren";
 "workflow.old_price" = "Über 30 Tage alt – vor dem Angebot prüfen";
@@ -583,7 +580,7 @@
 "purchase.paywall.feature.projects.title" = "Projekte ohne Grenzen";
 "purchase.paywall.feature.projects.detail" = "Unbegrenzte aktive Projekte und Positionen. Mit einem Tippen duplizieren.";
 "purchase.paywall.feature.materials.title" = "Preise passend zu Ihrer Arbeit";
-"purchase.paywall.feature.materials.detail" = "Eigene Materialien, Sammelpreise und Angebotsbedingungen.";
+"purchase.paywall.feature.materials.detail" = "Eigene Materialien und Sammelpreise";
 "purchase.paywall.feature.quotes.title" = "Angebote mit Ihrer Identität";
 "purchase.paywall.feature.quotes.detail" = "Firmendaten und Logo, vollständige PDF-/CSV-Exporte und PDFs ohne SteelFlow-Kennzeichnung.";
 "purchase.paywall.feature.backups.title" = "Ihre Arbeit sichern";
@@ -592,6 +589,7 @@
 "purchase.paywall.price_unavailable" = "Preis nicht verfügbar";
 "purchase.paywall.unavailable" = "Kaufinformationen konnten nicht geladen werden. Bitte erneut versuchen.";
 
+/* Quote document styles */
 "quote.style.title" = "Angebotsstil";
 "quote.style.help" = "Wählen Sie einen Stil nur für dieses Angebot. Beim erneuten Öffnen der Vorschau gilt der Standardstil aus den Einstellungen. Gespeicherte Versionen behalten ihren Stil.";
 "quote.style.classic" = "Klassisch";
@@ -602,7 +600,9 @@
 "quote.style.forest.detail" = "Feine grüne Akzente und eine klar hervorgehobene Summe.";
 "quote.style.minimal" = "Minimal";
 "quote.style.minimal.detail" = "Klare Typografie für Schwarzweißdruck.";
+
 "quote.issued_on" = "Angebotsdatum";
+
 "quote.style.executive" = "Formell";
 "quote.style.executive.detail" = "Zentrierter Briefkopf und feine Linien für formelle Angebote.";
 "quote.style.modern" = "Moderner Fokus";

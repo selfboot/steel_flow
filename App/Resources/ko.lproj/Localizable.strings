@@ -162,7 +162,6 @@
 "project.markup_percent" = "원가 가산율";
 "project.tax_percent" = "세율";
 "project.valid_days" = "유효 일수";
-"project.terms" = "거래 조건";
 "project.notes" = "내부 메모";
 "project.bulk_pricing" = "가격 일괄 설정";
 "project.bulk.waste" = "선택한 항목의 로스율 변경";
@@ -290,7 +289,7 @@
 "purchase.paywall.one_time" = "일회성 구매 · 구독 없음";
 "purchase.paywall.buy_format" = "Pro 잠금 해제 · %@";
 "purchase.paywall.benefit.projects" = "진행 중인 프로젝트 및 항목 무제한";
-"purchase.paywall.benefit.materials" = "사용자 지정 재료, 가격 일괄 설정 및 견적 조건";
+"purchase.paywall.benefit.materials" = "사용자 지정 재료 및 가격 일괄 설정";
 "purchase.paywall.benefit.quotes" = "회사 정보 및 모든 PDF/CSV 내보내기";
 "purchase.paywall.benefit.backups" = "버전 관리 백업 내보내기 및 가져오기";
 "purchase.paywall.footer" = "결제는 Apple에서 처리합니다. 동일한 Apple 계정으로 구매를 복원할 수 있습니다.";
@@ -304,7 +303,6 @@
 "purchase.limit.items" = "무료 플랜에서는 프로젝트당 최대 10개 항목을 추가할 수 있습니다. Pro로 무제한 이용하세요.";
 "purchase.limit.materials" = "사용자 지정 재료는 SteelFlow Pro에 포함됩니다. 무료 플랜에서도 기본 재료를 사용할 수 있습니다.";
 "purchase.limit.csv" = "CSV를 내보내려면 SteelFlow Pro가 필요합니다";
-"purchase.limit.terms" = "견적 조건을 직접 설정하려면 SteelFlow Pro가 필요합니다.";
 
 "backup.export" = "백업 내보내기";
 "backup.import" = "백업 가져오기";
@@ -425,7 +423,7 @@
 "workflow.from_template" = "템플릿으로 만들기";
 "workflow.sort_name" = "이름순 정렬";
 "workflow.template_clear_prices" = "이전 가격 및 비용 지우기";
-"workflow.template_help" = "템플릿으로 규격과 거래 조건을 다시 사용할 수 있습니다. 새 견적서를 보내기 전에 공급 가격을 확인하세요.";
+"workflow.template_help" = "템플릿으로 규격과 가격 설정을 다시 사용할 수 있습니다. 새 견적서를 보내기 전에 공급 가격을 확인하세요.";
 "workflow.templates_empty" = "프로젝트 메뉴에서 템플릿으로 저장하세요.";
 "workflow.customers" = "고객";
 "workflow.customer_new" = "고객 추가";
@@ -456,10 +454,9 @@
 "workflow.backup_never" = "완료된 백업 기록이 없습니다";
 "workflow.backup_reminder" = "최근 작업을 보호하려면 백업을 파일 앱에 저장하세요.";
 "workflow.backup_contents" = "프로젝트, 템플릿, 고객, 견적 버전, 가격, 회사 로고, 즐겨찾는 계산 및 초안을 포함합니다.";
-"workflow.branding" = "로고 및 기본 거래 조건";
+"workflow.branding" = "회사 로고";
 "workflow.choose_logo" = "회사 로고 선택";
 "workflow.remove_logo" = "로고 제거";
-"workflow.default_terms" = "새 프로젝트의 기본 거래 조건";
 "workflow.logo_error" = "로고를 불러오지 못했습니다. 20 MB 미만의 이미지를 선택하세요.";
 "workflow.copy_material" = "사용자 지정 재료로 복사";
 "workflow.old_price" = "30일이 지난 가격입니다. 견적 전에 확인하세요";
@@ -583,7 +580,7 @@
 "purchase.paywall.feature.projects.title" = "프로젝트 무제한";
 "purchase.paywall.feature.projects.detail" = "진행 중인 프로젝트와 항목을 무제한으로 만들고 한 번의 탭으로 복제하세요.";
 "purchase.paywall.feature.materials.title" = "업무에 맞는 가격 설정";
-"purchase.paywall.feature.materials.detail" = "사용자 지정 재료, 가격 일괄 설정 및 견적 조건.";
+"purchase.paywall.feature.materials.detail" = "사용자 지정 재료 및 가격 일괄 설정";
 "purchase.paywall.feature.quotes.title" = "우리 회사의 견적서";
 "purchase.paywall.feature.quotes.detail" = "회사 정보와 로고, 모든 PDF/CSV 내보내기. PDF의 SteelFlow 표시를 제거합니다.";
 "purchase.paywall.feature.backups.title" = "소중한 작업을 백업으로";
@@ -592,6 +589,7 @@
 "purchase.paywall.price_unavailable" = "가격을 불러올 수 없습니다";
 "purchase.paywall.unavailable" = "구매 정보를 불러오지 못했습니다. 다시 시도해 주세요.";
 
+/* Quote document styles */
 "quote.style.title" = "견적서 스타일";
 "quote.style.help" = "이번 견적서에만 적용할 스타일을 선택하세요. 미리보기를 다시 열면 설정의 기본 스타일이 적용됩니다. 저장된 버전은 변경되지 않습니다.";
 "quote.style.classic" = "클래식";
@@ -602,7 +600,9 @@
 "quote.style.forest.detail" = "절제된 짙은 녹색 포인트와 선명한 총액.";
 "quote.style.minimal" = "미니멀";
 "quote.style.minimal.detail" = "흑백 인쇄에 적합한 깔끔한 서식.";
+
 "quote.issued_on" = "발행일";
+
 "quote.style.executive" = "격식 있는 비즈니스";
 "quote.style.executive.detail" = "중앙 정렬 머리말과 가는 선으로 격식 있는 견적을 작성합니다.";
 "quote.style.modern" = "모던 포커스";

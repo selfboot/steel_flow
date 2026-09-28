@@ -162,7 +162,6 @@
 "project.markup_percent" = "原価への上乗せ率";
 "project.tax_percent" = "税率";
 "project.valid_days" = "有効日数";
-"project.terms" = "取引条件";
 "project.notes" = "社内メモ";
 "project.bulk_pricing" = "価格の一括設定";
 "project.bulk.waste" = "選択した明細のロス率を更新";
@@ -290,7 +289,7 @@
 "purchase.paywall.one_time" = "買い切り・サブスクリプションなし";
 "purchase.paywall.buy_format" = "Proを購入 · %@";
 "purchase.paywall.benefit.projects" = "進行中のプロジェクト・明細が無制限";
-"purchase.paywall.benefit.materials" = "カスタム材料・価格の一括設定・取引条件";
+"purchase.paywall.benefit.materials" = "カスタム材料と価格の一括設定";
 "purchase.paywall.benefit.quotes" = "会社情報と完全なPDF・CSV書き出し";
 "purchase.paywall.benefit.backups" = "バージョン付きバックアップの書き出し・読み込み";
 "purchase.paywall.footer" = "支払いはAppleが処理します。同じApple Accountで購入を復元できます。";
@@ -304,7 +303,6 @@
 "purchase.limit.items" = "無料プランでは1プロジェクトにつき明細を10件まで追加できます。Proを購入すると無制限になります。";
 "purchase.limit.materials" = "カスタム材料はSteelFlow Proで利用できます。無料プランでも標準材料を利用できます。";
 "purchase.limit.csv" = "CSVの書き出しにはSteelFlow Proが必要です";
-"purchase.limit.terms" = "見積書の取引条件の編集にはSteelFlow Proが必要です。";
 
 "backup.export" = "バックアップを書き出す";
 "backup.import" = "バックアップを読み込む";
@@ -425,7 +423,7 @@
 "workflow.from_template" = "テンプレートから作成";
 "workflow.sort_name" = "名前順に並べ替え";
 "workflow.template_clear_prices" = "以前の価格と費用をクリア";
-"workflow.template_help" = "テンプレートから仕様と取引条件を再利用できます。新しい見積書を送る前に仕入価格をご確認ください。";
+"workflow.template_help" = "テンプレートから仕様と価格設定を再利用できます。新しい見積書を送る前に仕入価格をご確認ください。";
 "workflow.templates_empty" = "プロジェクトのメニューからテンプレートとして保存できます。";
 "workflow.customers" = "顧客";
 "workflow.customer_new" = "顧客を追加";
@@ -456,10 +454,9 @@
 "workflow.backup_never" = "完了したバックアップの記録はありません";
 "workflow.backup_reminder" = "最近の作業を保護するため、バックアップを「ファイル」に保存してください。";
 "workflow.backup_contents" = "プロジェクト、テンプレート、顧客、見積バージョン、価格、会社ロゴ、お気に入りの計算、下書きを含みます。";
-"workflow.branding" = "ロゴと既定の取引条件";
+"workflow.branding" = "会社ロゴ";
 "workflow.choose_logo" = "会社ロゴを選択";
 "workflow.remove_logo" = "ロゴを削除";
-"workflow.default_terms" = "新規プロジェクトの既定の取引条件";
 "workflow.logo_error" = "ロゴを読み込めませんでした。20 MB未満の画像を選択してください。";
 "workflow.copy_material" = "カスタム材料としてコピー";
 "workflow.old_price" = "30日以上前の価格です。見積り前にご確認ください";
@@ -583,7 +580,7 @@
 "purchase.paywall.feature.projects.title" = "プロジェクトを無制限に";
 "purchase.paywall.feature.projects.detail" = "進行中のプロジェクトも明細も無制限。タップするだけで複製できます。";
 "purchase.paywall.feature.materials.title" = "仕事に合わせた価格設定";
-"purchase.paywall.feature.materials.detail" = "カスタム材料、価格の一括設定、見積書の取引条件。";
+"purchase.paywall.feature.materials.detail" = "カスタム材料と価格の一括設定";
 "purchase.paywall.feature.quotes.title" = "会社らしさが伝わる見積書";
 "purchase.paywall.feature.quotes.detail" = "会社情報とロゴ、PDF・CSV書き出し。PDFのSteelFlow表記を削除できます。";
 "purchase.paywall.feature.backups.title" = "大切な作業の控えを保存";
@@ -592,6 +589,7 @@
 "purchase.paywall.price_unavailable" = "価格を取得できません";
 "purchase.paywall.unavailable" = "購入情報を読み込めませんでした。もう一度お試しください。";
 
+/* Quote document styles */
 "quote.style.title" = "見積書のスタイル";
 "quote.style.help" = "今回の見積書にのみ適用するスタイルを選択します。プレビューを開き直すと、設定の既定スタイルが適用されます。保存済みの版は変更されません。";
 "quote.style.classic" = "クラシック";
@@ -602,7 +600,9 @@
 "quote.style.forest.detail" = "繊細な深緑のアクセントと明瞭な合計金額。";
 "quote.style.minimal" = "ミニマル";
 "quote.style.minimal.detail" = "モノクロ印刷に適したすっきりした書式。";
+
 "quote.issued_on" = "発行日";
+
 "quote.style.executive" = "フォーマル";
 "quote.style.executive.detail" = "中央揃えのレターヘッドと細い罫線で正式な見積書に。";
 "quote.style.modern" = "モダン";

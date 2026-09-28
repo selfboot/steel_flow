@@ -241,7 +241,6 @@ struct ProjectEditorSheet: View {
     @AppStorage("app.currency") private var defaultCurrency = "USD"
     @AppStorage("app.language") private var appLanguage = "system"
     @AppStorage("app.paper") private var defaultPaperRaw = PaperSize.a4.rawValue
-    @Query private var companies: [CompanyProfileEntity]
     @State private var showCustomers = false
     @State private var customerContact = ""
     @State private var name = ""
@@ -288,7 +287,6 @@ struct ProjectEditorSheet: View {
                             paperSize: paper
                         )
                         project.customerContact = customerContact
-                        if PurchaseManager.shared.isPro { project.terms = companies.first?.defaultTerms ?? "" }
                         modelContext.insert(project)
                         if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
                     }

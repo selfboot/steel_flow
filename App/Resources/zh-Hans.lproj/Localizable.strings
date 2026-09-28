@@ -162,7 +162,6 @@
 "project.markup_percent" = "加价率";
 "project.tax_percent" = "税率";
 "project.valid_days" = "有效天数";
-"project.terms" = "报价条款";
 "project.notes" = "内部备注";
 "project.bulk_pricing" = "批量计价";
 "project.bulk.waste" = "修改选中条目的损耗";
@@ -290,7 +289,7 @@
 "purchase.paywall.one_time" = "一次性购买 · 无订阅";
 "purchase.paywall.buy_format" = "解锁 Pro · %@";
 "purchase.paywall.benefit.projects" = "无限进行中项目和项目条目";
-"purchase.paywall.benefit.materials" = "自定义材料、批量计价和报价条款";
+"purchase.paywall.benefit.materials" = "自定义材料与批量计价";
 "purchase.paywall.benefit.quotes" = "公司信息与完整 PDF/CSV 导出";
 "purchase.paywall.benefit.backups" = "版本化备份导出与导入";
 "purchase.paywall.footer" = "付款由 Apple 处理；使用同一 Apple 账户可恢复购买。";
@@ -304,7 +303,6 @@
 "purchase.limit.items" = "免费版每个项目最多支持 10 个条目。解锁 Pro 可取消限制。";
 "purchase.limit.materials" = "自定义材料属于 SteelFlow Pro 功能；免费版仍可使用全部内置材料。";
 "purchase.limit.csv" = "CSV 导出需要 SteelFlow Pro";
-"purchase.limit.terms" = "自定义报价条款需要 SteelFlow Pro。";
 
 "backup.export" = "导出备份";
 "backup.import" = "导入备份";
@@ -425,7 +423,7 @@
 "workflow.from_template" = "从模板创建";
 "workflow.sort_name" = "按名称排序";
 "workflow.template_clear_prices" = "清空旧价格与费用";
-"workflow.template_help" = "模板复用规格与条款。发送新报价前请核对供应商价格。";
+"workflow.template_help" = "模板复用规格与计价设置。发送新报价前请核对供应商价格。";
 "workflow.templates_empty" = "可在项目菜单中将常用项目保存为模板。";
 "workflow.customers" = "客户簿";
 "workflow.customer_new" = "新增客户";
@@ -456,10 +454,9 @@
 "workflow.backup_never" = "尚无成功备份记录";
 "workflow.backup_reminder" = "建议将近期数据备份到“文件”。";
 "workflow.backup_contents" = "包含项目、模板、客户、报价版本、价格、公司 Logo、常用计算与草稿。";
-"workflow.branding" = "Logo 与默认条款";
+"workflow.branding" = "公司 Logo";
 "workflow.choose_logo" = "选择公司 Logo";
 "workflow.remove_logo" = "移除 Logo";
-"workflow.default_terms" = "新项目默认条款";
 "workflow.logo_error" = "无法读取 Logo，请选择小于 20 MB 的图片。";
 "workflow.copy_material" = "复制为自定义材料";
 "workflow.old_price" = "已超过 30 天，报价前请核对";
@@ -583,7 +580,7 @@
 "purchase.paywall.feature.projects.title" = "项目与条目，不设上限";
 "purchase.paywall.feature.projects.detail" = "无限进行中项目与条目，支持快速复制项目。";
 "purchase.paywall.feature.materials.title" = "材料与计价，灵活掌控";
-"purchase.paywall.feature.materials.detail" = "自定义材料、批量计价与专属报价条款。";
+"purchase.paywall.feature.materials.detail" = "自定义材料与批量计价";
 "purchase.paywall.feature.quotes.title" = "带上品牌，专业交付";
 "purchase.paywall.feature.quotes.detail" = "公司信息与 Logo，完整 PDF / CSV 导出，去除 PDF 中的 SteelFlow 标识。";
 "purchase.paywall.feature.backups.title" = "工作成果，随时备份";
@@ -592,6 +589,7 @@
 "purchase.paywall.price_unavailable" = "价格暂不可用";
 "purchase.paywall.unavailable" = "暂时无法获取购买信息，请重试。";
 
+/* Quote document styles */
 "quote.style.title" = "报价风格";
 "quote.style.help" = "选择仅用于本次报价的样式。重新打开预览时使用设置中的默认样式，已保存版本保持原样。";
 "quote.style.classic" = "经典";
@@ -602,7 +600,9 @@
 "quote.style.forest.detail" = "细致墨绿点缀，清晰醒目的总价。";
 "quote.style.minimal" = "极简黑白";
 "quote.style.minimal.detail" = "简洁字体，适合黑白打印。";
+
 "quote.issued_on" = "报价日期";
+
 "quote.style.executive" = "正式商务";
 "quote.style.executive.detail" = "居中抬头与双细线，适合正式对外报价。";
 "quote.style.modern" = "现代重点";

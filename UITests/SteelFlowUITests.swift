@@ -933,3 +933,47 @@ final class LocalizationUITests: XCTestCase {
         app.terminate()
     }
 }
+
+@MainActor final class QuoteStyleUITests: XCTestCase {
+    private func reveal(_ element: XCUIElement, in app: XCUIApplication, up: Bool = true) {
+        for _ in 0..<12 where !element.isHittable {
+            if up { app.swipeUp() } else { app.swipeDown() }
+        }
+        XCTAssertTrue(element.isHittable)
+    }
+    private func capture(_ name: String) {
+        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+    }
+    func testQuoteSettingsDoNotOfferRemovedTermsForFreeOrPro() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        for free in [false, true] {
+            app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en"]
+            if free { app.launchArguments.append("--workflow-free") }
+            app.launch()
+            app.tabBars.buttons["Projects"].tap()
+            app.staticTexts["Workflow Quote"].firstMatch.tap()
+            app.buttons["project.menu"].tap(); app.buttons["Project settings"].tap()
+            let notes = app.descendants(matching: .any)["project.notes"].firstMatch
+            reveal(notes, in: app)
+            XCTAssertFalse(app.textFields["Terms"].exists)
+            XCTAssertFalse(app.buttons["Custom quote terms require SteelFlow Pro."].exists)
+            XCTAssertFalse(app.buttons["project.quoteStyle"].exists)
+            capture(free ? "quote-settings-free-clean" : "quote-settings-pro-clean")
+            app.navigationBars.buttons["Done"].tap()
+            if !free {
+                app.tabBars.buttons["Settings"].tap()
+                let company = app.buttons["Company profile"]
+                reveal(company, in: app); company.tap()
+                let logo = app.buttons["Choose company logo"]
+                reveal(logo, in: app)
+                XCTAssertFalse(app.textFields["Default terms for new projects"].exists)
+                capture("company-profile-without-terms")
+                app.navigationBars.buttons["Save"].tap()
+            }
+            app.terminate()
+        }
+    }
+
+}

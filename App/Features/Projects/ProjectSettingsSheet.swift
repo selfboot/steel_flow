@@ -17,7 +17,6 @@ struct ProjectSettingsSheet: View {
     @State private var unitSystem = UnitSystem.metric
     @State private var paperSize = PaperSize.a4
     @State private var validDays = 30
-    @State private var terms = ""
     @State private var notes = ""
     @State private var currencyDraft = ""
     @State private var taxDraft = ""
@@ -25,8 +24,6 @@ struct ProjectSettingsSheet: View {
     @State private var profitMode = ProfitMode.markup
     @State private var showCurrencyChange = false
     @State private var showCurrencyError = false
-    @State private var paywallReason: ProPaywallReason?
-    @State private var purchaseManager = PurchaseManager.shared
 
     private var normalizedCurrency: String? { CurrencyRules.normalizedCode(currencyDraft) }
     private var validTax: Decimal? { PricingInputValidator.percentage(taxDraft, locale: locale) }
@@ -72,15 +69,8 @@ struct ProjectSettingsSheet: View {
                     Stepper(value: $validDays, in: 1...365) { LabeledContent("project.valid_days", value: "\(validDays)") }
                     if validProfit == nil || validTax == nil { Label("error.invalid_pricing_policy", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
                 }
-                Section("project.terms") {
-                    if purchaseManager.isPro {
-                        TextField("project.terms", text: $terms, axis: .vertical).lineLimit(3...8)
-                    } else {
-                        Button { paywallReason = .terms } label: {
-                            Label("purchase.limit.terms", systemImage: "lock.fill")
-                        }
-                    }
-                    TextField("project.notes", text: $notes, axis: .vertical).lineLimit(3...8)
+                Section("project.notes") {
+                    TextField("project.notes", text: $notes, axis: .vertical).lineLimit(3...8).accessibilityIdentifier("project.notes")
                 }
             }
             .keyboardDismissSupport()
@@ -104,7 +94,6 @@ struct ProjectSettingsSheet: View {
                 unitSystem = project.unitSystem
                 paperSize = project.paperSize
                 validDays = project.validDays
-                terms = project.terms
                 notes = project.notes
                 currencyDraft = project.currencyCode
                 taxDraft = AppFormatters.decimalInput(canonicalText: project.taxPercentText, locale: locale)
@@ -133,7 +122,6 @@ struct ProjectSettingsSheet: View {
             } message: {
                 Text("currency_change.failed.message")
             }
-            .proPaywall(reason: $paywallReason)
         }
     }
 
@@ -154,7 +142,6 @@ struct ProjectSettingsSheet: View {
         project.unitSystem = unitSystem
         project.paperSize = paperSize
         project.validDays = validDays
-        if purchaseManager.isPro { project.terms = terms }
         project.notes = notes
         project.taxPercentText = tax.description
         project.markupPercentText = profit.description
