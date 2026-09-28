@@ -16,7 +16,8 @@ enum QuotePDFRenderer {
         let showUnitPrice = quote.showUnitPrice ?? false
         func l(_ key: String) -> String { AppLocalization.text(key, locale: locale) }
         func money(_ value: Decimal) -> String { AppFormatters.decimal(value, currencyCode: quote.currencyCode, locale: locale) }
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("SteelFlow_\(quote.projectNumber.filter { $0.isLetter || $0.isNumber || $0 == "-" }.prefix(50))_\(UUID().uuidString.prefix(8)).pdf")
+        let filePrefix = quote.includeBranding ? "SteelFlow" : "Quote"
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(filePrefix)_\(quote.projectNumber.filter { $0.isLetter || $0.isNumber || $0 == "-" }.prefix(50))_\(UUID().uuidString.prefix(8)).pdf")
         let renderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: size))
         var y: CGFloat = 36
         var page = 0
@@ -83,7 +84,12 @@ enum QuotePDFRenderer {
                     let scale = min(100 / image.size.width, 48 / image.size.height)
                     image.draw(in: CGRect(x: margin, y: y, width: image.size.width * scale, height: image.size.height * scale)); y += 54
                 }
-                paragraph(quote.company?.companyName.isEmpty == false ? quote.company!.companyName : "SteelFlow", font: .boldSystemFont(ofSize: 18))
+                if let companyName = quote.company?.companyName,
+                   !companyName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    paragraph(companyName, font: .boldSystemFont(ofSize: 18))
+                } else if quote.includeBranding {
+                    paragraph("SteelFlow", font: .boldSystemFont(ofSize: 18))
+                }
                 if let company = quote.company {
                     let details = [company.contactName, company.phone, company.email, company.address].filter { !$0.isEmpty }.joined(separator: " · ")
                     if !details.isEmpty { paragraph(details, font: .systemFont(ofSize: 9)) }

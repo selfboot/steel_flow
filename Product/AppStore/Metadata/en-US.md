@@ -28,7 +28,7 @@ No account is required. Project and material data stays on your device by defaul
 
 FREE TO START, ONE-TIME PRO UPGRADE
 
-Quick calculations and essential project tools are free. SteelFlow Pro unlocks unlimited projects and items, custom materials, company details and quote terms, CSV export, unbranded PDF quotes, versioned backup, and bulk pricing with one non-consumable purchase—no subscription.
+Quick calculations and essential project tools are free. SteelFlow Pro unlocks unlimited projects and items, custom materials, company details and quote terms, CSV export, PDF quotes without SteelFlow branding, versioned backup, and bulk pricing with one non-consumable purchase—no subscription.
 
 IMPORTANT
 

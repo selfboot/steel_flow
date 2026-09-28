@@ -585,7 +585,7 @@
 "purchase.paywall.feature.materials.title" = "Pricing that fits your work";
 "purchase.paywall.feature.materials.detail" = "Custom materials, batch pricing and quote terms.";
 "purchase.paywall.feature.quotes.title" = "Quotes with your identity";
-"purchase.paywall.feature.quotes.detail" = "Company details and logo, plus full PDF/CSV exports.";
+"purchase.paywall.feature.quotes.detail" = "Company details and logo, full PDF/CSV exports, and PDFs without SteelFlow branding.";
 "purchase.paywall.feature.backups.title" = "Keep a copy of your work";
 "purchase.paywall.feature.backups.detail" = "Export backups and import them when you need them.";
 "purchase.paywall.loading" = "Loading price…";

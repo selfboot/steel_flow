@@ -585,7 +585,7 @@
 "purchase.paywall.feature.materials.title" = "材料与计价，灵活掌控";
 "purchase.paywall.feature.materials.detail" = "自定义材料、批量计价与专属报价条款。";
 "purchase.paywall.feature.quotes.title" = "带上品牌，专业交付";
-"purchase.paywall.feature.quotes.detail" = "公司信息与标志，完整 PDF / CSV 导出。";
+"purchase.paywall.feature.quotes.detail" = "公司信息与 Logo，完整 PDF / CSV 导出，去除 PDF 中的 SteelFlow 标识。";
 "purchase.paywall.feature.backups.title" = "工作成果，随时备份";
 "purchase.paywall.feature.backups.detail" = "导出与导入备份，为项目留一份底。";
 "purchase.paywall.loading" = "正在获取价格…";
