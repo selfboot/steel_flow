@@ -531,7 +531,6 @@ private struct ProjectItemDetailView: View {
         .keyboardDismissSupport()
         .localizedNavigationTitle("profile.\(item.profile.rawValue)")
         .toolbar {
-            ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
             ToolbarItem(placement: .confirmationAction) { Button("common.done") { save() }.disabled(!canSave || priceNeedsReview).accessibilityIdentifier("item.done") }
         }
         .safeAreaInset(edge: .bottom) {
