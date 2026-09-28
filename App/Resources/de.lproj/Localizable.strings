@@ -600,6 +600,8 @@
 "quote.style.forest.detail" = "Feine grüne Akzente und eine klar hervorgehobene Summe.";
 "quote.style.minimal" = "Minimal";
 "quote.style.minimal.detail" = "Klare Typografie für Schwarzweißdruck.";
+"settings.quote_style" = "Standard-Angebotsstil";
+"settings.quote_defaults.help" = "Neue Angebotsvorschauen verwenden den gewählten Stil. Sie können ihn in der Vorschau ändern; gespeicherte Angebote behalten ihren ursprünglichen Stil. Das Standardpapierformat gilt nur für neue Projekte.";
 
 "quote.issued_on" = "Angebotsdatum";
 

@@ -632,6 +632,7 @@ private struct SaveToProjectSheet: View {
     @AppStorage("app.currency") private var defaultCurrency = "USD"
     @AppStorage("app.language") private var appLanguage = "system"
     @AppStorage("app.paper") private var defaultPaperRaw = PaperSize.a4.rawValue
+    @AppStorage("app.quoteStyle") private var defaultQuoteStyleRaw = QuoteStyle.classic.rawValue
     let projects: [ProjectEntity]
     let onSelect: (ProjectEntity) -> Void
     @State private var pendingSelection: ProjectEntity?
@@ -672,6 +673,7 @@ private struct SaveToProjectSheet: View {
                                 currencyCode: CurrencyRules.normalizedCode(defaultCurrency) ?? "USD",
                                 paperSize: PaperSize(rawValue: defaultPaperRaw) ?? .a4
                             )
+                            project.quoteStyle = QuoteStyle(rawValue: defaultQuoteStyleRaw) ?? .classic
                             modelContext.insert(project)
                             if PersistenceErrorCenter.shared.save(modelContext) { onSelect(project) }
                         }

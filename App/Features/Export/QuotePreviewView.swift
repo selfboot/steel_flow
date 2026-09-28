@@ -10,6 +10,9 @@ struct QuotePreviewView: View {
     @Environment(\.dynamicTypeSize) private var typeSize
     @Query private var companies: [CompanyProfileEntity]
     let project: ProjectEntity
+    @AppStorage("app.quoteStyle") private var defaultQuoteStyleRaw = QuoteStyle.classic.rawValue
+    @State private var previewStyle: QuoteStyle?
+    @State private var showQuoteStyles = false
     @State private var snapshot: QuoteSnapshotPayload?
     @State private var snapshotData: Data?
     @State private var versionSaved = false
@@ -25,11 +28,21 @@ struct QuotePreviewView: View {
     @State private var purchaseManager = PurchaseManager.shared
     @State private var paywallReason: ProPaywallReason?
     private var wide: Bool { sizeClass == .regular && !typeSize.isAccessibilitySize }
+    private var selectedStyle: QuoteStyle { previewStyle ?? QuoteStyle(rawValue: defaultQuoteStyleRaw) ?? .classic }
     private var quoteLocale: Locale { Locale(identifier: project.quoteLanguage) }
     var body: some View {
         NavigationStack {
             HStack(spacing: 0) {
                 List {
+                    Section {
+                        Button { showQuoteStyles = true } label: {
+                            HStack {
+                                Label("quote.style.title", systemImage: "paintpalette")
+                                Spacer()
+                                Text(LocalizedStringKey((snapshot?.quoteStyle ?? selectedStyle).titleKey)).foregroundStyle(.secondary)
+                            }
+                        }.disabled(preparing || snapshot == nil).accessibilityIdentifier("quote.style.choose")
+                    }
                     if !wide { Section("quote.document") { documentPreview } }
                     if let snapshot {
                         Section {
@@ -53,7 +66,7 @@ struct QuotePreviewView: View {
                     }
                     Section {
                         DisclosureGroup("ui.more_exports") {
-                            Button("workflow.save_version") { _ = saveVersion() }.disabled(snapshotData == nil || versionSaved)
+                            Button("workflow.save_version") { _ = saveVersion() }.accessibilityIdentifier("quote.save_version").disabled(snapshotData == nil || versionSaved)
                             if let pdfURL { ShareLink(item: pdfURL) { Label("ui.share_without_version", systemImage: "square.and.arrow.up") } }
                             if purchaseManager.isPro {
                                 Picker("workflow.export_purpose", selection: $csvKind) { ForEach(QuoteCSVKind.allCases) { Text(LocalizedStringKey($0.title)).tag($0) } }
@@ -78,8 +91,28 @@ struct QuotePreviewView: View {
             .onChange(of: csvKind) { _, _ in prepareCSV() }
             .onChange(of: purchaseManager.isPro) { _, pro in if pro { snapshot = nil; snapshotData = nil; versionSaved = false; Task { await prepareExports() } } }
             .proPaywall(reason: $paywallReason)
+            .sheet(isPresented: $showQuoteStyles) {
+                QuoteStylePicker(selected: snapshot?.quoteStyle ?? selectedStyle, onSelect: applyStyle)
+            }
             .sheet(item: $sharing) { FileShareSheet(url: $0.url) }
         }
+    }
+    private func applyStyle(_ style: QuoteStyle) {
+        guard var updated = snapshot, updated.quoteStyle != style else { return }
+        do {
+            updated.quoteStyleRaw = style.rawValue
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.sortedKeys]
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try encoder.encode(updated)
+            // Render first: a failed render must leave the previous export and saved version intact.
+            // Style changes belong to this preview, not the project or global defaults.
+            let url = try QuoteExportService.pdfURL(snapshot: updated)
+            previewStyle = style
+            snapshot = updated; snapshotData = data; pdfURL = url
+            versionSaved = false; exportError = nil
+            prepareCSV()
+        } catch { exportError = error.localizedDescription }
     }
     private var pageCountText: String {
         let count = pdfURL.flatMap { PDFDocument(url: $0)?.pageCount } ?? 0
@@ -104,8 +137,9 @@ struct QuotePreviewView: View {
             if ProcessInfo.processInfo.arguments.contains("--ui-export-error") && !simulatedFailureConsumed { simulatedFailureConsumed = true; throw CocoaError(.fileWriteUnknown) }
 #endif
             if snapshot == nil {
-                let data = try QuoteExportService.snapshotData(for: project, company: purchaseManager.isPro ? companies.first : nil, generatedAt: .now, includeBranding: !purchaseManager.isPro)
+                let data = try QuoteExportService.snapshotData(for: project, company: purchaseManager.isPro ? companies.first : nil, generatedAt: .now, includeBranding: !purchaseManager.isPro, quoteStyle: selectedStyle)
                 snapshotData = data; snapshot = try QuoteExportService.decodeSnapshot(data)
+                previewStyle = snapshot?.quoteStyle
             }
             if let snapshot { pdfURL = try QuoteExportService.pdfURL(snapshot: snapshot) }
             prepareCSV()

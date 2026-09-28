@@ -600,6 +600,8 @@
 "quote.style.forest.detail" = "Fine green accents and a clear, bold total.";
 "quote.style.minimal" = "Minimal";
 "quote.style.minimal.detail" = "Clean typography for monochrome printing.";
+"settings.quote_style" = "Default quote style";
+"settings.quote_defaults.help" = "New quote previews use the selected style. You can change it in the preview; saved quotes keep their original style. Default paper size applies to new projects only.";
 
 "quote.issued_on" = "Issued on";
 

@@ -600,6 +600,8 @@
 "quote.style.forest.detail" = "Sutiles acentos verdes y un total claro y destacado.";
 "quote.style.minimal" = "Minimalista";
 "quote.style.minimal.detail" = "Tipografía limpia para impresión en blanco y negro.";
+"settings.quote_style" = "Estilo predeterminado";
+"settings.quote_defaults.help" = "Las nuevas vistas previas usan el estilo seleccionado. Puedes cambiarlo en la vista previa; los presupuestos guardados conservan su estilo original. El tamaño de papel predeterminado solo se aplica a proyectos nuevos.";
 
 "quote.issued_on" = "Fecha de emisión";
 

@@ -600,6 +600,8 @@
 "quote.style.forest.detail" = "절제된 짙은 녹색 포인트와 선명한 총액.";
 "quote.style.minimal" = "미니멀";
 "quote.style.minimal.detail" = "흑백 인쇄에 적합한 깔끔한 서식.";
+"settings.quote_style" = "기본 견적서 스타일";
+"settings.quote_defaults.help" = "새 견적 미리보기에는 선택한 스타일이 적용되며 미리보기에서 변경할 수 있습니다. 저장된 견적은 기존 스타일을 유지합니다. 기본 용지 크기는 새 프로젝트에만 적용됩니다.";
 
 "quote.issued_on" = "발행일";
 

@@ -600,6 +600,8 @@
 "quote.style.forest.detail" = "繊細な深緑のアクセントと明瞭な合計金額。";
 "quote.style.minimal" = "ミニマル";
 "quote.style.minimal.detail" = "モノクロ印刷に適したすっきりした書式。";
+"settings.quote_style" = "見積書の既定スタイル";
+"settings.quote_defaults.help" = "新しく作成する見積プレビューには選択したスタイルが適用されます。プレビュー内で変更できます。保存済みの見積書は元のスタイルを保持します。既定の用紙サイズは新規プロジェクトにのみ適用されます。";
 
 "quote.issued_on" = "発行日";
 

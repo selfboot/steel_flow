@@ -17,6 +17,8 @@ struct SettingsView: View {
     @AppStorage("app.unitSystem") private var unitSystemRaw = UnitSystem.metric.rawValue
     @AppStorage("app.currency") private var currencyCode = "USD"
     @AppStorage("app.paper") private var paperRaw = PaperSize.a4.rawValue
+    @AppStorage("app.quoteStyle") private var quoteStyleRaw = QuoteStyle.classic.rawValue
+    @State private var showQuoteStyles = false
     @State private var purchaseManager = PurchaseManager.shared
     @AppStorage("workflow.last_backup") private var lastBackup: Double = 0
     @AppStorage("workflow.last_restore") private var lastRestore: Double = 0
@@ -71,16 +73,27 @@ struct SettingsView: View {
                         SettingsLabel("settings.currency", systemImage: "banknote")
                     }
                 }
+            }
+            .pickerStyle(.navigationLink)
+
+            Section {
+                Button { showQuoteStyles = true } label: {
+                    LabeledContent {
+                        HStack(spacing: 8) {
+                            Text(LocalizedStringKey((QuoteStyle(rawValue: quoteStyleRaw) ?? .classic).titleKey)).foregroundStyle(.secondary)
+                            SettingsChevron()
+                        }
+                    } label: {
+                        SettingsLabel("settings.quote_style", systemImage: "paintpalette")
+                    }
+                }.accessibilityIdentifier("settings.quoteStyle")
                 Picker(selection: $paperRaw) {
                     Text("paper.a4").tag(PaperSize.a4.rawValue)
                     Text("paper.letter").tag(PaperSize.letter.rawValue)
                 } label: {
                     SettingsLabel("settings.paper", systemImage: "doc")
                 }
-            }
-            .pickerStyle(.navigationLink)
-
-            Section("settings.quote") {
+                .accessibilityIdentifier("settings.paper")
                 Button { showCustomers = true } label: {
                     SettingsActionLabel("workflow.customers", systemImage: "person.2")
                 }
@@ -94,7 +107,12 @@ struct SettingsView: View {
                 } label: {
                     SettingsActionLabel("settings.company_profile", systemImage: "building.2", locked: !purchaseManager.isPro)
                 }
+            } header: {
+                Text("settings.quote")
+            } footer: {
+                Text("settings.quote_defaults.help")
             }
+            .pickerStyle(.navigationLink)
 
             Section {
                 Button {
@@ -156,6 +174,11 @@ struct SettingsView: View {
         .proPaywall(reason: $paywallReason) { if let action = pendingProAction { pendingProAction = nil; action() } }
         .fileExporter(isPresented: $showExporter, document: backupDocument, contentType: .steelFlowBackup, defaultFilename: "SteelFlow-Backup") { result in
             switch result { case .success: lastBackup = Date.now.timeIntervalSince1970; case .failure(let error): backupMessage = error.localizedDescription }
+        }
+        .sheet(isPresented: $showQuoteStyles) {
+            QuoteStylePicker(selected: QuoteStyle(rawValue: quoteStyleRaw) ?? .classic, helpKey: "settings.quote_defaults.help") {
+                quoteStyleRaw = $0.rawValue
+            }
         }
         .sheet(isPresented: $showCustomers) { CustomerPickerView() }
         .fileImporter(isPresented: $showImporter, allowedContentTypes: [.steelFlowBackup, .json]) { result in importBackup(result) }
@@ -257,7 +280,7 @@ struct SettingsView: View {
                 priceBook: priceBook,
                 customers: customers,
                 quoteSnapshots: snapshots,
-                preferences: .init(languageCode: languageCode, unitSystemRaw: unitSystemRaw, currencyCode: currencyCode, paperSizeRaw: paperRaw),
+                preferences: .init(languageCode: languageCode, unitSystemRaw: unitSystemRaw, currencyCode: currencyCode, paperSizeRaw: paperRaw, quoteStyleRaw: quoteStyleRaw),
                 libraryData: CalculationLibrary.shared.exportData
             )
             showExporter = true
@@ -287,6 +310,7 @@ struct SettingsView: View {
                 unitSystemRaw = preferences.unitSystemRaw
                 currencyCode = preferences.currencyCode
                 paperRaw = preferences.paperSizeRaw
+                quoteStyleRaw = preferences.quoteStyleRaw ?? QuoteStyle.classic.rawValue
             }
             let messageLocale = importPreferences && imported.preferences?.languageCode != "system"
                 ? Locale(identifier: imported.preferences?.languageCode ?? languageCode)

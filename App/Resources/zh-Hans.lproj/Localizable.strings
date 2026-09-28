@@ -600,6 +600,8 @@
 "quote.style.forest.detail" = "细致墨绿点缀，清晰醒目的总价。";
 "quote.style.minimal" = "极简黑白";
 "quote.style.minimal.detail" = "简洁字体，适合黑白打印。";
+"settings.quote_style" = "默认报价样式";
+"settings.quote_defaults.help" = "新生成的报价预览默认使用选定样式，预览中仍可切换；已保存的报价保持原样。默认纸张尺寸仅用于新建项目。";
 
 "quote.issued_on" = "报价日期";
 

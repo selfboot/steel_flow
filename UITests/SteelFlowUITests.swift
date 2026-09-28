@@ -644,8 +644,14 @@ final class LocalizationUITests: XCTestCase {
         for round in 0..<3 {
             let item = app.staticTexts["Steel tube"].firstMatch
             reveal(item); item.tap()
+            let navigation = app.navigationBars.firstMatch
+            XCTAssertTrue(navigation.buttons["item.done"].waitForExistence(timeout: 5))
             let price = app.textFields["item.unit_price"]
             reveal(price)
+            let cancel = ["de": "Abbrechen", "es": "Cancelar", "fr": "Annuler"][language]!
+            XCTAssertFalse(navigation.buttons[cancel].exists, "The pushed editor must not duplicate the native back button")
+            XCTAssertEqual(navigation.buttons.count, 2, "Keep native back and Done available")
+            if round == 0 { capture("existing-item-\(language)-navigation") }
             XCTAssertEqual(price.value as? String, round < 2 ? "2,345" : "4,567")
             let feesDisclosure = app.buttons.matching(NSPredicate(format: "label == %@ OR label BEGINSWITH %@", fees, fees + ",")).firstMatch
             reveal(feesDisclosure); feesDisclosure.tap()
@@ -945,6 +951,42 @@ final class LocalizationUITests: XCTestCase {
         let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
     }
+    func testPreviewStartsWithDefaultAndStyleChangesResetSavedVersion() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en", "-app.quoteStyle", "classic"]
+        app.launch(); defer { app.terminate() }
+        app.tabBars.buttons["Projects"].tap()
+        app.staticTexts["Workflow Quote"].firstMatch.tap()
+        app.buttons["project.menu"].tap(); app.buttons["Project settings"].tap()
+        let notes = app.descendants(matching: .any)["project.notes"].firstMatch
+        reveal(notes, in: app)
+        XCTAssertFalse(app.buttons["project.quoteStyle"].exists)
+        XCTAssertFalse(app.textFields["Terms"].exists)
+        capture("quote-project-settings-clean")
+        app.navigationBars.buttons["Done"].tap()
+        app.buttons["Quote preview"].tap()
+        let choose = app.buttons["quote.style.choose"]
+        XCTAssertTrue(choose.waitForExistence(timeout: 5)); XCTAssertTrue(choose.label.contains("Classic"), "New previews start with the global default")
+        choose.tap()
+        let forest = app.buttons["quote.style.forest"]
+        reveal(forest, in: app); capture("styles-gallery-light-lower"); forest.tap()
+        XCTAssertTrue(choose.waitForExistence(timeout: 3)); XCTAssertTrue(choose.label.contains("Forest"))
+        capture("styles-preview-forest-light")
+        let more = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Other export options")).firstMatch
+        reveal(more, in: app); more.tap()
+        let save = app.buttons["quote.save_version"]
+        reveal(save, in: app); save.tap()
+        XCTAssertTrue(app.buttons["quote.save_share"].label.contains("Share PDF"))
+        reveal(choose, in: app, up: false); choose.tap()
+        let minimal = app.buttons["quote.style.minimal"]
+        reveal(minimal, in: app); minimal.tap()
+        XCTAssertTrue(app.buttons["quote.save_share"].label.contains("Save version"), "A changed style must create a new frozen version")
+        app.navigationBars.buttons["Done"].tap()
+        app.buttons["Quote preview"].tap()
+        XCTAssertTrue(choose.waitForExistence(timeout: 5)); XCTAssertTrue(choose.label.contains("Classic"), "Reopening starts a new preview using the default")
+        capture("styles-preview-default-on-reopen")
+    }
     func testQuoteSettingsDoNotOfferRemovedTermsForFreeOrPro() {
         continueAfterFailure = false
         let app = XCUIApplication()
@@ -976,4 +1018,151 @@ final class LocalizationUITests: XCTestCase {
         }
     }
 
+    func testStyleGalleryAtLargestTextSize() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--workflow-free", "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en", "--marketing-screen", "quote", "--marketing-locale", "en-US", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch(); defer { app.terminate() }
+        let choose = app.buttons["quote.style.choose"]
+        XCTAssertTrue(choose.waitForExistence(timeout: 5)); choose.tap()
+        let blue = app.buttons["quote.style.blue"]
+        reveal(blue, in: app)
+        capture("styles-gallery-accessibility")
+        blue.tap()
+        XCTAssertTrue(choose.waitForExistence(timeout: 3)); XCTAssertTrue(choose.label.contains("Clear Blue"))
+        XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
+    }
+    func testDefaultQuoteSettingsApplyToBothCreationFlows() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en"]
+        app.launch(); defer { app.terminate() }
+        app.tabBars.buttons["Settings"].tap()
+        let defaults = app.buttons["settings.quoteStyle"]
+        reveal(defaults, in: app); defaults.tap()
+        let forest = app.buttons["quote.style.forest"]
+        reveal(forest, in: app); forest.tap()
+        let paper = app.buttons["settings.paper"]
+        reveal(paper, in: app); paper.tap(); app.buttons["US Letter"].tap()
+        let back = app.buttons["BackButton"].firstMatch
+        if back.waitForExistence(timeout: 2) { back.tap() }
+        XCTAssertTrue(defaults.waitForExistence(timeout: 5))
+        reveal(defaults, in: app)
+        XCTAssertTrue(defaults.label.contains("Forest"))
+        XCTAssertTrue(paper.label.contains("US Letter") || (paper.value as? String)?.contains("US Letter") == true)
+        capture("quote-defaults-settings-light")
+
+        app.tabBars.buttons["Projects"].tap()
+        app.staticTexts["Workflow Quote"].firstMatch.tap()
+        func checkProject(paper expectedPaper: String) {
+            app.buttons["project.menu"].tap(); app.buttons["Project settings"].tap()
+            XCTAssertFalse(app.buttons["project.quoteStyle"].exists)
+            let projectPaper = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Paper size")).firstMatch
+            reveal(projectPaper, in: app)
+            XCTAssertTrue(projectPaper.label.contains(expectedPaper) || (projectPaper.value as? String)?.contains(expectedPaper) == true, projectPaper.debugDescription)
+            app.navigationBars.buttons["Cancel"].tap()
+        }
+        checkProject(paper: "A4")
+        // Existing projects must also use the current global default for new previews.
+        let previewStyle = app.buttons["quote.style.choose"]
+        app.buttons["Quote preview"].tap()
+        XCTAssertTrue(previewStyle.waitForExistence(timeout: 5))
+        XCTAssertTrue(previewStyle.label.contains("Forest"))
+        XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
+        app.navigationBars.buttons["Done"].tap()
+        checkProject(paper: "A4")
+        app.tabBars.buttons["Settings"].tap()
+        reveal(defaults, in: app); defaults.tap(); app.buttons["quote.style.blue"].tap()
+        app.tabBars.buttons["Projects"].tap()
+        app.buttons["Quote preview"].tap()
+        XCTAssertTrue(previewStyle.waitForExistence(timeout: 5))
+        XCTAssertTrue(previewStyle.label.contains("Clear Blue"), "Changing settings must affect the next preview of an existing project")
+        capture("quote-preview-uses-settings-default")
+        app.navigationBars.buttons["Done"].tap()
+        app.tabBars.buttons["Settings"].tap()
+        reveal(defaults, in: app); defaults.tap(); reveal(forest, in: app); forest.tap()
+        app.tabBars.buttons["Projects"].tap()
+        app.navigationBars.buttons.firstMatch.tap()
+        app.buttons["projects.menu"].tap()
+        app.buttons.matching(NSPredicate(format: "label == %@ AND identifier != %@", "New project", "projects.menu")).firstMatch.tap()
+        app.textFields["Project name"].tap(); app.textFields["Project name"].typeText("Default Style Project")
+        app.navigationBars.buttons["Create"].tap()
+        app.staticTexts["Default Style Project"].firstMatch.tap()
+        checkProject(paper: "US Letter")
+
+        app.tabBars.buttons["Calculate"].tap()
+        app.descendants(matching: .any)["profile.plate"].tap()
+        let save = app.buttons["calculator.save"]
+        reveal(save, in: app); save.tap()
+        let name = app.textFields["Project name"]
+        XCTAssertTrue(name.waitForExistence(timeout: 5)); name.tap(); name.typeText("Calculator Defaults")
+        app.buttons["Done"].tap()
+        let createAndAdd = app.buttons["Create and add"]
+        reveal(createAndAdd, in: app); createAndAdd.tap()
+        XCTAssertTrue(save.waitForExistence(timeout: 5))
+        app.tabBars.buttons["Projects"].tap()
+        // Projects remembers the last opened detail.
+        if app.buttons["project.menu"].exists { app.navigationBars.buttons.firstMatch.tap() }
+        app.staticTexts["Calculator Defaults"].firstMatch.tap()
+        checkProject(paper: "US Letter")
+
+        app.terminate()
+        app.launchArguments += ["--ui-dark"]
+        app.launch()
+        app.tabBars.buttons["Settings"].tap()
+        reveal(defaults, in: app)
+        XCTAssertTrue(defaults.label.contains("Forest"), "Default style survives relaunch")
+        XCTAssertTrue(paper.label.contains("US Letter") || (paper.value as? String)?.contains("US Letter") == true)
+        capture("quote-defaults-settings-dark")
+        // Leave test defaults at the application's original values.
+        defaults.tap(); app.buttons["quote.style.classic"].tap()
+        reveal(paper, in: app); paper.tap(); app.buttons["A4"].tap()
+    }
+    func testBusinessStylesCanBeChosenAsDefaultAndUsedInPreview() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en"]
+        app.launch(); defer { app.terminate() }
+        let defaults = app.buttons["settings.quoteStyle"]
+        for (raw, name) in [("executive", "Executive"), ("modern", "Modern Focus"), ("ledger", "Business Ledger")] {
+            app.tabBars.buttons["Settings"].tap()
+            reveal(defaults, in: app); defaults.tap()
+            let card = app.buttons["quote.style." + raw]
+            reveal(card, in: app); capture("business-gallery-" + raw); card.tap()
+            XCTAssertTrue(defaults.waitForExistence(timeout: 3))
+            XCTAssertTrue(defaults.label.contains(name))
+            app.tabBars.buttons["Projects"].tap()
+            if !app.buttons["project.menu"].exists { app.staticTexts["Workflow Quote"].firstMatch.tap() }
+            app.buttons["Quote preview"].tap()
+            let chosen = app.buttons["quote.style.choose"]
+            XCTAssertTrue(chosen.waitForExistence(timeout: 5))
+            XCTAssertTrue(chosen.label.contains(name))
+            XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
+            capture("business-preview-" + raw)
+            app.navigationBars.buttons["Done"].tap()
+        }
+        app.terminate(); app.launch()
+        app.tabBars.buttons["Settings"].tap(); reveal(defaults, in: app)
+        XCTAssertTrue(defaults.label.contains("Business Ledger"))
+        defaults.tap(); app.buttons["quote.style.classic"].tap()
+    }
+
+    func testGermanStyleGalleryInDarkMode() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--workflow-free", "--reset-workflow", "--ui-dark", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE", "-app.language", "de"]
+        app.launch(); defer { app.terminate() }
+        app.tabBars.buttons["Projekte"].tap()
+        app.staticTexts["Workflow Quote"].firstMatch.tap()
+        app.buttons["Angebotsvorschau"].tap()
+        let choose = app.buttons["quote.style.choose"]
+        XCTAssertTrue(choose.waitForExistence(timeout: 5)); choose.tap()
+        XCTAssertTrue(app.buttons["quote.style.blue"].waitForExistence(timeout: 5))
+        capture("styles-gallery-dark-de")
+        let forest = app.buttons["quote.style.forest"]
+        reveal(forest, in: app); capture("styles-gallery-dark-de-lower"); forest.tap()
+        XCTAssertTrue(choose.waitForExistence(timeout: 3)); XCTAssertTrue(choose.label.contains("Waldgrün"))
+        XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
+        capture("styles-preview-dark-de")
+    }
 }

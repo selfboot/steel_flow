@@ -241,6 +241,7 @@ struct ProjectEditorSheet: View {
     @AppStorage("app.currency") private var defaultCurrency = "USD"
     @AppStorage("app.language") private var appLanguage = "system"
     @AppStorage("app.paper") private var defaultPaperRaw = PaperSize.a4.rawValue
+    @AppStorage("app.quoteStyle") private var defaultQuoteStyleRaw = QuoteStyle.classic.rawValue
     @State private var showCustomers = false
     @State private var customerContact = ""
     @State private var name = ""
@@ -286,6 +287,7 @@ struct ProjectEditorSheet: View {
                             currencyCode: normalizedCurrency ?? defaultCurrency,
                             paperSize: paper
                         )
+                        project.quoteStyle = QuoteStyle(rawValue: defaultQuoteStyleRaw) ?? .classic
                         project.customerContact = customerContact
                         modelContext.insert(project)
                         if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }

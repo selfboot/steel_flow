@@ -600,6 +600,8 @@
 "quote.style.forest.detail" = "De fins accents verts et un total clairement mis en valeur.";
 "quote.style.minimal" = "Minimaliste";
 "quote.style.minimal.detail" = "Une typographie sobre pour l’impression en noir et blanc.";
+"settings.quote_style" = "Style de devis par défaut";
+"settings.quote_defaults.help" = "Les nouveaux aperçus utilisent le style sélectionné. Vous pouvez le modifier dans l’aperçu ; les devis enregistrés conservent leur style d’origine. Le format de papier par défaut s’applique uniquement aux nouveaux projets.";
 
 "quote.issued_on" = "Date d’émission";
 

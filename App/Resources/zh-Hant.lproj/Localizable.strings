@@ -600,6 +600,8 @@
 "quote.style.forest.detail" = "細緻墨綠點綴，清晰醒目的總價。";
 "quote.style.minimal" = "極簡黑白";
 "quote.style.minimal.detail" = "簡潔字體，適合黑白列印。";
+"settings.quote_style" = "預設報價樣式";
+"settings.quote_defaults.help" = "新產生的報價預覽預設使用所選樣式，仍可在預覽中切換；已儲存的報價保持原樣。預設紙張尺寸僅用於新建專案。";
 
 "quote.issued_on" = "報價日期";
 
