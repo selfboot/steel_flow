@@ -67,8 +67,8 @@ struct ProjectSettingsSheet: View {
                 }
                 Section("project.pricing") {
                     Picker("project.profit_mode", selection: $profitMode) { ForEach(ProfitMode.allCases) { Text($0.localizationKey).tag($0) } }
-                    HStack { Text(profitMode == .markup ? "project.markup_percent" : "project.margin_percent"); Spacer(); TextField("0", text: $profitDraft).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text("%") }
-                    HStack { Text("project.tax_percent"); Spacer(); TextField("0", text: $taxDraft).keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text("%") }
+                    HStack { Text(profitMode == .markup ? "project.markup_percent" : "project.margin_percent"); Spacer(); TextField("0", text: $profitDraft).accessibilityIdentifier("project.profit").keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text("%") }
+                    HStack { Text("project.tax_percent"); Spacer(); TextField("0", text: $taxDraft).accessibilityIdentifier("project.tax").keyboardType(.decimalPad).multilineTextAlignment(.trailing); Text("%") }
                     Stepper(value: $validDays, in: 1...365) { LabeledContent("project.valid_days", value: "\(validDays)") }
                     if validProfit == nil || validTax == nil { Label("error.invalid_pricing_policy", systemImage: "exclamationmark.triangle.fill").foregroundStyle(.red) }
                 }
@@ -107,8 +107,8 @@ struct ProjectSettingsSheet: View {
                 terms = project.terms
                 notes = project.notes
                 currencyDraft = project.currencyCode
-                taxDraft = project.taxPercentText
-                profitDraft = project.markupPercentText
+                taxDraft = AppFormatters.decimalInput(canonicalText: project.taxPercentText, locale: locale)
+                profitDraft = AppFormatters.decimalInput(canonicalText: project.markupPercentText, locale: locale)
                 profitMode = project.profitMode
             }
             .sheet(isPresented: $showCustomers) {

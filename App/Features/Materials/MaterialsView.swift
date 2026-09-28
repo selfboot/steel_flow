@@ -254,7 +254,7 @@ private struct PriceBookEditorSheet: View {
                 HStack {
                     Text("calculator.unit_price")
                     Spacer()
-                    LabeledEntry("0", text: $price).keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44)
+                    LabeledEntry("0", text: $price).accessibilityIdentifier("price_book.price").keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44)
                 }
                 Toggle("calculator.price_includes_tax", isOn: $includesTax)
                 DatePicker("calculator.price_effective_date", selection: $effectiveAt, displayedComponents: .date)
@@ -282,7 +282,7 @@ private struct PriceBookEditorSheet: View {
         region = entry.region
         currency = entry.currencyCode
         basis = entry.priceBasis
-        price = entry.unitPriceText
+        price = AppFormatters.decimalInput(canonicalText: entry.unitPriceText, locale: locale)
         includesTax = entry.includesTax
         effectiveAt = entry.effectiveAt
         note = entry.note

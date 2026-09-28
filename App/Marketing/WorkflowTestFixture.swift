@@ -15,6 +15,11 @@ import SwiftData
                 description: index == 0 ? "Steel tube" : "Aluminum tube", sortIndex: index))
         }
         if ProcessInfo.processInfo.arguments.contains("--ui-empty-project") { project.items = [] }
+        if ProcessInfo.processInfo.arguments.contains("--ui-decimal-values") {
+            project.taxPercentText = "0.125"
+            project.markupPercentText = "7.5"
+            context.insert(PriceBookEntryEntity(name: "Precision price", currencyCode: "CNY", priceBasis: .perKilogram, unitPrice: Decimal(string: "2.345")!))
+        }
         context.insert(project)
         context.insert(CustomerEntity(name: "Saved Customer", email: "quotes@example.com", phone: "12345", address: "Workshop Road"))
         try context.save()

@@ -10,7 +10,10 @@ struct CalculatorEditorView: View {
     @State private var draftCurrency: String?
     @State private var showPricing = false
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.locale) private var locale
+    @Environment(\.locale) private var displayLocale
+    @State private var draftLocale: Locale?
+    // Input strings keep their original number format until conversion completes.
+    private var locale: Locale { draftLocale ?? displayLocale }
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Query(sort: \MaterialEntity.createdAt) private var materials: [MaterialEntity]
     @Query(sort: \ProjectEntity.updatedAt, order: .reverse) private var projects: [ProjectEntity]
@@ -275,7 +278,7 @@ struct CalculatorEditorView: View {
                         .labelsHidden()
                     }
                     .onChange(of: selectedPriceEntryID) { _, id in
-                        if let id, let entry = priceBook.first(where: { $0.id == id }) { draft.apply(priceEntry: entry); draft.unitPriceText = entry.unitPrice.description.replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".") }
+                        if let id, let entry = priceBook.first(where: { $0.id == id }) { draft.apply(priceEntry: entry, locale: locale) }
                     }
                     if availablePriceEntries.isEmpty {
                         Text("calculator.price_history.empty").font(.caption).foregroundStyle(.secondary)
@@ -359,6 +362,9 @@ struct CalculatorEditorView: View {
         .keyboardDismissSupport()
         .localizedNavigationTitle("profile.\(profile.rawValue)")
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: displayLocale) { _, newLocale in
+            updateDraftLocale(to: newLocale)
+        }
         .onChange(of: storedState) { _, state in
             if loaded && !ProcessInfo.processInfo.arguments.contains("--marketing-screen") { library.saveDraft(state, key: draftKey) }
         }
@@ -380,7 +386,14 @@ struct CalculatorEditorView: View {
             }
         }
         .onAppear {
-            guard !loaded else { return }
+            guard !loaded else {
+                updateDraftLocale(to: displayLocale)
+                return
+            }
+            // Fresh drafts and marketing presets use canonical decimal strings.
+            draft = DraftState(draft, currency: currencyCode, locale: Locale(identifier: "en_US_POSIX"))
+                .makeDraft(locale: displayLocale)
+            draftLocale = displayLocale
             loaded = true
             defer { initialReviewState = storedState }
             if !ProcessInfo.processInfo.arguments.contains("--marketing-screen"), let state = restoredState ?? library.payload.drafts[draftKey] {
@@ -473,7 +486,7 @@ struct CalculatorEditorView: View {
     }
     private func resetDraft() {
         resetUndo = storedState
-        draft = CalculatorDraft(profile: profile, unitSystem: destinationProject?.unitSystem ?? UnitSystem(rawValue: unitSystemRaw) ?? .metric)
+        draft = CalculatorDraft(profile: profile, unitSystem: destinationProject?.unitSystem ?? UnitSystem(rawValue: unitSystemRaw) ?? .metric, locale: locale)
         draftCurrency = nil; lastSavedItem = nil
         notice = AppLocalization.text("ui.draft_reset", locale: locale)
     }
@@ -511,6 +524,15 @@ struct CalculatorEditorView: View {
     private func materialDisplayName(_ material: MaterialEntity) -> String {
         guard let key = material.nameKey else { return material.name }
         return AppLocalization.text(key, locale: locale)
+    }
+
+    private func updateDraftLocale(to newLocale: Locale) {
+        guard loaded, locale != newLocale else { return }
+        draft = storedState.makeDraft(locale: newLocale)
+        if let initialReviewState {
+            self.initialReviewState = DraftState(initialReviewState.makeDraft(locale: newLocale), currency: initialReviewState.currency, locale: newLocale)
+        }
+        draftLocale = newLocale
     }
 
     private func mass(_ kg: Double) -> String {

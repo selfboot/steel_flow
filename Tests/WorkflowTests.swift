@@ -50,7 +50,7 @@ import PDFKit
     }
     func testHistoricalPriceRequiresReviewAfterMaterialChanges() {
         let draft = CalculatorDraft(profile: .plate)
-        draft.apply(priceEntry: PriceBookEntryEntity(name: "Steel price", currencyCode: "USD", priceBasis: .perKilogram, unitPrice: 5))
+        draft.apply(priceEntry: PriceBookEntryEntity(name: "Steel price", currencyCode: "USD", priceBasis: .perKilogram, unitPrice: 5), locale: locale)
         draft.apply(material: MaterialEntity(id: "aluminum", name: "Aluminum", densityKgPerM3: 2700))
         XCTAssertTrue(draft.priceNeedsReview)
         draft.clearPrice()
@@ -75,10 +75,92 @@ import PDFKit
         XCTAssertEqual(french.lengthText, "2,5")
         XCTAssertNotNil(french.result(locale: Locale(identifier: "fr_FR")))
     }
+    func testDraftLocaleChangesPreserveWeightPricesAndPersistedValues() throws {
+        let sourceLocale = Locale(identifier: "en_DE")
+        var draft = CalculatorDraft(profile: .plate)
+        draft.dimensionTexts = [.width: "1.234,5", .thickness: "10,25"]
+        draft.lengthText = "6,125"
+        draft.densityText = "7.850"
+        draft.wasteText = "2,75"
+        draft.unitPriceText = "1.234,56789"
+        draft.processingFeeText = "12,34"
+        draft.otherFeeText = "5,67"
+        draft.itemDescription = "Keep 7.850 exactly as entered in notes"
+        draft.internalNote = "Internal note"
+        let expectedWeight = try XCTUnwrap(draft.result(locale: sourceLocale)).get()
+        let expectedPrice = try XCTUnwrap(draft.pricing(locale: sourceLocale, result: expectedWeight, currencyCode: "EUR"))
+        var state = DraftState(draft, currency: "EUR", locale: sourceLocale)
+        for identifier in ["ja", "ko", "zh-Hant", "zh-Hans", "en", "en_DE"] {
+            let target = Locale(identifier: identifier)
+            draft = state.makeDraft(locale: target)
+            let weight = try XCTUnwrap(draft.result(locale: target)).get()
+            XCTAssertEqual(weight, expectedWeight, identifier)
+            XCTAssertEqual(draft.pricing(locale: target, result: weight, currencyCode: "EUR"), expectedPrice, identifier)
+            XCTAssertEqual(DecimalParser.parse(draft.unitPriceText, locale: target), Decimal(string: "1234.56789"))
+            XCTAssertEqual(draft.itemDescription, state.description)
+            XCTAssertEqual(draft.internalNote, state.note)
+            state = DraftState(draft, currency: state.currency, locale: target)
+            state = try JSONDecoder().decode(DraftState.self, from: JSONEncoder().encode(state))
+        }
+        XCTAssertEqual(state.localeIdentifier, sourceLocale.identifier)
+        XCTAssertEqual(DecimalParser.parse(state.density, locale: sourceLocale), 7850)
+    }
+
+    func testSavedPriceAndEditableDecimalsKeepPrecisionInRegionalFormats() throws {
+        let values = ["2.345", "0.125", "7.5", "1234.567890123456789", "0.00000001"]
+        for identifier in ["en_DE", "fr_FR", "ja", "ko", "zh-Hant", "en_US"] {
+            let locale = Locale(identifier: identifier)
+            for canonical in values {
+                let expected = try XCTUnwrap(Decimal(string: canonical, locale: Locale(identifier: "en_US_POSIX")))
+                let entry = PriceBookEntryEntity(name: "Precision", currencyCode: "EUR", priceBasis: .perKilogram, unitPrice: expected)
+                let draft = CalculatorDraft(profile: .plate, locale: locale)
+                draft.apply(priceEntry: entry, locale: locale)
+                XCTAssertEqual(DecimalParser.parse(draft.unitPriceText, locale: locale), expected)
+                // The price editor uses this same conversion before persisting canonical text again.
+                let editorText = AppFormatters.decimalInput(canonicalText: entry.unitPriceText, locale: locale)
+                entry.unitPriceText = try XCTUnwrap(PricingInputValidator.nonnegative(editorText, locale: locale)).description
+                XCTAssertEqual(entry.unitPrice, expected)
+            }
+            XCTAssertEqual(AppFormatters.decimalInput(canonicalText: "", locale: locale), "")
+            XCTAssertEqual(AppFormatters.decimalInput(canonicalText: "invalid", locale: locale), "invalid")
+        }
+    }
+
+    func testProjectPercentagesSurviveLocalizedEditAndSave() throws {
+        for identifier in ["en_DE", "fr_FR", "ja", "ko", "zh-Hant", "en_US"] {
+            let locale = Locale(identifier: identifier)
+            let project = ProjectEntity(name: "Rates", currencyCode: "EUR")
+            project.taxPercentText = "0.125"; project.markupPercentText = "7.5"
+            for _ in 0..<3 {
+                let tax = AppFormatters.decimalInput(canonicalText: project.taxPercentText, locale: locale)
+                let profit = AppFormatters.decimalInput(canonicalText: project.markupPercentText, locale: locale)
+                project.taxPercentText = try XCTUnwrap(PricingInputValidator.percentage(tax, locale: locale)).description
+                project.markupPercentText = try XCTUnwrap(PricingInputValidator.percentage(profit, mode: .markup, locale: locale)).description
+                XCTAssertEqual(project.taxPercent, Decimal(string: "0.125"))
+                XCTAssertEqual(project.markupPercent, Decimal(string: "7.5"))
+            }
+        }
+    }
+
+    func testFreshDraftDefaultsAreValidInMetricAndImperialAcrossLocales() throws {
+        for profile in ProfileKind.allCases {
+            for system in UnitSystem.allCases {
+                let reference = try XCTUnwrap(CalculatorDraft(profile: profile, unitSystem: system).result(locale: Locale(identifier: "en_US_POSIX"))).get()
+                for identifier in ["en_DE", "fr_FR", "ja", "ko", "zh-Hant"] {
+                    let locale = Locale(identifier: identifier)
+                    let draft = CalculatorDraft(profile: profile, unitSystem: system, locale: locale)
+                    let result = try XCTUnwrap(draft.result(locale: locale), "\(profile) / \(system) / \(identifier)").get()
+                    XCTAssertEqual(result.totalMassKg, reference.totalMassKg, accuracy: 1e-9)
+                    XCTAssertNil(draft.firstIssue(locale: locale))
+                }
+            }
+        }
+    }
+
     func testPerPieceHistoricalPriceNeedsReviewWhenStockLengthChanges() {
         let draft = CalculatorDraft(profile: .squareTube)
         draft.lengthText = "2"
-        draft.apply(priceEntry: PriceBookEntryEntity(name: "Two-meter stock", currencyCode: "USD", priceBasis: .perPiece, unitPrice: 50))
+        draft.apply(priceEntry: PriceBookEntryEntity(name: "Two-meter stock", currencyCode: "USD", priceBasis: .perPiece, unitPrice: 50), locale: locale)
         draft.editStockLength("3")
         XCTAssertTrue(draft.priceNeedsReview)
         XCTAssertEqual(draft.unitPriceText, "50")

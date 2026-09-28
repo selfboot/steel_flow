@@ -149,7 +149,7 @@ final class PricingAndProjectTests: XCTestCase {
             effectiveAt: Date(timeIntervalSince1970: 1_700_000_000)
         )
         let draft = CalculatorDraft(profile: .plate)
-        draft.apply(priceEntry: entry)
+        draft.apply(priceEntry: entry, locale: Locale(identifier: "en_US"))
         XCTAssertEqual(draft.unitPriceText, "4.25")
         XCTAssertEqual(draft.priceSource, .history)
         XCTAssertEqual(draft.priceSourceName, "Supplier A")

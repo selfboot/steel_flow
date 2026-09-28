@@ -42,7 +42,7 @@ struct DraftState: Codable, Hashable, Sendable {
         let draft = CalculatorDraft(profile: profile)
         func text(_ raw: String) -> String {
             guard locale.identifier != localeIdentifier, let value = DecimalParser.parse(raw, locale: Locale(identifier: localeIdentifier)) else { return raw }
-            return value.description.replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".")
+            return AppFormatters.decimalInput(value, locale: locale)
         }
         draft.dimensionTexts = Dictionary(uniqueKeysWithValues: dimensions.compactMap { key, value in DimensionField(rawValue: key).map { ($0, text(value)) } })
         draft.geometryUnit = geometryUnit; draft.areaUnit = areaUnit; draft.lengthText = text(length); draft.lengthUnit = lengthUnit

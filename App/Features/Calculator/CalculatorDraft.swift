@@ -28,7 +28,7 @@ final class CalculatorDraft {
     var itemDescription: String
     var internalNote: String
 
-    init(profile: ProfileKind, unitSystem: UnitSystem = .metric) {
+    init(profile: ProfileKind, unitSystem: UnitSystem = .metric, locale: Locale = Locale(identifier: "en_US_POSIX")) {
         self.profile = profile
         self.geometryUnit = unitSystem.lengthUnit
         self.areaUnit = unitSystem == .metric ? .squareMillimeter : .squareInch
@@ -52,7 +52,7 @@ final class CalculatorDraft {
         self.internalNote = ""
 
         let defaults = Self.defaults(for: profile, system: unitSystem)
-        self.dimensionTexts = defaults.mapValues { String($0) }
+        self.dimensionTexts = defaults.mapValues { AppFormatters.decimalInput(canonicalText: String($0), locale: locale) }
     }
 
     func geometry(locale: Locale) -> GeometryInput? {
@@ -144,9 +144,9 @@ final class CalculatorDraft {
         )
     }
 
-    func apply(priceEntry: PriceBookEntryEntity) {
+    func apply(priceEntry: PriceBookEntryEntity, locale: Locale) {
         priceNeedsReview = false
-        unitPriceText = priceEntry.unitPrice.description
+        unitPriceText = AppFormatters.decimalInput(canonicalText: priceEntry.unitPriceText, locale: locale)
         priceBasis = priceEntry.priceBasis
         priceSource = .history
         priceSourceName = priceEntry.supplier.isEmpty ? priceEntry.name : priceEntry.supplier

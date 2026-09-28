@@ -1,6 +1,16 @@
 import Foundation
 
 enum AppFormatters {
+    /// Editable decimal text without currency rounding or grouping separators.
+    static func decimalInput(_ value: Decimal, locale: Locale) -> String {
+        value.description.replacingOccurrences(of: ".", with: locale.decimalSeparator ?? ".")
+    }
+
+    static func decimalInput(canonicalText: String, locale: Locale) -> String {
+        guard let value = DecimalParser.parse(canonicalText, locale: Locale(identifier: "en_US_POSIX")) else { return canonicalText }
+        return decimalInput(value, locale: locale)
+    }
+
     static func number(_ value: Double, maximumFractionDigits: Int = 3, locale: Locale = .current) -> String {
         value.formatted(.number.locale(locale).precision(.fractionLength(0...maximumFractionDigits)))
     }

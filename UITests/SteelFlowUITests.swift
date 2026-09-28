@@ -603,6 +603,84 @@ final class LocalizationUITests: XCTestCase {
         app.terminate()
     }
 
+    func testLanguageSwitchPreservesActiveCalculationAndSavedDraft() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(en)", "-AppleLocale", "en_DE", "-app.unitSystem", "metric"]
+        app.launch()
+        func chooseLanguage(_ name: String) {
+            app.tabBars.buttons.element(boundBy: 3).tap()
+            app.buttons["settings.language"].tap()
+            app.buttons[name].tap()
+            let back = app.navigationBars.buttons["BackButton"]
+            if back.exists { back.tap() }
+            app.tabBars.buttons.element(boundBy: 0).tap()
+        }
+        // Establish a comma-decimal locale without overriding the app's language setting.
+        chooseLanguage("English")
+        chooseLanguage("System default")
+        app.descendants(matching: .any)["profile.plate"].tap()
+        XCTAssertTrue(app.staticTexts["47,1 kg"].firstMatch.waitForExistence(timeout: 3), "Fresh defaults must also use the system number format")
+        for name in ["日本語", "한국어", "繁體中文", "English"] {
+            chooseLanguage(name)
+            XCTAssertTrue(app.staticTexts["47.1 kg"].firstMatch.waitForExistence(timeout: 3), "Weight must remain unchanged in \(name)")
+        }
+        chooseLanguage("System default")
+        XCTAssertTrue(app.staticTexts["47,1 kg"].firstMatch.waitForExistence(timeout: 3))
+        capture("1.3-locale-switch-preserves-weight")
+        app.terminate()
+        app.launchArguments.removeAll { $0 == "--reset-workflow" }
+        app.launch()
+        app.descendants(matching: .any)["profile.plate"].tap()
+        XCTAssertTrue(app.staticTexts["47,1 kg"].firstMatch.waitForExistence(timeout: 3), "Saved draft must retain the correct values and locale after relaunch")
+        chooseLanguage("English")
+        app.terminate()
+    }
+
+    func testResetKeepsValidDefaultCalculationInGermanRegion() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(en)", "-AppleLocale", "en_DE", "-app.language", "system", "-app.unitSystem", "metric"]
+        app.launch()
+        app.descendants(matching: .any)["profile.plate"].tap()
+        XCTAssertTrue(app.staticTexts["47,1 kg"].firstMatch.waitForExistence(timeout: 3))
+        app.buttons["calculator.menu"].tap()
+        app.buttons["Start a fresh calculation"].tap()
+        XCTAssertTrue(app.staticTexts["47,1 kg"].firstMatch.waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["calculator.save"].isEnabled)
+        app.terminate()
+    }
+
+    func testEditingSavedRatesAndPricesInGermanRegionPreservesValues() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "--ui-decimal-values", "-AppleLanguages", "(en)", "-AppleLocale", "en_DE", "-app.language", "system", "-app.unitSystem", "metric"]
+        app.launch()
+        app.tabBars.buttons["Projects"].tap()
+        app.staticTexts["Workflow Quote"].firstMatch.tap()
+        for _ in 0..<2 {
+            app.buttons["project.menu"].tap()
+            app.buttons["Project settings"].tap()
+            let tax = app.textFields["project.tax"]
+            for _ in 0..<8 where !tax.isHittable { app.swipeUp() }
+            XCTAssertEqual(tax.value as? String, "0,125")
+            XCTAssertEqual(app.textFields["project.profit"].value as? String, "7,5")
+            XCTAssertTrue(app.buttons["Done"].isEnabled)
+            app.buttons["Done"].tap()
+        }
+        app.tabBars.buttons["Materials"].tap()
+        app.segmentedControls.buttons["Saved price history"].tap()
+        for _ in 0..<2 {
+            app.staticTexts["Precision price"].firstMatch.tap()
+            let price = app.textFields["price_book.price"]
+            for _ in 0..<8 where !price.isHittable { app.swipeUp() }
+            XCTAssertEqual(price.value as? String, "2,345")
+            XCTAssertTrue(app.buttons["Save"].isEnabled)
+            app.buttons["Save"].tap()
+        }
+        app.terminate()
+    }
+
     func testManualLanguageSwitchUpdatesUIAndPersists() {
         continueAfterFailure = false
         let app = XCUIApplication()
