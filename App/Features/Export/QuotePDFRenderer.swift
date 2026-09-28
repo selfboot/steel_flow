@@ -24,38 +24,48 @@ enum QuotePDFRenderer {
         func draw(_ text: String, x: CGFloat, y: CGFloat, width: CGFloat, font: UIFont = .systemFont(ofSize: 9), color: UIColor = .black) {
             (text as NSString).draw(in: CGRect(x: x, y: y, width: width, height: max(16, font.lineHeight + 2)), withAttributes: [.font: font, .foregroundColor: color])
         }
-        // Explicit glyph wrapping makes even unbroken part numbers and long Chinese text flow.
+        // Prefer word boundaries, with glyph wrapping for unbroken part numbers and CJK text.
         func wrap(_ text: String, width: CGFloat, font: UIFont = .systemFont(ofSize: 9)) -> [String] {
             var result: [String] = []
             for paragraph in text.components(separatedBy: "\n") {
                 var line = ""
                 for character in paragraph {
-                    let candidate = line + String(character)
-                    if !line.isEmpty && (candidate as NSString).size(withAttributes: [.font: font]).width > width {
-                        result.append(line); line = String(character)
-                    } else { line = candidate }
+                    // Recheck the remainder: dropping a short prefix may still leave
+                    // an overwide word, which needs a second (glyph) split.
+                    while !line.isEmpty && ((line + String(character)) as NSString).size(withAttributes: [.font: font]).width > width {
+                        if let space = line.lastIndex(where: { $0 == " " || $0 == "\t" }), space != line.startIndex {
+                            result.append(String(line[..<space]))
+                            line = String(line[line.index(after: space)...])
+                        } else {
+                            result.append(line); line = ""
+                        }
+                    }
+                    line.append(character)
                 }
                 result.append(line)
             }
             return result
         }
-        var widths: [CGFloat] = [contentWidth - 30 - 84, 30, 84]
+        let quantityWidth = max(30, ceil((l("quote.quantity") as NSString).size(withAttributes: [.font: bodyFont]).width) + 8)
+        var widths: [CGFloat] = [contentWidth - quantityWidth - 84, quantityWidth, 84]
         var headers = [l("quote.item"), l("quote.quantity"), l("quote.amount")]
         if showMass { widths[0] -= 68; widths.insert(68, at: widths.count - 1); headers.insert(l("quote.mass"), at: headers.count - 1) }
         if showUnitPrice { widths[0] -= 85; widths.insert(85, at: widths.count - 1); headers.insert(l("workflow.sales_unit_price"), at: headers.count - 1) }
         do {
             try renderer.writePDF(to: url) { context in
                 @MainActor func tableHeader() {
+                    let wrappedHeaders = headers.indices.map { wrap(headers[$0], width: widths[$0] - 8) }
+                    let height = max(28, CGFloat(wrappedHeaders.map(\.count).max() ?? 1) * 12 + 4)
                     UIColor(white: 0.9, alpha: 1).setFill()
-                    context.cgContext.fill(CGRect(x: margin, y: y, width: contentWidth, height: 28))
+                    context.cgContext.fill(CGRect(x: margin, y: y, width: contentWidth, height: height))
                     var x = margin
                     for i in headers.indices {
-                        for (j, text) in wrap(headers[i], width: widths[i] - 8).enumerated() {
+                        for (j, text) in wrappedHeaders[i].enumerated() {
                             draw(text, x: x + 4, y: y + 2 + CGFloat(j) * 12, width: widths[i] - 8)
                         }
                         x += widths[i]
                     }
-                    y += 30
+                    y += height + 2
                 }
                 @MainActor func newPage(table: Bool = false) {
                     context.beginPage(); page += 1; y = margin

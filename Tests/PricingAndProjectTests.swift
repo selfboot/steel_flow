@@ -393,6 +393,59 @@ final class PricingAndProjectTests: XCTestCase {
         }
     }
 
+    func testPDFPreservesLongWordsAfterShortPrefixes() throws {
+        for paper in PaperSize.allCases {
+            for prefix in ["i ", "l ", ". ", "a "] {
+                for letter in ["O", "W", "M"] {
+                    let project = ProjectEntity(name: "Wrapping regression", quoteLanguage: "de", currencyCode: "EUR", paperSize: paper)
+                    project.items.append(makeItem(quantity: 1, unitPrice: 1, processing: 0))
+                    project.terms = prefix + String(repeating: letter, count: 160) + " END-MARKER"
+                    let url = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: false)
+                    defer { try? FileManager.default.removeItem(at: url) }
+                    let pdf = try XCTUnwrap(PDFDocument(url: url))
+                    let text = try XCTUnwrap(pdf.string)
+                    // Validate every character, not just the final marker: the old
+                    // word-wrap algorithm silently dropped an O after a short prefix.
+                    XCTAssertTrue(text.filter { !$0.isWhitespace }.contains(project.terms.filter { !$0.isWhitespace }),
+                                  "Lost content for \(paper.rawValue), prefix \(prefix), letter \(letter)")
+                }
+            }
+        }
+    }
+
+    func testEuropeanPDFOptionalColumnsKeepHeadersAndValuesSeparate() throws {
+        for language in ["de", "es", "fr"] {
+            for paper in PaperSize.allCases {
+                let project = ProjectEntity(name: "European quote", quoteLanguage: language, currencyCode: "EUR", paperSize: paper)
+                project.showQuoteMass = true
+                project.showQuoteUnitPrice = true
+                project.items.append(makeItem(quantity: 2, unitPrice: 2, processing: 10))
+                project.items[0].descriptionText = "PART-001"
+                let url = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: false)
+                defer { try? FileManager.default.removeItem(at: url) }
+                let pdf = try XCTUnwrap(PDFDocument(url: url))
+                let page = try XCTUnwrap(pdf.page(at: 0))
+                let title = try XCTUnwrap(pdf.findString("PART-001", withOptions: []).first)
+                let locale = Locale(identifier: language)
+                let attachment = XCTAttachment(image: page.thumbnail(of: CGSize(width: 1190, height: 1684), for: .mediaBox))
+                attachment.name = "europe-\(language)-all-columns-\(paper.rawValue)"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                for key in ["quote.item", "quote.quantity", "quote.mass", "quote.amount", "workflow.sales_unit_price"] {
+                    let label = AppLocalization.text(key, locale: locale)
+                    // PDFKit does not reliably match a whole phrase across drawn lines.
+                    // Verify the first and last word separately, including the lower header line.
+                    let words = label.split(separator: " ").map(String.init)
+                    for word in Set([try XCTUnwrap(words.first), try XCTUnwrap(words.last)]) {
+                        let header = try XCTUnwrap(pdf.findString(word, withOptions: []).first, "Missing header word: \(language) / \(word)")
+                        XCTAssertFalse(header.bounds(for: page).intersects(title.bounds(for: page)), "Header must not overlap first row: \(label)")
+                        XCTAssertTrue(page.bounds(for: .mediaBox).contains(header.bounds(for: page)))
+                    }
+                }
+            }
+        }
+    }
+
     func testQuoteSnapshotFreezesInputsResultsAndPrices() throws {
         let fixedDate = Date(timeIntervalSince1970: 1_700_000_000)
         let project = ProjectEntity(name: "Snapshot", currencyCode: "USD")
