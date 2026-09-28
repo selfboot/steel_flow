@@ -2,6 +2,12 @@ import SwiftUI
 import SwiftData
 
 struct CalculatorEditorView: View {
+    private struct ResetUndoState {
+        let draft: DraftState
+        let selectedPriceEntryID: UUID?
+        let priceSaved: Bool
+    }
+
     let profile: ProfileKind
     let destinationProject: ProjectEntity?
     let restoredState: DraftState?
@@ -36,7 +42,7 @@ struct CalculatorEditorView: View {
     @State private var expandGeometry = false
     @State private var expandDensity = false
     @State private var notice: String?
-    @State private var resetUndo: DraftState?
+    @State private var resetUndo: ResetUndoState?
     @State private var lastSavedItem: CalculationItemEntity?
     @State private var lastSavedProject: ProjectEntity?
     @State private var openedProject: ProjectEntity?
@@ -96,7 +102,13 @@ struct CalculatorEditorView: View {
             if let notice {
                 Section {
                     StatusNotice(text: notice, actionTitle: resetUndo == nil ? "common.done" : "workflow.undo") {
-                        if let state = resetUndo { draft = state.makeDraft(locale: locale); draftCurrency = state.currency; resetUndo = nil }
+                        if let state = resetUndo {
+                            draft = state.draft.makeDraft(locale: locale)
+                            draftCurrency = state.draft.currency
+                            selectedPriceEntryID = state.selectedPriceEntryID
+                            priceSaved = state.priceSaved
+                            resetUndo = nil
+                        }
                         self.notice = nil
                     }
                 }.id("feedback")
@@ -269,16 +281,19 @@ struct CalculatorEditorView: View {
                 if draft.priceSource == .history {
                     AdaptiveFormRow("calculator.price_history") {
                         Spacer(minLength: 0)
-                        Picker("calculator.price_history", selection: $selectedPriceEntryID) {
+                        // Restoring an undo snapshot must not reload and overwrite its edited price.
+                        Picker("calculator.price_history", selection: Binding(get: { selectedPriceEntryID }, set: { id in
+                            selectedPriceEntryID = id
+                            if let id, let entry = availablePriceEntries.first(where: { $0.id == id }) {
+                                draft.apply(priceEntry: entry, locale: locale)
+                            }
+                        })) {
                             Text("calculator.price_history.choose").tag(UUID?.none)
                             ForEach(availablePriceEntries) { entry in
                                 Text("\(entry.name) · \(AppFormatters.decimal(entry.unitPrice, currencyCode: entry.currencyCode, locale: locale))").tag(Optional(entry.id))
                             }
                         }
                         .labelsHidden()
-                    }
-                    .onChange(of: selectedPriceEntryID) { _, id in
-                        if let id, let entry = priceBook.first(where: { $0.id == id }) { draft.apply(priceEntry: entry, locale: locale) }
                     }
                     if availablePriceEntries.isEmpty {
                         Text("calculator.price_history.empty").font(.caption).foregroundStyle(.secondary)
@@ -485,8 +500,10 @@ struct CalculatorEditorView: View {
         notice = AppLocalization.text("ui.favorited", locale: locale)
     }
     private func resetDraft() {
-        resetUndo = storedState
+        resetUndo = ResetUndoState(draft: storedState, selectedPriceEntryID: selectedPriceEntryID, priceSaved: priceSaved)
         draft = CalculatorDraft(profile: profile, unitSystem: destinationProject?.unitSystem ?? UnitSystem(rawValue: unitSystemRaw) ?? .metric, locale: locale)
+        selectedPriceEntryID = nil
+        priceSaved = false
         draftCurrency = nil; lastSavedItem = nil
         notice = AppLocalization.text("ui.draft_reset", locale: locale)
     }

@@ -637,6 +637,56 @@ final class LocalizationUITests: XCTestCase {
         app.terminate()
     }
 
+    func testSavedPriceReselectionAndUndoAfterResetPreservePricing() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "--ui-decimal-values", "-AppleLanguages", "(en)", "-AppleLocale", "en_DE", "-app.language", "system", "-app.unitSystem", "metric", "-app.currency", "CNY"]
+        app.launch()
+        func reveal(_ element: XCUIElement, upwards: Bool = true) {
+            for _ in 0..<12 where !element.isHittable {
+                if upwards { app.swipeUp() } else { app.swipeDown() }
+            }
+            XCTAssertTrue(element.exists)
+            XCTAssertTrue(element.isHittable)
+        }
+        func chooseSavedPrice() {
+            let source = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Manual supplier price")).firstMatch
+            reveal(source); source.tap()
+            app.buttons["Saved price history"].tap()
+            let chooser = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Choose a saved price")).firstMatch
+            reveal(chooser); chooser.tap()
+            app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Precision price")).firstMatch.tap()
+        }
+        app.descendants(matching: .any)["profile.plate"].tap()
+        let pricing = app.buttons.matching(NSPredicate(format: "label == %@ OR label BEGINSWITH %@", "Pricing", "Pricing,")).firstMatch
+        reveal(pricing); pricing.tap()
+        let details = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Supplier & source")).firstMatch
+        reveal(details); details.tap()
+        chooseSavedPrice()
+        let price = app.textFields["calculator.price_input"]
+        reveal(price, upwards: false)
+        XCTAssertEqual(price.value as? String, "2,345")
+        app.buttons["calculator.menu"].tap(); app.buttons["Start a fresh calculation"].tap()
+        chooseSavedPrice()
+        reveal(price, upwards: false)
+        XCTAssertEqual(price.value as? String, "2,345", "The same saved price must apply after reset")
+
+        // Undo must restore a manually adjusted historical price, not reload its original value.
+        price.coordinate(withNormalizedOffset: CGVector(dx: 0.98, dy: 0.5)).tap()
+        price.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 8) + "4,567")
+        app.buttons["Done"].tap()
+        XCTAssertEqual(price.value as? String, "4,567")
+        app.buttons["calculator.menu"].tap(); app.buttons["Start a fresh calculation"].tap()
+        let undo = app.buttons["Undo last change"]
+        reveal(undo, upwards: false); undo.tap()
+        reveal(price)
+        XCTAssertEqual(price.value as? String, "4,567", "Undo must preserve the adjusted value")
+        let selection = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Precision price")).firstMatch
+        reveal(selection)
+        XCTAssertTrue(selection.exists, "Undo must restore the historical price selection")
+        app.terminate()
+    }
+
     func testResetKeepsValidDefaultCalculationInGermanRegion() {
         continueAfterFailure = false
         let app = XCUIApplication()
