@@ -20,6 +20,12 @@ import SwiftData
             project.markupPercentText = "7.5"
             context.insert(PriceBookEntryEntity(name: "Precision price", currencyCode: "CNY", priceBasis: .perKilogram, unitPrice: Decimal(string: "2.345")!))
         }
+        if ProcessInfo.processInfo.arguments.contains("--ui-item-decimal-values"), let item = project.items.first {
+            item.unitPriceText = "2.345"
+            item.processingFeeText = "1.25"
+            item.otherFeeText = "0.125"
+            context.insert(PriceBookEntryEntity(name: "Replacement price", currencyCode: "CNY", priceBasis: .perKilogram, unitPrice: Decimal(string: "4.567")!))
+        }
         context.insert(project)
         context.insert(CustomerEntity(name: "Saved Customer", email: "quotes@example.com", phone: "12345", address: "Workshop Road"))
         try context.save()

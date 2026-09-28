@@ -471,24 +471,25 @@ private struct ProjectItemDetailView: View {
                 })) {
                     ForEach(PriceBasis.allCases) { Text($0.localizationKey).tag($0) }
                 }
-                HStack { Text("calculator.unit_price"); Spacer(); LabeledEntry("0", text: $unitPriceText).keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44); Text(currencyCode).foregroundStyle(.secondary) }
+                HStack { Text("calculator.unit_price"); Spacer(); LabeledEntry("0", text: $unitPriceText).accessibilityIdentifier("item.unit_price").keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44); Text(currencyCode).foregroundStyle(.secondary) }
                 DisclosureGroup("ui.fees") {
-                HStack { Text("calculator.line_processing_fee"); Spacer(); LabeledEntry("0", text: $processingFeeText).keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44) }
-                HStack { Text("calculator.line_other_fee"); Spacer(); LabeledEntry("0", text: $otherFeeText).keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44) }
+                HStack { Text("calculator.line_processing_fee"); Spacer(); LabeledEntry("0", text: $processingFeeText).accessibilityIdentifier("item.processing_fee").keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44) }
+                HStack { Text("calculator.line_other_fee"); Spacer(); LabeledEntry("0", text: $otherFeeText).accessibilityIdentifier("item.other_fee").keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(minHeight: 44) }
                 }
                 DisclosureGroup("ui.price_source_details") {
                 Picker("calculator.price_source", selection: $priceSource) {
                     ForEach(PriceSource.allCases) { Text($0.localizationKey).tag($0) }
-                }
+                }.accessibilityIdentifier("item.price_source")
                 if priceSource == .history {
                     Picker("calculator.price_history", selection: $selectedPriceEntryID) {
                         Text("calculator.price_history.choose").tag(Optional<UUID>.none)
                         ForEach(availablePriceEntries) { entry in Text(entry.name).tag(Optional(entry.id)) }
                     }
+                    .accessibilityIdentifier("item.saved_price")
                     .onChange(of: selectedPriceEntryID) { _, id in
                         guard let id, let entry = priceBook.first(where: { $0.id == id }) else { return }
                         priceNeedsReview = false
-                        unitPriceText = entry.unitPrice.description
+                        unitPriceText = AppFormatters.decimalInput(entry.unitPrice, locale: locale)
                         priceBasis = entry.priceBasis
                         priceSourceName = entry.supplier.isEmpty ? entry.name : entry.supplier
                         priceRegion = entry.region
@@ -531,7 +532,7 @@ private struct ProjectItemDetailView: View {
         .localizedNavigationTitle("profile.\(item.profile.rawValue)")
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
-            ToolbarItem(placement: .confirmationAction) { Button("common.done") { save() }.disabled(!canSave || priceNeedsReview) }
+            ToolbarItem(placement: .confirmationAction) { Button("common.done") { save() }.disabled(!canSave || priceNeedsReview).accessibilityIdentifier("item.done") }
         }
         .safeAreaInset(edge: .bottom) {
             VStack(alignment: .leading) {
@@ -609,9 +610,9 @@ private struct ProjectItemDetailView: View {
         quantity = item.quantity
         wasteText = AppFormatters.number(item.wastePercent, maximumFractionDigits: 3, locale: locale)
         priceBasis = item.priceBasis
-        unitPriceText = item.unitPriceText
-        processingFeeText = item.processingFeeText
-        otherFeeText = item.otherFeeText
+        unitPriceText = AppFormatters.decimalInput(canonicalText: item.unitPriceText, locale: locale)
+        processingFeeText = AppFormatters.decimalInput(canonicalText: item.processingFeeText, locale: locale)
+        otherFeeText = AppFormatters.decimalInput(canonicalText: item.otherFeeText, locale: locale)
         priceSource = item.priceSource
         priceSourceName = item.priceSourceName
         priceRegion = item.priceRegion

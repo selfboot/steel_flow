@@ -615,6 +615,64 @@ final class LocalizationUITests: XCTestCase {
         app.terminate()
     }
 
+    func testGermanExistingItemPricesSurviveEditingAndHistorySelection() {
+        verifyExistingItemPrices("de", projects: "Projekte", fees: "Zusätzliche Kosten", details: "Lieferant und Preisquelle", history: "Gespeicherte Preise")
+    }
+
+    func testSpanishExistingItemPricesSurviveEditingAndHistorySelection() {
+        verifyExistingItemPrices("es", projects: "Proyectos", fees: "Gastos adicionales", details: "Proveedor y fuente del precio", history: "Historial de precios")
+    }
+
+    func testFrenchExistingItemPricesSurviveEditingAndHistorySelection() {
+        verifyExistingItemPrices("fr", projects: "Projets", fees: "Frais supplémentaires", details: "Fournisseur et source du prix", history: "Historique des prix")
+    }
+
+    private func verifyExistingItemPrices(_ language: String, projects: String, fees: String, details: String, history: String) {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "--ui-item-decimal-values", "-AppleLanguages", "(\(language))", "-AppleLocale", language, "-app.language", language, "-app.unitSystem", "metric"]
+        app.launch()
+        defer { app.terminate() }
+        func reveal(_ element: XCUIElement, upwards: Bool = true) {
+            for _ in 0..<12 where !element.isHittable {
+                if upwards { app.swipeUp() } else { app.swipeDown() }
+            }
+            XCTAssertTrue(element.isHittable, element.debugDescription)
+        }
+        app.tabBars.buttons[projects].tap()
+        app.staticTexts["Workflow Quote"].firstMatch.tap()
+        for round in 0..<3 {
+            let item = app.staticTexts["Steel tube"].firstMatch
+            reveal(item); item.tap()
+            let price = app.textFields["item.unit_price"]
+            reveal(price)
+            XCTAssertEqual(price.value as? String, round < 2 ? "2,345" : "4,567")
+            let feesDisclosure = app.buttons.matching(NSPredicate(format: "label == %@ OR label BEGINSWITH %@", fees, fees + ",")).firstMatch
+            reveal(feesDisclosure); feesDisclosure.tap()
+            let processing = app.textFields["item.processing_fee"]
+            let other = app.textFields["item.other_fee"]
+            reveal(processing); XCTAssertEqual(processing.value as? String, "1,25")
+            reveal(other); XCTAssertEqual(other.value as? String, "0,125")
+            if round == 1 {
+                let sourceDisclosure = app.buttons.matching(NSPredicate(format: "label == %@ OR label BEGINSWITH %@", details, details + ",")).firstMatch
+                reveal(sourceDisclosure); sourceDisclosure.tap()
+                let source = app.buttons["item.price_source"]
+                reveal(source); source.tap()
+                app.buttons[history].tap()
+                let savedPrice = app.buttons["item.saved_price"]
+                reveal(savedPrice); savedPrice.tap()
+                app.buttons["Replacement price"].tap()
+                reveal(price, upwards: false)
+                XCTAssertEqual(price.value as? String, "4,567", "Selecting a stored price must format its decimal separator before parsing")
+            }
+            let done = app.buttons["item.done"]
+            XCTAssertTrue(done.isEnabled, "Opening an existing item must not invalidate its fees")
+            capture("existing-item-\(language)-round-\(round)")
+            done.tap()
+            XCTAssertTrue(app.buttons["project.menu"].waitForExistence(timeout: 3))
+        }
+    }
+
     func testGermanEditingAndPaywall() {
         verifyEuropeanEditing("de", settings: "Einstellungen", projects: "Projekte", materials: "Materialien", projectSettings: "Projekteinstellungen", done: "Fertig", save: "Speichern", history: "Gespeicherte Preise", restore: "Kauf wiederherstellen")
     }
