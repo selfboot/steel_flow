@@ -11,6 +11,7 @@
 		018B6C7AB148AAA5EA78FEE3 /* ProjectDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5C97B234CCD137A2C117E8 /* ProjectDetailView.swift */; };
 		032E45C382AB668D2118CCA8 /* ProPaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513D90C6EEE9048760CB487B /* ProPaywallView.swift */; };
 		03A9FBA531619D2C7F3854AF /* SteelFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04795DF5B57D9A2BB05DE0A2 /* SteelFlowUITests.swift */; };
+		06DA195C2ED31C5850964A41 /* QuoteStylePalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CC8E5D22C931100A83B177 /* QuoteStylePalette.swift */; };
 		0A7F78E6E62283FD18117E4A /* MarketingCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24411F83D53BCB9DE1D5464E /* MarketingCapture.swift */; };
 		0E4FBF99CFA02AA4C3652346 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BEB33FEBDD0F8C3B26D218F /* RootTabView.swift */; };
 		10B98302AEF964BAE5107ADC /* InteractionRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD1FA9302106C07253ED98B /* InteractionRules.swift */; };
@@ -23,9 +24,11 @@
 		2BDE713BE1E24FA3A0713166 /* WorkflowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE7A3F36617BDD1E8CF7EC2 /* WorkflowUITests.swift */; };
 		2C7627FF1A6DF1378A5373C4 /* LocalizedNavigationTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E25F54A3B1FCAB304157E1 /* LocalizedNavigationTitle.swift */; };
 		33EE96C317A2867059BC58B9 /* ProfileSectionPreviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8172D5DC871EB67365F28CD /* ProfileSectionPreviewTests.swift */; };
+		34E9FECD502A7C3763482A78 /* QuoteStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A02EF7FCFD881BD6F59FF9C /* QuoteStyle.swift */; };
 		3D92AF34814EAB13F32D6716 /* KeyboardDismissSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE9E6DA308241E2A6327023 /* KeyboardDismissSupport.swift */; };
 		411435CBCF920CE83075968E /* AppFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13156998FD8E14A2CC365737 /* AppFormatters.swift */; };
 		415840C9C518A30E31A43B85 /* QuoteExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9CFAE1CC59169A250AC3D /* QuoteExportService.swift */; };
+		450ECDE70230A06FB5CFA38E /* QuoteStylePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19EA03B192BB26624117C1E2 /* QuoteStylePicker.swift */; };
 		4658DD38F6D1BD3F83836FC9 /* AppReviewPromptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF59E49F8767F82CDC231E77 /* AppReviewPromptTests.swift */; };
 		4EFBA5E9160EDD2CA7B5FAEA /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3568DCA5A6B45431715922BC /* Profile.swift */; };
 		507E2C9612FE12225B3CEF39 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D181345835385A6C2B069DA3 /* Entities.swift */; };
@@ -56,6 +59,7 @@
 		B330E5E46553AD093B2909AF /* MaterialCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26358E6FFCE305FCC30BDA0 /* MaterialCatalog.swift */; };
 		B39729F62CDC02B60CDBF9EB /* MaterialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6058F1C2214E333E8CDBA4A3 /* MaterialsView.swift */; };
 		B702BD014FCC78F48AF0C9EF /* ReferenceCorpusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */; };
+		C36255A2785688AB4E1B0302 /* QuoteStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C960733BFEE7AB33588E1 /* QuoteStyleTests.swift */; };
 		C5B2997476EF79EF0C81F761 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 548F05EFB267BDEC79826041 /* Localizable.strings */; };
 		CE8B976BF7EDBC7E8A641628 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1BBD2FD3693DDA53D3191B /* AppLanguage.swift */; };
 		D044AAF85BCB2477E906B8A7 /* QuotePDFRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB57E9BFC9BDB854A6929E05 /* QuotePDFRenderer.swift */; };
@@ -100,6 +104,7 @@
 		13853DB5AE8124C7BA2CB030 /* SteelFlowUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SteelFlowUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B9CFAE1CC59169A250AC3D /* QuoteExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteExportService.swift; sourceTree = "<group>"; };
 		17E0004AD401C5A55190ADD3 /* SteelFlow.storekit */ = {isa = PBXFileReference; path = SteelFlow.storekit; sourceTree = "<group>"; };
+		19EA03B192BB26624117C1E2 /* QuoteStylePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteStylePicker.swift; sourceTree = "<group>"; };
 		209C83C7AC34E01CE0AE6819 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		20BB69405A7135F60666E0B8 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		20D6D1B0C08DBFE52F6AD27D /* ReferenceCases.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ReferenceCases.json; sourceTree = "<group>"; };
@@ -109,17 +114,20 @@
 		33030624F9F51469EB697928 /* QuoteCSVRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteCSVRenderer.swift; sourceTree = "<group>"; };
 		34C0AA8D7D81323AF28CC16D /* CalculationLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationLibrary.swift; sourceTree = "<group>"; };
 		3568DCA5A6B45431715922BC /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		3B6C960733BFEE7AB33588E1 /* QuoteStyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteStyleTests.swift; sourceTree = "<group>"; };
 		3C649A49EC7D9C81AEA70527 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		454169B69FC88B25D3CE9094 /* ReliabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReliabilityTests.swift; sourceTree = "<group>"; };
 		45DDCD470FC6D5B4C49D8003 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		48EF519CF3E843C209C44ED5 /* SteelFlowTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SteelFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4980875AD36F4A6365C48BD2 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4A02EF7FCFD881BD6F59FF9C /* QuoteStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteStyle.swift; sourceTree = "<group>"; };
 		4BEB33FEBDD0F8C3B26D218F /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		4C372A8D61345C59F520B92E /* CalculationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationEngine.swift; sourceTree = "<group>"; };
 		4FD1FA9302106C07253ED98B /* InteractionRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionRules.swift; sourceTree = "<group>"; };
 		504649A5D7DDE1728807CF73 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		511A1BFAFEF799E36FC76B32 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		513D90C6EEE9048760CB487B /* ProPaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPaywallView.swift; sourceTree = "<group>"; };
+		58CC8E5D22C931100A83B177 /* QuoteStylePalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteStylePalette.swift; sourceTree = "<group>"; };
 		5B21E1846F47FF49884F3515 /* AppReviewPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewPrompt.swift; sourceTree = "<group>"; };
 		6058F1C2214E333E8CDBA4A3 /* MaterialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsView.swift; sourceTree = "<group>"; };
 		66115356606D5FD6B8DEAF9B /* BackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupTests.swift; sourceTree = "<group>"; };
@@ -280,6 +288,8 @@
 				C8DB845A48B414B5DD909459 /* QuoteHistoryView.swift */,
 				EB57E9BFC9BDB854A6929E05 /* QuotePDFRenderer.swift */,
 				BDB72DAC0E640709F9F71F69 /* QuotePreviewView.swift */,
+				58CC8E5D22C931100A83B177 /* QuoteStylePalette.swift */,
+				19EA03B192BB26624117C1E2 /* QuoteStylePicker.swift */,
 			);
 			path = Export;
 			sourceTree = "<group>";
@@ -294,6 +304,7 @@
 				FA345B7BEA8F82C77DBEF253 /* Money.swift */,
 				3568DCA5A6B45431715922BC /* Profile.swift */,
 				CCB217571E84FE8AB483688F /* ProjectSummary.swift */,
+				4A02EF7FCFD881BD6F59FF9C /* QuoteStyle.swift */,
 				B951C002DDA177685932D4A7 /* Units.swift */,
 				A81AC82041FE1C5F6CEC20D9 /* WorkflowSupport.swift */,
 			);
@@ -397,6 +408,7 @@
 				76992118BBD184811B6D777B /* LocalizationTests.swift */,
 				E2FB7EA5EF528FE8C9115653 /* PricingAndProjectTests.swift */,
 				E8172D5DC871EB67365F28CD /* ProfileSectionPreviewTests.swift */,
+				3B6C960733BFEE7AB33588E1 /* QuoteStyleTests.swift */,
 				97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */,
 				454169B69FC88B25D3CE9094 /* ReliabilityTests.swift */,
 				9721D955138B314153CB547F /* WorkflowTests.swift */,
@@ -618,6 +630,9 @@
 				1A4482227EEDDE8186E24E16 /* QuoteHistoryView.swift in Sources */,
 				D044AAF85BCB2477E906B8A7 /* QuotePDFRenderer.swift in Sources */,
 				A743C0CEE17D5C58EA4C6BD6 /* QuotePreviewView.swift in Sources */,
+				34E9FECD502A7C3763482A78 /* QuoteStyle.swift in Sources */,
+				06DA195C2ED31C5850964A41 /* QuoteStylePalette.swift in Sources */,
+				450ECDE70230A06FB5CFA38E /* QuoteStylePicker.swift in Sources */,
 				0E4FBF99CFA02AA4C3652346 /* RootTabView.swift in Sources */,
 				9B2E0BAC82A75072ECA16AD9 /* SeedData.swift in Sources */,
 				D0F99E68002E6508DB5B77A6 /* SettingsView.swift in Sources */,
@@ -641,6 +656,7 @@
 				97102A47AC4F2AB0C4B4178E /* LocalizationTests.swift in Sources */,
 				FCF87E8AFB6766FA3862CA59 /* PricingAndProjectTests.swift in Sources */,
 				33EE96C317A2867059BC58B9 /* ProfileSectionPreviewTests.swift in Sources */,
+				C36255A2785688AB4E1B0302 /* QuoteStyleTests.swift in Sources */,
 				B702BD014FCC78F48AF0C9EF /* ReferenceCorpusTests.swift in Sources */,
 				DC09FA0F0A80DC62388DB4C4 /* ReliabilityTests.swift in Sources */,
 				A38BAEE774ECCF010477AD93 /* WorkflowTests.swift in Sources */,

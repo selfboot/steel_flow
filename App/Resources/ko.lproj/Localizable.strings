@@ -591,3 +591,21 @@
 "purchase.paywall.loading" = "가격 불러오는 중…";
 "purchase.paywall.price_unavailable" = "가격을 불러올 수 없습니다";
 "purchase.paywall.unavailable" = "구매 정보를 불러오지 못했습니다. 다시 시도해 주세요.";
+
+"quote.style.title" = "견적서 스타일";
+"quote.style.help" = "이번 견적서에만 적용할 스타일을 선택하세요. 미리보기를 다시 열면 설정의 기본 스타일이 적용됩니다. 저장된 버전은 변경되지 않습니다.";
+"quote.style.classic" = "클래식";
+"quote.style.classic.detail" = "익숙하고 간결한 표 형식.";
+"quote.style.blue" = "클리어 블루";
+"quote.style.blue.detail" = "여유로운 여백과 선명한 파란색 표 머리글.";
+"quote.style.forest" = "포레스트";
+"quote.style.forest.detail" = "절제된 짙은 녹색 포인트와 선명한 총액.";
+"quote.style.minimal" = "미니멀";
+"quote.style.minimal.detail" = "흑백 인쇄에 적합한 깔끔한 서식.";
+"quote.issued_on" = "발행일";
+"quote.style.executive" = "격식 있는 비즈니스";
+"quote.style.executive.detail" = "중앙 정렬 머리말과 가는 선으로 격식 있는 견적을 작성합니다.";
+"quote.style.modern" = "모던 포커스";
+"quote.style.modern.detail" = "큰 제목과 넓은 총액 영역으로 핵심을 강조합니다.";
+"quote.style.ledger" = "비즈니스 장부";
+"quote.style.ledger.detail" = "촘촘한 행과 명확한 열 구분선으로 많은 항목을 정리합니다.";

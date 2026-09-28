@@ -21,6 +21,7 @@ struct QuoteHistoryView: View {
                                 Text("v\(versions.count - index) · " + AppFormatters.date(payload.generatedAt, locale: locale)).font(.headline)
                                 Text(AppFormatters.decimal(payload.totals.total, currencyCode: payload.currencyCode, locale: locale))
                                 Text(payload.customerName).font(.caption).foregroundStyle(.secondary)
+                                Text(LocalizedStringKey(payload.quoteStyle.titleKey)).font(.caption).foregroundStyle(.secondary)
                             }
                         }
                     } else { Label("backup.error.corrupt", systemImage: "exclamationmark.triangle") }
@@ -50,6 +51,7 @@ struct FrozenQuoteView: View {
                 Label("ui.saved_version", systemImage: "checkmark.seal")
                 Text("v\(versionNumber) · " + AppFormatters.date(snapshot.generatedAt, locale: locale)).font(.headline)
                 LabeledContent("project.number", value: snapshot.projectNumber)
+                LabeledContent("quote.style.title") { Text(LocalizedStringKey(snapshot.quoteStyle.titleKey)) }
                 LabeledContent("quote.valid_until", value: AppFormatters.date(snapshot.validUntil, locale: locale))
                 LabeledContent("project.total", value: AppFormatters.decimal(snapshot.totals.total, currencyCode: snapshot.currencyCode, locale: locale))
                 Text("workflow.frozen_help").font(.caption).foregroundStyle(.secondary)
@@ -111,6 +113,7 @@ struct FrozenQuoteView: View {
         let project = ProjectEntity(name: snapshot.projectName, customerName: snapshot.customerName,
             quoteLanguage: snapshot.quoteLanguage, unitSystem: UnitSystem(rawValue: snapshot.unitSystemRaw ?? "") ?? .metric,
             currencyCode: snapshot.currencyCode, paperSize: PaperSize(rawValue: snapshot.paperSize) ?? .a4)
+        project.quoteStyle = snapshot.quoteStyle
         project.customerContact = snapshot.customerContact ?? ""; project.terms = snapshot.terms
         project.taxPercentText = snapshot.taxPercent.description; project.markupPercentText = snapshot.profitPercent.description
         project.profitMode = ProfitMode(rawValue: snapshot.profitMode) ?? .markup

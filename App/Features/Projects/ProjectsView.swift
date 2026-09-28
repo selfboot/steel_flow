@@ -156,6 +156,7 @@ struct ProjectsView: View {
             currencyCode: source.currencyCode,
             paperSize: source.paperSize
         )
+        copy.quoteStyle = source.quoteStyle
         copy.taxPercentText = source.taxPercentText
         copy.markupPercentText = source.markupPercentText
         copy.profitModeRaw = source.profitModeRaw

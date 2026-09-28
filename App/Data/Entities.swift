@@ -34,6 +34,7 @@ final class ProjectEntity {
     var unitSystemRaw: String
     var currencyCode: String
     var paperSizeRaw: String
+    var quoteStyleRaw: String = "classic"
     var taxPercentText: String
     var markupPercentText: String
     var profitModeRaw: String = ProfitMode.markup.rawValue
@@ -88,6 +89,11 @@ final class ProjectEntity {
     var paperSize: PaperSize {
         get { PaperSize(rawValue: paperSizeRaw) ?? .a4 }
         set { paperSizeRaw = newValue.rawValue }
+    }
+
+    var quoteStyle: QuoteStyle {
+        get { QuoteStyle(rawValue: quoteStyleRaw) ?? .classic }
+        set { quoteStyleRaw = newValue.rawValue }
     }
 
     var profitMode: ProfitMode {

@@ -59,6 +59,7 @@ struct PreferencesBackup: Codable, Sendable, Equatable {
     let unitSystemRaw: String
     let currencyCode: String
     let paperSizeRaw: String
+    var quoteStyleRaw: String? = nil
 }
 
 struct BackupPreview: Equatable {
@@ -107,6 +108,7 @@ struct MaterialBackup: Codable, Sendable {
 struct ProjectBackup: Codable, Sendable {
     var isPinned: Bool? = nil
     var isTemplate: Bool? = nil
+    var quoteStyleRaw: String? = nil
     var showQuoteMass: Bool? = nil
     var showQuoteUnitPrice: Bool? = nil
     var customerContact: String? = nil
@@ -284,6 +286,10 @@ enum BackupService {
             project.terms = source.terms
             project.isPinned = source.isPinned ?? false; project.isTemplate = source.isTemplate ?? false
             project.showQuoteMass = source.showQuoteMass ?? true; project.showQuoteUnitPrice = source.showQuoteUnitPrice ?? false
+            if let raw = source.quoteStyleRaw {
+                guard let style = QuoteStyle(rawValue: raw) else { throw BackupError.corrupt }
+                project.quoteStyle = style
+            }
             project.customerContact = source.customerContact ?? ""
             project.notes = source.notes
             project.isArchived = source.isArchived
@@ -361,7 +367,8 @@ enum BackupService {
             guard (preferences.languageCode == "system" || AppLanguage(rawValue: preferences.languageCode) != nil),
                   UnitSystem(rawValue: preferences.unitSystemRaw) != nil,
                   CurrencyRules.normalizedCode(preferences.currencyCode) != nil,
-                  PaperSize(rawValue: preferences.paperSizeRaw) != nil else { throw BackupError.corrupt }
+                  PaperSize(rawValue: preferences.paperSizeRaw) != nil,
+                  preferences.quoteStyleRaw.map({ QuoteStyle(rawValue: $0) != nil }) ?? true else { throw BackupError.corrupt }
         }
 
         var importedLibraryData: Data?
@@ -515,7 +522,7 @@ enum BackupService {
 
     private static func projectBackup(_ project: ProjectEntity) -> ProjectBackup {
         .init(
-            isPinned: project.isPinned, isTemplate: project.isTemplate, showQuoteMass: project.showQuoteMass, showQuoteUnitPrice: project.showQuoteUnitPrice, customerContact: project.customerContact,
+            isPinned: project.isPinned, isTemplate: project.isTemplate, quoteStyleRaw: project.quoteStyle.rawValue, showQuoteMass: project.showQuoteMass, showQuoteUnitPrice: project.showQuoteUnitPrice, customerContact: project.customerContact,
             id: project.id, name: project.name, projectNumber: project.projectNumber, customerName: project.customerName,
             quoteLanguage: project.quoteLanguage, unitSystemRaw: project.unitSystemRaw, currencyCode: project.currencyCode,
             paperSizeRaw: project.paperSizeRaw, taxPercentText: project.taxPercentText, markupPercentText: project.markupPercentText, profitModeRaw: project.profitModeRaw,

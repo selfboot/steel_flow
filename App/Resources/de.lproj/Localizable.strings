@@ -591,3 +591,21 @@
 "purchase.paywall.loading" = "Preis wird geladen…";
 "purchase.paywall.price_unavailable" = "Preis nicht verfügbar";
 "purchase.paywall.unavailable" = "Kaufinformationen konnten nicht geladen werden. Bitte erneut versuchen.";
+
+"quote.style.title" = "Angebotsstil";
+"quote.style.help" = "Wählen Sie einen Stil nur für dieses Angebot. Beim erneuten Öffnen der Vorschau gilt der Standardstil aus den Einstellungen. Gespeicherte Versionen behalten ihren Stil.";
+"quote.style.classic" = "Klassisch";
+"quote.style.classic.detail" = "Einfache, vertraute Tabellen.";
+"quote.style.blue" = "Klares Blau";
+"quote.style.blue.detail" = "Viel Weißraum und ein blauer Tabellenkopf.";
+"quote.style.forest" = "Waldgrün";
+"quote.style.forest.detail" = "Feine grüne Akzente und eine klar hervorgehobene Summe.";
+"quote.style.minimal" = "Minimal";
+"quote.style.minimal.detail" = "Klare Typografie für Schwarzweißdruck.";
+"quote.issued_on" = "Angebotsdatum";
+"quote.style.executive" = "Formell";
+"quote.style.executive.detail" = "Zentrierter Briefkopf und feine Linien für formelle Angebote.";
+"quote.style.modern" = "Moderner Fokus";
+"quote.style.modern.detail" = "Markanter Titel und eine hervorgehobene Gesamtsumme über die volle Breite.";
+"quote.style.ledger" = "Tabellarisch";
+"quote.style.ledger.detail" = "Kompakte Zeilen und klare Spaltenlinien für umfangreiche Angebote.";

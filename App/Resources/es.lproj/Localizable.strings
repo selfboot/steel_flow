@@ -591,3 +591,21 @@
 "purchase.paywall.loading" = "Cargando precio…";
 "purchase.paywall.price_unavailable" = "Precio no disponible";
 "purchase.paywall.unavailable" = "No se pudieron cargar los datos de compra. Reinténtelo.";
+
+"quote.style.title" = "Estilo del presupuesto";
+"quote.style.help" = "Elige un estilo solo para este presupuesto. Al volver a abrir la vista previa se usa el estilo predeterminado de Ajustes. Las versiones guardadas conservan su estilo.";
+"quote.style.classic" = "Clásico";
+"quote.style.classic.detail" = "Tablas sencillas y familiares.";
+"quote.style.blue" = "Azul claro";
+"quote.style.blue.detail" = "Diseño espacioso con cabecera azul.";
+"quote.style.forest" = "Verde bosque";
+"quote.style.forest.detail" = "Sutiles acentos verdes y un total claro y destacado.";
+"quote.style.minimal" = "Minimalista";
+"quote.style.minimal.detail" = "Tipografía limpia para impresión en blanco y negro.";
+"quote.issued_on" = "Fecha de emisión";
+"quote.style.executive" = "Formal";
+"quote.style.executive.detail" = "Encabezado centrado y líneas finas para presupuestos formales.";
+"quote.style.modern" = "Enfoque moderno";
+"quote.style.modern.detail" = "Título destacado y total a todo el ancho para resaltar lo esencial.";
+"quote.style.ledger" = "Tabular";
+"quote.style.ledger.detail" = "Filas compactas y columnas bien delimitadas para muchos conceptos.";

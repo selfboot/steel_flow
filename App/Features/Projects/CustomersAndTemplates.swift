@@ -5,6 +5,7 @@ import SwiftData
     static func copy(_ source: ProjectEntity, name: String, clearPrices: Bool = false) -> ProjectEntity {
         let copy = ProjectEntity(name: name, customerName: source.customerName, quoteLanguage: source.quoteLanguage,
             unitSystem: source.unitSystem, currencyCode: source.currencyCode, paperSize: source.paperSize)
+        copy.quoteStyle = source.quoteStyle
         copy.taxPercentText = source.taxPercentText; copy.markupPercentText = source.markupPercentText
         copy.profitMode = source.profitMode; copy.validDays = source.validDays; copy.terms = source.terms; copy.notes = source.notes
         copy.customerContact = source.customerContact; copy.showQuoteMass = source.showQuoteMass; copy.showQuoteUnitPrice = source.showQuoteUnitPrice

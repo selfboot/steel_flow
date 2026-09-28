@@ -591,3 +591,21 @@
 "purchase.paywall.loading" = "Chargement du prix…";
 "purchase.paywall.price_unavailable" = "Prix indisponible";
 "purchase.paywall.unavailable" = "Impossible de charger les informations d’achat. Veuillez réessayer.";
+
+"quote.style.title" = "Style du devis";
+"quote.style.help" = "Choisissez un style pour ce devis uniquement. À la réouverture de l’aperçu, le style par défaut des Réglages est utilisé. Les versions enregistrées conservent leur style.";
+"quote.style.classic" = "Classique";
+"quote.style.classic.detail" = "Des tableaux simples et familiers.";
+"quote.style.blue" = "Bleu épuré";
+"quote.style.blue.detail" = "Une mise en page aérée et un en-tête bleu.";
+"quote.style.forest" = "Vert forêt";
+"quote.style.forest.detail" = "De fins accents verts et un total clairement mis en valeur.";
+"quote.style.minimal" = "Minimaliste";
+"quote.style.minimal.detail" = "Une typographie sobre pour l’impression en noir et blanc.";
+"quote.issued_on" = "Date d’émission";
+"quote.style.executive" = "Formel";
+"quote.style.executive.detail" = "En-tête centré et lignes fines pour les devis formels.";
+"quote.style.modern" = "Moderne";
+"quote.style.modern.detail" = "Un titre affirmé et un total sur toute la largeur pour souligner l’essentiel.";
+"quote.style.ledger" = "Tableau";
+"quote.style.ledger.detail" = "Des lignes compactes et des colonnes bien délimitées pour les devis détaillés.";

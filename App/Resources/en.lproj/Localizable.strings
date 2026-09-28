@@ -591,3 +591,21 @@
 "purchase.paywall.loading" = "Loading price…";
 "purchase.paywall.price_unavailable" = "Price unavailable";
 "purchase.paywall.unavailable" = "Unable to load purchase details. Please try again.";
+
+"quote.style.title" = "Quote style";
+"quote.style.help" = "Choose a style for this quote only. Reopening the preview uses the default style from Settings. Saved versions keep their own style.";
+"quote.style.classic" = "Classic";
+"quote.style.classic.detail" = "Simple, familiar tables.";
+"quote.style.blue" = "Clear Blue";
+"quote.style.blue.detail" = "Airy spacing and a crisp blue header.";
+"quote.style.forest" = "Forest";
+"quote.style.forest.detail" = "Fine green accents and a clear, bold total.";
+"quote.style.minimal" = "Minimal";
+"quote.style.minimal.detail" = "Clean typography for monochrome printing.";
+"quote.issued_on" = "Issued on";
+"quote.style.executive" = "Executive";
+"quote.style.executive.detail" = "Centered letterhead and fine rules for formal quotations.";
+"quote.style.modern" = "Modern Focus";
+"quote.style.modern.detail" = "A bold title and prominent full-width total.";
+"quote.style.ledger" = "Business Ledger";
+"quote.style.ledger.detail" = "Compact rows and clear column rules for detailed quotes.";

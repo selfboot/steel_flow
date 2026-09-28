@@ -13,6 +13,29 @@ final class BackupTests: XCTestCase {
         return try ModelContainer(for: schema, configurations: [.init(schema: schema, isStoredInMemoryOnly: true)])
     }
 
+    func testQuoteDefaultsPreferencesRoundTripAndLegacyFallback() throws {
+        for style in QuoteStyle.allCases {
+            let preferences = PreferencesBackup(languageCode: "en", unitSystemRaw: "metric", currencyCode: "USD", paperSizeRaw: "letter", quoteStyleRaw: style.rawValue)
+            let document = try BackupService.makeDocument(projects: [], materials: [], company: nil, preferences: preferences)
+            let destination = try container()
+            let imported = try BackupService.importCopy(data: document.data, into: destination.mainContext)
+            XCTAssertEqual(imported.preferences, preferences)
+        }
+        let legacy = Data(#"{"languageCode":"en","unitSystemRaw":"metric","currencyCode":"USD","paperSizeRaw":"a4"}"#.utf8)
+        let preferences = try JSONDecoder().decode(PreferencesBackup.self, from: legacy)
+        XCTAssertNil(preferences.quoteStyleRaw)
+        let document = try BackupService.makeDocument(projects: [], materials: [], company: nil, preferences: preferences)
+        let destination = try container()
+        XCTAssertEqual(try BackupService.importCopy(data: document.data, into: destination.mainContext).preferences?.paperSizeRaw, "a4")
+    }
+
+    func testBackupRejectsUnknownDefaultQuoteStyle() throws {
+        let preferences = PreferencesBackup(languageCode: "en", unitSystemRaw: "metric", currencyCode: "USD", paperSizeRaw: "a4", quoteStyleRaw: "unknown")
+        let document = try BackupService.makeDocument(projects: [], materials: [], company: nil, preferences: preferences)
+        let destination = try container()
+        XCTAssertThrowsError(try BackupService.importCopy(data: document.data, into: destination.mainContext))
+    }
+
     func testBackupRoundTripImportsCopiesWithoutOverwrite() throws {
         let sourceContainer = try container()
         let source = sourceContainer.mainContext

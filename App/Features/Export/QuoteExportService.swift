@@ -89,6 +89,8 @@ struct QuoteSnapshotPayload: Codable, Sendable {
         let total: Decimal
     }
 
+    var quoteStyleRaw: String? = nil
+    var quoteStyle: QuoteStyle { QuoteStyle(rawValue: quoteStyleRaw ?? "") ?? .classic }
     var unitSystemRaw: String? = nil
     var showMass: Bool? = nil
     var showUnitPrice: Bool? = nil
@@ -127,7 +129,8 @@ enum QuoteExportService {
         for project: ProjectEntity,
         company: CompanyProfileEntity? = nil,
         generatedAt: Date = .now,
-        includeBranding: Bool = true
+        includeBranding: Bool = true,
+        quoteStyle: QuoteStyle? = nil
     ) throws -> Data {
         let summary = ProjectCalculator.summarize(project)
         guard !summary.lines.isEmpty else { throw QuoteExportError.noValidItems }
@@ -196,6 +199,7 @@ enum QuoteExportService {
                 total: summary.pricing.total
             )
         )
+        payload.quoteStyleRaw = (quoteStyle ?? project.quoteStyle).rawValue
         payload.unitSystemRaw = project.unitSystemRaw
         payload.showMass = project.showQuoteMass
         payload.showUnitPrice = project.showQuoteUnitPrice

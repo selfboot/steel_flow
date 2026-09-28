@@ -591,3 +591,21 @@
 "purchase.paywall.loading" = "価格を読み込み中…";
 "purchase.paywall.price_unavailable" = "価格を取得できません";
 "purchase.paywall.unavailable" = "購入情報を読み込めませんでした。もう一度お試しください。";
+
+"quote.style.title" = "見積書のスタイル";
+"quote.style.help" = "今回の見積書にのみ適用するスタイルを選択します。プレビューを開き直すと、設定の既定スタイルが適用されます。保存済みの版は変更されません。";
+"quote.style.classic" = "クラシック";
+"quote.style.classic.detail" = "シンプルで見慣れた表形式。";
+"quote.style.blue" = "クリアブルー";
+"quote.style.blue.detail" = "ゆとりある余白と青い表見出し。";
+"quote.style.forest" = "フォレスト";
+"quote.style.forest.detail" = "繊細な深緑のアクセントと明瞭な合計金額。";
+"quote.style.minimal" = "ミニマル";
+"quote.style.minimal.detail" = "モノクロ印刷に適したすっきりした書式。";
+"quote.issued_on" = "発行日";
+"quote.style.executive" = "フォーマル";
+"quote.style.executive.detail" = "中央揃えのレターヘッドと細い罫線で正式な見積書に。";
+"quote.style.modern" = "モダン";
+"quote.style.modern.detail" = "大きなタイトルと幅広い合計欄で要点を強調。";
+"quote.style.ledger" = "帳票";
+"quote.style.ledger.detail" = "コンパクトな行と明確な列罫線で多くの明細を整理。";

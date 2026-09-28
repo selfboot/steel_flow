@@ -591,3 +591,21 @@
 "purchase.paywall.loading" = "正在取得價格…";
 "purchase.paywall.price_unavailable" = "價格暫不可用";
 "purchase.paywall.unavailable" = "暫時無法取得購買資訊，請重試。";
+
+"quote.style.title" = "報價風格";
+"quote.style.help" = "選擇僅用於本次報價的樣式。重新開啟預覽時使用設定中的預設樣式，已儲存版本保持原樣。";
+"quote.style.classic" = "經典";
+"quote.style.classic.detail" = "簡潔熟悉的表格版面。";
+"quote.style.blue" = "清爽藍";
+"quote.style.blue.detail" = "舒展留白，清晰藍色表頭。";
+"quote.style.forest" = "商務墨綠";
+"quote.style.forest.detail" = "細緻墨綠點綴，清晰醒目的總價。";
+"quote.style.minimal" = "極簡黑白";
+"quote.style.minimal.detail" = "簡潔字體，適合黑白列印。";
+"quote.issued_on" = "報價日期";
+"quote.style.executive" = "正式商務";
+"quote.style.executive.detail" = "置中抬頭與雙細線，適合正式對外報價。";
+"quote.style.modern" = "現代重點";
+"quote.style.modern.detail" = "醒目大標題與通欄總價，突顯報價重點。";
+"quote.style.ledger" = "清晰帳式";
+"quote.style.ledger.detail" = "緊湊行距與清晰欄線，適合較多明細。";

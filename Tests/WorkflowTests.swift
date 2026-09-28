@@ -211,11 +211,11 @@ import PDFKit
         }
         XCTAssertEqual(ProjectCalculator.summarize(restored).pricing.total, frozen.totals.total)
     }
-    func testPDFDoesNotLoseLongTermsDescriptionsOrStockLength() throws {
+    func testPDFOmitsLongTermsAndPreservesDescriptionsAndStockLength() throws {
         for language in AppLanguage.allCases.map(\.rawValue) {
             let p = project(); p.quoteLanguage = language; p.paperSize = .letter
             p.terms = String(repeating: "Payment terms 付款条款需完整保留。", count: 120) + "\nEND-TERMS"
-            p.items[0].descriptionText = String(repeating: "Custom part 复杂规格描述。", count: 60) + "\nEND-DESCRIPTION"
+            p.items[0].descriptionText = String(repeating: "Custom part 复杂规格描述。", count: 160) + "\nEND-DESCRIPTION"
             let url = try QuoteExportService.pdfURL(for: p, company: nil, includeBranding: false)
             let pdf = try XCTUnwrap(PDFDocument(url: url)), text = try XCTUnwrap(pdf.string)
             XCTAssertGreaterThan(pdf.pageCount, 1)
@@ -225,7 +225,7 @@ import PDFKit
                     attachment.name = "long-quote-" + language + "-" + String(index); attachment.lifetime = .keepAlways; add(attachment)
                 }
             }
-            XCTAssertTrue(text.contains("END-TERMS")); XCTAssertTrue(text.contains("END-DESCRIPTION"))
+            XCTAssertFalse(text.contains("END-TERMS")); XCTAssertTrue(text.contains("END-DESCRIPTION"))
             XCTAssertTrue(text.contains("2 m")); XCTAssertTrue(text.contains("Q235B"))
         }
     }
