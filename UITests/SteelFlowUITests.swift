@@ -559,6 +559,18 @@ final class LocalizationUITests: XCTestCase {
         verifyLanguage("ko", region: "ko_KR", native: "한국어", calculate: "계산", settings: "설정", projects: "프로젝트", create: "새 프로젝트", cancel: "취소", projectSettings: "프로젝트 설정", save: "완료", preview: "견적서 미리보기")
     }
 
+    func testGermanSystemLanguageAndQuote() {
+        verifyLanguage("de", region: "de_DE", native: "Deutsch", calculate: "Berechnen", settings: "Einstellungen", projects: "Projekte", create: "Neues Projekt", cancel: "Abbrechen", projectSettings: "Projekteinstellungen", save: "Fertig", preview: "Angebotsvorschau")
+    }
+
+    func testSpanishSystemLanguageAndQuote() {
+        verifyLanguage("es", region: "es_ES", native: "Español", calculate: "Calcular", settings: "Ajustes", projects: "Proyectos", create: "Nuevo proyecto", cancel: "Cancelar", projectSettings: "Ajustes del proyecto", save: "Listo", preview: "Vista del presupuesto")
+    }
+
+    func testFrenchSystemLanguageAndQuote() {
+        verifyLanguage("fr", region: "fr_FR", native: "Français", calculate: "Calculer", settings: "Réglages", projects: "Projets", create: "Nouveau projet", cancel: "Annuler", projectSettings: "Réglages du projet", save: "Terminé", preview: "Aperçu du devis")
+    }
+
     private func verifyLanguage(_ language: String, region: String, native: String, calculate: String, settings: String, projects: String, create: String, cancel: String, projectSettings: String, save: String, preview: String) {
         continueAfterFailure = false
         let app = XCUIApplication()
@@ -603,6 +615,20 @@ final class LocalizationUITests: XCTestCase {
         app.terminate()
     }
 
+    func testGermanCalculatorAtLargestTextSize() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE", "-app.language", "de", "-app.unitSystem", "metric", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch()
+        app.descendants(matching: .any)["profile.plate"].tap()
+        let length = app.textFields["length.value"]
+        for _ in 0..<12 where !length.isHittable { app.swipeUp() }
+        XCTAssertTrue(length.isHittable)
+        XCTAssertTrue(app.buttons["calculator.save"].isEnabled)
+        capture("europe-de-accessibility-xxxl")
+        app.terminate()
+    }
+
     func testLanguageSwitchPreservesActiveCalculationAndSavedDraft() {
         continueAfterFailure = false
         let app = XCUIApplication()
@@ -621,9 +647,10 @@ final class LocalizationUITests: XCTestCase {
         chooseLanguage("System default")
         app.descendants(matching: .any)["profile.plate"].tap()
         XCTAssertTrue(app.staticTexts["47,1 kg"].firstMatch.waitForExistence(timeout: 3), "Fresh defaults must also use the system number format")
-        for name in ["日本語", "한국어", "繁體中文", "English"] {
+        for name in ["日本語", "한국어", "繁體中文", "Deutsch", "Español", "Français", "English"] {
             chooseLanguage(name)
-            XCTAssertTrue(app.staticTexts["47.1 kg"].firstMatch.waitForExistence(timeout: 3), "Weight must remain unchanged in \(name)")
+            let expected = ["Deutsch", "Español", "Français"].contains(name) ? "47,1 kg" : "47.1 kg"
+            XCTAssertTrue(app.staticTexts[expected].firstMatch.waitForExistence(timeout: 3), "Weight must remain unchanged in \(name)")
         }
         chooseLanguage("System default")
         XCTAssertTrue(app.staticTexts["47,1 kg"].firstMatch.waitForExistence(timeout: 3))
@@ -738,7 +765,7 @@ final class LocalizationUITests: XCTestCase {
         app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
         app.tabBars.buttons.element(boundBy: 3).tap()
-        for (native, title) in [("繁體中文", "設定"), ("日本語", "設定"), ("한국어", "설정"), ("English", "Settings")] {
+        for (native, title) in [("繁體中文", "設定"), ("日本語", "設定"), ("한국어", "설정"), ("Deutsch", "Einstellungen"), ("Español", "Ajustes"), ("Français", "Réglages"), ("English", "Settings")] {
             let picker = app.buttons["settings.language"]
             XCTAssertTrue(picker.waitForExistence(timeout: 3))
             picker.tap()

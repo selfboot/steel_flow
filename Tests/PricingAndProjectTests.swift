@@ -354,7 +354,7 @@ final class PricingAndProjectTests: XCTestCase {
             let project = ProjectEntity(name: "Layout check", quoteLanguage: language, currencyCode: chinese ? "CNY" : "USD")
             project.markupPercentText = "25"
             let item = makeItem(quantity: 2, unitPrice: 2, processing: 10)
-            item.descriptionText = ["en": "Pipe batch", "zh-Hans": "圆管批次", "zh-Hant": "圓管批次", "ja": "丸パイプ一式", "ko": "원형관 묶음"][language]!
+            item.descriptionText = ["en": "Pipe batch", "zh-Hans": "圆管批次", "zh-Hant": "圓管批次", "ja": "丸パイプ一式", "ko": "원형관 묶음", "de": "Rohrlieferung", "es": "Lote de tubos", "fr": "Lot de tubes"][language]!
             project.items.append(item)
             let payload = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project, company: nil))
             let line = try XCTUnwrap(payload.lines.first)
@@ -380,7 +380,9 @@ final class PricingAndProjectTests: XCTestCase {
                 AppFormatters.decimal(line.customerQuoteAmount, currencyCode: project.currencyCode, locale: locale)
             ]
             let bounds = try expected.map { value in
-                let selection = try XCTUnwrap(pdf.findString(value, withOptions: []).first, "Missing PDF value: \(value)")
+                // PDF text extraction may turn nonbreaking spaces in localized money into regular spaces.
+                let searchable = value.replacingOccurrences(of: "\u{00A0}", with: " ").replacingOccurrences(of: "\u{202F}", with: " ")
+                let selection = try XCTUnwrap(pdf.findString(value, withOptions: []).first ?? pdf.findString(searchable, withOptions: []).first, "Missing PDF value: \(value); extracted: \(text)")
                 let rect = selection.bounds(for: page)
                 XCTAssertFalse(rect.isEmpty)
                 XCTAssertTrue(page.bounds(for: .mediaBox).contains(rect), "PDF value must fit the page: \(value)")

@@ -100,6 +100,8 @@
 		13853DB5AE8124C7BA2CB030 /* SteelFlowUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SteelFlowUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B9CFAE1CC59169A250AC3D /* QuoteExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteExportService.swift; sourceTree = "<group>"; };
 		17E0004AD401C5A55190ADD3 /* SteelFlow.storekit */ = {isa = PBXFileReference; path = SteelFlow.storekit; sourceTree = "<group>"; };
+		209C83C7AC34E01CE0AE6819 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		20BB69405A7135F60666E0B8 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		20D6D1B0C08DBFE52F6AD27D /* ReferenceCases.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ReferenceCases.json; sourceTree = "<group>"; };
 		24411F83D53BCB9DE1D5464E /* MarketingCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketingCapture.swift; sourceTree = "<group>"; };
 		2FC079E1F68CDFA8C34C6F9A /* BulkPricingSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkPricingSheet.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 		4C372A8D61345C59F520B92E /* CalculationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationEngine.swift; sourceTree = "<group>"; };
 		4FD1FA9302106C07253ED98B /* InteractionRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionRules.swift; sourceTree = "<group>"; };
 		504649A5D7DDE1728807CF73 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
+		511A1BFAFEF799E36FC76B32 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		513D90C6EEE9048760CB487B /* ProPaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPaywallView.swift; sourceTree = "<group>"; };
 		5B21E1846F47FF49884F3515 /* AppReviewPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewPrompt.swift; sourceTree = "<group>"; };
 		6058F1C2214E333E8CDBA4A3 /* MaterialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsView.swift; sourceTree = "<group>"; };
@@ -497,7 +500,10 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				de,
 				en,
+				es,
+				fr,
 				ja,
 				ko,
 				"zh-Hans",
@@ -669,7 +675,10 @@
 		548F05EFB267BDEC79826041 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
+				209C83C7AC34E01CE0AE6819 /* de */,
 				6641B5D09F6F34AA7B037D5B /* en */,
+				20BB69405A7135F60666E0B8 /* es */,
+				511A1BFAFEF799E36FC76B32 /* fr */,
 				4980875AD36F4A6365C48BD2 /* ja */,
 				D7259B68973BE3CDCD8CB10F /* ko */,
 				F971DACC1BB58B485E6418EE /* zh-Hans */,

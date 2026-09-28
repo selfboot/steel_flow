@@ -31,7 +31,10 @@ final class LocalizationTests: XCTestCase {
             ("en_US", .english), ("zh_CN", .simplifiedChinese), ("zh_SG", .simplifiedChinese),
             ("zh_TW", .traditionalChinese), ("zh_HK", .traditionalChinese), ("zh_MO", .traditionalChinese),
             ("zh-Hant-US", .traditionalChinese), ("zh-Hans-TW", .simplifiedChinese),
-            ("ja_JP", .japanese), ("ko_KR", .korean), ("fr_FR", .english)
+            ("ja_JP", .japanese), ("ko_KR", .korean),
+            ("de_DE", .german), ("de_AT", .german), ("de_CH", .german),
+            ("es_ES", .spanish), ("es_MX", .spanish), ("es_US", .spanish),
+            ("fr_FR", .french), ("fr_CA", .french), ("fr_CH", .french), ("it_IT", .english)
         ]
         for (identifier, expected) in cases {
             let locale = Locale(identifier: identifier)
@@ -43,15 +46,21 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "zh_HK")), "報價單")
         XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "ja_JP")), "見積書")
         XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "ko_KR")), "견적서")
-        XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "fr_FR")), "QUOTE")
+        XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "de_DE")), "ANGEBOT")
+        XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "es_MX")), "PRESUPUESTO")
+        XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "fr_CA")), "DEVIS")
+        XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "it_IT")), "QUOTE")
     }
 
     func testSystemLanguageUsesFirstSupportedPreference() {
-        XCTAssertEqual(AppLanguage.preferred(in: ["fr-FR", "ja-JP", "en-US"]), .japanese)
+        XCTAssertEqual(AppLanguage.preferred(in: ["it-IT", "ja-JP", "en-US"]), .japanese)
+        XCTAssertEqual(AppLanguage.preferred(in: ["fr-CA", "en-US"]), .french)
+        XCTAssertEqual(AppLanguage.preferred(in: ["es-MX", "en-US"]), .spanish)
         XCTAssertEqual(AppLanguage.preferred(in: ["zh-TW", "en-US"]), .traditionalChinese)
         XCTAssertEqual(AppLanguage.preferred(in: ["zh-HK", "en-US"]), .traditionalChinese)
         XCTAssertEqual(AppLanguage.preferred(in: ["ko-KR", "en-US"]), .korean)
-        XCTAssertEqual(AppLanguage.preferred(in: ["de-DE"]), .english)
+        XCTAssertEqual(AppLanguage.preferred(in: ["de-CH"]), .german)
+        XCTAssertEqual(AppLanguage.preferred(in: ["it-IT"]), .english)
     }
 
     func testDynamicMessagesRespectEachAppLanguagePreference() {

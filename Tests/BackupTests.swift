@@ -193,7 +193,7 @@ final class BackupTests: XCTestCase {
 
     func testBackupRejectsUnsupportedSemanticEnums() throws {
         let project = ProjectEntity(name: "Unsupported locale")
-        project.quoteLanguage = "fr"
+        project.quoteLanguage = "it"
         let document = try BackupService.makeDocument(projects: [project], materials: [], company: nil)
         let destination = try container()
 

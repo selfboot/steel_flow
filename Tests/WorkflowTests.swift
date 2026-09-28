@@ -90,7 +90,7 @@ import PDFKit
         let expectedWeight = try XCTUnwrap(draft.result(locale: sourceLocale)).get()
         let expectedPrice = try XCTUnwrap(draft.pricing(locale: sourceLocale, result: expectedWeight, currencyCode: "EUR"))
         var state = DraftState(draft, currency: "EUR", locale: sourceLocale)
-        for identifier in ["ja", "ko", "zh-Hant", "zh-Hans", "en", "en_DE"] {
+        for identifier in ["ja", "ko", "zh-Hant", "zh-Hans", "de", "es", "fr", "es_MX", "fr_CA", "de_CH", "en", "en_DE"] {
             let target = Locale(identifier: identifier)
             draft = state.makeDraft(locale: target)
             let weight = try XCTUnwrap(draft.result(locale: target)).get()
@@ -108,7 +108,7 @@ import PDFKit
 
     func testSavedPriceAndEditableDecimalsKeepPrecisionInRegionalFormats() throws {
         let values = ["2.345", "0.125", "7.5", "1234.567890123456789", "0.00000001"]
-        for identifier in ["en_DE", "fr_FR", "ja", "ko", "zh-Hant", "en_US"] {
+        for identifier in ["en_DE", "de_DE", "de_CH", "fr_FR", "fr_CA", "es_ES", "es_MX", "ja", "ko", "zh-Hant", "en_US"] {
             let locale = Locale(identifier: identifier)
             for canonical in values {
                 let expected = try XCTUnwrap(Decimal(string: canonical, locale: Locale(identifier: "en_US_POSIX")))
@@ -127,7 +127,7 @@ import PDFKit
     }
 
     func testProjectPercentagesSurviveLocalizedEditAndSave() throws {
-        for identifier in ["en_DE", "fr_FR", "ja", "ko", "zh-Hant", "en_US"] {
+        for identifier in ["en_DE", "de_DE", "de_CH", "fr_FR", "fr_CA", "es_ES", "es_MX", "ja", "ko", "zh-Hant", "en_US"] {
             let locale = Locale(identifier: identifier)
             let project = ProjectEntity(name: "Rates", currencyCode: "EUR")
             project.taxPercentText = "0.125"; project.markupPercentText = "7.5"
@@ -146,7 +146,7 @@ import PDFKit
         for profile in ProfileKind.allCases {
             for system in UnitSystem.allCases {
                 let reference = try XCTUnwrap(CalculatorDraft(profile: profile, unitSystem: system).result(locale: Locale(identifier: "en_US_POSIX"))).get()
-                for identifier in ["en_DE", "fr_FR", "ja", "ko", "zh-Hant"] {
+                for identifier in ["en_DE", "de_DE", "de_CH", "fr_FR", "fr_CA", "es_ES", "es_MX", "ja", "ko", "zh-Hant"] {
                     let locale = Locale(identifier: identifier)
                     let draft = CalculatorDraft(profile: profile, unitSystem: system, locale: locale)
                     let result = try XCTUnwrap(draft.result(locale: locale), "\(profile) / \(system) / \(identifier)").get()

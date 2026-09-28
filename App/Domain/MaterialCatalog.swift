@@ -27,7 +27,7 @@ enum MaterialCatalog {
 enum AppLocalization {
     static var systemLocale: Locale {
         // Match the supported language preference list, while keeping the user's region.
-        // For example, French followed by Japanese should use Japanese throughout the app.
+        // For example, Italian followed by Japanese should use Japanese throughout the app.
         let language = AppLanguage.preferred(in: Locale.preferredLanguages).rawValue
         let region = Locale.autoupdatingCurrent.region.map { "_" + $0.identifier } ?? ""
         return Locale(identifier: language + region)
