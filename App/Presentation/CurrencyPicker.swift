@@ -117,7 +117,7 @@ struct CurrencySelectionView: View {
                 }
             }
         }
-        .navigationTitle("currency.selector.title")
+        .localizedNavigationTitle("currency.selector.title")
         .navigationBarTitleDisplayMode(.inline)
         .keyboardDismissSupport()
         .onAppear { record(selection) }

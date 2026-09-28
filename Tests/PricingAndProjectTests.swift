@@ -319,24 +319,32 @@ final class PricingAndProjectTests: XCTestCase {
     }
 
     func testLocalizedPDFKeepsItemColumnsSeparateAndHidesInternalPricing() throws {
-        for language in ["en", "zh-Hans"] {
+        for language in AppLanguage.allCases.map(\.rawValue) {
             let chinese = language == "zh-Hans"
             let locale = Locale(identifier: language)
             let project = ProjectEntity(name: "Layout check", quoteLanguage: language, currencyCode: chinese ? "CNY" : "USD")
             project.markupPercentText = "25"
             let item = makeItem(quantity: 2, unitPrice: 2, processing: 10)
-            item.descriptionText = chinese ? "圆管批次" : "Pipe batch"
+            item.descriptionText = ["en": "Pipe batch", "zh-Hans": "圆管批次", "zh-Hant": "圓管批次", "ja": "丸パイプ一式", "ko": "원형관 묶음"][language]!
             project.items.append(item)
             let payload = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project, company: nil))
             let line = try XCTUnwrap(payload.lines.first)
             let pdf = try XCTUnwrap(PDFDocument(url: QuotePDFRenderer.render(payload)))
             let page = try XCTUnwrap(pdf.page(at: 0))
             let text = try XCTUnwrap(pdf.string)
-            XCTAssertTrue(text.contains(chinese ? "报价单" : "QUOTE"))
-            XCTAssertTrue(text.contains(chinese ? "税前小计" : "Subtotal"))
+            XCTAssertTrue(text.contains(AppLocalization.text("quote.title", locale: locale)))
+            XCTAssertTrue(text.contains(AppLocalization.text("quote.subtotal", locale: locale)), language)
             for hidden in ["Material subtotal", "Processing and other fees", "Markup", "材料小计", "加工及其他费用", "加价金额"] {
                 XCTAssertFalse(text.contains(hidden), "Customer PDFs must hide internal pricing: \(hidden)")
             }
+            for key in ["project.material_subtotal", "project.fees", "project.markup"] {
+                XCTAssertFalse(text.contains(AppLocalization.text(key, locale: locale)), key)
+            }
+            let attachment = XCTAttachment(image: page.thumbnail(of: CGSize(width: 1190, height: 1684), for: .mediaBox))
+            attachment.name = "localized-quote-" + language
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            XCTAssertEqual(payload.quoteLanguage, language)
             let expected = [
                 item.descriptionText,
                 AppFormatters.mass(line.totalMassKg, system: .metric, locale: locale),

@@ -76,6 +76,21 @@ final class BackupTests: XCTestCase {
         XCTAssertEqual(snapshots.first?.payload, Data("snapshot".utf8))
     }
 
+    func testAllSupportedLanguagesSurviveBackupAndRestore() throws {
+        for language in AppLanguage.allCases {
+            let project = ProjectEntity(name: "多言語 / 다국어", quoteLanguage: language.rawValue)
+            let preferences = PreferencesBackup(languageCode: language.rawValue, unitSystemRaw: "metric", currencyCode: "JPY", paperSizeRaw: "a4")
+            let document = try BackupService.makeDocument(projects: [project], materials: [], company: nil, preferences: preferences)
+            XCTAssertEqual(try BackupService.preview(data: document.data).projects, 1)
+            let destination = try container()
+            let imported = try BackupService.importCopy(data: document.data, into: destination.mainContext)
+            XCTAssertEqual(imported.preferences, preferences)
+            let restored = try XCTUnwrap(destination.mainContext.fetch(FetchDescriptor<ProjectEntity>()).first)
+            XCTAssertEqual(restored.quoteLanguage, language.rawValue)
+            XCTAssertTrue(restored.name.contains("多言語 / 다국어"), "User-entered text must be preserved")
+        }
+    }
+
     func testNewBackupsUseSchemaVersionFourAndStillReadLegacyVersionOneGeometry() throws {
         let project = ProjectEntity(name: "Schema")
         project.items.append(CalculationItemEntity(

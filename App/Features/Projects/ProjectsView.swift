@@ -88,7 +88,7 @@ struct ProjectsView: View {
             }
         }
         .searchable(text: $search, isPresented: $searchPresented, placement: .navigationBarDrawer(displayMode: .always), prompt: "workflow.project_search")
-        .navigationTitle("tab.projects")
+        .localizedNavigationTitle("tab.projects")
         .modifier(RootTabLayout())
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -258,9 +258,11 @@ struct ProjectEditorSheet: View {
                 TextField("project.customer", text: $customer)
                 Button("workflow.choose_customer") { showCustomers = true }
                 Picker("project.quote_language", selection: $quoteLanguage) {
-                    Text("language.english").tag("en")
-                    Text("language.chinese").tag("zh-Hans")
+                    ForEach(AppLanguage.allCases) { language in
+                        Text(verbatim: language.nativeName).tag(language.rawValue)
+                    }
                 }
+                .accessibilityIdentifier("project.quoteLanguage")
                 Picker("settings.unit_system", selection: $unitSystem) {
                     ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0) }
                 }
@@ -271,7 +273,7 @@ struct ProjectEditorSheet: View {
                 }
             }
             .keyboardDismissSupport()
-            .navigationTitle("project.create")
+            .localizedNavigationTitle("project.create")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
@@ -298,7 +300,7 @@ struct ProjectEditorSheet: View {
             .onAppear {
                 currency = defaultCurrency
                 unitSystem = UnitSystem(rawValue: defaultUnitRaw) ?? .metric
-                quoteLanguage = appLanguage == "zh-Hans" || (appLanguage == "system" && locale.language.languageCode?.identifier == "zh") ? "zh-Hans" : "en"
+                quoteLanguage = AppLanguage.selected(appLanguage, systemLocale: locale).rawValue
                 paper = PaperSize(rawValue: defaultPaperRaw) ?? .a4
             }
         }

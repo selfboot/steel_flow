@@ -172,7 +172,7 @@ struct FeedbackView: View {
             }
 
         }
-        .navigationTitle("feedback.title")
+        .localizedNavigationTitle("feedback.title")
         .navigationBarTitleDisplayMode(.inline)
         .keyboardDismissSupport()
         .toolbar {

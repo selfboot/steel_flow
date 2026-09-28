@@ -357,7 +357,7 @@ struct CalculatorEditorView: View {
         .onChange(of: notice) { _, value in if value != nil { withAnimation { scroll.scrollTo("feedback", anchor: .top) } } }
         }
         .keyboardDismissSupport()
-        .navigationTitle(profile.localizationKey)
+        .localizedNavigationTitle("profile.\(profile.rawValue)")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: storedState) { _, state in
             if loaded && !ProcessInfo.processInfo.arguments.contains("--marketing-screen") { library.saveDraft(state, key: draftKey) }
@@ -635,7 +635,7 @@ private struct SaveToProjectSheet: View {
                             let trimmedName = newName.trimmingCharacters(in: .whitespacesAndNewlines)
                             let project = ProjectEntity(
                                 name: trimmedName.isEmpty ? AppLocalization.text("project.untitled", locale: locale) : trimmedName,
-                                quoteLanguage: appLanguage == "zh-Hans" || (appLanguage == "system" && locale.language.languageCode?.identifier == "zh") ? "zh-Hans" : "en",
+                                quoteLanguage: AppLanguage.selected(appLanguage, systemLocale: locale).rawValue,
                                 unitSystem: UnitSystem(rawValue: defaultUnitRaw) ?? .metric,
                                 currencyCode: CurrencyRules.normalizedCode(defaultCurrency) ?? "USD",
                                 paperSize: PaperSize(rawValue: defaultPaperRaw) ?? .a4
@@ -647,7 +647,7 @@ private struct SaveToProjectSheet: View {
                 }
             }
             .keyboardDismissSupport()
-            .navigationTitle("calculator.save_to_project")
+            .localizedNavigationTitle("calculator.save_to_project")
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } } }
             .proPaywall(reason: $paywallReason) {
                 if let project = pendingSelection { pendingSelection = nil; onSelect(project) }
@@ -681,7 +681,7 @@ private struct CalculationDetailsView: View {
                 }
                 Section("calculator.details.engine") { LabeledContent("calculator.details.version", value: "\(result.trace.engineVersion)") }
             }
-            .navigationTitle("calculator.details")
+            .localizedNavigationTitle("calculator.details")
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("common.done") { dismiss() } } }
         }
     }

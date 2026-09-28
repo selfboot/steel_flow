@@ -92,7 +92,7 @@ struct TemplatePickerView: View {
                     }.padding().background(.bar)
                 }
             }
-            .navigationTitle("workflow.from_template")
+            .localizedNavigationTitle("workflow.from_template")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } } }
             .proPaywall(reason: $paywallReason) { if let template = pendingTemplate { pendingTemplate = nil; create(template) } }
@@ -138,7 +138,7 @@ struct CustomerPickerView: View {
                 Button("workflow.customer_new", systemImage: "person.badge.plus") { showNew = true }
             }
             .searchable(text: $search)
-            .navigationTitle("workflow.customers")
+            .localizedNavigationTitle("workflow.customers")
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("common.done") { dismiss() } } }
             .sheet(isPresented: $showNew) { CustomerEditorView() }
             .sheet(item: $editing) { CustomerEditorView(customer: $0) }
@@ -163,7 +163,7 @@ private struct CustomerEditorView: View {
                 LabeledEntry("company.address", text: $address, multiline: true)
             }
             .keyboardDismissSupport()
-            .navigationTitle(customer == nil ? "ui.new_customer" : "ui.edit_customer")
+            .localizedNavigationTitle(customer == nil ? "ui.new_customer" : "ui.edit_customer")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }

@@ -50,11 +50,13 @@ struct SettingsView: View {
             Section("settings.region") {
                 Picker(selection: $languageCode) {
                     Text("language.system").tag("system")
-                    Text("language.chinese").tag("zh-Hans")
-                    Text("language.english").tag("en")
+                    ForEach(AppLanguage.allCases) { language in
+                        Text(verbatim: language.nativeName).tag(language.rawValue)
+                    }
                 } label: {
                     SettingsLabel("settings.language", systemImage: "globe")
                 }
+                .accessibilityIdentifier("settings.language")
                 Picker(selection: $unitSystemRaw) {
                     ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0.rawValue) }
                 } label: {
@@ -148,7 +150,7 @@ struct SettingsView: View {
         }
         .environment(\.defaultMinListRowHeight, 54)
         .navigationDestination(isPresented: $showCompany) { CompanyProfileView() }
-        .navigationTitle("tab.settings")
+        .localizedNavigationTitle("tab.settings")
         .modifier(RootTabLayout())
         .task { await purchaseManager.load() }
         .proPaywall(reason: $paywallReason) { if let action = pendingProAction { pendingProAction = nil; action() } }
@@ -405,7 +407,7 @@ private struct CompanyProfileView: View {
                 }
             }
         }
-        .navigationTitle("settings.company_profile")
+        .localizedNavigationTitle("settings.company_profile")
     }
 }
 
@@ -494,6 +496,6 @@ private struct DisclaimerView: View {
                 Text("disclaimer.safety.body")
             }.padding()
         }
-        .navigationTitle("settings.calculation_disclaimer")
+        .localizedNavigationTitle("settings.calculation_disclaimer")
     }
 }

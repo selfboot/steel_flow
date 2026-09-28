@@ -72,7 +72,7 @@ struct QuotePreviewView: View {
                     .buttonStyle(PrimaryActionStyle()).controlSize(.large).padding().background(.bar)
                     .disabled(preparing || pdfURL == nil || snapshotData == nil).accessibilityIdentifier("quote.save_share")
             }
-            .navigationTitle("quote.preview").navigationBarTitleDisplayMode(.inline)
+            .localizedNavigationTitle("quote.preview").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("common.done") { dismiss() } } }
             .task { await prepareExports() }
             .onChange(of: csvKind) { _, _ in prepareCSV() }
@@ -134,7 +134,7 @@ struct GeneratedPDFPreview: View {
     var body: some View {
         PDFKitView(url: url)
             .background(Color(uiColor: .secondarySystemBackground))
-            .navigationTitle("quote.document")
+            .localizedNavigationTitle("quote.document")
         .toolbar { Text("\(PDFDocument(url: url)?.pageCount ?? 0)").accessibilityLabel("workflow.page_count") }
             .navigationBarTitleDisplayMode(.inline)
     }

@@ -25,12 +25,17 @@ enum MaterialCatalog {
 }
 
 enum AppLocalization {
+    static var systemLocale: Locale {
+        // Match the supported language preference list, while keeping the user's region.
+        // For example, French followed by Japanese should use Japanese throughout the app.
+        let language = AppLanguage.preferred(in: Locale.preferredLanguages).rawValue
+        let region = Locale.autoupdatingCurrent.region.map { "_" + $0.identifier } ?? ""
+        return Locale(identifier: language + region)
+    }
+
     static var preferredLocale: Locale {
-        switch UserDefaults.standard.string(forKey: "app.language") {
-        case "en": Locale(identifier: "en")
-        case "zh-Hans": Locale(identifier: "zh-Hans")
-        default: .autoupdatingCurrent
-        }
+        let preference = UserDefaults.standard.string(forKey: "app.language") ?? "system"
+        return AppLanguage(rawValue: preference).map { Locale(identifier: $0.rawValue) } ?? systemLocale
     }
 
     static func text(_ key: String) -> String {
@@ -38,14 +43,14 @@ enum AppLocalization {
     }
 
     static func text(_ key: String, locale: Locale) -> String {
-        let languageCode = locale.language.languageCode?.identifier ?? locale.identifier
-        let candidates = [locale.identifier, languageCode, languageCode == "zh" ? "zh-Hans" : languageCode]
-        for candidate in candidates {
+        let language = AppLanguage.resolve(locale).rawValue
+        for candidate in [language, "en"] {
             if let path = Bundle.main.path(forResource: candidate, ofType: "lproj"), let bundle = Bundle(path: path) {
-                return bundle.localizedString(forKey: key, value: key, table: nil)
+                let value = bundle.localizedString(forKey: key, value: key, table: nil)
+                if value != key { return value }
             }
         }
-        return String(localized: String.LocalizationValue(key), locale: locale)
+        return key
     }
 
     static func format(_ key: String, locale: Locale, _ arguments: CVarArg...) -> String {

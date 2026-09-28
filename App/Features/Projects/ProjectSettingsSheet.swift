@@ -47,9 +47,11 @@ struct ProjectSettingsSheet: View {
                     Button("workflow.choose_customer") { showCustomers = true }
                     TextField("workflow.customer_contact", text: $customerContact, axis: .vertical)
                     Picker("project.quote_language", selection: $quoteLanguage) {
-                        Text("language.english").tag("en")
-                        Text("language.chinese").tag("zh-Hans")
+                        ForEach(AppLanguage.allCases) { language in
+                            Text(verbatim: language.nativeName).tag(language.rawValue)
+                        }
                     }
+                    .accessibilityIdentifier("project.quoteLanguage")
                     Picker("settings.unit_system", selection: $unitSystem) {
                         ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0) }
                     }
@@ -82,7 +84,7 @@ struct ProjectSettingsSheet: View {
                 }
             }
             .keyboardDismissSupport()
-            .navigationTitle("project.edit")
+            .localizedNavigationTitle("project.edit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
@@ -230,7 +232,7 @@ struct CurrencyChangeSheet: View {
                 }
             }
             .keyboardDismissSupport()
-            .navigationTitle(itemToSave == nil ? "ui.currency_project_title" : "ui.currency_mismatch")
+            .localizedNavigationTitle(itemToSave == nil ? "ui.currency_project_title" : "ui.currency_mismatch")
             .navigationBarTitleDisplayMode(.inline)
             .safeAreaInset(edge: .bottom) {
                     Button(itemToSave == nil ? "common.apply" : mode == .convert ? "ui.convert_save" : mode == .clearAmounts ? "ui.clear_save" : "ui.keep_save") { apply(mode, mode == .convert ? rate : nil); dismiss() }

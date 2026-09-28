@@ -537,3 +537,93 @@ final class SteelFlowUITests: XCTestCase {
         add(attachment)
     }
 }
+
+@MainActor
+final class LocalizationUITests: XCTestCase {
+    private func capture(_ name: String) {
+        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
+    func testTraditionalChineseSystemLanguageAndQuote() {
+        verifyLanguage("zh-Hant", region: "zh_TW", native: "繁體中文", calculate: "計算", settings: "設定", projects: "專案", create: "新建專案", cancel: "取消", projectSettings: "專案設定", save: "完成", preview: "報價預覽")
+    }
+
+    func testJapaneseSystemLanguageAndQuote() {
+        verifyLanguage("ja", region: "ja_JP", native: "日本語", calculate: "計算", settings: "設定", projects: "プロジェクト", create: "新規プロジェクト", cancel: "キャンセル", projectSettings: "プロジェクト設定", save: "完了", preview: "見積書プレビュー")
+    }
+
+    func testKoreanSystemLanguageAndQuote() {
+        verifyLanguage("ko", region: "ko_KR", native: "한국어", calculate: "계산", settings: "설정", projects: "프로젝트", create: "새 프로젝트", cancel: "취소", projectSettings: "프로젝트 설정", save: "완료", preview: "견적서 미리보기")
+    }
+
+    private func verifyLanguage(_ language: String, region: String, native: String, calculate: String, settings: String, projects: String, create: String, cancel: String, projectSettings: String, save: String, preview: String) {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(\(language))", "-AppleLocale", region, "-app.language", "system", "-app.unitSystem", "metric"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars[calculate].waitForExistence(timeout: 8))
+        capture("1.3-\(language)-home-light")
+        app.descendants(matching: .any)["profile.plate"].tap()
+        XCTAssertTrue(app.textFields["length.value"].waitForExistence(timeout: 3))
+        capture("1.3-\(language)-calculation-light")
+        app.tabBars.buttons[settings].tap()
+        XCTAssertTrue(app.buttons["settings.language"].waitForExistence(timeout: 3))
+        capture("1.3-\(language)-settings-light")
+        app.tabBars.buttons[projects].tap()
+        app.buttons["projects.menu"].tap()
+        app.buttons.matching(NSPredicate(format: "label == %@ AND identifier != %@", create, "projects.menu")).firstMatch.tap()
+        let languagePicker = app.buttons["project.quoteLanguage"]
+        XCTAssertTrue(languagePicker.waitForExistence(timeout: 3))
+        XCTAssertTrue(languagePicker.label.contains(native) || (languagePicker.value as? String)?.contains(native) == true, "New quotes must follow the system language: \(languagePicker.debugDescription)")
+        capture("1.3-\(language)-new-project")
+        app.buttons[cancel].tap()
+        app.staticTexts["Workflow Quote"].firstMatch.tap()
+        app.buttons["project.menu"].tap()
+        app.buttons[projectSettings].tap()
+        XCTAssertTrue(languagePicker.waitForExistence(timeout: 3))
+        languagePicker.tap()
+        app.buttons[native].tap()
+        app.buttons[save].tap()
+        app.buttons[preview].tap()
+        XCTAssertTrue(app.navigationBars[preview].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
+        capture("1.3-\(language)-quote-light")
+        app.terminate()
+
+        app.launchArguments += ["--ui-dark"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars[calculate].waitForExistence(timeout: 5))
+        capture("1.3-\(language)-home-dark")
+        app.tabBars.buttons[settings].tap()
+        XCTAssertTrue(app.buttons["settings.language"].waitForExistence(timeout: 3))
+        capture("1.3-\(language)-settings-dark")
+        app.terminate()
+    }
+
+    func testManualLanguageSwitchUpdatesUIAndPersists() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        // Do not override app.language in the launch domain: user changes must persist.
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+        app.tabBars.buttons.element(boundBy: 3).tap()
+        for (native, title) in [("繁體中文", "設定"), ("日本語", "設定"), ("한국어", "설정"), ("English", "Settings")] {
+            let picker = app.buttons["settings.language"]
+            XCTAssertTrue(picker.waitForExistence(timeout: 3))
+            picker.tap()
+            app.buttons[native].tap()
+            let back = app.navigationBars.buttons["BackButton"]
+            if back.exists { back.tap() }
+            XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 3))
+            XCTAssertTrue(picker.label.contains(native) || (picker.value as? String)?.contains(native) == true)
+            capture("1.3-manual-" + native)
+        }
+        app.terminate()
+        app.launch()
+        XCTAssertTrue(app.navigationBars["Calculate"].waitForExistence(timeout: 5), "Manual language survives relaunch")
+        app.terminate()
+    }
+}

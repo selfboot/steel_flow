@@ -130,7 +130,7 @@ import PDFKit
         XCTAssertEqual(ProjectCalculator.summarize(restored).pricing.total, frozen.totals.total)
     }
     func testPDFDoesNotLoseLongTermsDescriptionsOrStockLength() throws {
-        for language in ["en", "zh-Hans"] {
+        for language in AppLanguage.allCases.map(\.rawValue) {
             let p = project(); p.quoteLanguage = language; p.paperSize = .letter
             p.terms = String(repeating: "Payment terms 付款条款需完整保留。", count: 120) + "\nEND-TERMS"
             p.items[0].descriptionText = String(repeating: "Custom part 复杂规格描述。", count: 60) + "\nEND-DESCRIPTION"

@@ -78,7 +78,7 @@ struct CalculatorHomeView: View {
             .frame(maxWidth: .infinity)
         }
         .background(Color(uiColor: .systemGroupedBackground))
-        .navigationTitle("tab.calculate")
+        .localizedNavigationTitle("tab.calculate")
         .modifier(RootTabLayout())
         .navigationDestination(for: ProfileKind.self) { CalculatorEditorView(profile: $0) }
         .navigationDestination(item: $openedDraft) { state in
@@ -305,7 +305,7 @@ private struct CalculationLibraryList: View {
             }
         }
         .searchable(text: $search)
-        .navigationTitle(favorites ? "workflow.favorites" : "calculator.recent")
+        .localizedNavigationTitle(favorites ? "workflow.favorites" : "calculator.recent")
         .navigationDestination(item: $openedDraft) { state in
             CalculatorEditorView(profile: state.profile, restoredState: state)
         }

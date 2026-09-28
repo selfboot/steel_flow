@@ -26,7 +26,7 @@ struct QuoteHistoryView: View {
                     } else { Label("backup.error.corrupt", systemImage: "exclamationmark.triangle") }
                 }
             }
-            .navigationTitle("workflow.quote_history")
+            .localizedNavigationTitle("workflow.quote_history")
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("common.done") { dismiss() } } }
         }
     }

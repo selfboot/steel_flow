@@ -280,7 +280,7 @@ private struct ProfilePickerForProject: View {
             .padding()
         }
         .background(Color(uiColor: .systemGroupedBackground))
-        .navigationTitle("project.add_item")
+        .localizedNavigationTitle("project.add_item")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -528,7 +528,7 @@ private struct ProjectItemDetailView: View {
             }
         }
         .keyboardDismissSupport()
-        .navigationTitle(item.profile.localizationKey)
+        .localizedNavigationTitle("profile.\(item.profile.rawValue)")
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
             ToolbarItem(placement: .confirmationAction) { Button("common.done") { save() }.disabled(!canSave || priceNeedsReview) }

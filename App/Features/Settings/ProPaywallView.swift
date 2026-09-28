@@ -74,7 +74,7 @@ struct ProPaywallView: View {
                 }
             }
             .background(Color(uiColor: .systemGroupedBackground))
-            .navigationTitle("purchase.paywall.navigation_title")
+            .localizedNavigationTitle("purchase.paywall.navigation_title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

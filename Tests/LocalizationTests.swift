@@ -2,14 +2,66 @@ import XCTest
 @testable import SteelFlow
 
 final class LocalizationTests: XCTestCase {
-    func testEnglishAndChineseHaveExactlyTheSameKeys() throws {
-        func keys(for language: String) throws -> Set<String> {
-            let path = try XCTUnwrap(Bundle.main.path(forResource: language, ofType: "lproj"))
-            let stringsPath = URL(fileURLWithPath: path).appendingPathComponent("Localizable.strings").path
-            let dictionary = try XCTUnwrap(NSDictionary(contentsOfFile: stringsPath) as? [String: String])
-            return Set(dictionary.keys)
+    private func strings(for language: String) throws -> [String: String] {
+        let path = try XCTUnwrap(Bundle.main.path(forResource: language, ofType: "lproj"))
+        let url = URL(fileURLWithPath: path).appendingPathComponent("Localizable.strings")
+        return try XCTUnwrap(PropertyListSerialization.propertyList(from: Data(contentsOf: url), format: nil) as? [String: String])
+    }
+
+    func testAllLanguagesHaveMatchingKeysAndFormatArguments() throws {
+        let english = try strings(for: "en")
+        let pattern = try NSRegularExpression(pattern: #"%(?:[0-9]+\$)?(?:lld|ld|d|@|f|s)"#)
+        func arguments(_ value: String) -> [String] {
+            pattern.matches(in: value, range: NSRange(value.startIndex..., in: value)).map {
+                String(value[Range($0.range, in: value)!])
+            }
         }
-        XCTAssertEqual(try keys(for: "en"), try keys(for: "zh-Hans"))
+        for language in AppLanguage.allCases {
+            let localized = try strings(for: language.rawValue)
+            XCTAssertEqual(Set(english.keys), Set(localized.keys), language.rawValue)
+            for (key, value) in localized {
+                XCTAssertFalse(value.isEmpty, key)
+                XCTAssertEqual(arguments(value), arguments(english[key] ?? ""), "\(language.rawValue): \(key)")
+            }
+        }
+    }
+
+    func testRegionalLanguageResolutionAndQuoteDefaults() {
+        let cases: [(String, AppLanguage)] = [
+            ("en_US", .english), ("zh_CN", .simplifiedChinese), ("zh_SG", .simplifiedChinese),
+            ("zh_TW", .traditionalChinese), ("zh_HK", .traditionalChinese), ("zh_MO", .traditionalChinese),
+            ("zh-Hant-US", .traditionalChinese), ("zh-Hans-TW", .simplifiedChinese),
+            ("ja_JP", .japanese), ("ko_KR", .korean), ("fr_FR", .english)
+        ]
+        for (identifier, expected) in cases {
+            let locale = Locale(identifier: identifier)
+            XCTAssertEqual(AppLanguage.resolve(locale), expected, identifier)
+            XCTAssertEqual(AppLanguage.selected("system", systemLocale: locale), expected, identifier)
+            XCTAssertEqual(AppLanguage.selected("ko", systemLocale: locale), .korean, "Explicit preference overrides system")
+        }
+        XCTAssertEqual(AppLocalization.text("tab.settings", locale: Locale(identifier: "zh_TW")), "設定")
+        XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "zh_HK")), "報價單")
+        XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "ja_JP")), "見積書")
+        XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "ko_KR")), "견적서")
+        XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "fr_FR")), "QUOTE")
+    }
+
+    func testSystemLanguageUsesFirstSupportedPreference() {
+        XCTAssertEqual(AppLanguage.preferred(in: ["fr-FR", "ja-JP", "en-US"]), .japanese)
+        XCTAssertEqual(AppLanguage.preferred(in: ["zh-TW", "en-US"]), .traditionalChinese)
+        XCTAssertEqual(AppLanguage.preferred(in: ["zh-HK", "en-US"]), .traditionalChinese)
+        XCTAssertEqual(AppLanguage.preferred(in: ["ko-KR", "en-US"]), .korean)
+        XCTAssertEqual(AppLanguage.preferred(in: ["de-DE"]), .english)
+    }
+
+    func testDynamicMessagesRespectEachAppLanguagePreference() {
+        let original = UserDefaults.standard.object(forKey: "app.language")
+        defer { UserDefaults.standard.set(original, forKey: "app.language") }
+        for language in AppLanguage.allCases {
+            UserDefaults.standard.set(language.rawValue, forKey: "app.language")
+            XCTAssertEqual(AppLanguage.resolve(AppLocalization.preferredLocale), language)
+            XCTAssertEqual(AppLocalization.text("quote.title"), AppLocalization.text("quote.title", locale: Locale(identifier: language.rawValue)))
+        }
     }
 
     func testDynamicLocalizationAndEnglishCountsHonorExplicitLocale() {
@@ -19,7 +71,7 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(AppLocalization.count("project.item_count", value: 2, locale: Locale(identifier: "en")), "2 items")
     }
 
-    func testCriticalKeysExistInEnglishAndSimplifiedChinese() throws {
+    func testCriticalKeysExistInEverySupportedLanguage() throws {
         let dynamicKeys =
             ProfileKind.allCases.flatMap { ["profile.\($0.rawValue)", "profile.\($0.rawValue).summary"] } +
             DimensionField.allCases.map { "dimension.\($0.rawValue)" } +
@@ -41,7 +93,7 @@ final class LocalizationTests: XCTestCase {
             "delete.confirm.title", "delete.confirm.message", "quote.subtotal",
             "backup.import_copy_and_settings", "currency_change.failed.title"
         ]
-        for language in ["en", "zh-Hans"] {
+        for language in AppLanguage.allCases.map(\.rawValue) {
             let path = try XCTUnwrap(Bundle.main.path(forResource: language, ofType: "lproj"))
             let bundle = try XCTUnwrap(Bundle(path: path))
             for key in Set(dynamicKeys + fixedKeys) {

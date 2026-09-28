@@ -28,7 +28,7 @@ struct SteelFlowApp: App {
                 }
             }
             .keyboardOutsideTapSupport()
-            .environment(\.locale, languageCode == "system" ? .autoupdatingCurrent : Locale(identifier: languageCode))
+            .environment(\.locale, languageCode == "system" ? AppLocalization.systemLocale : Locale(identifier: languageCode))
             .task { await PurchaseManager.shared.refreshEntitlement() }
             .onChange(of: scenePhase) { _, phase in
                 guard phase == .active else { return }

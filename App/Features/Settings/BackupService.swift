@@ -252,7 +252,7 @@ enum BackupService {
 
         for source in envelope.payload.projects {
             guard let currencyCode = CurrencyRules.normalizedCode(source.currencyCode),
-                  ["en", "zh-Hans"].contains(source.quoteLanguage),
+                  AppLanguage(rawValue: source.quoteLanguage) != nil,
                   let unitSystem = UnitSystem(rawValue: source.unitSystemRaw),
                   let paperSize = PaperSize(rawValue: source.paperSizeRaw),
                   (1...365).contains(source.validDays) else { throw BackupError.corrupt }
@@ -358,7 +358,7 @@ enum BackupService {
         }
 
         if let preferences = envelope.payload.preferences {
-            guard ["system", "en", "zh-Hans"].contains(preferences.languageCode),
+            guard (preferences.languageCode == "system" || AppLanguage(rawValue: preferences.languageCode) != nil),
                   UnitSystem(rawValue: preferences.unitSystemRaw) != nil,
                   CurrencyRules.normalizedCode(preferences.currencyCode) != nil,
                   PaperSize(rawValue: preferences.paperSizeRaw) != nil else { throw BackupError.corrupt }

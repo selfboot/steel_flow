@@ -104,7 +104,7 @@ struct BulkPricingSheet: View {
                     .font(.subheadline.bold()).padding().frame(maxWidth: .infinity).background(.bar)
                     .accessibilityIdentifier("bulk.selection_count")
             }
-            .navigationTitle("project.bulk_pricing")
+            .localizedNavigationTitle("project.bulk_pricing")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
@@ -121,7 +121,7 @@ struct BulkPricingSheet: View {
                                 if updatePrice { Text(priceChange(item)) }
                             }
                         }
-                    }.navigationTitle("workflow.change_preview").navigationBarTitleDisplayMode(.inline)
+                    }.localizedNavigationTitle("workflow.change_preview").navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { confirm = false } }
                         ToolbarItem(placement: .confirmationAction) { Button("common.apply") { confirm = false; apply() } }

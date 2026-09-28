@@ -116,7 +116,7 @@ struct MaterialsView: View {
         }
         .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: catalog == 0 ? "ui.material_search" : "workflow.price_search")
         .onChange(of: catalog) { _, _ in search = "" }
-        .navigationTitle("tab.materials")
+        .localizedNavigationTitle("tab.materials")
         .modifier(RootTabLayout())
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -264,7 +264,7 @@ private struct PriceBookEditorSheet: View {
                 Text("price_book.reference_disclaimer").font(.caption).foregroundStyle(.secondary)
             }
             .keyboardDismissSupport()
-            .navigationTitle(entry == nil ? "price_book.add" : "price_book.edit")
+            .localizedNavigationTitle(entry == nil ? "price_book.add" : "price_book.edit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) { Button("common.save") { save() }.disabled(!canSave || needsReview) }
@@ -352,7 +352,7 @@ private struct MaterialEditorSheet: View {
                 Text("materials.density.help").font(.caption).foregroundStyle(.secondary)
             }
             .keyboardDismissSupport()
-            .navigationTitle(material == nil ? "materials.add" : "materials.edit")
+            .localizedNavigationTitle(material == nil ? "materials.add" : "materials.edit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) { Button("common.save") { save() }.disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !validDensity) }
