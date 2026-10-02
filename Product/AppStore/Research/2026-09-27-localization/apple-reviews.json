@@ -1,0 +1,137 @@
+[
+  {
+    "country": "vn",
+    "appId": "1442079573",
+    "queriedAt": "2026-09-27T13:48:16.867056+00:00",
+    "reviews": [
+      {
+        "rating": 1,
+        "updated": "2026-08-06T15:51:44-07:00",
+        "title": "H",
+        "body": "Ko có cài đặt ngôn ngữ",
+        "author": "Noichoi",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 5,
+        "updated": "2025-08-01T20:42:04-07:00",
+        "title": "Tính phôi",
+        "body": "Tốt",
+        "author": "Át tô",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 5,
+        "updated": "2023-04-21T18:38:06-07:00",
+        "title": "ok",
+        "body": "có thể dùng để tham khảo",
+        "author": "flsnchn",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 5,
+        "updated": "2020-04-23T06:47:58-07:00",
+        "title": "Qua tuyệt",
+        "body": "Tuyệt",
+        "author": "dưvwvb",
+        "version": "1.2"
+      },
+      {
+        "rating": 4,
+        "updated": "2020-02-08T03:06:52-07:00",
+        "title": "Cant hide they keyboard",
+        "body": "I can’t hide keyboard when I finish input the value. Pls fix it.",
+        "author": "CuongNhu",
+        "version": "1.2"
+      },
+      {
+        "rating": 5,
+        "updated": "2019-03-10T21:20:05-07:00",
+        "title": "Perfect",
+        "body": "Excenlent app",
+        "author": "Black rose 1310",
+        "version": "1.1"
+      }
+    ]
+  },
+  {
+    "country": "tr",
+    "appId": "1291109620",
+    "queriedAt": "2026-09-27T13:48:21.243215+00:00",
+    "reviews": [
+      {
+        "rating": 4,
+        "updated": "2026-03-07T23:00:30-07:00",
+        "title": "Standart",
+        "body": "Çin standartının da eklenmesini istiyorum",
+        "author": "Canpalit",
+        "version": "25"
+      },
+      {
+        "rating": 2,
+        "updated": "2024-06-30T06:55:59-07:00",
+        "title": "the calculator is faulty",
+        "body": "The leak is doing it incorrectly. 80x80x4 Box profile calculation makes the price of one 6mt piece 1350 TL. The price of 325 pieces is 438.750 TL. The application makes this calculation incorrectly.",
+        "author": "Zehirli 16",
+        "version": "17"
+      },
+      {
+        "rating": 5,
+        "updated": "2022-02-22T11:37:50-07:00",
+        "title": "Need for updates",
+        "body": "Looking for special flat plate for calculating yourself too.. good job anway!",
+        "author": "ozantelim",
+        "version": "12"
+      },
+      {
+        "rating": 5,
+        "updated": "2019-01-03T08:19:01-07:00",
+        "title": "Reklam",
+        "body": "Reklamsız yokmu",
+        "author": "ts5151",
+        "version": "4"
+      }
+    ]
+  },
+  {
+    "country": "de",
+    "appId": "1291109620",
+    "queriedAt": "2026-09-27T13:48:25.596952+00:00",
+    "error": "'str' object has no attribute 'get'"
+  },
+  {
+    "country": "kr",
+    "appId": "1291109620",
+    "queriedAt": "2026-09-27T13:48:29.887544+00:00",
+    "reviews": []
+  },
+  {
+    "country": "jp",
+    "appId": "1291109620",
+    "queriedAt": "2026-09-27T13:48:34.245482+00:00",
+    "error": "'str' object has no attribute 'get'"
+  },
+  {
+    "country": "in",
+    "appId": "6749879113",
+    "queriedAt": "2026-09-27T13:48:38.625165+00:00",
+    "reviews": [
+      {
+        "rating": 1,
+        "updated": "2026-07-18T00:22:08-07:00",
+        "title": "Dont download",
+        "body": "Not working properly",
+        "author": "abhi5960",
+        "version": "1.0.3"
+      },
+      {
+        "rating": 1,
+        "updated": "2026-06-04T07:16:22-07:00",
+        "title": "Adds are taking time on this app",
+        "body": "Its disturbing while working",
+        "author": "prasad Dombivli",
+        "version": "1.0.3"
+      }
+    ]
+  }
+]

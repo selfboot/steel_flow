@@ -1,0 +1,35 @@
+[
+  {
+    "term": "metal weight calculator",
+    "country": "vn",
+    "popularity": 57,
+    "difficulty": 28,
+    "opportunity": 51,
+    "estimatedDailySearches": 10.02,
+    "classification": null,
+    "queriedAt": "2026-09-27T13:48:44.609600+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "tính thép",
+    "country": "vn",
+    "popularity": 6,
+    "difficulty": 4,
+    "opportunity": 8,
+    "estimatedDailySearches": 0.04,
+    "classification": null,
+    "queriedAt": "2026-09-27T13:48:50.262623+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "tính phôi",
+    "country": "vn",
+    "popularity": 8,
+    "difficulty": 7,
+    "opportunity": 11,
+    "estimatedDailySearches": 0.07,
+    "classification": null,
+    "queriedAt": "2026-09-27T13:48:56.089721+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  }
+]
