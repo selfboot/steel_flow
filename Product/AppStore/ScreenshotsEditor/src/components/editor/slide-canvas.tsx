@@ -921,6 +921,8 @@ function SlideElements({
 
   function renderCaption() {
     if (!captionRect) return null;
+    // Custom text decks can intentionally replace the built-in caption.
+    if (slide.textElements?.length && !pickText(slide.label, locale) && !pickText(slide.headline, locale)) return null;
     const saved = slide.transforms?.caption;
     const rotation = saved?.rotation ?? 0;
     const zIndex = saved?.zIndex ?? 4;
