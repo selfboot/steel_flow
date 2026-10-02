@@ -1,0 +1,50 @@
+{
+  "zh-Hant": {
+    "name": 17,
+    "subtitle": 17,
+    "promotionalText": 67,
+    "description": 718,
+    "whatsNew": 99,
+    "keywordsUTF8Bytes": 73
+  },
+  "ja": {
+    "name": 16,
+    "subtitle": 20,
+    "promotionalText": 93,
+    "description": 931,
+    "whatsNew": 132,
+    "keywordsUTF8Bytes": 77
+  },
+  "ko": {
+    "name": 19,
+    "subtitle": 22,
+    "promotionalText": 112,
+    "description": 1125,
+    "whatsNew": 148,
+    "keywordsUTF8Bytes": 77
+  },
+  "de-DE": {
+    "name": 24,
+    "subtitle": 30,
+    "promotionalText": 154,
+    "description": 2397,
+    "whatsNew": 295,
+    "keywordsUTF8Bytes": 95
+  },
+  "es-ES": {
+    "name": 26,
+    "subtitle": 29,
+    "promotionalText": 155,
+    "description": 2294,
+    "whatsNew": 297,
+    "keywordsUTF8Bytes": 90
+  },
+  "fr-FR": {
+    "name": 27,
+    "subtitle": 28,
+    "promotionalText": 150,
+    "description": 2487,
+    "whatsNew": 310,
+    "keywordsUTF8Bytes": 92
+  }
+}

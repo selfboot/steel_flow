@@ -16,7 +16,7 @@ Save multiple material items into a project, duplicate and reorder them, update 
 
 SHARE PROFESSIONAL OUTPUT
 
-Create a polished PDF quote or export a machine-friendly CSV material list. Add company and customer details, terms, validity, and notes before sharing.
+Create a polished PDF quote or export a machine-friendly CSV material list. Add company and customer details, validity, and notes before sharing.
 
 MATERIALS AND UNITS THAT FIT YOUR WORK
 
@@ -28,7 +28,7 @@ No account is required. Project and material data stays on your device by defaul
 
 FREE TO START, ONE-TIME PRO UPGRADE
 
-Quick calculations and essential project tools are free. SteelFlow Pro unlocks unlimited projects and items, custom materials, company details and quote terms, CSV export, PDF quotes without SteelFlow branding, versioned backup, and bulk pricing with one non-consumable purchase—no subscription.
+Quick calculations and essential project tools are free. SteelFlow Pro unlocks unlimited projects and items, custom materials, company details and logo, CSV export, PDF quotes without SteelFlow branding, versioned backup, and bulk pricing with one non-consumable purchase—no subscription.
 
 IMPORTANT
 

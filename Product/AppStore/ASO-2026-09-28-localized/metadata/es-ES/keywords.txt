@@ -1,0 +1,1 @@
+chapa,barra,perfil,aluminio,inoxidable,cobre,latón,densidad,masa,presupuesto,pdf,material

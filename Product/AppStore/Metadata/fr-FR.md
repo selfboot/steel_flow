@@ -1,0 +1,23 @@
+# SteelFlow: Poids des métaux
+
+Calculez le poids de vos tôles, tubes et barres, estimez le coût des matériaux et créez un devis PDF clair. SteelFlow accompagne les ateliers, les travaux de métallerie et les achats de matériaux, des dimensions à l’offre finale.
+
+LE POIDS À PARTIR DES DIMENSIONS
+Calculez le poids théorique des tôles et plats, barres rondes, carrées, hexagonales et octogonales, tubes ronds, carrés et rectangulaires, cornières, profilés U, I/H et T. Vous pouvez aussi saisir une aire de section personnalisée. Consultez le poids unitaire et total, la surface, le volume et la formule utilisée.
+
+DES COÛTS FACILES À SUIVRE
+Saisissez un prix au kg, à la lb, au mètre, au pied ou à la pièce. Ajoutez les pertes de matière, l’usinage, le transport et d’autres frais fixes, une majoration ou une marge ainsi que les taxes pour préparer votre chiffrage.
+
+TOUTES LES PIÈCES DANS UN PROJET
+Enregistrez plusieurs matériaux dans un même projet, dupliquez et réorganisez les lignes, puis actualisez les prix. Gardez les quantités, les poids, les coûts et le montant total du devis au même endroit.
+
+DES DEVIS PDF PRÊTS À PARTAGER
+Choisissez parmi 7 styles et les formats A4 et Letter. Définissez un style par défaut, puis ajoutez les coordonnées du client, la durée de validité et vos notes. L’app et les devis PDF utilisent la langue choisie dans les réglages. Huit langues sont disponibles : français, anglais, allemand, espagnol, japonais, coréen, chinois simplifié et traditionnel.
+
+MATÉRIAUX, UNITÉS ET USAGE HORS LIGNE
+Retrouvez des densités de référence pour l’acier au carbone, l’inox, l’aluminium, le cuivre, le laiton et d’autres matériaux. Travaillez en unités métriques ou impériales. Les calculs principaux fonctionnent hors ligne, sans création de compte. Les projets sont enregistrés sur votre appareil.
+
+COMMENCEZ GRATUITEMENT, ACHETEZ PRO UNE FOIS
+Les calculs rapides et les fonctions de base des projets sont gratuits : jusqu’à 2 projets actifs de 10 lignes chacun. SteelFlow Pro débloque les projets et lignes illimités, les matériaux personnalisés, les coordonnées et le logo de l’entreprise, l’export CSV, les PDF sans la marque SteelFlow, la sauvegarde et la restauration ainsi que la mise à jour des prix par lots. Achat unique, sans abonnement.
+
+Les poids et coûts sont des estimations théoriques fondées sur vos dimensions, des densités de référence et des formules. Vérifiez les spécifications des matériaux et les données du fournisseur avant tout achat, fabrication ou envoi de devis.

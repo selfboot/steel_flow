@@ -35,7 +35,7 @@
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
       "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy",
-      "whatsNew": "SteelFlow 1.3 adds Traditional Chinese, Japanese and Korean.\n\n• Use the app in five languages, automatically following your system or switching in Settings.\n• Choose a separate language for each project’s quote, including localized PDF headings and material names.\n• Backup and restore now preserve the new app and quote language settings."
+      "whatsNew": "• Now available in 8 languages, including Traditional Chinese, Japanese, Korean, German, Spanish and French.\n• Choose from 7 PDF quote styles and set your default style and paper size in Quote Settings.\n• Improved quote previews, amount layouts and localized screens."
     },
     "zh-Hans": {
       "name": "SteelFlow 钢材重量计算器",
@@ -46,25 +46,25 @@
       "supportUrl": "https://docs.puzzles-game.com/zh/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/zh/steelflow",
       "privacyPolicyUrl": "https://docs.puzzles-game.com/zh/steelflow/privacy",
-      "whatsNew": "SteelFlow 1.3 新增繁体中文、日语和韩语。\n\n• App 现支持五种语言，可跟随系统或在设置中切换。\n• 每个项目可独立选择报价语言，PDF 标题、字段和内置材料名称同步本地化。\n• 备份与恢复支持保存新增的 App 和报价语言设置。"
+      "whatsNew": "• 新增繁体中文、日语、韩语、德语、西班牙语和法语，现支持 8 种语言。\n• 提供 7 种 PDF 报价样式，可在报价设置中选择默认样式与纸张尺寸。\n• 改善报价预览、金额排版及多语言显示。"
     },
     "zh-Hant": {
-      "name": "SteelFlow 鋼材重量計算器",
+      "name": "SteelFlow 金屬重量計算器",
       "subtitle": "鋼管鋼板算重、材料成本與PDF報價",
-      "keywords": "金屬,角鋼,槽鋼,H型鋼,工字鋼,不鏽鋼,鋁材,銅,圓棒,扁鋼,密度,截面積,裁切",
-      "promotionalText": "從尺寸到報價單：計算鋼材與金屬重量、估算材料成本、管理專案，再匯出 PDF 報價與 CSV 清單。核心計算離線可用，無需帳號。",
-      "whatsNew": "SteelFlow 1.3 新增繁體中文、日文及韓文。\n\n• App 支援五種語言，可跟隨系統或在設定中切換。\n• 每個專案可獨立選擇報價語言，PDF 標題、欄位及內建材料名稱同步在地化。\n• 備份與還原保留新增的 App 及報價語言設定。",
+      "keywords": "角鋼,槽鋼,H型鋼,不鏽鋼,鋁材,銅,圓棒,扁鋼,密度,截面積",
+      "promotionalText": "輸入尺寸，算出金屬重量與材料成本，再整理成清楚的 PDF 報價單。支援公制與英制、專案管理與多種報價樣式；核心計算離線可用，無需帳號。",
+      "whatsNew": "• 新增繁體中文、日文、韓文、德文、西班牙文及法文，App 現支援 8 種語言。\n• 提供 7 種 PDF 報價樣式，可在報價設定中選擇預設樣式與紙張尺寸。\n• 改善報價預覽、金額排版及多語言顯示。",
       "descriptionFile": "zh-Hant.md",
       "supportUrl": "https://docs.puzzles-game.com/zh/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/zh/steelflow",
       "privacyPolicyUrl": "https://docs.puzzles-game.com/zh/steelflow/privacy"
     },
     "ja": {
-      "name": "SteelFlow 鋼材重量計算",
-      "subtitle": "金属・パイプの重さと材料費、PDF見積書",
-      "keywords": "鉄,鉄板,鋼管,角パイプ,丸棒,平鋼,アングル,チャンネル,H形鋼,アルミ,ステンレス,銅,密度,断面積",
-      "promotionalText": "寸法から重量・材料費を計算し、PDF見積書まで作成。鋼材や金属の計算をプロジェクトにまとめ、CSVリストも共有できます。主要な計算機能はオフライン対応、アカウント登録不要。",
-      "whatsNew": "SteelFlow 1.3で日本語、繁体字中国語、韓国語に対応しました。\n\n• アプリは5言語に対応。システム設定に従うか、設定画面から切り替えられます。\n• プロジェクトごとに見積書の言語を選択。PDFの見出し、項目名、標準材料名も翻訳されます。\n• 新しい言語設定を含むバックアップの書き出し・復元に対応しました。",
+      "name": "SteelFlow 金属重量計算",
+      "subtitle": "鋼材・パイプの重さと材料費、PDF見積書",
+      "keywords": "鉄板,鋼管,角パイプ,丸棒,平鋼,アルミ,ステンレス,銅,密度",
+      "promotionalText": "寸法から金属の重量と材料費を計算し、PDF見積書まで作成。鋼板・パイプ・棒材をプロジェクトにまとめ、用途に合った見積書デザインを選べます。基本の計算はオフライン対応、アカウント登録不要。",
+      "whatsNew": "• 日本語、繁体字中国語、韓国語、ドイツ語、スペイン語、フランス語を追加し、8言語に対応しました。\n• PDF見積書は7種類のデザインから選択可能。設定で標準のデザインと用紙サイズを指定できます。\n• 見積書プレビュー、金額のレイアウト、多言語表示を改善しました。",
       "descriptionFile": "ja.md",
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
@@ -73,16 +73,49 @@
     "ko": {
       "name": "SteelFlow 금속 중량 계산기",
       "subtitle": "강재·파이프 무게, 재료비와 PDF 견적",
-      "keywords": "철판,강관,각관,환봉,평강,앵글,채널,H형강,스테인리스,알루미늄,구리,밀도,단면적,절단",
-      "promotionalText": "치수로 금속 중량과 재료비를 계산하고 PDF 견적서까지 만드세요. 계산을 프로젝트로 관리하고 CSV 목록을 공유할 수 있습니다. 주요 계산은 오프라인에서 사용 가능하며 계정 등록이 필요하지 않습니다.",
-      "whatsNew": "SteelFlow 1.3에 한국어, 중국어 번체, 일본어가 추가되었습니다.\n\n• 앱에서 5개 언어를 지원합니다. 시스템 언어를 따르거나 설정에서 변경하세요.\n• 프로젝트마다 견적서 언어를 선택할 수 있습니다. PDF 제목, 항목명 및 기본 재료 이름도 번역됩니다.\n• 백업과 복원 시 새 앱 언어 및 견적서 언어 설정이 유지됩니다.",
+      "keywords": "철판,강관,각관,환봉,앵글,스테인리스,알루미늄,구리,밀도",
+      "promotionalText": "치수로 금속 중량과 재료비를 계산하고 PDF 견적서까지 만드세요. 강판, 파이프, 봉재를 프로젝트로 정리하고 견적서 스타일을 선택할 수 있습니다. 주요 계산은 오프라인에서, 계정 등록 없이 사용하세요.",
+      "whatsNew": "• 한국어, 중국어 번체, 일본어, 독일어, 스페인어, 프랑스어가 추가되어 8개 언어를 지원합니다.\n• PDF 견적서 스타일 7종을 제공합니다. 설정에서 기본 스타일과 용지 크기를 선택할 수 있습니다.\n• 견적서 미리보기, 금액 배치 및 다국어 표시를 개선했습니다.",
       "descriptionFile": "ko.md",
+      "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
+      "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
+      "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy"
+    },
+    "de-DE": {
+      "name": "SteelFlow: Metallrechner",
+      "subtitle": "Stahlgewicht, Kosten & Angebot",
+      "keywords": "metallgewicht,rohr,blech,profil,aluminium,edelstahl,kupfer,messing,dichte,träger,rundstahl,pdf",
+      "promotionalText": "Vom Maß zum Angebot: Metallgewicht und Materialkosten berechnen, Positionen bündeln und klare PDF-Angebote erstellen. Offline rechnen, ohne Benutzerkonto.",
+      "whatsNew": "• Jetzt in 8 Sprachen, darunter Deutsch, Französisch, Spanisch, Japanisch, Koreanisch und traditionelles Chinesisch.\n• 7 PDF-Designs für Angebote. Standarddesign und Papierformat in den Angebotseinstellungen wählen.\n• Verbesserte Angebotsvorschau, Betragsdarstellung und mehrsprachige Ansichten.",
+      "descriptionFile": "de-DE.md",
+      "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
+      "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
+      "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy"
+    },
+    "es-ES": {
+      "name": "SteelFlow: Peso de metales",
+      "subtitle": "Calcula acero, tubos y costes",
+      "keywords": "chapa,barra,perfil,aluminio,inoxidable,cobre,latón,densidad,masa,presupuesto,pdf,material",
+      "promotionalText": "De las medidas al presupuesto: calcula el peso y el coste del metal, organiza proyectos y comparte presupuestos en PDF. Cálculos sin conexión y sin cuenta.",
+      "whatsNew": "• Ahora en 8 idiomas, incluidos español, francés, alemán, japonés, coreano y chino tradicional.\n• 7 estilos de presupuesto PDF. Elige el estilo predeterminado y el tamaño de papel en los ajustes de presupuestos.\n• Mejoras en la vista previa, la presentación de importes y las pantallas traducidas.",
+      "descriptionFile": "es-ES.md",
+      "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
+      "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
+      "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy"
+    },
+    "fr-FR": {
+      "name": "SteelFlow: Poids des métaux",
+      "subtitle": "Calcul acier, tubes et devis",
+      "keywords": "tôle,barre,profilé,aluminium,inox,cuivre,laiton,densité,masse,coût,pdf,matériau,atelier",
+      "promotionalText": "Des dimensions au devis : calculez le poids et le coût du métal, regroupez vos pièces et partagez un devis PDF clair. Calculs hors ligne, sans compte.",
+      "whatsNew": "• Désormais disponible en 8 langues, dont le français, l’allemand, l’espagnol, le japonais, le coréen et le chinois traditionnel.\n• 7 styles de devis PDF. Choisissez le style et le format de papier par défaut dans les réglages des devis.\n• Aperçu des devis, affichage des montants et écrans traduits améliorés.",
+      "descriptionFile": "fr-FR.md",
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
       "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy"
     }
   },
-  "reviewNotes": "Version 1.3 (build 21) adds Traditional Chinese, Japanese and Korean throughout the app, including calculator labels, materials, settings, purchase UI, validation messages and customer PDF quotes. App and quote languages are independent. New projects default to the selected app language, or the supported system language. Backup and restore preserve all five supported language choices.\n\nTo review: open Settings > App language and select 繁體中文, 日本語 or 한국어. Alternatively set the device language before launching. Create a project and check Quote language, or edit an existing project to select a different quote language. Add a valid calculation, then open Quote preview and export a PDF.\n\nNo demo account is required. Core calculations work offline. SteelFlow Pro is a non-consumable lifetime purchase (com.steelflow.app.pro.lifetime), not a subscription. Open Settings > SteelFlow Pro to purchase or restore using the same Apple Account. Project data stays on the device; RevenueCat processes anonymous purchase and entitlement information.",
+  "reviewNotes": "Version 1.3 (build 26) supports eight app and quote languages: English, Simplified and Traditional Chinese, Japanese, Korean, German, Spanish and French. The app UI and generated PDF quotes use the language selected in Settings, including exports from older projects and saved quote versions. Seven PDF quote styles are available; choose the default style and paper size in Settings > Quote Settings. Pro removes SteelFlow branding from exported PDFs.\n\nTo review: select a language in Settings > App Language, create a project, add a calculation, and open Quote Preview. Change the App Language setting and reopen the quote preview or a saved version to verify localized PDF labels and built-in materials. Customer-entered content and financial data are preserved. No account is required. Core calculations work offline. SteelFlow Pro is a non-consumable lifetime purchase (com.steelflow.app.pro.lifetime), not a subscription. Project data stays on the device; RevenueCat processes anonymous purchase and entitlement information.",
   "inAppPurchase": {
     "productId": "com.steelflow.app.pro.lifetime",
     "type": "Non-Consumable",

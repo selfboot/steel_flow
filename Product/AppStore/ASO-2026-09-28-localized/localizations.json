@@ -1,0 +1,206 @@
+{
+  "zh-Hant": {
+    "name": "SteelFlow 金屬重量計算器",
+    "subtitle": "鋼管鋼板算重、材料成本與PDF報價",
+    "keywords": "角鋼,槽鋼,H型鋼,不鏽鋼,鋁材,銅,圓棒,扁鋼,密度,截面積",
+    "promotionalText": "輸入尺寸，算出金屬重量與材料成本，再整理成清楚的 PDF 報價單。支援公制與英制、專案管理與多種報價樣式；核心計算離線可用，無需帳號。",
+    "whatsNew": "• 新增繁體中文、日文、韓文、德文、西班牙文及法文，App 現支援 8 種語言。\n• 提供 7 種 PDF 報價樣式，可在報價設定中選擇預設樣式與紙張尺寸。\n• 改善報價預覽、金額排版及多語言顯示。",
+    "description": "從鋼板、鋼管到鋁棒，輸入尺寸就能計算理論重量、估算材料成本，再產生專業的 PDF 報價單。SteelFlow 適合金屬加工、材料採購與日常估價，讓每筆算料結果都有依據。\n\n金屬重量計算\n支援板材、扁鋼、圓棒、方棒、六角棒、八角棒、圓管、方管、矩形管、角鋼、槽鋼、工字鋼／H 型鋼、T 型鋼與自訂截面積。輸入尺寸與數量，即可查看單件重量、總重量、表面積、體積及計算公式。\n\n把材料成本算清楚\n依公斤、磅、公尺、英尺或件數計價，加入耗損、加工費、運費等固定費用、加價率或毛利率及稅額，快速比較不同用料與價格。\n\n一個專案，集中管理\n將多筆材料加入同一專案，複製或重新排序明細、更新單價，集中查看數量、重量、費用與報價總額，不必在零散計算之間來回切換。\n\n清楚、正式的 PDF 報價\n提供 7 種報價樣式，支援 A4 與 Letter 紙張。設定預設樣式，加入客戶資訊、有效期限與備註。App 介面與 PDF 報價單會使用設定中選擇的語言，現支援繁體中文、簡體中文、英文、日文、韓文、德文、西班牙文及法文。\n\n常用材料與單位\n內建碳鋼、不鏽鋼、鋁、銅、黃銅等參考密度，支援公制與英制。核心計算可離線使用，無需註冊帳號，專案資料保存在裝置上。\n\n免費開始，一次購買 Pro\n免費使用快速計算與基本專案功能，最多 2 個進行中專案、每個專案 10 筆明細。一次購買 SteelFlow Pro 可解鎖不限數量的專案與明細、自訂材料、公司資訊與標誌、CSV 匯出、移除 PDF 中的 SteelFlow 標識、備份與還原及批次調價，無需訂閱。\n\n重量與成本為依輸入尺寸、參考密度及公式計算的理論估值；採購、加工或報價前，請核對材料規格與供應商資料。",
+    "captions": [
+      [
+        "金屬重量，快速算清",
+        "輸入尺寸，即得理論重量"
+      ],
+      [
+        "專案成本，一目了然",
+        "材料、費用與總額集中管理"
+      ],
+      [
+        "專業報價，隨時分享",
+        "多種 PDF 樣式，清楚呈現"
+      ],
+      [
+        "選擇型材，開始計算",
+        "板材、管材、棒材，常用型材齊備"
+      ],
+      [
+        "材料密度，隨手查用",
+        "鋼、不鏽鋼、鋁與更多材料"
+      ],
+      [
+        "耗損費用，一併估算",
+        "單價、耗損與加工費，清楚掌握"
+      ]
+    ]
+  },
+  "ja": {
+    "name": "SteelFlow 金属重量計算",
+    "subtitle": "鋼材・パイプの重さと材料費、PDF見積書",
+    "keywords": "鉄板,鋼管,角パイプ,丸棒,平鋼,アルミ,ステンレス,銅,密度",
+    "promotionalText": "寸法から金属の重量と材料費を計算し、PDF見積書まで作成。鋼板・パイプ・棒材をプロジェクトにまとめ、用途に合った見積書デザインを選べます。基本の計算はオフライン対応、アカウント登録不要。",
+    "whatsNew": "• 日本語、繁体字中国語、韓国語、ドイツ語、スペイン語、フランス語を追加し、8言語に対応しました。\n• PDF見積書は7種類のデザインから選択可能。設定で標準のデザインと用紙サイズを指定できます。\n• 見積書プレビュー、金額のレイアウト、多言語表示を改善しました。",
+    "description": "鋼板や鋼管、アルミ棒の寸法から理論重量を求め、材料費の計算からPDF見積書の作成まで。SteelFlowは、金属加工・資材調達・日々の積算に役立つ金属重量計算アプリです。\n\n金属の重さを寸法から計算\n板材・平鋼、丸棒、角棒、六角棒、八角棒、丸パイプ、角パイプ、長方形パイプ、アングル、チャンネル、I形鋼・H形鋼、T形鋼、任意の断面積に対応。寸法と数量を入力すると、単体重量、総重量、表面積、体積、計算式を確認できます。\n\n材料費と諸経費をまとめて把握\nkg・lb・m・ft・個数を基準に単価を設定。ロス率、加工費、運送費などの固定費、値入率または粗利率、税額を加えて、見積金額を計算できます。\n\n複数の材料をプロジェクトで管理\n計算結果を同じプロジェクトに保存し、明細の複製・並べ替え・単価更新を行えます。数量、重量、材料費、諸経費、合計金額を一か所で確認できます。\n\nそのまま共有できるPDF見積書\n7種類のデザインとA4・Letter用紙に対応。標準のデザインを設定し、顧客情報、有効期限、備考を含む見積書を作成できます。アプリの画面とPDF見積書には、設定で選んだ言語が適用されます。日本語、英語、簡体字・繁体字中国語、韓国語、ドイツ語、スペイン語、フランス語の8言語に対応しています。\n\n材料の密度と単位をすぐ確認\n炭素鋼、ステンレス、アルミニウム、銅、真鍮などの参考密度を収録。メートル法とヤード・ポンド法に対応します。基本の計算はオフラインで利用でき、アカウント登録は不要。プロジェクトのデータは端末に保存されます。\n\n無料で開始、Proは買い切り\nクイック計算と基本的なプロジェクト機能は無料。進行中のプロジェクトは2件まで、各プロジェクトの明細は10件まで利用できます。SteelFlow Proを一度購入すると、プロジェクトと明細の上限解除、カスタム材料、会社情報とロゴ、CSV出力、PDFからのSteelFlow表記の削除、バックアップと復元、一括価格更新を利用できます。サブスクリプションはありません。\n\n重量と費用は、入力値・参考密度・計算式に基づく理論上の概算です。購入・加工・見積提出の前に、材料の仕様と仕入先の情報をご確認ください。",
+    "captions": [
+      [
+        "金属の重さを、すぐ計算",
+        "寸法から理論重量がわかる"
+      ],
+      [
+        "材料費も、合計も明快に",
+        "プロジェクトの費用を一か所に"
+      ],
+      [
+        "伝わる見積書を、すぐ共有",
+        "選べるデザインでPDFを作成"
+      ],
+      [
+        "形状を選んで、計算開始",
+        "板材・パイプ・棒材などに対応"
+      ],
+      [
+        "材料の密度を、手元に",
+        "鋼・ステンレス・アルミなどを収録"
+      ],
+      [
+        "ロスも加工費も、まとめて",
+        "単価と諸経費を含めて見積もり"
+      ]
+    ]
+  },
+  "ko": {
+    "name": "SteelFlow 금속 중량 계산기",
+    "subtitle": "강재·파이프 무게, 재료비와 PDF 견적",
+    "keywords": "철판,강관,각관,환봉,앵글,스테인리스,알루미늄,구리,밀도",
+    "promotionalText": "치수로 금속 중량과 재료비를 계산하고 PDF 견적서까지 만드세요. 강판, 파이프, 봉재를 프로젝트로 정리하고 견적서 스타일을 선택할 수 있습니다. 주요 계산은 오프라인에서, 계정 등록 없이 사용하세요.",
+    "whatsNew": "• 한국어, 중국어 번체, 일본어, 독일어, 스페인어, 프랑스어가 추가되어 8개 언어를 지원합니다.\n• PDF 견적서 스타일 7종을 제공합니다. 설정에서 기본 스타일과 용지 크기를 선택할 수 있습니다.\n• 견적서 미리보기, 금액 배치 및 다국어 표시를 개선했습니다.",
+    "description": "강판, 강관, 알루미늄 봉의 치수로 이론 중량을 계산하고 재료비 산출부터 PDF 견적서 작성까지 한곳에서 처리하세요. SteelFlow는 금속 가공, 자재 구매, 일상적인 견적 업무를 위한 금속 중량 계산기입니다.\n\n치수로 금속 무게 계산\n판재와 평강, 환봉, 각봉, 육각봉, 팔각봉, 원형관, 정사각관, 직사각관, 앵글, 채널, I형강·H형강, T형강 및 사용자 지정 단면적을 지원합니다. 치수와 수량을 입력하면 개당 중량, 총중량, 표면적, 부피와 계산식을 확인할 수 있습니다.\n\n재료비부터 부대 비용까지\nkg, lb, m, ft 또는 개수를 기준으로 단가를 설정하세요. 손실률, 가공비, 운송비 등 고정 비용, 가산율 또는 마진율, 세금을 반영해 견적 금액을 계산할 수 있습니다.\n\n프로젝트로 모아서 관리\n여러 자재의 계산 결과를 하나의 프로젝트에 저장하고 항목을 복제하거나 순서를 바꾸고 단가를 갱신하세요. 수량, 중량, 재료비, 부대 비용과 총액을 한눈에 확인할 수 있습니다.\n\n바로 공유하는 PDF 견적서\n7가지 스타일과 A4·Letter 용지를 지원합니다. 기본 스타일을 설정하고 고객 정보, 유효 기간, 메모가 담긴 견적서를 작성하세요. 앱 화면과 PDF 견적서에는 설정에서 선택한 언어가 적용되며 한국어, 영어, 중국어 간체·번체, 일본어, 독일어, 스페인어, 프랑스어를 지원합니다.\n\n재료 밀도와 단위 선택\n탄소강, 스테인리스강, 알루미늄, 구리, 황동 등의 참고 밀도를 제공합니다. 미터법과 야드파운드법을 지원합니다. 주요 계산은 오프라인에서 사용할 수 있고 계정 등록이 필요하지 않습니다. 프로젝트 데이터는 기기에 저장됩니다.\n\n무료로 시작하고 Pro는 한 번만 구매\n빠른 계산과 기본 프로젝트 기능은 무료입니다. 진행 중인 프로젝트 2개, 프로젝트당 항목 10개까지 이용할 수 있습니다. SteelFlow Pro를 한 번 구매하면 프로젝트와 항목 수 제한 해제, 사용자 지정 재료, 회사 정보와 로고, CSV 내보내기, PDF의 SteelFlow 표시 제거, 백업 및 복원, 일괄 가격 갱신 기능이 제공됩니다. 구독은 필요하지 않습니다.\n\n중량과 비용은 입력값, 참고 밀도 및 계산식에 따른 이론적 추정치입니다. 구매, 가공 또는 견적 제출 전에 재료 사양과 공급업체 정보를 확인하세요.",
+    "captions": [
+      [
+        "금속 중량, 빠르게 계산",
+        "치수만 입력하면 이론 중량 확인"
+      ],
+      [
+        "프로젝트 비용을 한눈에",
+        "재료비부터 총액까지 한곳에서"
+      ],
+      [
+        "완성된 견적서를 바로 공유",
+        "다양한 스타일로 PDF 견적 작성"
+      ],
+      [
+        "형상을 고르고 계산 시작",
+        "판재, 파이프, 봉재 등 지원"
+      ],
+      [
+        "재료 밀도를 바로 확인",
+        "강재, 스테인리스, 알루미늄까지"
+      ],
+      [
+        "손실과 가공비까지 반영",
+        "단가와 부대 비용을 함께 계산"
+      ]
+    ]
+  },
+  "de-DE": {
+    "name": "SteelFlow: Metallrechner",
+    "subtitle": "Stahlgewicht, Kosten & Angebot",
+    "keywords": "metallgewicht,rohr,blech,profil,aluminium,edelstahl,kupfer,messing,dichte,träger,rundstahl,pdf",
+    "promotionalText": "Vom Maß zum Angebot: Metallgewicht und Materialkosten berechnen, Positionen bündeln und klare PDF-Angebote erstellen. Offline rechnen, ohne Benutzerkonto.",
+    "whatsNew": "• Jetzt in 8 Sprachen, darunter Deutsch, Französisch, Spanisch, Japanisch, Koreanisch und traditionelles Chinesisch.\n• 7 PDF-Designs für Angebote. Standarddesign und Papierformat in den Angebotseinstellungen wählen.\n• Verbesserte Angebotsvorschau, Betragsdarstellung und mehrsprachige Ansichten.",
+    "description": "Metallgewicht berechnen, Materialkosten kalkulieren und ein übersichtliches PDF-Angebot erstellen: SteelFlow begleitet Ihre Arbeit vom ersten Maß bis zur fertigen Kalkulation. Für Metallbau, Werkstatt und Materialeinkauf.\n\nGEWICHT AUS MASSEN BERECHNEN\nBerechnen Sie das theoretische Gewicht von Blechen und Flachstahl, Rund-, Vierkant-, Sechskant- und Achtkantstäben, Rund-, Quadrat- und Rechteckrohren, Winkeln, U-, I-/H- und T-Profilen sowie eigenen Querschnittsflächen. Maße und Stückzahl eingeben, Einzelgewicht, Gesamtgewicht, Oberfläche, Volumen und Rechenformel prüfen.\n\nMATERIALKOSTEN IM BLICK\nPreise je kg, lb, Meter, Fuß oder Stück verwenden. Verschnitt, Bearbeitungskosten, Transport und andere Fixkosten, Aufschlag oder Marge sowie Steuern einbeziehen. So wird aus einer Gewichtsberechnung eine nachvollziehbare Kalkulation.\n\nPOSITIONEN IM PROJEKT BÜNDELN\nMehrere Materialien in einem Projekt speichern, Positionen duplizieren und sortieren sowie Preise aktualisieren. Stückzahlen, Gewichte, Materialkosten, Gebühren und Angebotssumme bleiben zusammen.\n\nANGEBOTE ALS PDF TEILEN\nWählen Sie aus 7 Designs und den Papierformaten A4 und Letter. Legen Sie ein Standarddesign fest und ergänzen Sie Kundendaten, Gültigkeit und Notizen. Die App und PDF-Angebote verwenden die in den Einstellungen gewählte Sprache. Unterstützt werden Deutsch, Englisch, Französisch, Spanisch, Japanisch, Koreanisch sowie vereinfachtes und traditionelles Chinesisch.\n\nMATERIALIEN, EINHEITEN UND OFFLINE-NUTZUNG\nReferenzdichten für Baustahl, Edelstahl, Aluminium, Kupfer, Messing und weitere Materialien sind enthalten. Arbeiten Sie mit metrischen oder imperialen Einheiten. Die Kernberechnungen funktionieren offline und ohne Benutzerkonto. Projektdaten werden auf Ihrem Gerät gespeichert.\n\nKOSTENLOS STARTEN, PRO EINMAL KAUFEN\nSchnellberechnungen und grundlegende Projektfunktionen sind kostenlos: bis zu 2 aktive Projekte mit je 10 Positionen. SteelFlow Pro schaltet unbegrenzte Projekte und Positionen, eigene Materialien, Firmendaten und Logo, CSV-Export, PDFs ohne SteelFlow-Kennzeichnung, Sicherung und Wiederherstellung sowie gemeinsame Preisaktualisierungen frei. Einmaliger Kauf, kein Abonnement.\n\nGewichte und Kosten sind theoretische Schätzwerte auf Basis Ihrer Eingaben, Referenzdichten und Formeln. Prüfen Sie Materialspezifikationen und Lieferantendaten vor Einkauf, Fertigung oder Angebotsabgabe.",
+    "captions": [
+      [
+        "Metallgewicht. Schnell berechnet.",
+        "Von den Maßen zum Gewicht."
+      ],
+      [
+        "Alle Kosten. Eine klare Summe.",
+        "Material und Gebühren im Überblick."
+      ],
+      [
+        "Angebote, bereit zum Teilen.",
+        "Klare PDFs in Ihrem Wunschdesign."
+      ],
+      [
+        "Profil wählen. Gewicht berechnen.",
+        "Bleche, Rohre, Stäbe und mehr."
+      ],
+      [
+        "Materialdichten immer zur Hand.",
+        "Stahl, Edelstahl, Aluminium und mehr."
+      ],
+      [
+        "Verschnitt mit einkalkuliert.",
+        "Preise und Bearbeitungskosten im Blick."
+      ]
+    ]
+  },
+  "es-ES": {
+    "name": "SteelFlow: Peso de metales",
+    "subtitle": "Calcula acero, tubos y costes",
+    "keywords": "chapa,barra,perfil,aluminio,inoxidable,cobre,latón,densidad,masa,presupuesto,pdf,material",
+    "promotionalText": "De las medidas al presupuesto: calcula el peso y el coste del metal, organiza proyectos y comparte presupuestos en PDF. Cálculos sin conexión y sin cuenta.",
+    "whatsNew": "• Ahora en 8 idiomas, incluidos español, francés, alemán, japonés, coreano y chino tradicional.\n• 7 estilos de presupuesto PDF. Elige el estilo predeterminado y el tamaño de papel en los ajustes de presupuestos.\n• Mejoras en la vista previa, la presentación de importes y las pantallas traducidas.",
+    "description": "Calcula el peso de chapas, tubos y barras, estima el coste del material y prepara un presupuesto en PDF. SteelFlow reúne los cálculos de metal y los costes de cada proyecto para talleres, trabajos de metal y compras de material.\n\nPESO A PARTIR DE LAS MEDIDAS\nCalcula el peso teórico de chapas y pletinas, barras redondas, cuadradas, hexagonales y octogonales, tubos redondos, cuadrados y rectangulares, ángulos, canales y perfiles I/H y T. También puedes introducir un área de sección propia. Consulta el peso unitario y total, la superficie, el volumen y la fórmula utilizada.\n\nCOSTES MÁS CLAROS\nIntroduce precios por kg, lb, metro, pie o unidad. Añade merma, mecanizado, transporte y otros gastos fijos, recargo o margen e impuestos para obtener una estimación completa.\n\nTODO EL PROYECTO EN UN LUGAR\nGuarda varios materiales en el mismo proyecto. Duplica y ordena partidas, actualiza precios y consulta cantidades, pesos, costes y total del presupuesto sin perder de vista las medidas de cada pieza.\n\nPRESUPUESTOS PDF LISTOS PARA COMPARTIR\nElige entre 7 estilos y papel A4 o Letter. Define un estilo predeterminado y añade datos del cliente, validez y notas. La app y los presupuestos PDF utilizan el idioma elegido en los ajustes. Disponible en español, inglés, francés, alemán, japonés, coreano y chino simplificado y tradicional.\n\nMATERIALES Y UNIDADES\nIncluye densidades de referencia para acero al carbono, acero inoxidable, aluminio, cobre, latón y otros materiales. Trabaja con unidades métricas o imperiales. Los cálculos principales funcionan sin conexión y no requieren cuenta. Los proyectos se guardan en tu dispositivo.\n\nEMPIEZA GRATIS, COMPRA PRO UNA SOLA VEZ\nLos cálculos rápidos y las funciones básicas de proyectos son gratuitos: hasta 2 proyectos activos con 10 partidas cada uno. SteelFlow Pro desbloquea proyectos y partidas ilimitados, materiales personalizados, datos y logotipo de empresa, exportación CSV, PDF sin la marca SteelFlow, copia de seguridad y restauración y actualización de precios por lotes. Compra única, sin suscripción.\n\nLos pesos y costes son estimaciones teóricas basadas en tus medidas, densidades de referencia y fórmulas. Comprueba las especificaciones del material y los datos del proveedor antes de comprar, fabricar o presentar un presupuesto.",
+    "captions": [
+      [
+        "Peso del metal, calculado.",
+        "De las medidas al peso."
+      ],
+      [
+        "Todos los costes. Un total claro.",
+        "Material y gastos, en un solo lugar."
+      ],
+      [
+        "Presupuestos listos para enviar.",
+        "PDF claros con el estilo que elijas."
+      ],
+      [
+        "Elige el perfil. Empieza a calcular.",
+        "Chapas, tubos, barras y más."
+      ],
+      [
+        "Densidades siempre a mano.",
+        "Acero, inoxidable, aluminio y más."
+      ],
+      [
+        "Incluye la merma en tus costes.",
+        "Controla precios y gastos de mecanizado."
+      ]
+    ]
+  },
+  "fr-FR": {
+    "name": "SteelFlow: Poids des métaux",
+    "subtitle": "Calcul acier, tubes et devis",
+    "keywords": "tôle,barre,profilé,aluminium,inox,cuivre,laiton,densité,masse,coût,pdf,matériau,atelier",
+    "promotionalText": "Des dimensions au devis : calculez le poids et le coût du métal, regroupez vos pièces et partagez un devis PDF clair. Calculs hors ligne, sans compte.",
+    "whatsNew": "• Désormais disponible en 8 langues, dont le français, l’allemand, l’espagnol, le japonais, le coréen et le chinois traditionnel.\n• 7 styles de devis PDF. Choisissez le style et le format de papier par défaut dans les réglages des devis.\n• Aperçu des devis, affichage des montants et écrans traduits améliorés.",
+    "description": "Calculez le poids de vos tôles, tubes et barres, estimez le coût des matériaux et créez un devis PDF clair. SteelFlow accompagne les ateliers, les travaux de métallerie et les achats de matériaux, des dimensions à l’offre finale.\n\nLE POIDS À PARTIR DES DIMENSIONS\nCalculez le poids théorique des tôles et plats, barres rondes, carrées, hexagonales et octogonales, tubes ronds, carrés et rectangulaires, cornières, profilés U, I/H et T. Vous pouvez aussi saisir une aire de section personnalisée. Consultez le poids unitaire et total, la surface, le volume et la formule utilisée.\n\nDES COÛTS FACILES À SUIVRE\nSaisissez un prix au kg, à la lb, au mètre, au pied ou à la pièce. Ajoutez les pertes de matière, l’usinage, le transport et d’autres frais fixes, une majoration ou une marge ainsi que les taxes pour préparer votre chiffrage.\n\nTOUTES LES PIÈCES DANS UN PROJET\nEnregistrez plusieurs matériaux dans un même projet, dupliquez et réorganisez les lignes, puis actualisez les prix. Gardez les quantités, les poids, les coûts et le montant total du devis au même endroit.\n\nDES DEVIS PDF PRÊTS À PARTAGER\nChoisissez parmi 7 styles et les formats A4 et Letter. Définissez un style par défaut, puis ajoutez les coordonnées du client, la durée de validité et vos notes. L’app et les devis PDF utilisent la langue choisie dans les réglages. Huit langues sont disponibles : français, anglais, allemand, espagnol, japonais, coréen, chinois simplifié et traditionnel.\n\nMATÉRIAUX, UNITÉS ET USAGE HORS LIGNE\nRetrouvez des densités de référence pour l’acier au carbone, l’inox, l’aluminium, le cuivre, le laiton et d’autres matériaux. Travaillez en unités métriques ou impériales. Les calculs principaux fonctionnent hors ligne, sans création de compte. Les projets sont enregistrés sur votre appareil.\n\nCOMMENCEZ GRATUITEMENT, ACHETEZ PRO UNE FOIS\nLes calculs rapides et les fonctions de base des projets sont gratuits : jusqu’à 2 projets actifs de 10 lignes chacun. SteelFlow Pro débloque les projets et lignes illimités, les matériaux personnalisés, les coordonnées et le logo de l’entreprise, l’export CSV, les PDF sans la marque SteelFlow, la sauvegarde et la restauration ainsi que la mise à jour des prix par lots. Achat unique, sans abonnement.\n\nLes poids et coûts sont des estimations théoriques fondées sur vos dimensions, des densités de référence et des formules. Vérifiez les spécifications des matériaux et les données du fournisseur avant tout achat, fabrication ou envoi de devis.",
+    "captions": [
+      [
+        "Le poids du métal, calculé.",
+        "Des dimensions au poids."
+      ],
+      [
+        "Tous les coûts. Un total clair.",
+        "Matériaux et frais réunis au même endroit."
+      ],
+      [
+        "Des devis prêts à partager.",
+        "Des PDF clairs, dans le style de votre choix."
+      ],
+      [
+        "Choisissez un profilé. Calculez.",
+        "Tôles, tubes, barres et plus encore."
+      ],
+      [
+        "Les densités à portée de main.",
+        "Acier, inox, aluminium et bien plus."
+      ],
+      [
+        "Les pertes prises en compte.",
+        "Prix et frais d’usinage sous contrôle."
+      ]
+    ]
+  }
+}

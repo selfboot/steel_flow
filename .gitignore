@@ -10,3 +10,8 @@ Config/RevenueCat.local.xcconfig
 
 # Local browser automation logs and snapshots.
 /.playwright-cli/
+
+# Reproducible Python caches and duplicate ASO export bundles.
+__pycache__/
+*.py[cod]
+/Product/AppStore/ASO-*/*.zip

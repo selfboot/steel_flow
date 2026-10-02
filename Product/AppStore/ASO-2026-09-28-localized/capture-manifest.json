@@ -1,0 +1,298 @@
+{
+  "count": 72,
+  "sources": [
+    "Build/ASOLocalized-20260928/iPhone.xcresult",
+    "Build/ASOLocalized-20260928/iPad-FrenchFinal.xcresult",
+    "Build/ASOLocalized-20260928/iPad-Final.xcresult"
+  ],
+  "captures": [
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/de-DE/calculation.png",
+      "sha256": "ed66eb74101dc03aecc08699aaa202da50c148c9e7830d74785188c0a0ccd8f6"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/de-DE/home.png",
+      "sha256": "60d28f618554a7ccec2cc18e6137b9e502c1c136ab506eb69f4371b7b90f4147"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/de-DE/materials.png",
+      "sha256": "7e9006250975d5cb575e7f4974cafa99a3acfa25b0a5f2ee3820841ca58af3f0"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/de-DE/pricing.png",
+      "sha256": "52f9bc4c6a7084c4d04dbcbc031109bdb2de844b75524b830cdee95772d9fe81"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/de-DE/project.png",
+      "sha256": "5a973ba07ab960e6e65786bf339deaac30093cc6be5d7d9c14825f85ae66a63f"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/de-DE/quote.png",
+      "sha256": "39493bcdb59be912dbf173aa18c802ab416bb320e20cba6fe898c9a991cb4f08"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/es-ES/calculation.png",
+      "sha256": "06fbd5bc4e4b9fe3d4b9a26fb345c5582df8dec28bea926376b2224a28389110"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/es-ES/home.png",
+      "sha256": "92271667e6525e31525d4bffdf2b2b067b5b0e6b7f5947050bdcaee0bbeff9b1"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/es-ES/materials.png",
+      "sha256": "b753ccb7483ad2aef7685fe53eaf23acdef67797b5892ad2b7e5462a2b439724"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/es-ES/pricing.png",
+      "sha256": "bfc543d1a420448c8f21d1359bda9942d7edd5e188efcba17df8ee1abc5c8365"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/es-ES/project.png",
+      "sha256": "ac7ac1455383deb3f1ce84c0fb9c82d232ba01198f9ef4fe7fc214512970230f"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/es-ES/quote.png",
+      "sha256": "3ea1efd5eac566073e656194cc22cba3c332d5c055946ceb4a32a4504e80d31c"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/fr-FR/calculation.png",
+      "sha256": "3d4b28acf166e77745264df97b8fa77636071f717dc4e86edf83c35ffa73a48c"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/fr-FR/home.png",
+      "sha256": "66998a390853653a40618ab8da3e05b67bd5954122cab2d880dfb87ebc2302dd"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/fr-FR/materials.png",
+      "sha256": "f97d2aa834b71f9ed349a63414547b88756171c784ba8945ab4cf428d80a9896"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/fr-FR/pricing.png",
+      "sha256": "da3018aa83d4e5c470bdccb93f370d72c4a4c9ae9c550d4738e9226e7244145d"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/fr-FR/project.png",
+      "sha256": "863819d8cc4af42f107de117921bd20f5ce84fc6a060e2524e61199c77faea37"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/fr-FR/quote.png",
+      "sha256": "4b7c800e85015d659e273dc4d98625f1cebe3d4e857528364baed30ed6266689"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ja/calculation.png",
+      "sha256": "3afeb01636d04a617e6a3adab770481382014c1e962252b3467e181fd97ac9b1"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ja/home.png",
+      "sha256": "73dccbdcbb8b284073afc63c06f946f929ca3dc719304b0569a071bf632ebbe2"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ja/materials.png",
+      "sha256": "013533110000070bed44566d0b1f2cebb536e7edcdec590e0b9b8fa358ce2903"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ja/pricing.png",
+      "sha256": "deee7b27c5c4eab72ada3550df9ec161da9ce036f67fb182c223b96a5de9059c"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ja/project.png",
+      "sha256": "4ce45418858f1e68518a31ac473521c5c1796723f9e47e25597633e6ade83be7"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ja/quote.png",
+      "sha256": "cad2f76e169c7f914744d6e33862a12486a7ea06cc92a28e3393c26170f666ec"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ko/calculation.png",
+      "sha256": "414c74e61b38516d8c70ec841b271bd108a25df35627669b79bf7e7d076b6bcc"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ko/home.png",
+      "sha256": "54fa8538f954ba9916ac89ef4fd72146b25675448a155fb4900a2b441befbb04"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ko/materials.png",
+      "sha256": "d4baa70983c3ef62e60bb1c9c53ce155476f74acee19fc1eb605ac6e202cddf9"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ko/pricing.png",
+      "sha256": "3af1c896a85f2f7054897def9827bdb2ce2f55e3039cedb3958dea6c37da6ad9"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ko/project.png",
+      "sha256": "b39942de345b2a02f3b480dbaf62f964fb170cdea8f72feeb89e224229d21c8e"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/ko/quote.png",
+      "sha256": "7d27af6d04140b4fea2a76b0024b1cd143c0c2d7e97578e311d6808e40942d51"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/zh-Hant/calculation.png",
+      "sha256": "c0ccee6efe4d96b5824e369dc454f50ce5ef63323ef9add58d18e1fb4264b6f0"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/zh-Hant/home.png",
+      "sha256": "7e56f6b130420fe5b2b9844c6fe431016568a679f03906548f9d0fd4216511b9"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/zh-Hant/materials.png",
+      "sha256": "2b1da1b570ed4fb6028a6dac0588db891a83ba7490f7cd628a0ce593a93646af"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/zh-Hant/pricing.png",
+      "sha256": "0b0e06200713d919682fcf6ff8a04497f7faa7f2ad87e77b2f0c8960f4c4f8e3"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/zh-Hant/project.png",
+      "sha256": "77ca0ed1169480a9d0add7403658b3a3a48fc2be90d7bdcfd7cf107aa4811f97"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/ipad/zh-Hant/quote.png",
+      "sha256": "1c5d8605b48f740c5587e61edf8b00ba2bfb583310eeb27e2548c22b4286a4cc"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/de-DE/calculation.png",
+      "sha256": "f98c9f4ddbc2efa0d9d52a6864e80757e543735cb421d22416087656ffe4796a"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/de-DE/home.png",
+      "sha256": "1fed2106fa0175e5d082e219093137752a97162bca82333d500e9ed2f493f30c"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/de-DE/materials.png",
+      "sha256": "ca31bd59d64668166b338654d84f221469a2610feb5273603ceabfde0afe92ff"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/de-DE/pricing.png",
+      "sha256": "cbd13ab0f40de57c4486a5d0bde301245c29d7abbe810f0af735eff42eb7c398"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/de-DE/project.png",
+      "sha256": "c5222870b5c2ff0ab0e9b04d763ddb0b80c88f971c8465ada197c7cb24b5fa2c"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/de-DE/quote.png",
+      "sha256": "f719bd8a0c2b563cab15cc8f4bd0a3a313e8b06578ae0cbd67526f051bc37a76"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/es-ES/calculation.png",
+      "sha256": "416140ddc8b32b862ac25130aa3eb29c4ef03f4cab7b5950a08eb69b98f21e69"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/es-ES/home.png",
+      "sha256": "3ea8424ba09dde64d51be23b5b4d9f79ebcc0e2aaf49f3898922888bb95c6e97"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/es-ES/materials.png",
+      "sha256": "13e2e1fa447ca839da64fd8e3d044207d34c644ca11d1c147715fbe39d45cff9"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/es-ES/pricing.png",
+      "sha256": "bac6ec5bb7bf0f81f6c600fc8cda43c1b3e778ff237e589965b14bac18f9857a"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/es-ES/project.png",
+      "sha256": "231bce26ac6bcddf3cc0b629bcc59666c94601ce46574ecc15df9bc37ed8892c"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/es-ES/quote.png",
+      "sha256": "09be92f2af29a67390a3428418ffe5f6570d33edc78ed928c0095110d481fd8e"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/fr-FR/calculation.png",
+      "sha256": "a93c5f9ab10a634c495efb100138be9209c531b125933fb6a0d079ac90837837"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/fr-FR/home.png",
+      "sha256": "0bc6e946e65ad4f35da6b7fb502bfb0262b12a15d900f7e2dd95e078c35c86e4"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/fr-FR/materials.png",
+      "sha256": "7834a9346be8b45ebba974745269bca2d4a99c8c31dfdba3733c28e8df8b26fc"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/fr-FR/pricing.png",
+      "sha256": "6c8cb549d4353f14364ad26c080194ad85c49ecbdcb80a02dfef096c654fec5d"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/fr-FR/project.png",
+      "sha256": "478eeae64c85feb6f9835a690615d4a98298c2c8201525116975f6858357961c"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/fr-FR/quote.png",
+      "sha256": "af2708950afbf0fa7bf2b9f142b0acc7b1abc2322a95623600da29ae16b98add"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ja/calculation.png",
+      "sha256": "fdba5f5eee72e946b3a06693331de14591f63dd540c095d51d256b0fe5d99cae"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ja/home.png",
+      "sha256": "0a6c02853f374f27366704eb538930b8e8102078c531788c1169fc246c86b620"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ja/materials.png",
+      "sha256": "36ca5d8a54fffb60f8c3e6b7d7f53c47e3609b22c20f4df8246c341719c25134"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ja/pricing.png",
+      "sha256": "94309d844f48d2a13c387aacfd253747892b26099f2ca86fa78d05065e79cbef"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ja/project.png",
+      "sha256": "ed191e362b3c7f3f19ea5c5b3a35385719f58200e7aedce8ef2a82c877bffb35"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ja/quote.png",
+      "sha256": "f7466de1ba21b23844563ba12b06581b25942cedbfe037d7bfe8b4af98a8a765"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ko/calculation.png",
+      "sha256": "da870989f8dac0d05b24da33ad6479f46477f6f77c349c1b6420dedbae7d190e"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ko/home.png",
+      "sha256": "d006400baa0d373a47f8fe4d912ad87c92a53db24d9463f95ef6a1c79e72bffc"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ko/materials.png",
+      "sha256": "7860d52c1840249d4aa405581406eeaa7030185c869776abe54fc522ee0204bf"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ko/pricing.png",
+      "sha256": "2b19bf46fef1422377f57ad5f0ec34549534f14c206f9f03ba00c596ac0ce56d"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ko/project.png",
+      "sha256": "efb35a45f2d69926efa264be4403299f4434ebd217d23462ef08a29a1f8d3fc8"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/ko/quote.png",
+      "sha256": "409ab558d1a74c0cb9b44742b364c1982c4751c645959d9fbd2df4df2c489872"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/zh-Hant/calculation.png",
+      "sha256": "9044295b6dcff06efd3d7e1b3689e394d9fdef6517afba225ae491739ebe96a0"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/zh-Hant/home.png",
+      "sha256": "8fcffd04adbca2bfc4dd23024ab541c2884427811a3a76b72f61ffad721fedf0"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/zh-Hant/materials.png",
+      "sha256": "0cdfe5008f214093e38e21b79c59e4de93ce1342f90bd72e4a85d983ef376d0c"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/zh-Hant/pricing.png",
+      "sha256": "df47fedf8856f83a686fac0ab096c63cd7ba8dfc15484eb1c0fdb45d917ef7cd"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/zh-Hant/project.png",
+      "sha256": "98a620b8ea4f4861e90be8e4b1e464777cc4fa86d2636e9375ad147ed5c764e7"
+    },
+    {
+      "path": "ScreenshotsEditor/public/screenshots/localized-20260928/iphone/zh-Hant/quote.png",
+      "sha256": "1211f4bf575d72943b6c3962de6fa3be76a6142dc27acca26eb6db312fefe2a7"
+    }
+  ]
+}

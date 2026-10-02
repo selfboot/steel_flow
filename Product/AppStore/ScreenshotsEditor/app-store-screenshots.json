@@ -1,380 +1,1236 @@
 {
   "schemaVersion": 2,
   "appName": "SteelFlow",
-  "themeId": "ocean-fresh",
+  "themeId": "steel-navy",
   "connectedCanvas": false,
   "locales": [
-    "en-US",
-    "zh-Hans"
+    "zh-Hant",
+    "ja",
+    "ko",
+    "de-DE",
+    "es-ES",
+    "fr-FR"
   ],
-  "locale": "en-US",
+  "locale": "zh-Hant",
   "device": "ipad",
   "orientation": "portrait",
   "appIcon": "/brand/app-icon.png",
   "slidesByDevice": {
     "iphone": [
       {
-        "id": "aso-101-calculation-iphone",
-        "layout": "hero",
-        "label": {
-          "en-US": "LIVE WEIGHT PREVIEW",
-          "zh-Hans": "实时重量预览"
-        },
-        "headline": {
-          "en-US": "Metal weight.\nCalculated.",
-          "zh-Hans": "输入尺寸，\n即刻算重。"
-        },
-        "screenshot": "/screenshots/apple/iphone/{locale}/calculation.png",
-        "inverted": false,
-        "transforms": {
-          "caption": {
-            "x": 70,
-            "y": 120,
-            "width": 1180,
-            "height": 520,
-            "rotation": 0
-          },
-          "device": {
-            "x": 40,
-            "y": 710,
-            "width": 1240,
-            "height": 2526,
-            "rotation": 0
-          }
-        }
-      },
-      {
-        "id": "aso-101-project-iphone",
-        "layout": "device-top",
-        "label": {
-          "en-US": "PROJECT COST",
-          "zh-Hans": "项目成本汇总"
-        },
-        "headline": {
-          "en-US": "Every cost.\nOne clear total.",
-          "zh-Hans": "损耗与费用，\n逐项汇总。"
-        },
-        "screenshot": "/screenshots/apple/iphone/{locale}/project.png",
-        "inverted": false,
-        "transforms": {
-          "caption": {
-            "x": 65,
-            "y": 2350,
-            "width": 1190,
-            "height": 470,
-            "rotation": 0
-          },
-          "device": {
-            "x": 115,
-            "y": 55,
-            "width": 1090,
-            "height": 2220,
-            "rotation": 0
-          }
-        }
-      },
-      {
-        "id": "aso-101-quote-iphone",
+        "id": "calculation",
         "layout": "device-bottom",
         "label": {
-          "en-US": "PDF QUOTES · PRO BRANDING",
-          "zh-Hans": "PDF 报价 · PRO 品牌定制"
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
         },
         "headline": {
-          "en-US": "A PDF quote.\nReady to share.",
-          "zh-Hans": "生成报价单，\n直接发客户。"
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/quote.png",
+        "screenshot": "/screenshots/localized-20260928/iphone/{locale}/calculation.png",
         "inverted": true,
         "transforms": {
           "caption": {
-            "x": 70,
-            "y": 140,
-            "width": 1180,
-            "height": 520,
-            "rotation": 0
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
           },
           "device": {
-            "x": 140,
-            "y": 715,
-            "width": 1040,
-            "height": 2118,
-            "rotation": 0
+            "x": 112,
+            "y": 600,
+            "width": 1096,
+            "height": 2233
           }
-        }
-      },
-      {
-        "id": "aso-101-home-iphone",
-        "layout": "hero",
-        "label": {
-          "en-US": "PLATE · PIPE · BAR · BEAM",
-          "zh-Hans": "钢板 · 钢管 · 棒材 · 型钢"
         },
-        "headline": {
-          "en-US": "Pick a profile.\nStart your estimate.",
-          "zh-Hans": "选好型材，\n开始算重。"
-        },
-        "screenshot": "/screenshots/apple/iphone/{locale}/home.png",
-        "inverted": false,
-        "transforms": {
-          "caption": {
-            "x": 70,
-            "y": 140,
-            "width": 1180,
-            "height": 520,
-            "rotation": 0
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 120,
+              "width": 1174.8,
+              "height": 100
+            },
+            "fontSize": 64,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
           },
-          "device": {
-            "x": 140,
-            "y": 715,
-            "width": 1040,
-            "height": 2118,
-            "rotation": 0
-          }
-        }
-      },
-      {
-        "id": "aso-101-materials-iphone",
-        "layout": "device-top",
-        "label": {
-          "en-US": "YOUR PRICES · BUILT-IN DENSITIES",
-          "zh-Hans": "自有价格 · 内置密度"
-        },
-        "headline": {
-          "en-US": "Your materials.\nYour saved prices.",
-          "zh-Hans": "材料与价格，\n随用随查。"
-        },
-        "screenshot": "/screenshots/apple/iphone/{locale}/materials.png",
-        "inverted": false,
-        "transforms": {
-          "caption": {
-            "x": 65,
-            "y": 2350,
-            "width": 1190,
-            "height": 470,
-            "rotation": 0
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "金屬重量，快速算清",
+              "ja": "金属の重さを、すぐ計算",
+              "ko": "금속 중량, 빠르게 계산",
+              "de-DE": "Metallgewicht. Schnell berechnet.",
+              "es-ES": "Peso del metal, calculado.",
+              "fr-FR": "Le poids du métal, calculé."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 245,
+              "width": 1174.8,
+              "height": 205
+            },
+            "fontSize": 82,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
           },
-          "device": {
-            "x": 115,
-            "y": 55,
-            "width": 1090,
-            "height": 2220,
-            "rotation": 0
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "輸入尺寸，即得理論重量",
+              "ja": "寸法から理論重量がわかる",
+              "ko": "치수만 입력하면 이론 중량 확인",
+              "de-DE": "Von den Maßen zum Gewicht.",
+              "es-ES": "De las medidas al peso.",
+              "fr-FR": "Des dimensions au poids."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 448,
+              "width": 1174.8,
+              "height": 95
+            },
+            "fontSize": 42,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
           }
-        }
+        ]
       },
       {
-        "id": "aso-101-pricing-iphone",
+        "id": "project",
         "layout": "device-bottom",
         "label": {
-          "en-US": "OFFLINE · NO ACCOUNT",
-          "zh-Hans": "离线可用 · 无需账号"
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
         },
         "headline": {
-          "en-US": "Work offline.\nKeep projects local.",
-          "zh-Hans": "离线也能算，\n项目留本机。"
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
         },
-        "screenshot": "/screenshots/apple/iphone/{locale}/pricing.png",
-        "inverted": false,
+        "screenshot": "/screenshots/localized-20260928/iphone/{locale}/project.png",
+        "inverted": true,
         "transforms": {
           "caption": {
-            "x": 70,
-            "y": 140,
-            "width": 1180,
-            "height": 520,
-            "rotation": 0
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
           },
           "device": {
-            "x": 140,
-            "y": 715,
-            "width": 1040,
-            "height": 2118,
-            "rotation": 0
+            "x": 112,
+            "y": 600,
+            "width": 1096,
+            "height": 2233
           }
-        }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 120,
+              "width": 1174.8,
+              "height": 100
+            },
+            "fontSize": 64,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "專案成本，一目了然",
+              "ja": "材料費も、合計も明快に",
+              "ko": "프로젝트 비용을 한눈에",
+              "de-DE": "Alle Kosten. Eine klare Summe.",
+              "es-ES": "Todos los costes. Un total claro.",
+              "fr-FR": "Tous les coûts. Un total clair."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 245,
+              "width": 1174.8,
+              "height": 205
+            },
+            "fontSize": 82,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "材料、費用與總額集中管理",
+              "ja": "プロジェクトの費用を一か所に",
+              "ko": "재료비부터 총액까지 한곳에서",
+              "de-DE": "Material und Gebühren im Überblick.",
+              "es-ES": "Material y gastos, en un solo lugar.",
+              "fr-FR": "Matériaux et frais réunis au même endroit."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 448,
+              "width": 1174.8,
+              "height": 95
+            },
+            "fontSize": 42,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "quote",
+        "layout": "device-bottom",
+        "label": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "headline": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "screenshot": "/screenshots/localized-20260928/iphone/{locale}/quote.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "device": {
+            "x": 112,
+            "y": 600,
+            "width": 1096,
+            "height": 2233
+          }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 120,
+              "width": 1174.8,
+              "height": 100
+            },
+            "fontSize": 64,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "專業報價，隨時分享",
+              "ja": "伝わる見積書を、すぐ共有",
+              "ko": "완성된 견적서를 바로 공유",
+              "de-DE": "Angebote, bereit zum Teilen.",
+              "es-ES": "Presupuestos listos para enviar.",
+              "fr-FR": "Des devis prêts à partager."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 245,
+              "width": 1174.8,
+              "height": 205
+            },
+            "fontSize": 82,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "多種 PDF 樣式，清楚呈現",
+              "ja": "選べるデザインでPDFを作成",
+              "ko": "다양한 스타일로 PDF 견적 작성",
+              "de-DE": "Klare PDFs in Ihrem Wunschdesign.",
+              "es-ES": "PDF claros con el estilo que elijas.",
+              "fr-FR": "Des PDF clairs, dans le style de votre choix."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 448,
+              "width": 1174.8,
+              "height": 95
+            },
+            "fontSize": 42,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "home",
+        "layout": "device-bottom",
+        "label": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "headline": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "screenshot": "/screenshots/localized-20260928/iphone/{locale}/home.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "device": {
+            "x": 112,
+            "y": 600,
+            "width": 1096,
+            "height": 2233
+          }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 120,
+              "width": 1174.8,
+              "height": 100
+            },
+            "fontSize": 64,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "選擇型材，開始計算",
+              "ja": "形状を選んで、計算開始",
+              "ko": "형상을 고르고 계산 시작",
+              "de-DE": "Profil wählen. Gewicht berechnen.",
+              "es-ES": "Elige el perfil. Empieza a calcular.",
+              "fr-FR": "Choisissez un profilé. Calculez."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 245,
+              "width": 1174.8,
+              "height": 205
+            },
+            "fontSize": 82,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "板材、管材、棒材，常用型材齊備",
+              "ja": "板材・パイプ・棒材などに対応",
+              "ko": "판재, 파이프, 봉재 등 지원",
+              "de-DE": "Bleche, Rohre, Stäbe und mehr.",
+              "es-ES": "Chapas, tubos, barras y más.",
+              "fr-FR": "Tôles, tubes, barres et plus encore."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 448,
+              "width": 1174.8,
+              "height": 95
+            },
+            "fontSize": 42,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "materials",
+        "layout": "device-bottom",
+        "label": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "headline": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "screenshot": "/screenshots/localized-20260928/iphone/{locale}/materials.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "device": {
+            "x": 112,
+            "y": 600,
+            "width": 1096,
+            "height": 2233
+          }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 120,
+              "width": 1174.8,
+              "height": 100
+            },
+            "fontSize": 64,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "材料密度，隨手查用",
+              "ja": "材料の密度を、手元に",
+              "ko": "재료 밀도를 바로 확인",
+              "de-DE": "Materialdichten immer zur Hand.",
+              "es-ES": "Densidades siempre a mano.",
+              "fr-FR": "Les densités à portée de main."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 245,
+              "width": 1174.8,
+              "height": 205
+            },
+            "fontSize": 82,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "鋼、不鏽鋼、鋁與更多材料",
+              "ja": "鋼・ステンレス・アルミなどを収録",
+              "ko": "강재, 스테인리스, 알루미늄까지",
+              "de-DE": "Stahl, Edelstahl, Aluminium und mehr.",
+              "es-ES": "Acero, inoxidable, aluminio y más.",
+              "fr-FR": "Acier, inox, aluminium et bien plus."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 448,
+              "width": 1174.8,
+              "height": 95
+            },
+            "fontSize": 42,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "pricing",
+        "layout": "device-bottom",
+        "label": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "headline": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "screenshot": "/screenshots/localized-20260928/iphone/{locale}/pricing.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "device": {
+            "x": 112,
+            "y": 600,
+            "width": 1096,
+            "height": 2233
+          }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 120,
+              "width": 1174.8,
+              "height": 100
+            },
+            "fontSize": 64,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "耗損費用，一併估算",
+              "ja": "ロスも加工費も、まとめて",
+              "ko": "손실과 가공비까지 반영",
+              "de-DE": "Verschnitt mit einkalkuliert.",
+              "es-ES": "Incluye la merma en tus costes.",
+              "fr-FR": "Les pertes prises en compte."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 245,
+              "width": 1174.8,
+              "height": 205
+            },
+            "fontSize": 82,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "單價、耗損與加工費，清楚掌握",
+              "ja": "単価と諸経費を含めて見積もり",
+              "ko": "단가와 부대 비용을 함께 계산",
+              "de-DE": "Preise und Bearbeitungskosten im Blick.",
+              "es-ES": "Controla precios y gastos de mecanizado.",
+              "fr-FR": "Prix et frais d’usinage sous contrôle."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 448,
+              "width": 1174.8,
+              "height": 95
+            },
+            "fontSize": 42,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
       }
     ],
     "android": [],
     "ipad": [
       {
-        "id": "aso-101-calculation-ipad",
-        "layout": "hero",
-        "label": {
-          "en-US": "LIVE WEIGHT PREVIEW",
-          "zh-Hans": "实时重量预览"
-        },
-        "headline": {
-          "en-US": "Metal weight.\nCalculated.",
-          "zh-Hans": "输入尺寸，\n即刻算重。"
-        },
-        "screenshot": "/screenshots/apple/ipad/{locale}/calculation.png",
-        "inverted": false,
-        "transforms": {
-          "caption": {
-            "x": 105,
-            "y": 145,
-            "width": 1854,
-            "height": 580,
-            "rotation": 0
-          },
-          "device": {
-            "x": 282,
-            "y": 760,
-            "width": 1500,
-            "height": 1948,
-            "rotation": 0
-          }
-        }
-      },
-      {
-        "id": "aso-101-project-ipad",
-        "layout": "device-top",
-        "label": {
-          "en-US": "PROJECT COST",
-          "zh-Hans": "项目成本汇总"
-        },
-        "headline": {
-          "en-US": "Every cost.\nOne clear total.",
-          "zh-Hans": "损耗与费用，\n逐项汇总。"
-        },
-        "screenshot": "/screenshots/apple/ipad/{locale}/project.png",
-        "inverted": false,
-        "transforms": {
-          "caption": {
-            "x": 105,
-            "y": 2190,
-            "width": 1854,
-            "height": 485,
-            "rotation": 0
-          },
-          "device": {
-            "x": 257,
-            "y": 50,
-            "width": 1550,
-            "height": 2013,
-            "rotation": 0
-          }
-        }
-      },
-      {
-        "id": "aso-101-quote-ipad",
+        "id": "calculation",
         "layout": "device-bottom",
         "label": {
-          "en-US": "PDF QUOTES · PRO BRANDING",
-          "zh-Hans": "PDF 报价 · PRO 品牌定制"
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
         },
         "headline": {
-          "en-US": "A PDF quote.\nReady to share.",
-          "zh-Hans": "生成报价单，\n直接发客户。"
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
         },
-        "screenshot": "/screenshots/apple/ipad/{locale}/quote.png",
+        "screenshot": "/screenshots/localized-20260928/ipad/{locale}/calculation.png",
         "inverted": true,
         "transforms": {
           "caption": {
-            "x": 105,
-            "y": 145,
-            "width": 1854,
-            "height": 580,
-            "rotation": 0
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
           },
           "device": {
-            "x": 282,
-            "y": 760,
-            "width": 1500,
-            "height": 1948,
-            "rotation": 0
+            "x": 232,
+            "y": 590,
+            "width": 1600,
+            "height": 2078
           }
-        }
-      },
-      {
-        "id": "aso-101-home-ipad",
-        "layout": "hero",
-        "label": {
-          "en-US": "PLATE · PIPE · BAR · BEAM",
-          "zh-Hans": "钢板 · 钢管 · 棒材 · 型钢"
         },
-        "headline": {
-          "en-US": "Pick a profile.\nStart your estimate.",
-          "zh-Hans": "选好型材，\n开始算重。"
-        },
-        "screenshot": "/screenshots/apple/ipad/{locale}/home.png",
-        "inverted": false,
-        "transforms": {
-          "caption": {
-            "x": 105,
-            "y": 145,
-            "width": 1854,
-            "height": 580,
-            "rotation": 0
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 110,
+              "width": 1836.96,
+              "height": 100
+            },
+            "fontSize": 78,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
           },
-          "device": {
-            "x": 282,
-            "y": 760,
-            "width": 1500,
-            "height": 1948,
-            "rotation": 0
-          }
-        }
-      },
-      {
-        "id": "aso-101-materials-ipad",
-        "layout": "device-top",
-        "label": {
-          "en-US": "YOUR PRICES · BUILT-IN DENSITIES",
-          "zh-Hans": "自有价格 · 内置密度"
-        },
-        "headline": {
-          "en-US": "Your materials.\nYour saved prices.",
-          "zh-Hans": "材料与价格，\n随用随查。"
-        },
-        "screenshot": "/screenshots/apple/ipad/{locale}/materials.png",
-        "inverted": false,
-        "transforms": {
-          "caption": {
-            "x": 105,
-            "y": 2190,
-            "width": 1854,
-            "height": 485,
-            "rotation": 0
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "金屬重量，快速算清",
+              "ja": "金属の重さを、すぐ計算",
+              "ko": "금속 중량, 빠르게 계산",
+              "de-DE": "Metallgewicht. Schnell berechnet.",
+              "es-ES": "Peso del metal, calculado.",
+              "fr-FR": "Le poids du métal, calculé."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 238,
+              "width": 1836.96,
+              "height": 205
+            },
+            "fontSize": 100,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
           },
-          "device": {
-            "x": 257,
-            "y": 50,
-            "width": 1550,
-            "height": 2013,
-            "rotation": 0
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "輸入尺寸，即得理論重量",
+              "ja": "寸法から理論重量がわかる",
+              "ko": "치수만 입력하면 이론 중량 확인",
+              "de-DE": "Von den Maßen zum Gewicht.",
+              "es-ES": "De las medidas al peso.",
+              "fr-FR": "Des dimensions au poids."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 460,
+              "width": 1836.96,
+              "height": 95
+            },
+            "fontSize": 54,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
           }
-        }
+        ]
       },
       {
-        "id": "aso-101-pricing-ipad",
+        "id": "project",
         "layout": "device-bottom",
         "label": {
-          "en-US": "OFFLINE · NO ACCOUNT",
-          "zh-Hans": "离线可用 · 无需账号"
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
         },
         "headline": {
-          "en-US": "Work offline.\nKeep projects local.",
-          "zh-Hans": "离线也能算，\n项目留本机。"
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
         },
-        "screenshot": "/screenshots/apple/ipad/{locale}/pricing.png",
-        "inverted": false,
+        "screenshot": "/screenshots/localized-20260928/ipad/{locale}/project.png",
+        "inverted": true,
         "transforms": {
           "caption": {
-            "x": 105,
-            "y": 145,
-            "width": 1854,
-            "height": 580,
-            "rotation": 0
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
           },
           "device": {
-            "x": 282,
-            "y": 760,
-            "width": 1500,
-            "height": 1948,
-            "rotation": 0
+            "x": 232,
+            "y": 590,
+            "width": 1600,
+            "height": 2078
           }
-        }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 110,
+              "width": 1836.96,
+              "height": 100
+            },
+            "fontSize": 78,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "專案成本，一目了然",
+              "ja": "材料費も、合計も明快に",
+              "ko": "프로젝트 비용을 한눈에",
+              "de-DE": "Alle Kosten. Eine klare Summe.",
+              "es-ES": "Todos los costes. Un total claro.",
+              "fr-FR": "Tous les coûts. Un total clair."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 238,
+              "width": 1836.96,
+              "height": 205
+            },
+            "fontSize": 100,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "材料、費用與總額集中管理",
+              "ja": "プロジェクトの費用を一か所に",
+              "ko": "재료비부터 총액까지 한곳에서",
+              "de-DE": "Material und Gebühren im Überblick.",
+              "es-ES": "Material y gastos, en un solo lugar.",
+              "fr-FR": "Matériaux et frais réunis au même endroit."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 460,
+              "width": 1836.96,
+              "height": 95
+            },
+            "fontSize": 54,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "quote",
+        "layout": "device-bottom",
+        "label": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "headline": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "screenshot": "/screenshots/localized-20260928/ipad/{locale}/quote.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "device": {
+            "x": 232,
+            "y": 590,
+            "width": 1600,
+            "height": 2078
+          }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 110,
+              "width": 1836.96,
+              "height": 100
+            },
+            "fontSize": 78,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "專業報價，隨時分享",
+              "ja": "伝わる見積書を、すぐ共有",
+              "ko": "완성된 견적서를 바로 공유",
+              "de-DE": "Angebote, bereit zum Teilen.",
+              "es-ES": "Presupuestos listos para enviar.",
+              "fr-FR": "Des devis prêts à partager."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 238,
+              "width": 1836.96,
+              "height": 205
+            },
+            "fontSize": 100,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "多種 PDF 樣式，清楚呈現",
+              "ja": "選べるデザインでPDFを作成",
+              "ko": "다양한 스타일로 PDF 견적 작성",
+              "de-DE": "Klare PDFs in Ihrem Wunschdesign.",
+              "es-ES": "PDF claros con el estilo que elijas.",
+              "fr-FR": "Des PDF clairs, dans le style de votre choix."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 460,
+              "width": 1836.96,
+              "height": 95
+            },
+            "fontSize": 54,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "home",
+        "layout": "device-bottom",
+        "label": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "headline": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "screenshot": "/screenshots/localized-20260928/ipad/{locale}/home.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "device": {
+            "x": 232,
+            "y": 590,
+            "width": 1600,
+            "height": 2078
+          }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 110,
+              "width": 1836.96,
+              "height": 100
+            },
+            "fontSize": 78,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "選擇型材，開始計算",
+              "ja": "形状を選んで、計算開始",
+              "ko": "형상을 고르고 계산 시작",
+              "de-DE": "Profil wählen. Gewicht berechnen.",
+              "es-ES": "Elige el perfil. Empieza a calcular.",
+              "fr-FR": "Choisissez un profilé. Calculez."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 238,
+              "width": 1836.96,
+              "height": 205
+            },
+            "fontSize": 100,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "板材、管材、棒材，常用型材齊備",
+              "ja": "板材・パイプ・棒材などに対応",
+              "ko": "판재, 파이프, 봉재 등 지원",
+              "de-DE": "Bleche, Rohre, Stäbe und mehr.",
+              "es-ES": "Chapas, tubos, barras y más.",
+              "fr-FR": "Tôles, tubes, barres et plus encore."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 460,
+              "width": 1836.96,
+              "height": 95
+            },
+            "fontSize": 54,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "materials",
+        "layout": "device-bottom",
+        "label": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "headline": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "screenshot": "/screenshots/localized-20260928/ipad/{locale}/materials.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "device": {
+            "x": 232,
+            "y": 590,
+            "width": 1600,
+            "height": 2078
+          }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 110,
+              "width": 1836.96,
+              "height": 100
+            },
+            "fontSize": 78,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "材料密度，隨手查用",
+              "ja": "材料の密度を、手元に",
+              "ko": "재료 밀도를 바로 확인",
+              "de-DE": "Materialdichten immer zur Hand.",
+              "es-ES": "Densidades siempre a mano.",
+              "fr-FR": "Les densités à portée de main."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 238,
+              "width": 1836.96,
+              "height": 205
+            },
+            "fontSize": 100,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "鋼、不鏽鋼、鋁與更多材料",
+              "ja": "鋼・ステンレス・アルミなどを収録",
+              "ko": "강재, 스테인리스, 알루미늄까지",
+              "de-DE": "Stahl, Edelstahl, Aluminium und mehr.",
+              "es-ES": "Acero, inoxidable, aluminio y más.",
+              "fr-FR": "Acier, inox, aluminium et bien plus."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 460,
+              "width": 1836.96,
+              "height": 95
+            },
+            "fontSize": 54,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
+      },
+      {
+        "id": "pricing",
+        "layout": "device-bottom",
+        "label": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "headline": {
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "fr-FR": ""
+        },
+        "screenshot": "/screenshots/localized-20260928/ipad/{locale}/pricing.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "device": {
+            "x": 232,
+            "y": 590,
+            "width": 1600,
+            "height": 2078
+          }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "zh-Hant": "SteelFlow",
+              "ja": "SteelFlow",
+              "ko": "SteelFlow",
+              "de-DE": "SteelFlow",
+              "es-ES": "SteelFlow",
+              "fr-FR": "SteelFlow"
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 110,
+              "width": 1836.96,
+              "height": 100
+            },
+            "fontSize": 78,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "zh-Hant": "耗損費用，一併估算",
+              "ja": "ロスも加工費も、まとめて",
+              "ko": "손실과 가공비까지 반영",
+              "de-DE": "Verschnitt mit einkalkuliert.",
+              "es-ES": "Incluye la merma en tus costes.",
+              "fr-FR": "Les pertes prises en compte."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 238,
+              "width": 1836.96,
+              "height": 205
+            },
+            "fontSize": 100,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "zh-Hant": "單價、耗損與加工費，清楚掌握",
+              "ja": "単価と諸経費を含めて見積もり",
+              "ko": "단가와 부대 비용을 함께 계산",
+              "de-DE": "Preise und Bearbeitungskosten im Blick.",
+              "es-ES": "Controla precios y gastos de mecanizado.",
+              "fr-FR": "Prix et frais d’usinage sous contrôle."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 460,
+              "width": 1836.96,
+              "height": 95
+            },
+            "fontSize": 54,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
       }
     ],
     "android-7": [],
