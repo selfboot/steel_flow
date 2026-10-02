@@ -63,6 +63,13 @@ struct CalculatorEditorView: View {
             let localeIndex = arguments.firstIndex(of: "--marketing-locale")
             let localeCode = localeIndex.flatMap { arguments.indices.contains($0 + 1) ? arguments[$0 + 1] : nil }
             draft.applyMarketingPreset(chinese: localeCode?.hasPrefix("zh") == true)
+#if DEBUG
+            let captureLocale = Locale(identifier: MarketingDemoData.language)
+            draft.unitPriceText = AppFormatters.decimalInput((MarketingDemoData.language == "zh-Hans" ? Decimal(string: "5.32")! : Decimal(string: "0.74")!) * MarketingDemoData.priceMultiplier, locale: captureLocale)
+            draft.priceSourceName = MarketingDemoData.text("source")
+            draft.priceRegion = MarketingDemoData.text("region")
+            draft.itemDescription = MarketingDemoData.text("plate")
+#endif
         }
         _draft = State(initialValue: draft)
     }

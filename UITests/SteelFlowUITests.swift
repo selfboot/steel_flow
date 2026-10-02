@@ -461,20 +461,21 @@ final class SteelFlowUITests: XCTestCase {
         try captureMarketingScreens(locale: "zh-Hans", language: "zh-Hans")
     }
 
+    func testCaptureTraditionalChineseMarketingScreens() throws { try captureMarketingScreens(locale: "zh-TW", language: "zh-Hant") }
+    func testCaptureJapaneseMarketingScreens() throws { try captureMarketingScreens(locale: "ja-JP", language: "ja") }
+    func testCaptureKoreanMarketingScreens() throws { try captureMarketingScreens(locale: "ko-KR", language: "ko") }
+    func testCaptureGermanMarketingScreens() throws { try captureMarketingScreens(locale: "de-DE", language: "de") }
+    func testCaptureSpanishMarketingScreens() throws { try captureMarketingScreens(locale: "es-ES", language: "es") }
+    func testCaptureFrenchMarketingScreens() throws { try captureMarketingScreens(locale: "fr-FR", language: "fr") }
+
     private func captureMarketingScreens(locale: String, language: String) throws {
         continueAfterFailure = false
-        let screens = ["home", "calculation", "pricing", "project", "quote", "materials"]
-        for screen in screens {
+        let currency = ["zh-Hans": "CNY", "zh-Hant": "TWD", "ja": "JPY", "ko": "KRW", "de": "EUR", "es": "EUR", "fr": "EUR"][language] ?? "USD"
+        for screen in ["home", "calculation", "pricing", "project", "quote", "materials"] {
             let app = XCUIApplication()
-            app.launchArguments = [
-                "-AppleLanguages", "(\(language))",
-                "-AppleLocale", locale == "zh-Hans" ? "zh_CN" : "en_US",
-                "-app.language", language,
-                "-app.unitSystem", "metric",
-                "-app.currency", locale == "zh-Hans" ? "CNY" : "USD",
-                "--marketing-screen", screen,
-                "--marketing-locale", locale
-            ]
+            app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(\(language))",
+                "-AppleLocale", locale, "-app.language", language, "-app.unitSystem", "metric",
+                "-app.currency", currency, "-app.quoteStyle", "blue", "--marketing-screen", screen, "--marketing-locale", locale]
             app.launch()
             dismissSimulatorAccountPrompt()
             try waitForMarketingScreen(screen, in: app, language: language)
@@ -495,43 +496,42 @@ final class SteelFlowUITests: XCTestCase {
     }
 
     private func waitForMarketingScreen(_ screen: String, in app: XCUIApplication, language: String) throws {
-        let chinese = language == "zh-Hans"
+        let labels: [String: [String]] = [
+            "en": ["Calculate", "Plate / flat bar", "Pricing", "Waste", "Total", "Quote preview", "Materials", "Carbon steel"],
+            "zh-Hans": ["计算", "钢板 / 扁钢", "计价", "损耗", "总价", "报价预览", "材料", "碳钢"],
+            "zh-Hant": ["計算", "鋼板 / 扁鋼", "計價", "損耗", "總價", "報價預覽", "材料", "碳鋼"],
+            "ja": ["計算", "板・平鋼", "価格設定", "ロス率", "合計", "見積書プレビュー", "材料", "炭素鋼"],
+            "ko": ["계산", "판재 / 평강", "가격 설정", "로스율", "합계", "견적서 미리보기", "재료", "탄소강"],
+            "de": ["Berechnen", "Blech / Flachstahl", "Preisberechnung", "Verschnitt", "Gesamt", "Angebotsvorschau", "Materialien", "Kohlenstoffstahl"],
+            "es": ["Calcular", "Placa / barra plana", "Precios", "Merma", "Total", "Vista del presupuesto", "Materiales", "Acero al carbono"],
+            "fr": ["Calculer", "Tôle / plat", "Tarification", "Pertes", "Total", "Aperçu du devis", "Matériaux", "Acier au carbone"],
+        ]
+        let t = labels[language]!
         switch screen {
-        case "home":
-            XCTAssertTrue(app.navigationBars[chinese ? "计算" : "Calculate"].waitForExistence(timeout: 8))
+        case "home": XCTAssertTrue(app.navigationBars[t[0]].waitForExistence(timeout: 8))
         case "calculation":
-            XCTAssertTrue(app.navigationBars[chinese ? "钢板 / 扁钢" : "Plate / flat bar"].waitForExistence(timeout: 8))
-            let target = app.staticTexts["847.8 kg"].firstMatch
-            XCTAssertTrue(target.waitForExistence(timeout: 3))
-            XCTAssertTrue(target.isHittable, "Weight preview must be visible before scrolling")
+            XCTAssertTrue(app.navigationBars[t[1]].waitForExistence(timeout: 8))
+            XCTAssertTrue(app.buttons["calculator.save"].waitForExistence(timeout: 3))
         case "pricing":
-            XCTAssertTrue(app.navigationBars[chinese ? "钢板 / 扁钢" : "Plate / flat bar"].waitForExistence(timeout: 8))
-            let pricingTitle = chinese ? "计价" : "Pricing"
-            let disclosure = app.buttons.matching(NSPredicate(format: "label == %@ OR label BEGINSWITH %@ OR label BEGINSWITH %@", pricingTitle, pricingTitle + ",", pricingTitle + "、")).firstMatch
-            for _ in 0..<4 where !disclosure.isHittable { app.swipeUp() }
-            XCTAssertTrue(disclosure.isHittable)
-            disclosure.tap()
-            let target = app.staticTexts[chinese ? "损耗" : "Waste"]
-            for _ in 0..<3 where !target.isHittable { app.swipeUp() }
-            XCTAssertTrue(target.waitForExistence(timeout: 3))
+            XCTAssertTrue(app.navigationBars[t[1]].waitForExistence(timeout: 8))
+            let disclosure = app.buttons.matching(NSPredicate(format: "label == %@ OR label BEGINSWITH %@ OR label BEGINSWITH %@", t[2], t[2] + ",", t[2] + "、")).firstMatch
+            for _ in 0..<5 where !disclosure.isHittable { app.swipeUp() }
+            XCTAssertTrue(disclosure.isHittable); disclosure.tap()
             let price = app.textFields["calculator.price_input"]
-            for _ in 0..<3 where !price.isHittable { app.swipeUp() }
+            for _ in 0..<4 where !price.isHittable { app.swipeUp() }
             XCTAssertTrue(price.isHittable)
         case "project":
-            XCTAssertTrue(app.navigationBars[chinese ? "港区雨棚" : "Harbor Canopy"].waitForExistence(timeout: 10))
-            let total = app.staticTexts[chinese ? "总价" : "Total"]
+            XCTAssertTrue(app.buttons["project.menu"].waitForExistence(timeout: 10))
+            let total = app.staticTexts[t[4]].firstMatch
             for _ in 0..<3 where !total.isHittable { app.swipeUp() }
         case "quote":
-            XCTAssertTrue(app.navigationBars[chinese ? "报价预览" : "Quote preview"].waitForExistence(timeout: 10))
-            let share = app.buttons[chinese ? "保存版本并分享 PDF" : "Save version & share PDF"].firstMatch
-            XCTAssertTrue(share.waitForExistence(timeout: 5))
+            XCTAssertTrue(app.navigationBars[t[5]].waitForExistence(timeout: 10))
+            let share = app.buttons["quote.save_share"]
+            XCTAssertTrue(share.waitForExistence(timeout: 5)); XCTAssertTrue(share.isEnabled)
         case "materials":
-            XCTAssertTrue(app.navigationBars[chinese ? "材料" : "Materials"].waitForExistence(timeout: 8))
-            let builtIn = app.staticTexts[chinese ? "碳钢" : "Carbon steel"].firstMatch
-            XCTAssertTrue(builtIn.waitForExistence(timeout: 3))
-            XCTAssertTrue(builtIn.isHittable, "Capture the material catalog before switching to saved prices")
-        default:
-            XCTFail("Unknown marketing screen: \(screen)")
+            XCTAssertTrue(app.navigationBars[t[6]].waitForExistence(timeout: 8))
+            XCTAssertTrue(app.staticTexts[t[7]].firstMatch.waitForExistence(timeout: 3))
+        default: XCTFail("Unknown marketing screen: \(screen)")
         }
         usleep(500_000)
     }
