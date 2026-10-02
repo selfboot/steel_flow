@@ -16,6 +16,7 @@ struct QuotePreviewView: View {
     @State private var snapshot: QuoteSnapshotPayload?
     @State private var snapshotData: Data?
     @State private var versionSaved = false
+    @State private var preparedLocaleIdentifier: String?
     @State private var csvKind = QuoteCSVKind.customer
     @State private var pdfURL: URL?
     @State private var csvURL: URL?
@@ -29,7 +30,7 @@ struct QuotePreviewView: View {
     @State private var paywallReason: ProPaywallReason?
     private var wide: Bool { sizeClass == .regular && !typeSize.isAccessibilitySize }
     private var selectedStyle: QuoteStyle { previewStyle ?? QuoteStyle(rawValue: defaultQuoteStyleRaw) ?? .classic }
-    private var quoteLocale: Locale { Locale(identifier: project.quoteLanguage) }
+    private var quoteLocale: Locale { locale }
     var body: some View {
         NavigationStack {
             HStack(spacing: 0) {
@@ -87,7 +88,13 @@ struct QuotePreviewView: View {
             }
             .localizedNavigationTitle("quote.preview").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("common.done") { dismiss() } } }
-            .task { await prepareExports() }
+            .task(id: locale.identifier) {
+                if preparedLocaleIdentifier != locale.identifier {
+                    snapshot = nil; snapshotData = nil; pdfURL = nil; csvURL = nil; versionSaved = false
+                    preparedLocaleIdentifier = locale.identifier
+                }
+                await prepareExports()
+            }
             .onChange(of: csvKind) { _, _ in prepareCSV() }
             .onChange(of: purchaseManager.isPro) { _, pro in if pro { snapshot = nil; snapshotData = nil; versionSaved = false; Task { await prepareExports() } } }
             .proPaywall(reason: $paywallReason)
@@ -122,6 +129,12 @@ struct QuotePreviewView: View {
         if let pdfURL {
             VStack(alignment: .leading) {
                 PDFKitView(url: pdfURL).frame(minHeight: wide ? 450 : 300).accessibilityLabel("quote.document")
+#if DEBUG
+                if ProcessInfo.processInfo.arguments.contains("--workflow-tests") {
+                    Text("PDF").font(.caption2).accessibilityIdentifier("quote.rendered_text")
+                        .accessibilityValue(PDFDocument(url: pdfURL)?.string ?? "")
+                }
+#endif
                 NavigationLink { GeneratedPDFPreview(url: pdfURL) } label: {
                     Label(AppLocalization.text("quote.open_pdf_preview", locale: locale) + " · " + pageCountText, systemImage: "arrow.up.left.and.arrow.down.right")
                 }.frame(minHeight: 44)
@@ -132,12 +145,13 @@ struct QuotePreviewView: View {
     private func prepareExports() async {
         preparing = true; exportError = nil
         await Task.yield()
+        guard !Task.isCancelled else { return }
         do {
 #if DEBUG
             if ProcessInfo.processInfo.arguments.contains("--ui-export-error") && !simulatedFailureConsumed { simulatedFailureConsumed = true; throw CocoaError(.fileWriteUnknown) }
 #endif
             if snapshot == nil {
-                let data = try QuoteExportService.snapshotData(for: project, company: purchaseManager.isPro ? companies.first : nil, generatedAt: .now, includeBranding: !purchaseManager.isPro, quoteStyle: selectedStyle)
+                let data = try QuoteExportService.snapshotData(for: project, company: purchaseManager.isPro ? companies.first : nil, generatedAt: .now, includeBranding: !purchaseManager.isPro, quoteStyle: selectedStyle, locale: locale)
                 snapshotData = data; snapshot = try QuoteExportService.decodeSnapshot(data)
                 previewStyle = snapshot?.quoteStyle
             }

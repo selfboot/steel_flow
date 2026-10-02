@@ -434,7 +434,7 @@
 "workflow.show_sales_price" = "Afficher le prix de vente par pièce";
 "workflow.sales_unit_price" = "Prix de vente / pièce";
 "workflow.history_empty" = "Aucune version de devis enregistrée";
-"workflow.frozen_help" = "Cette version conserve ses prix, dates et présentation d’origine.";
+"workflow.frozen_help" = "Cette version conserve les prix, les dates et le style d’origine. Les textes du PDF suivent la langue de l’app ; le contenu que vous avez saisi reste inchangé.";
 "workflow.version_comparison" = "Modifications depuis la version précédente";
 "workflow.total_change" = "Variation totale";
 "workflow.copy_revision" = "Copier dans un nouveau projet pour révision";

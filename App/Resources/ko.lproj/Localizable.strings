@@ -434,7 +434,7 @@
 "workflow.show_sales_price" = "개당 판매가 표시";
 "workflow.sales_unit_price" = "판매 단가";
 "workflow.history_empty" = "저장된 견적 버전이 없습니다";
-"workflow.frozen_help" = "이 버전은 원래 가격, 날짜 및 표시 내용을 유지합니다.";
+"workflow.frozen_help" = "이 버전은 원래 가격, 날짜, 스타일을 유지합니다. PDF 표시 언어는 앱 설정을 따르며, 직접 입력한 내용은 변경되지 않습니다.";
 "workflow.version_comparison" = "이전 버전과의 차이";
 "workflow.total_change" = "합계 변동";
 "workflow.copy_revision" = "새 프로젝트로 복사하여 수정";

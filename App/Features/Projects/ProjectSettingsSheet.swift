@@ -13,7 +13,6 @@ struct ProjectSettingsSheet: View {
     @State private var name = ""
     @State private var projectNumber = ""
     @State private var customerName = ""
-    @State private var quoteLanguage = "en"
     @State private var unitSystem = UnitSystem.metric
     @State private var paperSize = PaperSize.a4
     @State private var validDays = 30
@@ -43,12 +42,6 @@ struct ProjectSettingsSheet: View {
                     TextField("project.customer", text: $customerName)
                     Button("workflow.choose_customer") { showCustomers = true }
                     TextField("workflow.customer_contact", text: $customerContact, axis: .vertical)
-                    Picker("project.quote_language", selection: $quoteLanguage) {
-                        ForEach(AppLanguage.allCases) { language in
-                            Text(verbatim: language.nativeName).tag(language.rawValue)
-                        }
-                    }
-                    .accessibilityIdentifier("project.quoteLanguage")
                     Picker("settings.unit_system", selection: $unitSystem) {
                         ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0) }
                     }
@@ -90,7 +83,6 @@ struct ProjectSettingsSheet: View {
                 name = project.name
                 projectNumber = project.projectNumber
                 customerName = project.customerName
-                quoteLanguage = project.quoteLanguage
                 unitSystem = project.unitSystem
                 paperSize = project.paperSize
                 validDays = project.validDays
@@ -138,7 +130,6 @@ struct ProjectSettingsSheet: View {
         project.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
         project.projectNumber = projectNumber.trimmingCharacters(in: .whitespacesAndNewlines)
         project.customerName = customerName.trimmingCharacters(in: .whitespacesAndNewlines)
-        project.quoteLanguage = quoteLanguage
         project.unitSystem = unitSystem
         project.paperSize = paperSize
         project.validDays = validDays

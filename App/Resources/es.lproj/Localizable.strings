@@ -434,7 +434,7 @@
 "workflow.show_sales_price" = "Mostrar precio de venta por pieza";
 "workflow.sales_unit_price" = "Precio de venta / pieza";
 "workflow.history_empty" = "No hay versiones de presupuestos guardadas";
-"workflow.frozen_help" = "Esta versión conserva sus precios, fechas y presentación originales.";
+"workflow.frozen_help" = "Esta versión conserva los precios, las fechas y el estilo originales. Los textos del PDF siguen el idioma de la app; el contenido que hayas introducido no cambia.";
 "workflow.version_comparison" = "Cambios respecto a la versión anterior";
 "workflow.total_change" = "Cambio total";
 "workflow.copy_revision" = "Copiar como nuevo proyecto para revisar";

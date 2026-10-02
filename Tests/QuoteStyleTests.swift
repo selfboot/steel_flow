@@ -9,7 +9,7 @@ import SwiftData
             let sample = try QuoteStyleSample.snapshot(language: "en")
             let project = QuoteSnapshotRestorer.project(sample)
             project.quoteStyle = style
-            let encoded = try QuoteExportService.snapshotData(for: project)
+            let encoded = try QuoteExportService.snapshotData(for: project, locale: Locale(identifier: project.quoteLanguage))
             let frozen = try QuoteExportService.decodeSnapshot(encoded)
             project.quoteStyle = .classic
             XCTAssertEqual(frozen.quoteStyle, style)
@@ -28,9 +28,9 @@ import SwiftData
         let project = QuoteSnapshotRestorer.project(try QuoteStyleSample.snapshot(language: "en"))
         project.quoteStyle = .blue
         project.paperSize = .letter
-        let original = try QuoteExportService.snapshotData(for: project)
+        let original = try QuoteExportService.snapshotData(for: project, locale: Locale(identifier: project.quoteLanguage))
         for style in QuoteStyle.allCases {
-            let data = try QuoteExportService.snapshotData(for: project, includeBranding: false, quoteStyle: style)
+            let data = try QuoteExportService.snapshotData(for: project, includeBranding: false, quoteStyle: style, locale: Locale(identifier: project.quoteLanguage))
             let preview = try QuoteExportService.decodeSnapshot(data)
             XCTAssertEqual(preview.quoteStyle, style)
             XCTAssertEqual(preview.paperSize, project.paperSize.rawValue)
@@ -43,7 +43,7 @@ import SwiftData
     func testLegacyAndUnknownSnapshotStylesUseClassic() throws {
         let project = QuoteSnapshotRestorer.project(try QuoteStyleSample.snapshot(language: "en"))
         project.quoteStyle = .forest
-        let data = try QuoteExportService.snapshotData(for: project)
+        let data = try QuoteExportService.snapshotData(for: project, locale: Locale(identifier: project.quoteLanguage))
         var json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
         json.removeValue(forKey: "quoteStyleRaw")
         XCTAssertEqual(try QuoteExportService.decodeSnapshot(JSONSerialization.data(withJSONObject: json)).quoteStyle, .classic)
@@ -60,7 +60,7 @@ import SwiftData
                     project.showQuoteUnitPrice = true
                     project.items[0].descriptionText = "PART-001"
                     project.terms = "TERMS-END-0042"
-                    let url = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: false)
+                    let url = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: false, locale: Locale(identifier: project.quoteLanguage))
                     defer { try? FileManager.default.removeItem(at: url) }
                     let pdf = try XCTUnwrap(PDFDocument(url: url))
                     let text = try XCTUnwrap(pdf.string)
@@ -89,7 +89,7 @@ import SwiftData
             }
             let project = QuoteSnapshotRestorer.project(try QuoteStyleSample.snapshot(language: "en"))
             project.quoteStyle = style
-            let url = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: true)
+            let url = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: true, locale: Locale(identifier: project.quoteLanguage))
             defer { try? FileManager.default.removeItem(at: url) }
             XCTAssertTrue(try XCTUnwrap(PDFDocument(url: url)?.string).contains("SteelFlow"))
         }
@@ -106,7 +106,7 @@ import SwiftData
                 }
                 project.items[3].descriptionText = "LONGSTART " + String(repeating: "W", count: 500) + " LONGEND"
                 project.terms = String(repeating: "Lieferbedingungen und Zahlungsbedingungen. 日本語の条件。\n", count: 32) + "FINAL-TERMS-END"
-                let url = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: false)
+                let url = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: false, locale: Locale(identifier: project.quoteLanguage))
                 defer { try? FileManager.default.removeItem(at: url) }
                 let pdf = try XCTUnwrap(PDFDocument(url: url))
                 let text = try XCTUnwrap(pdf.string)
@@ -135,7 +135,7 @@ import SwiftData
                 project.items[0].unitPriceText = "987654321.12"
                 let company = CompanyProfileEntity(companyName: String(repeating: "NORTHLINE METALS ", count: 8) + "COMPANY-END")
                 company.email = "quotes@example.com"; company.address = "ADDRESS-END"
-                let snapshot = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project, company: company, includeBranding: false))
+                let snapshot = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project, company: company, includeBranding: false, locale: Locale(identifier: project.quoteLanguage)))
                 let url = try QuotePDFRenderer.render(snapshot)
                 defer { try? FileManager.default.removeItem(at: url) }
                 let pdf = try XCTUnwrap(PDFDocument(url: url))
@@ -174,7 +174,7 @@ import SwiftData
                     let project = QuoteSnapshotRestorer.project(try QuoteStyleSample.snapshot(language: language.rawValue))
                     project.quoteStyle = style
                     project.terms = "TERMS-PRIVATE " + String(repeating: "Do not print this paragraph. ", count: 200)
-                    let snapshot = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project, includeBranding: branding))
+                    let snapshot = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project, includeBranding: branding, locale: Locale(identifier: project.quoteLanguage)))
                     XCTAssertEqual(snapshot.terms, project.terms, "Keep stored project and history data")
                     let url = try QuotePDFRenderer.render(snapshot)
                     defer { try? FileManager.default.removeItem(at: url) }

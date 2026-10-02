@@ -358,8 +358,14 @@ final class SteelFlowUITests: XCTestCase {
         app.launch()
 
         XCTAssertTrue(app.navigationBars["Quote preview"].waitForExistence(timeout: 8))
-        let total = app.staticTexts["Total, ¥35,228.94"]
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency; formatter.currencyCode = "CNY"; formatter.locale = Locale(identifier: "en")
+        let amount = formatter.string(from: NSDecimalNumber(string: "35228.94"))!
+        let total = app.staticTexts["Total, " + amount]
         XCTAssertTrue(total.waitForExistence(timeout: 3))
+        let document = app.staticTexts["quote.rendered_text"]
+        XCTAssertTrue(document.waitForExistence(timeout: 3))
+        XCTAssertTrue((document.value as? String)?.contains("QUOTE") == true)
         XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
         XCTAssertFalse(app.staticTexts["Material subtotal"].exists)
         XCTAssertFalse(app.staticTexts["Markup"].exists)
@@ -574,7 +580,7 @@ final class LocalizationUITests: XCTestCase {
     private func verifyLanguage(_ language: String, region: String, native: String, calculate: String, settings: String, projects: String, create: String, cancel: String, projectSettings: String, save: String, preview: String) {
         continueAfterFailure = false
         let app = XCUIApplication()
-        app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(\(language))", "-AppleLocale", region, "-app.language", "system", "-app.unitSystem", "metric"]
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "--ui-legacy-chinese-quote", "-AppleLanguages", "(\(language))", "-AppleLocale", region, "-app.language", "system", "-app.unitSystem", "metric"]
         app.launch()
         XCTAssertTrue(app.navigationBars[calculate].waitForExistence(timeout: 8))
         capture("1.3-\(language)-home-light")
@@ -588,20 +594,23 @@ final class LocalizationUITests: XCTestCase {
         app.buttons["projects.menu"].tap()
         app.buttons.matching(NSPredicate(format: "label == %@ AND identifier != %@", create, "projects.menu")).firstMatch.tap()
         let languagePicker = app.buttons["project.quoteLanguage"]
-        XCTAssertTrue(languagePicker.waitForExistence(timeout: 3))
-        XCTAssertTrue(languagePicker.label.contains(native) || (languagePicker.value as? String)?.contains(native) == true, "New quotes must follow the system language: \(languagePicker.debugDescription)")
+        XCTAssertTrue(app.navigationBars[create].waitForExistence(timeout: 3))
+        XCTAssertFalse(languagePicker.exists, "Quote language follows the app setting")
         capture("1.3-\(language)-new-project")
         app.buttons[cancel].tap()
         app.staticTexts["Workflow Quote"].firstMatch.tap()
         app.buttons["project.menu"].tap()
         app.buttons[projectSettings].tap()
-        XCTAssertTrue(languagePicker.waitForExistence(timeout: 3))
-        languagePicker.tap()
-        app.buttons[native].tap()
+        XCTAssertTrue(app.navigationBars.buttons[save].waitForExistence(timeout: 3))
+        XCTAssertFalse(languagePicker.exists)
         app.buttons[save].tap()
         app.buttons[preview].tap()
         XCTAssertTrue(app.navigationBars[preview].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
+        let document = app.staticTexts["quote.rendered_text"]
+        XCTAssertTrue(document.waitForExistence(timeout: 5))
+        let titles = ["zh-Hant": "報價單", "ja": "見積書", "ko": "견적서", "de": "ANGEBOT", "es": "PRESUPUESTO", "fr": "DEVIS"]
+        XCTAssertTrue((document.value as? String)?.contains(titles[language]!) == true, document.debugDescription)
         capture("1.3-\(language)-quote-light")
         app.terminate()
 
@@ -915,6 +924,47 @@ final class LocalizationUITests: XCTestCase {
         app.terminate()
     }
 
+    func testManualLanguageSwitchRelocalizesLegacyQuoteAndHistory() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--reset-workflow", "--ui-legacy-chinese-quote", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch(); defer { app.terminate() }
+        let cases = [
+            ("简体中文", "报价预览", "报价单", "完成", "历史报价"),
+            ("繁體中文", "報價預覽", "報價單", "完成", "歷史報價"),
+            ("日本語", "見積書プレビュー", "見積書", "完了", "見積書の履歴"),
+            ("한국어", "견적서 미리보기", "견적서", "완료", "견적 이력"),
+            ("Deutsch", "Angebotsvorschau", "ANGEBOT", "Fertig", "Angebotsverlauf"),
+            ("Español", "Vista del presupuesto", "PRESUPUESTO", "Listo", "Historial de presupuestos"),
+            ("Français", "Aperçu du devis", "DEVIS", "Terminé", "Historique des devis"),
+            ("English", "Quote preview", "QUOTE", "Done", "Quote history")
+        ]
+        for (native, preview, pdfTitle, done, history) in cases {
+            app.tabBars.buttons.element(boundBy: 3).tap()
+            app.buttons["settings.language"].tap()
+            app.buttons[native].tap()
+            let back = app.navigationBars.buttons["BackButton"]
+            if back.exists { back.tap() }
+            app.tabBars.buttons.element(boundBy: 1).tap()
+            let project = app.staticTexts["Workflow Quote"].firstMatch
+            if !app.buttons["project.menu"].exists { project.tap() }
+            app.buttons[preview].tap()
+            let document = app.staticTexts["quote.rendered_text"]
+            XCTAssertTrue(document.waitForExistence(timeout: 8))
+            XCTAssertTrue((document.value as? String)?.contains(pdfTitle) == true, "\(native): \(document.debugDescription)")
+            capture("language-switch-pdf-" + native)
+            app.navigationBars.buttons[done].tap()
+            app.buttons["project.menu"].tap()
+            app.buttons[history].tap()
+            app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "v1 · ")).firstMatch.tap()
+            let frozen = app.staticTexts["quote.history_rendered_text"]
+            XCTAssertTrue(frozen.waitForExistence(timeout: 8))
+            XCTAssertTrue((frozen.value as? String)?.contains(pdfTitle) == true, "Historical PDF: \(native)")
+            app.navigationBars.buttons.element(boundBy: 0).tap()
+            app.navigationBars.buttons[done].tap()
+        }
+    }
+
     func testManualLanguageSwitchUpdatesUIAndPersists() {
         continueAfterFailure = false
         let app = XCUIApplication()
@@ -978,6 +1028,10 @@ final class LocalizationUITests: XCTestCase {
         let save = app.buttons["quote.save_version"]
         reveal(save, in: app); save.tap()
         XCTAssertTrue(app.buttons["quote.save_share"].label.contains("Share PDF"))
+        let openPDF = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Open PDF preview")).firstMatch
+        reveal(openPDF, in: app, up: false); openPDF.tap()
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.buttons["quote.save_share"].label.contains("Share PDF"), "Returning from full-screen PDF must keep the saved version")
         reveal(choose, in: app, up: false); choose.tap()
         let minimal = app.buttons["quote.style.minimal"]
         reveal(minimal, in: app); minimal.tap()

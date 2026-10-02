@@ -434,7 +434,7 @@
 "workflow.show_sales_price" = "Verkaufspreis je Stück anzeigen";
 "workflow.sales_unit_price" = "Verkaufspreis / Stück";
 "workflow.history_empty" = "Keine Angebotsversionen gespeichert";
-"workflow.frozen_help" = "Diese Version behält ihre ursprünglichen Preise, Daten und Darstellung.";
+"workflow.frozen_help" = "Diese Version behält die ursprünglichen Preise, Daten und das Design. PDF-Texte folgen der App-Sprache; Ihre Eingaben bleiben unverändert.";
 "workflow.version_comparison" = "Änderungen zur vorherigen Version";
 "workflow.total_change" = "Gesamtänderung";
 "workflow.copy_revision" = "Zur Überarbeitung als neues Projekt kopieren";

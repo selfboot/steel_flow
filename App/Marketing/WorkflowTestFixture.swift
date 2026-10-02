@@ -26,6 +26,14 @@ import SwiftData
             item.otherFeeText = "0.125"
             context.insert(PriceBookEntryEntity(name: "Replacement price", currencyCode: "CNY", priceBasis: .perKilogram, unitPrice: Decimal(string: "4.567")!))
         }
+        if ProcessInfo.processInfo.arguments.contains("--ui-legacy-chinese-quote") {
+            project.quoteLanguage = "zh-Hans"
+            for item in project.items {
+                item.materialName = MaterialCatalog.localizedName(materialID: item.materialID, fallback: item.materialName, locale: Locale(identifier: "zh-Hans"))
+            }
+            let payload = try QuoteExportService.snapshotData(for: project, locale: Locale(identifier: "zh-Hans"))
+            context.insert(QuoteSnapshotEntity(projectID: project.id, payload: payload))
+        }
         context.insert(project)
         context.insert(CustomerEntity(name: "Saved Customer", email: "quotes@example.com", phone: "12345", address: "Workshop Road"))
         try context.save()

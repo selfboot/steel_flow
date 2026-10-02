@@ -75,6 +75,12 @@ struct FrozenQuoteView: View {
             if let url {
                 NavigationLink { GeneratedPDFPreview(url: url) } label: { Label("quote.open_pdf_preview", systemImage: "doc.text") }
                 ShareLink(item: url) { Label("quote.share_pdf", systemImage: "square.and.arrow.up") }
+#if DEBUG
+                if ProcessInfo.processInfo.arguments.contains("--workflow-tests") {
+                    Text("PDF").accessibilityIdentifier("quote.history_rendered_text")
+                        .accessibilityValue(PDFDocument(url: url)?.string ?? "")
+                }
+#endif
             } else if let error { Text(error) } else { ProgressView() }
             Button("workflow.copy_revision", systemImage: "doc.badge.plus") { copyRevision() }
                 .disabled(copied)
@@ -83,7 +89,11 @@ struct FrozenQuoteView: View {
         .navigationTitle(AppLocalization.text("quote.title", locale: locale) + " v\(versionNumber)")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(item: $openedProject) { ProjectDetailView(project: $0) }
-        .task { do { url = try QuoteExportService.pdfURL(snapshot: snapshot) } catch { self.error = error.localizedDescription } }
+        .task(id: locale.identifier) {
+            url = nil; error = nil
+            do { url = try QuoteExportService.pdfURL(snapshot: snapshot.localized(for: locale)) }
+            catch { self.error = error.localizedDescription }
+        }
         .proPaywall(reason: $paywallReason) { copyRevision() }
     }
     private func lineDescription(_ line: QuoteSnapshotPayload.Line, currency: String) -> String {
@@ -95,7 +105,7 @@ struct FrozenQuoteView: View {
         let waste = AppLocalization.text("calculator.waste", locale: locale) + ": " + AppFormatters.number(line.wastePercent, locale: locale) + "%"
         let fees = AppLocalization.text("calculator.line_processing_fee", locale: locale) + ": " + AppFormatters.decimal(line.processingFee, currencyCode: currency, locale: locale)
         let other = AppLocalization.text("calculator.line_other_fee", locale: locale) + ": " + AppFormatters.decimal(line.otherFee, currencyCode: currency, locale: locale)
-        return [title, line.materialName, line.materialGrade, dimensions + " " + (line.profile == ProfileKind.customArea.rawValue ? line.geometry.areaUnit.rawValue : line.geometry.lengthUnit.rawValue),
+        return [title, MaterialCatalog.localizedName(materialID: line.materialID, fallback: line.materialName, locale: locale), line.materialGrade, dimensions + " " + (line.profile == ProfileKind.customArea.rawValue ? line.geometry.areaUnit.rawValue : line.geometry.lengthUnit.rawValue),
                 AppFormatters.number(line.lengthValue, locale: locale) + " " + line.lengthUnit + " × " + String(line.quantity),
                 AppFormatters.decimal(line.customerQuoteAmount, currencyCode: currency, locale: locale), unitPrice, waste, fees, other, line.priceSourceName, line.internalNote].filter { !$0.isEmpty }.joined(separator: " · ")
     }

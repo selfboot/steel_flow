@@ -58,7 +58,10 @@ struct QuoteStylePicker: View {
             .localizedNavigationTitle("quote.style.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("common.cancel") { dismiss() } } }
-            .task { await loadThumbnails() }
+            .task(id: locale.identifier) {
+                thumbnails = [:]; failed = false
+                await loadThumbnails()
+            }
         }
     }
 
@@ -94,6 +97,6 @@ struct QuoteStylePicker: View {
         let company = CompanyProfileEntity(companyName: "NORTHLINE METALS")
         company.email = "quotes@example.com"
         return try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project, company: company,
-            generatedAt: Date(timeIntervalSince1970: 1_790_553_600), includeBranding: false))
+            generatedAt: Date(timeIntervalSince1970: 1_790_553_600), includeBranding: false, locale: Locale(identifier: language)))
     }
 }

@@ -434,7 +434,7 @@
 "workflow.show_sales_price" = "显示每件销售单价";
 "workflow.sales_unit_price" = "销售单价／件";
 "workflow.history_empty" = "暂无已保存的报价版本";
-"workflow.frozen_help" = "此版本保留当时的价格、日期与报价样式。";
+"workflow.frozen_help" = "此版本保留原有价格、日期和样式。PDF 文案跟随 App 语言，您填写的内容保持原文。";
 "workflow.version_comparison" = "与上一版本比较";
 "workflow.total_change" = "总价变化";
 "workflow.copy_revision" = "复制为新项目并修改";

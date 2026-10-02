@@ -239,7 +239,6 @@ struct ProjectEditorSheet: View {
     @Environment(\.locale) private var locale
     @AppStorage("app.unitSystem") private var defaultUnitRaw = UnitSystem.metric.rawValue
     @AppStorage("app.currency") private var defaultCurrency = "USD"
-    @AppStorage("app.language") private var appLanguage = "system"
     @AppStorage("app.paper") private var defaultPaperRaw = PaperSize.a4.rawValue
     @AppStorage("app.quoteStyle") private var defaultQuoteStyleRaw = QuoteStyle.classic.rawValue
     @State private var showCustomers = false
@@ -247,7 +246,6 @@ struct ProjectEditorSheet: View {
     @State private var name = ""
     @State private var customer = ""
     @State private var currency = "USD"
-    @State private var quoteLanguage = "en"
     @State private var unitSystem = UnitSystem.metric
     @State private var paper = PaperSize.a4
     private var normalizedCurrency: String? { CurrencyRules.normalizedCode(currency) }
@@ -258,12 +256,6 @@ struct ProjectEditorSheet: View {
                 TextField("project.name", text: $name)
                 TextField("project.customer", text: $customer)
                 Button("workflow.choose_customer") { showCustomers = true }
-                Picker("project.quote_language", selection: $quoteLanguage) {
-                    ForEach(AppLanguage.allCases) { language in
-                        Text(verbatim: language.nativeName).tag(language.rawValue)
-                    }
-                }
-                .accessibilityIdentifier("project.quoteLanguage")
                 Picker("settings.unit_system", selection: $unitSystem) {
                     ForEach(UnitSystem.allCases) { Text($0.localizationKey).tag($0) }
                 }
@@ -282,7 +274,7 @@ struct ProjectEditorSheet: View {
                         let project = ProjectEntity(
                             name: name.trimmingCharacters(in: .whitespacesAndNewlines),
                             customerName: customer,
-                            quoteLanguage: quoteLanguage,
+                            quoteLanguage: AppLanguage.resolve(locale).rawValue,
                             unitSystem: unitSystem,
                             currencyCode: normalizedCurrency ?? defaultCurrency,
                             paperSize: paper
@@ -301,7 +293,6 @@ struct ProjectEditorSheet: View {
             .onAppear {
                 currency = defaultCurrency
                 unitSystem = UnitSystem(rawValue: defaultUnitRaw) ?? .metric
-                quoteLanguage = AppLanguage.selected(appLanguage, systemLocale: locale).rawValue
                 paper = PaperSize(rawValue: defaultPaperRaw) ?? .a4
             }
         }

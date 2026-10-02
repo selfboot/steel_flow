@@ -216,7 +216,7 @@ import PDFKit
             let p = project(); p.quoteLanguage = language; p.paperSize = .letter
             p.terms = String(repeating: "Payment terms 付款条款需完整保留。", count: 120) + "\nEND-TERMS"
             p.items[0].descriptionText = String(repeating: "Custom part 复杂规格描述。", count: 160) + "\nEND-DESCRIPTION"
-            let url = try QuoteExportService.pdfURL(for: p, company: nil, includeBranding: false)
+            let url = try QuoteExportService.pdfURL(for: p, company: nil, includeBranding: false, locale: Locale(identifier: p.quoteLanguage))
             let pdf = try XCTUnwrap(PDFDocument(url: url)), text = try XCTUnwrap(pdf.string)
             XCTAssertGreaterThan(pdf.pageCount, 1)
             for index in [0, pdf.pageCount - 1] {
@@ -231,7 +231,7 @@ import PDFKit
     }
     func testCSVExportsSeparateCustomerPricesFromInternalCostsAndEscapeFormulas() throws {
         let p = project(); p.items[0].descriptionText = "=HYPERLINK(\"bad\")"; p.items[0].internalNote = "secret margin"
-        let frozen = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: p))
+        let frozen = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: p, locale: Locale(identifier: p.quoteLanguage)))
         let customer = String(decoding: QuoteCSVRenderer.data(frozen, kind: .customer), as: UTF8.self)
         XCTAssertFalse(customer.contains("Supplier A")); XCTAssertFalse(customer.contains("secret margin"))
         XCTAssertEqual(customer.components(separatedBy: "\"project_summary\"").count, 2)
@@ -310,10 +310,10 @@ import PDFKit
     func testQuoteComparisonReportsDeletedAddedAndModifiedLines() throws {
         let p = project()
         let removed = item(); p.items.append(removed)
-        let old = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: p))
+        let old = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: p, locale: Locale(identifier: p.quoteLanguage)))
         p.items.removeLast(); p.items[0].quantity += 1
         let added = item(); p.items.append(added)
-        let new = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: p))
+        let new = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: p, locale: Locale(identifier: p.quoteLanguage)))
         let changes = QuoteComparison.changes(from: old, to: new)
         XCTAssertEqual(changes.count, 3)
         XCTAssertEqual(changes.first(where: { $0.id == removed.id })?.kind, .removed)

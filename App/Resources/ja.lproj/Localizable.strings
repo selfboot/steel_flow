@@ -434,7 +434,7 @@
 "workflow.show_sales_price" = "1個あたりの販売価格を表示";
 "workflow.sales_unit_price" = "販売単価";
 "workflow.history_empty" = "保存済みの見積書がありません";
-"workflow.frozen_help" = "このバージョンは作成時の価格、日付、表示内容を保持します。";
+"workflow.frozen_help" = "このバージョンは元の価格、日付、デザインを保持します。PDFの表示言語はアプリ設定に従い、入力した内容は変更されません。";
 "workflow.version_comparison" = "前のバージョンからの変更";
 "workflow.total_change" = "合計の差額";
 "workflow.copy_revision" = "新しいプロジェクトにコピーして修正";

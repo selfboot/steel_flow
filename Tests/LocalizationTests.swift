@@ -1,4 +1,5 @@
 import XCTest
+import PDFKit
 @testable import SteelFlow
 
 final class LocalizationTests: XCTestCase {
@@ -108,6 +109,78 @@ final class LocalizationTests: XCTestCase {
             for key in Set(dynamicKeys + fixedKeys) {
                 XCTAssertNotEqual(bundle.localizedString(forKey: key, value: nil, table: nil), key, "Missing \(key) in \(language)")
             }
+        }
+    }
+}
+
+@MainActor final class QuoteLanguageRegressionTests: XCTestCase {
+    func testSelectedLanguageOverridesLegacyProjectForEveryStyleAndExport() throws {
+        let defaults = UserDefaults.standard
+        let previous = defaults.object(forKey: "app.language")
+        defer { if let previous { defaults.set(previous, forKey: "app.language") } else { defaults.removeObject(forKey: "app.language") } }
+        let source = try QuoteStyleSample.snapshot(language: "zh-Hans")
+        let project = QuoteSnapshotRestorer.project(source)
+        project.customerName = "客户原名"
+        project.items[0].descriptionText = "客户规格备注"
+        project.items[1].materialID = "custom-alloy"
+        project.items[1].materialName = "自定义合金"
+        for language in AppLanguage.allCases {
+            defaults.set(language.rawValue, forKey: "app.language")
+            let locale = Locale(identifier: language.rawValue)
+            let expectedMaterial = MaterialCatalog.localizedName(materialID: "carbon-steel", fallback: "", locale: locale)
+            let snapshot = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project))
+            XCTAssertEqual(snapshot.quoteLanguage, language.rawValue)
+            XCTAssertEqual(snapshot.lines[0].materialName, expectedMaterial)
+            XCTAssertEqual(snapshot.lines[1].materialName, "自定义合金")
+            XCTAssertEqual(snapshot.lines[0].descriptionText, "客户规格备注")
+            XCTAssertEqual(snapshot.customerName, "客户原名")
+            XCTAssertEqual(snapshot.totals.total, source.totals.total)
+            XCTAssertEqual(project.quoteLanguage, "zh-Hans", "No migration of stored project data")
+            let csv = try QuoteExportService.csvURL(for: project)
+            defer { try? FileManager.default.removeItem(at: csv) }
+            XCTAssertTrue(try String(contentsOf: csv, encoding: .utf8).contains(expectedMaterial))
+            for style in QuoteStyle.allCases {
+                project.quoteStyle = style
+                let url = try QuoteExportService.pdfURL(for: project, company: nil)
+                defer { try? FileManager.default.removeItem(at: url) }
+                let text = try XCTUnwrap(PDFDocument(url: url)?.string)
+                XCTAssertTrue(text.contains(AppLocalization.text("quote.title", locale: locale)), "\(language) / \(style): \(text)")
+                XCTAssertTrue(text.contains(expectedMaterial), "\(language) / \(style)")
+            }
+        }
+    }
+
+    func testHistoricalQuoteRelocalizesWithoutChangingFrozenData() throws {
+        let source = try QuoteStyleSample.snapshot(language: "zh-Hans")
+        let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys
+        let original = try encoder.encode(source)
+        for language in AppLanguage.allCases {
+            let locale = Locale(identifier: language.rawValue)
+            var localized = source.localized(for: locale)
+            XCTAssertEqual(localized.quoteLanguage, language.rawValue)
+            let url = try QuoteExportService.pdfURL(snapshot: localized)
+            defer { try? FileManager.default.removeItem(at: url) }
+            XCTAssertTrue(try XCTUnwrap(PDFDocument(url: url)?.string).contains(AppLocalization.text("quote.title", locale: locale)))
+            let csv = String(decoding: QuoteCSVRenderer.data(localized, kind: .customer), as: UTF8.self)
+            XCTAssertTrue(csv.contains(MaterialCatalog.localizedName(materialID: "carbon-steel", fallback: "", locale: locale)))
+            localized.quoteLanguage = source.quoteLanguage
+            for index in localized.lines.indices { localized.lines[index].materialName = source.lines[index].materialName }
+            XCTAssertEqual(try encoder.encode(localized), original, "Only presentation language may change")
+        }
+        XCTAssertEqual(try encoder.encode(source), original)
+    }
+
+    func testSystemLanguageAndStyleSamplesUseResolvedLocale() throws {
+        let defaults = UserDefaults.standard
+        let previous = defaults.object(forKey: "app.language")
+        defer { if let previous { defaults.set(previous, forKey: "app.language") } else { defaults.removeObject(forKey: "app.language") } }
+        defaults.set("system", forKey: "app.language")
+        let project = QuoteSnapshotRestorer.project(try QuoteStyleSample.snapshot(language: "ja"))
+        let snapshot = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project))
+        XCTAssertEqual(snapshot.quoteLanguage, AppLanguage.resolve(AppLocalization.systemLocale).rawValue)
+        defaults.set("zh-Hans", forKey: "app.language")
+        for language in AppLanguage.allCases {
+            XCTAssertEqual(try QuoteStyleSample.snapshot(language: language.rawValue).quoteLanguage, language.rawValue)
         }
     }
 }

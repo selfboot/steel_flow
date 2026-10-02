@@ -434,7 +434,7 @@
 "workflow.show_sales_price" = "Show sales price per piece";
 "workflow.sales_unit_price" = "Sales price / piece";
 "workflow.history_empty" = "No saved quote versions";
-"workflow.frozen_help" = "This version keeps its original prices, dates and presentation.";
+"workflow.frozen_help" = "This version keeps its original prices, dates and style. PDF text follows the app language; your entered content stays unchanged.";
 "workflow.version_comparison" = "Changes from previous version";
 "workflow.total_change" = "Total change";
 "workflow.copy_revision" = "Copy as a new project to revise";

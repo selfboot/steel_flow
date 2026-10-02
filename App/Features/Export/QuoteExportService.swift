@@ -53,7 +53,7 @@ struct QuoteSnapshotPayload: Codable, Sendable {
         let profile: String
         let geometry: GeometryInput
         let materialID: String
-        let materialName: String
+        var materialName: String
         let materialGrade: String
         let densityKgPerM3: Double
         let lengthValue: Double
@@ -103,7 +103,7 @@ struct QuoteSnapshotPayload: Codable, Sendable {
     let projectName: String
     let projectNumber: String
     let customerName: String
-    let quoteLanguage: String
+    var quoteLanguage: String
     let currencyCode: String
     let paperSize: String
     let includeBranding: Bool
@@ -112,8 +112,20 @@ struct QuoteSnapshotPayload: Codable, Sendable {
     let profitPercent: Decimal
     let taxPercent: Decimal
     let terms: String
-    let lines: [Line]
+    var lines: [Line]
     let totals: Totals
+
+    /// Relocalize presentation without changing the saved financial or customer data.
+    func localized(for locale: Locale) -> Self {
+        var copy = self
+        copy.quoteLanguage = AppLanguage.resolve(locale).rawValue
+        copy.lines = lines.map { line in
+            var localized = line
+            localized.materialName = MaterialCatalog.localizedName(materialID: line.materialID, fallback: line.materialName, locale: locale)
+            return localized
+        }
+        return copy
+    }
 }
 
 @MainActor
@@ -130,12 +142,12 @@ enum QuoteExportService {
         company: CompanyProfileEntity? = nil,
         generatedAt: Date = .now,
         includeBranding: Bool = true,
-        quoteStyle: QuoteStyle? = nil
+        quoteStyle: QuoteStyle? = nil,
+        locale: Locale = AppLocalization.preferredLocale
     ) throws -> Data {
         let summary = ProjectCalculator.summarize(project)
         guard !summary.lines.isEmpty else { throw QuoteExportError.noValidItems }
         guard summary.invalidItemCount == 0, summary.isPricingPolicyValid else { throw QuoteExportError.invalidPricing }
-        let locale = Locale(identifier: project.quoteLanguage)
         var payload = QuoteSnapshotPayload(
             schemaVersion: 3,
             generatedAt: generatedAt,
@@ -145,7 +157,7 @@ enum QuoteExportService {
             projectName: project.name,
             projectNumber: project.projectNumber,
             customerName: project.customerName,
-            quoteLanguage: project.quoteLanguage,
+            quoteLanguage: AppLanguage.resolve(locale).rawValue,
             currencyCode: project.currencyCode,
             paperSize: project.paperSize.rawValue,
             includeBranding: includeBranding,
@@ -211,11 +223,10 @@ enum QuoteExportService {
         return try encoder.encode(payload)
     }
 
-    static func csvURL(for project: ProjectEntity, includeBOM: Bool = true, generatedAt: Date = .now) throws -> URL {
+    static func csvURL(for project: ProjectEntity, includeBOM: Bool = true, generatedAt: Date = .now, locale: Locale = AppLocalization.preferredLocale) throws -> URL {
         let summary = ProjectCalculator.summarize(project)
         guard !summary.lines.isEmpty else { throw QuoteExportError.noValidItems }
         guard summary.invalidItemCount == 0, summary.isPricingPolicyValid else { throw QuoteExportError.invalidPricing }
-        let locale = Locale(identifier: project.quoteLanguage)
         let header = "row_type,item_id,profile_kind,description,material,material_id,material_grade,density_kg_m3,length_value,length_unit,quantity,area_m2,volume_m3,unit_mass_kg,total_mass_kg,waste_percent,waste_adjusted_mass_kg,unit_price,price_basis,currency,material_subtotal,processing_fee,other_fee,price_source,price_source_name,price_region,price_effective_date,price_includes_tax,project_profit,project_tax,project_total"
         var rows = [header]
         for line in summary.lines {
@@ -271,8 +282,8 @@ enum QuoteExportService {
         return try decoder.decode(QuoteSnapshotPayload.self, from: data)
     }
 
-    static func pdfURL(for project: ProjectEntity, company: CompanyProfileEntity?, generatedAt: Date = .now, includeBranding: Bool = true) throws -> URL {
-        let payload = try decodeSnapshot(snapshotData(for: project, company: company, generatedAt: generatedAt, includeBranding: includeBranding))
+    static func pdfURL(for project: ProjectEntity, company: CompanyProfileEntity?, generatedAt: Date = .now, includeBranding: Bool = true, locale: Locale = AppLocalization.preferredLocale) throws -> URL {
+        let payload = try decodeSnapshot(snapshotData(for: project, company: company, generatedAt: generatedAt, includeBranding: includeBranding, locale: locale))
         return try pdfURL(snapshot: payload)
     }
 

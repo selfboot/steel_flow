@@ -1,6 +1,6 @@
 import Foundation
 
-/// The app UI and customer quotes share supported languages, but store independent choices.
+/// The app UI and customer quotes use the same selected language.
 enum AppLanguage: String, CaseIterable, Identifiable {
     case english = "en"
     case simplifiedChinese = "zh-Hans"

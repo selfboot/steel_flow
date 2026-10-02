@@ -230,7 +230,7 @@ final class PricingAndProjectTests: XCTestCase {
     func testCSVIsMachineReadableUTF8WithBOM() throws {
         let project = ProjectEntity(name: "报价 Test", projectNumber: "Q-1", currencyCode: "CNY")
         project.items.append(makeItem(quantity: 2, unitPrice: 2, processing: 0))
-        let url = try QuoteExportService.csvURL(for: project)
+        let url = try QuoteExportService.csvURL(for: project, locale: Locale(identifier: project.quoteLanguage))
         let data = try Data(contentsOf: url)
         XCTAssertTrue(data.starts(with: [0xEF, 0xBB, 0xBF]))
         let text = String(decoding: data, as: UTF8.self)
@@ -254,7 +254,7 @@ final class PricingAndProjectTests: XCTestCase {
         let item = makeItem(quantity: 1, unitPrice: 2, processing: 0)
         item.materialName = "碳钢"
         project.items.append(item)
-        let text = try String(contentsOf: QuoteExportService.csvURL(for: project), encoding: .utf8)
+        let text = try String(contentsOf: QuoteExportService.csvURL(for: project, locale: Locale(identifier: project.quoteLanguage)), encoding: .utf8)
         XCTAssertTrue(text.contains("\"Carbon steel\""))
         XCTAssertFalse(text.contains("\"碳钢\""))
     }
@@ -265,7 +265,7 @@ final class PricingAndProjectTests: XCTestCase {
         item.unitPriceText = "bad"
         project.items.append(makeItem(quantity: 1, unitPrice: 2, processing: 0))
         project.items.append(item)
-        XCTAssertThrowsError(try QuoteExportService.csvURL(for: project)) {
+        XCTAssertThrowsError(try QuoteExportService.csvURL(for: project, locale: Locale(identifier: project.quoteLanguage))) {
             XCTAssertEqual($0 as? QuoteExportError, .invalidPricing)
         }
     }
@@ -277,7 +277,7 @@ final class PricingAndProjectTests: XCTestCase {
             item.sortIndex = index
             project.items.append(item)
         }
-        let url = try QuoteExportService.pdfURL(for: project, company: nil)
+        let url = try QuoteExportService.pdfURL(for: project, company: nil, locale: Locale(identifier: project.quoteLanguage))
         let data = try Data(contentsOf: url)
         XCTAssertGreaterThan(data.count, 1_000)
         XCTAssertEqual(String(data: data.prefix(4), encoding: .ascii), "%PDF")
@@ -291,7 +291,7 @@ final class PricingAndProjectTests: XCTestCase {
         project.items.append(item)
         project.terms = "Net 30"
 
-        let freeURL = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: true)
+        let freeURL = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: true, locale: Locale(identifier: project.quoteLanguage))
         let freeText = try XCTUnwrap(PDFDocument(url: freeURL)?.string)
         XCTAssertTrue(freeText.contains("Subtotal"))
         XCTAssertTrue(freeText.contains("SteelFlow"))
@@ -301,7 +301,7 @@ final class PricingAndProjectTests: XCTestCase {
         XCTAssertFalse(freeText.contains("Markup"))
         XCTAssertFalse(freeText.contains("Net 30"))
 
-        let proURL = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: false)
+        let proURL = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: false, locale: Locale(identifier: project.quoteLanguage))
         let proText = try XCTUnwrap(PDFDocument(url: proURL)?.string)
         XCTAssertFalse(proText.contains("SteelFlow"))
         XCTAssertFalse(proText.contains("Net 30"))
@@ -313,7 +313,7 @@ final class PricingAndProjectTests: XCTestCase {
             project.items.append(makeItem(quantity: 2, unitPrice: 2, processing: 0))
             for name in [nil, "", " \n ", "Acme Fabrication"] as [String?] {
                 let company = name.map { CompanyProfileEntity(companyName: $0, contactName: "Ada", email: "ada@example.com") }
-                let url = try QuoteExportService.pdfURL(for: project, company: company, includeBranding: false)
+                let url = try QuoteExportService.pdfURL(for: project, company: company, includeBranding: false, locale: Locale(identifier: project.quoteLanguage))
                 defer { try? FileManager.default.removeItem(at: url) }
                 let pdf = try XCTUnwrap(PDFDocument(url: url))
                 let text = try XCTUnwrap(pdf.string)
@@ -342,7 +342,7 @@ final class PricingAndProjectTests: XCTestCase {
 
         let a4 = ProjectEntity(name: "A4 boundary", currencyCode: "USD", paperSize: .a4)
         for index in 0..<14 { let item = makeItem(quantity: 1, unitPrice: 2, processing: 0); item.sortIndex = index; a4.items.append(item) }
-        let url = try QuoteExportService.pdfURL(for: a4, company: nil)
+        let url = try QuoteExportService.pdfURL(for: a4, company: nil, locale: Locale(identifier: a4.quoteLanguage))
         let provider = try XCTUnwrap(CGDataProvider(url: url as CFURL))
         let document = try XCTUnwrap(CGPDFDocument(provider))
         XCTAssertEqual(document.numberOfPages, 2)
@@ -357,7 +357,7 @@ final class PricingAndProjectTests: XCTestCase {
             let item = makeItem(quantity: 2, unitPrice: 2, processing: 10)
             item.descriptionText = ["en": "Pipe batch", "zh-Hans": "圆管批次", "zh-Hant": "圓管批次", "ja": "丸パイプ一式", "ko": "원형관 묶음", "de": "Rohrlieferung", "es": "Lote de tubos", "fr": "Lot de tubes"][language]!
             project.items.append(item)
-            let payload = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project, company: nil))
+            let payload = try QuoteExportService.decodeSnapshot(QuoteExportService.snapshotData(for: project, company: nil, locale: Locale(identifier: project.quoteLanguage)))
             let line = try XCTUnwrap(payload.lines.first)
             let pdf = try XCTUnwrap(PDFDocument(url: QuotePDFRenderer.render(payload)))
             let page = try XCTUnwrap(pdf.page(at: 0))
@@ -402,7 +402,7 @@ final class PricingAndProjectTests: XCTestCase {
                     project.items.append(makeItem(quantity: 1, unitPrice: 1, processing: 0))
                     let company = CompanyProfileEntity(companyName: "Example")
                     company.address = prefix + String(repeating: letter, count: 160) + " END-MARKER"
-                    let url = try QuoteExportService.pdfURL(for: project, company: company, includeBranding: false)
+                    let url = try QuoteExportService.pdfURL(for: project, company: company, includeBranding: false, locale: Locale(identifier: project.quoteLanguage))
                     defer { try? FileManager.default.removeItem(at: url) }
                     let pdf = try XCTUnwrap(PDFDocument(url: url))
                     let text = try XCTUnwrap(pdf.string)
@@ -423,7 +423,7 @@ final class PricingAndProjectTests: XCTestCase {
                 project.showQuoteUnitPrice = true
                 project.items.append(makeItem(quantity: 2, unitPrice: 2, processing: 10))
                 project.items[0].descriptionText = "PART-001"
-                let url = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: false)
+                let url = try QuoteExportService.pdfURL(for: project, company: nil, includeBranding: false, locale: Locale(identifier: project.quoteLanguage))
                 defer { try? FileManager.default.removeItem(at: url) }
                 let pdf = try XCTUnwrap(PDFDocument(url: url))
                 let page = try XCTUnwrap(pdf.page(at: 0))
@@ -459,7 +459,7 @@ final class PricingAndProjectTests: XCTestCase {
         project.items.append(item)
         let company = CompanyProfileEntity(companyName: "Acme Steel", contactName: "Ada", email: "ada@example.com")
         let expectedCustomerQuoteAmount = ProjectCalculator.summarize(project).lines.first?.customerQuoteAmount
-        let data = try QuoteExportService.snapshotData(for: project, company: company, generatedAt: fixedDate, includeBranding: false)
+        let data = try QuoteExportService.snapshotData(for: project, company: company, generatedAt: fixedDate, includeBranding: false, locale: Locale(identifier: project.quoteLanguage))
         item.unitPriceText = "999"
         item.quantity = 99
 
