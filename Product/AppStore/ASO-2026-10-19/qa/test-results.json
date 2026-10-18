@@ -1,0 +1,34 @@
+{
+  "unitTests": {
+    "passed": 120,
+    "failed": 0
+  },
+  "iphoneUI": {
+    "passed": 14,
+    "failed": 0,
+    "includes": "12 locale capture tests, quote Pro light/dark, German largest accessibility size"
+  },
+  "ipadUI": {
+    "passed": 14,
+    "failed": 0,
+    "includes": "12 locale capture tests, quote Pro light/dark, German largest accessibility size"
+  },
+  "imperialFixtureRecapture": {
+    "iphonePassed": 1,
+    "ipadPassed": 1
+  },
+  "storeKit": {
+    "environment": "Xcode local StoreKit via Xcode IDE Run; RevenueCat production app SDK key",
+    "product": "com.steelflow.app.pro.lifetime",
+    "purchaseSheetConfirmed": true,
+    "appleSuccessMessageObserved": true,
+    "proEntitlementUnlocked": true,
+    "productionChargePerformed": false,
+    "restoreVerified": false,
+    "testFlightDeviceVerified": false
+  },
+  "limitations": [
+    "PostHog independent project and event capture pending user answer; no new behavioral tracking enabled",
+    "Apple ONGOING analytics request active; selected report instances still empty at initial check"
+  ]
+}
