@@ -1,0 +1,1013 @@
+{
+  "count": 144,
+  "assets": [
+    {
+      "path": "exports/ios/iphone/1320x2868/en-US/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "2734d7d244df8ca57e7e12b982a8368a782b0678cc063778a1868787c6cafd40"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-US/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "bdc878cda46c46cac1099a384858ea53d55b55197fedcba35f7204c18a179d75"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-US/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "798656f82a6f8603c42e09e5fc653c1e85592f74dc93c6eab5385008319e9f74"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-US/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "73017ad4bfb0913fd8fe137a670158e03d4abf8892e0e92f3e270ce8b1affe4e"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-US/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "e700017c6424bd827cd622def8ef0e276645be870322c86464984e033e26cb6d"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-US/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "3fbd669e8138cdb85ff5c2e058545c5dfecf735de9e878e7d73e0fcea136e621"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-GB/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "062839b67b68c9c94fed95846ba353a165ea07682955cab9c9b58e6fb6c5def3"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-GB/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "53211e891a6ac5fa0bfa7802247f1e341e52c463f5e7c276fa9e83951723050e"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-GB/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "10ed5a8bc9e0a4abeb14388cb98b8698f6d230c629ad4b65bc4a89c792897418"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-GB/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "f5a564a79fcb96dea084204697a66b2267fa39897a06395d87b1a0d5c8b7b33b"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-GB/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "1406508fcf7f1bce2a34a622c650ed5cbe182616ec4723cf5d5e80904c6cb3dd"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-GB/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "17833931b228826769630e52d3fbdf1d445a7bd0793f2d2ce107b56723e53dcd"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-AU/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "062839b67b68c9c94fed95846ba353a165ea07682955cab9c9b58e6fb6c5def3"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-AU/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "5ad194cd987a97d3aac3d1557dd12b2ede6bed972cffde2a46cea42bf703f075"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-AU/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "c7b624320e8bb11cb224bd974cc1ca87aca9fa7f68f5d3847fff826f63f0563a"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-AU/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "f5a564a79fcb96dea084204697a66b2267fa39897a06395d87b1a0d5c8b7b33b"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-AU/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "1406508fcf7f1bce2a34a622c650ed5cbe182616ec4723cf5d5e80904c6cb3dd"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-AU/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "cd773c4aff76aa612908d5748b971e53bc0abe26f5f30a7ebab13dcd5be01295"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-CA/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "062839b67b68c9c94fed95846ba353a165ea07682955cab9c9b58e6fb6c5def3"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-CA/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "96e6d448dc81c93978c32c16c9b566b4f1951e62cc8192e9589b7c05adb2d1ad"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-CA/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "d46019d36b959eb0680acaadbc6ce59ea2d56e330980469edfedbc60280df698"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-CA/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "f5a564a79fcb96dea084204697a66b2267fa39897a06395d87b1a0d5c8b7b33b"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-CA/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "1406508fcf7f1bce2a34a622c650ed5cbe182616ec4723cf5d5e80904c6cb3dd"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-CA/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "3f3342cf428d80fce656ddd68b7fd886f1631190a60e0528c3a5f338efd990b9"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hans/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "749e2175840bc2ed040c899f7288a8d7397d545c5c549b21960e9cb438fdb8bc"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hans/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "072ee1e59f4f35d44e732daf8e0c4ba716ab602d75c725a98de2742dc2d758b2"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hans/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "d88ec24f4cf9621ed8f8cd10f069410d50275060e51368355d13caf14bb7eb29"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hans/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "207f15335cbac3ba0104c94037df8a256f1a45b9fe32063c966ceffee1676a2b"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hans/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "05edbcc60c0c713a47bf93d2d2a86354ce96cbe75482b84010f90e73cafdee46"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hans/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "6ca976149ff348c736755bcbe4d09695a164f81fb0d135c0d43da6bc1ae4b6bc"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hant/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "98acb09c36020e7f808ad485f0a5cd95fd68afd31617cf43abb7dc4fdd514c28"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hant/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "6ebca20c41d77c684d8d774b146c5ec2204f8328e207bdd5db62f729abdebaee"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hant/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "e0105b1fbd808118c9c91636ec2ccebaa78da2025ddd007e42e8b4a8f3262315"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hant/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "c88a611b0a28f262f0ec14bb420d50d38434f8ef958829ed28550dad430509cf"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hant/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "f367c87cfdb1b5f5389cb05adff365af659daed1a13803bcf3a5a3ef722a6b96"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/zh-Hant/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "6ef353ffaacd0ce82e775f6dbc9075c4bd62d1b67d610e27c9f1ad0e672311fe"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ja/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "6679078df97235bc3fe4c6636f374eeecdfcca859c345a9253a4c7e32c300628"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ja/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "52b35fb0a466c89e4cad99cb530415d59fe6124f2e32b56e0ac22e47554fd0c4"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ja/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "cc27f1f5ccdf5e43f016cacf65230984b30c13713e1fc197e93c76a7abacdfea"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ja/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "d466a7d05c5bd0ed370597224ced282f9f24c00d7d368d8fd2d6c70c69e76982"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ja/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "cec563b7ea59ffaa51eed4a5b95ba6ce473b7c65854c9e63021b7f8f0c5499f0"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ja/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "325570e37e90f73dcf6723badbf20ad8a745e520b60cf10f955a3e1ff86e692d"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ko/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "98fe41905f235eaafb6264c848cf812bf97efa76db014fba5786e0de0833cfdf"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ko/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "dac4d6d9b058ee8615361526de731474a10ac3bdf1816902cb803ab4701268c5"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ko/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "484743bc0274c9ca7390b4f86021abba6a912c2e8808673b215518a1816cb34f"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ko/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "0dfc0d5afa4909f1b9a434f1555f98c631d839ec2f3b9721e948a58a33714e3a"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ko/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "6695ef052a0cbc22ea45dd496e30ee6ba6771f2d5fbee2735dca36d5e0974987"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/ko/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "aa67fdbdd77a6aa82f2b8ea3ccd04c99910d2a96506eeb48a8020c7f8f4c0c02"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/de-DE/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "02d4b14b1725ff3d78392c5e3b5e0d451828484b4498001cddc85fd44d4ed729"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/de-DE/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "b3ddb23c1bad98675688a0baf913ccfa2ca00e30720e2fccc5c669fd4f52b80e"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/de-DE/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "5fcdde589dd9b5e0d2059cd65dabb2b8d90dd1331f603cd6ba28faa01562982d"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/de-DE/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "22e83ab706c40d1414d520e36f391c96379109102d6be740694736cfe319261b"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/de-DE/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "4efb3f5a6b96d6889a9e986d2156508889d56377fec20dfa8610601a60c63b69"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/de-DE/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "f0cd483ba6561c426cbe825076a963e9f9f2f27bd48153ab7b2afb6ded4e6e40"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-ES/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "7bb0ed899ce7046d90bb7ba71dc8223b54a959932f803e68ebb0a7c722bf2c85"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-ES/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "ce80a90727ce770eb09d9931afdebe2541207b94a46f8f41991a4b6b18dc30f9"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-ES/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "518253fccfcf91b7881e73c70ad137064ce0a246771e704b7d07fbb62cc28591"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-ES/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "0f3875aa0d6e25d15c0e4bffe5bcd01d3ce655c0ac7be4ebc61de0dfdd96ae1c"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-ES/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "1a4f3f8e7754c47f7278f5fbd6d279137cd12b9766e369945d1d4f8015e366a5"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-ES/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "6f947797158dc28605bf19c16b60847a147cd2741bca1ba1884362b9e9559f19"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-MX/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "3429418c728be492478e6a91d117b27db4940fb7046f51bbfbaf6aa492b4fd78"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-MX/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "b4ff1b6e60c2933cc034ce412977bbcbeac50772dfd38268a49de217ed246688"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-MX/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "0e0b209b813ffe7d126da700bc055b1203d69a5cf177508b92ce7d8d843bf473"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-MX/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "92866177709e0e630805366c35563991e213e9be1bb0ae562c4bef6f7221b263"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-MX/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "47e6f0ebc037f9042d8096e516e4be6504b85fbba93acf7b774ddcae06566484"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/es-MX/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "5d69f430c87638d2de657dff68e5583a61948429f835056004573b1996e4fe62"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/fr-FR/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "ff5f3ebc361172aa870b76635667ebd221d1bbd8868195621852dae8ac8417f8"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/fr-FR/02-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "7b0c03b8efb1ed9b2e0ef29ce58c8f18764708a89b5f9af7b05be16dcb24bb98"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/fr-FR/03-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "65df8d5913c212e830cf91cf3bd83a7df310a60e52f63d32ccdbe4a238fbbce7"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/fr-FR/04-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "f694e15aced334876ca6bd69e1bf20407b1396cf2bf382989eaab9d311b77800"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/fr-FR/05-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "e2ab2b8c1afd391fe23d98c216a717dec9cfce274fd2d349dd85aed28e096547"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/fr-FR/06-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "mode": "RGB",
+      "sha256": "c70f61ed5d962c1ba71505648c4b9711623c74ad0e8abc4c8fe4abfe95069262"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-US/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "8b5313d8c49dfb756a50638366f06df97cdc4868c003acae6fc48df82ac94797"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-US/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "a9b87b907070ad6362af197e01db8a6d07a1a585f46ec131cb318c03bb72d8a7"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-US/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "deac29dc7d500e4c47878b40b1701b2c00fc6e7fa4b248b553bfe3b143c4656d"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-US/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "0beffea2788e2b6e10fb54f66e00501ee3d3748ed4f37805c4e80dbe040f106b"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-US/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "cc2e372e1d7078ae707efd61e66b6b7a06ab1c1809bf95461510d7174bb4c4e6"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-US/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "237a43726c8b35f18c9479ffea60eef1c0bc125e0e768029dbcc6eafbe43608e"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-GB/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "d67e5ff9166879f2df48732d29054041db47d3e37109511f3c749075cd39242a"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-GB/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "7dc176eca97e55ecb20c4a4a415183cbfc13041adc75fa969578e1bad3920a90"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-GB/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "b40107f55786cf4f79ebd8a80ead42fefb39716ab67ef6fb24097df4921c9c4d"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-GB/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "9bdf6dd5386cf6ef9a40b7e2e3af7419da625cd49b87fd104bd4b984a029e05f"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-GB/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "be420fd395b3d75e84681837199477e352c9c5a9e4cbe6a48422a10537c77ce6"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-GB/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "c12ca2df8eee0a3603fa6e4452dfb410edc340376cfffdf52d817a7290fd38a5"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-AU/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "564f8a26b99feee033d9e9ee3223be7f68d8de8c481a887606e06a18b4f5fa01"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-AU/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "5b4075b040a2365cc7f8a5311635a672944063af616632bf2f20a5bfbe6f421e"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-AU/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "f0722b716e4b09e5d22af2a33f603a755e100dcb0b75e530a8b96979203a893e"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-AU/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "9bdf6dd5386cf6ef9a40b7e2e3af7419da625cd49b87fd104bd4b984a029e05f"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-AU/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "be420fd395b3d75e84681837199477e352c9c5a9e4cbe6a48422a10537c77ce6"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-AU/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "5e8492151a28f28e0b42a54453de1a4a990e29ea5f7204054fce895d8f6bf0d5"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-CA/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "db77479b74178b16e6bb6dc696164c581d87f43e05060550c9ab0c1ff0294a77"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-CA/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "1bcafcb4e21566b60f7dc39bae4694252dea396ae7857e21064ef6b44dc9c803"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-CA/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "bd5159ebe0779caf4aec40da10faf03f4af9ad7e1d6c8393b0dd7b5d922e99be"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-CA/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "9bdf6dd5386cf6ef9a40b7e2e3af7419da625cd49b87fd104bd4b984a029e05f"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-CA/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "be420fd395b3d75e84681837199477e352c9c5a9e4cbe6a48422a10537c77ce6"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/en-CA/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "70affa91a3affb6e71b34c76d23cfe58f84e33093c936bbcf2f5680f33220a12"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hans/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "5a651ec5ec37df280eafca11c37962d1afcc358c4e54479ddcf6d5ebdf18f895"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hans/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "130cc4fc8c01731b6253a6a00c5e11b2c5968506b0bb00b887be5d9446906ff6"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hans/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "ab12f7a34815ba97288fc848629c67930808ec2deba43f7178986802857abad5"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hans/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "d7ef1e20a2eb31ef168d448eeb296b2f229148a00458137a78222ece6af2d452"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hans/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "fed48c1963fb62e47289ce491265ebaf5f9892da74e68fcc0bd94967969ad95a"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hans/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "f1e34db69bfb9b4578f0730c1543c61f08fa4f98ce42fb89d281ac6f866b656c"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hant/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "68efae1e26810c9dc6c31cf292e0c2fab6e484ea655a7953e95af290eccd48e8"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hant/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "1a8620a5b4824b0df53da3c7f30dac5083122bcef822b566280b419a208242e4"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hant/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "a3394606af0a74fb00ff6c6705cd5b21fe19c4c0f367400ee37eb0613b3ca5c5"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hant/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "888ce18554ba60fe1b45bf486517fc2849b4eb8df025387e9186bdd03a622655"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hant/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "6675fc51d7b5ac17c42978acab6bfb484a25116914d80eeac455c4051d97a50d"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/zh-Hant/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "2b2dd274d3d100f44d00709650beed25293a2a2e4c69a370b9bee1db0e6503c1"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ja/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "5427285451a0331df8db65115313dd82f4b019672b5b029276e4dd1d7d11c9f6"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ja/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "da1fe5a9c08cfccdcff74df2c3545671e7dab8ce861f59f15916165eb0065553"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ja/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "6bdae39a759920f96e523acaae39bf2b0dd6ae23b2360b7c59008ebfa2e27892"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ja/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "ae125ec8c6634a162bf4927ffb67e9c0651e8ee81211be238ceaa0c7c9b6982c"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ja/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "fcb6974ba46a36f2cbdad668d1f19c27894a4d87ec0eb6e7b8716f49b0795179"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ja/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "ef42aa35df6c90939cbfc1b1e400e36506b540b8bde088a095d80d8dd7b412ff"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ko/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "91cf1dd9ddc26860cd7eaab8ce63a1c409baf4d95d2e5b17052157b174226c98"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ko/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "92162a50a0c0a177eb9390514195650584c9c98ef0788f4b7c738d86bf99fc62"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ko/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "3c9e734b2318e6800b887f71e90233728f8470fd3f5968e0c8f5aa4c92ce7a11"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ko/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "0a00e59de08a2587ecf1a99ba655137aba0e2970ed98fba378d885a335fdd0ad"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ko/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "6d4ba4d517548382de7a75b766d61aee083f76067075e9101dc45dd2be4e633e"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/ko/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "8809c776965d7d2b4bffe5b5cd338d07685a2df5933563301c9c9245c8b338fe"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/de-DE/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "ad6556a3d61b50b3c3cfc67848d7541d9d55171b2e7aedde8d05c7364ae7555f"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/de-DE/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "e49be384f7572ce447cb8035199bdb0c52ef47f9e40b3fae743e34cabfe62cf3"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/de-DE/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "3ce4c75b35637cdda9db069e81d3a2c08699ac6e893314eb16fc278022177bca"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/de-DE/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "20db5c3107ddd402e98eb8fc39a774f80fc2d78f73d63a17e5724d165d0da7fb"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/de-DE/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "35a8ddf6d5513d9378755f5cb63456e2546c9977e37cb4c585ddff340ef83bd8"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/de-DE/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "466da70a45a0613ff9e3c8ec2a425a67f42598572217d5fa28a07ff391bbf1e2"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-ES/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "ae7966a81b4ee73f26f308db0d3f731cf0fa9697a04f2d07b239e85e09243e83"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-ES/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "f925376f3f5f7d16b3afc616403e2ad740b35c108e6bdc8a1cd9a6a2599fa642"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-ES/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "f50301344024b70b8a8855fd07a37897acee723de75f8cf7d01b23558153a01d"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-ES/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "c2d7e79d83e727cc6f4a7da89f18a68370d38a3c20fdbc84e45c9ae6b368d425"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-ES/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "6de485590cf7ed6545a3a3542920c2780379a07f16dcdd03f2e1b04e95f6f063"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-ES/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "76265ce1e066556f336fe1cab23f82cb8fa4d1cdcc3b18b4f3f30ecfcbbb5414"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-MX/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "595c0bb9cb83492d0f61bfa2fe4db5a6f6d267e3c6bcaa87002c7129d92af0e0"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-MX/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "e8be4be1125e5000f7163bd436dcd4466e2ecc24cd084e5bfa5021382996cc65"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-MX/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "7511c50a98a68d74cbf6f00d50e5d75d452b8321ff520d57ce0793de4a046fe6"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-MX/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "813211a1447a761ca4482811ab1876e835f7641fa9987d67b33420b077bed4ce"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-MX/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "653e05998cef33395c3696c0afb614a4097a1684e4becc82c781afe5936f3195"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/es-MX/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "2fbba8e352c407db06df6f71b6ab29ec37618514db6abd1df2af0ccc49d77155"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/fr-FR/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "b4080834832598dfbc4d3a6c89b73269804a249c64c3a12a594e5599efb20ab4"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/fr-FR/02-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "c18df1a439e6faefb27092f1493b26f06f01478e154c108b3e60ac3e9a078935"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/fr-FR/03-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "d5b2106a722afddef955067ba8957947211b7c63e53885c42c3825f8d7b69a93"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/fr-FR/04-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "dd48cf8684ee7b7db9b6af62454cf7d8d337fcddb48a8e743b8cd0300959cf9d"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/fr-FR/05-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "bcaf898fe3290fb41a2c82e32d095f4b37884c15a47466ff13f8b02178477c48"
+    },
+    {
+      "path": "exports/ios/ipad/2064x2752/fr-FR/06-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "mode": "RGB",
+      "sha256": "0046f74e9705b0675916065aa9cf3644c046d7006ba51d425b8b60e1cf979555"
+    }
+  ]
+}

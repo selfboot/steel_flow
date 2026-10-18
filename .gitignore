@@ -15,3 +15,9 @@ Config/RevenueCat.local.xcconfig
 __pycache__/
 *.py[cod]
 /Product/AppStore/ASO-*/*.zip
+
+# Alternate screenshot sizes are reproducible from the editor; commit primary store sizes.
+/Product/AppStore/ASO-2026-10-19/exports/ios/iphone/1284x2778/
+/Product/AppStore/ASO-2026-10-19/exports/ios/iphone/1206x2622/
+/Product/AppStore/ASO-2026-10-19/exports/ios/iphone/1125x2436/
+/Product/AppStore/ASO-2026-10-19/exports/ios/ipad/2048x2732/
