@@ -29,8 +29,24 @@ final class AppReviewPrompt {
         self.defaults = defaults
     }
 
+    /// At most one meaningful calculation per day; typing and reopening a view are not extra uses.
+    func recordCalculation(now: Date = .now) {
+        let day = Calendar.current.startOfDay(for: now)
+        guard defaults.object(forKey: "review.lastCalculationDay") as? Date != day else { return }
+        defaults.set(day, forKey: "review.lastCalculationDay")
+        defaults.set(min(3, defaults.integer(forKey: "review.calculationDays") + 1), forKey: "review.calculationDays")
+    }
+
+    func recordCompletedShare() {
+        defaults.set(true, forKey: "review.completedShare")
+    }
+
+    var isEligible: Bool {
+        defaults.integer(forKey: "review.calculationDays") >= 3 || defaults.bool(forKey: "review.completedShare")
+    }
+
     func claimRequest(version: String, now: Date = .now) -> Bool {
-        guard !version.isEmpty, defaults.string(forKey: versionKey) != version else { return false }
+        guard isEligible, !version.isEmpty, defaults.string(forKey: versionKey) != version else { return false }
         if let previousDate = defaults.object(forKey: dateKey) as? Date,
            now.timeIntervalSince(previousDate) < Self.minimumInterval { return false }
         defaults.set(version, forKey: versionKey)
@@ -62,6 +78,7 @@ struct CalculationReviewModifier: ViewModifier {
             // Any further edit, open sheet, backgrounding or navigation cancels this task.
             do { try await Task.sleep(for: .seconds(2)) } catch { return }
             guard !Task.isCancelled else { return }
+            AppReviewPrompt.shared.recordCalculation()
             let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
             if AppReviewPrompt.shared.claimRequest(version: version) {
                 requestReview()

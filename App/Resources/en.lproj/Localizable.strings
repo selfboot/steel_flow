@@ -617,3 +617,6 @@
 "quote.pro.detail" = "Add your company details and logo, and remove the SteelFlow branding from PDFs.";
 "quote.pro.action" = "Upgrade to Pro";
 "quote.pro.free_export" = "One-time purchase. PDFs with SteelFlow branding stay free.";
+
+"purchase.quote.sample" = "Pro PDF example · your current quote";
+"purchase.quote.your_company" = "Your company";

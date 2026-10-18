@@ -106,7 +106,7 @@ struct QuoteSnapshotPayload: Codable, Sendable {
     var quoteLanguage: String
     let currencyCode: String
     let paperSize: String
-    let includeBranding: Bool
+    var includeBranding: Bool
     var company: Company?
     let profitMode: String
     let profitPercent: Decimal

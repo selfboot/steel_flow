@@ -8,6 +8,7 @@ final class AppReviewPromptTests: XCTestCase {
         let defaults = UserDefaults(suiteName: suite)!
         defer { defaults.removePersistentDomain(forName: suite) }
         let now = Date(timeIntervalSince1970: 1_800_000_000)
+        AppReviewPrompt(defaults: defaults).recordCompletedShare()
         XCTAssertTrue(AppReviewPrompt(defaults: defaults).claimRequest(version: "1.1.1", now: now))
         let relaunched = AppReviewPrompt(defaults: defaults)
         XCTAssertFalse(relaunched.claimRequest(version: "1.1.1", now: now.addingTimeInterval(365 * 86400)))
@@ -18,6 +19,7 @@ final class AppReviewPromptTests: XCTestCase {
         let defaults = UserDefaults(suiteName: suite)!
         defer { defaults.removePersistentDomain(forName: suite) }
         let prompt = AppReviewPrompt(defaults: defaults)
+        prompt.recordCompletedShare()
         let now = Date(timeIntervalSince1970: 1_800_000_000)
         XCTAssertTrue(prompt.claimRequest(version: "1.1.1", now: now))
         XCTAssertFalse(prompt.claimRequest(version: "1.1.2", now: now.addingTimeInterval(89 * 86400)))
@@ -31,8 +33,34 @@ final class AppReviewPromptTests: XCTestCase {
         let defaults = UserDefaults(suiteName: suite)!
         defer { defaults.removePersistentDomain(forName: suite) }
         let prompt = AppReviewPrompt(defaults: defaults)
+        prompt.recordCompletedShare()
         XCTAssertFalse(prompt.claimRequest(version: ""))
         XCTAssertTrue(prompt.claimRequest(version: "1.1.1"))
+    }
+
+    func testCalculationsRequireThreeDistinctDaysAndPersistAcrossRelaunch() {
+        let suite = "AppReviewPromptTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let prompt = AppReviewPrompt(defaults: defaults)
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        XCTAssertFalse(prompt.claimRequest(version: "1.3.1", now: now))
+        for _ in 0..<10 { prompt.recordCalculation(now: now) }
+        XCTAssertFalse(prompt.isEligible)
+        prompt.recordCalculation(now: now.addingTimeInterval(86400))
+        XCTAssertFalse(prompt.isEligible)
+        let relaunched = AppReviewPrompt(defaults: defaults)
+        relaunched.recordCalculation(now: now.addingTimeInterval(2 * 86400))
+        XCTAssertTrue(relaunched.claimRequest(version: "1.3.1", now: now.addingTimeInterval(2 * 86400)))
+    }
+
+    func testPaywallLeadsWithTheFeatureThatTriggeredIt() {
+        XCTAssertEqual(ProPaywallReason.quoteBranding.benefits.first, "quotes")
+        XCTAssertEqual(ProPaywallReason.companyProfile.benefits.first, "quotes")
+        XCTAssertEqual(ProPaywallReason.csv.benefits.first, "quotes")
+        XCTAssertEqual(ProPaywallReason.materials.benefits.first, "materials")
+        XCTAssertEqual(ProPaywallReason.backups.benefits.first, "backups")
+        XCTAssertEqual(ProPaywallReason.projects.benefits.first, "projects")
     }
 
     func testManualReviewLinkTargetsSteelFlowWriteReviewPage() {

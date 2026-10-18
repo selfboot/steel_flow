@@ -1,20 +1,5 @@
 import SwiftUI
 
-enum ProPaywallReason: String, Identifiable {
-    case general = "purchase.help"
-    case projects = "purchase.limit.projects"
-    case duplicate = "purchase.limit.duplicate"
-    case bulkPricing = "purchase.limit.bulk_pricing"
-    case items = "purchase.limit.items"
-    case materials = "purchase.limit.materials"
-    case csv = "purchase.limit.csv"
-    case companyProfile = "purchase.limit.company_profile"
-    case quoteBranding = "quote.pro.detail"
-    case backups = "purchase.limit.backups"
-
-    var id: String { rawValue }
-}
-
 /// Shared visual identity for the settings entry and purchase page.
 struct ProEmblem: View {
     var isActive = false
@@ -35,6 +20,7 @@ struct ProPaywallView: View {
     @Environment(\.locale) private var locale
     @Environment(\.dynamicTypeSize) private var typeSize
     let reason: ProPaywallReason
+    var quotePreview: QuoteSnapshotPayload? = nil
     @State private var purchaseManager = PurchaseManager.shared
     @State private var trackedImpression = false
 
@@ -46,13 +32,16 @@ struct ProPaywallView: View {
                 ScrollView {
                     VStack(spacing: 20) {
                         hero
-                        if !purchaseManager.isPro, reason != .general {
+                        if !purchaseManager.isPro, reason != .general, !reason.emphasizesQuotes {
                             Label(LocalizedStringKey(reason.rawValue), systemImage: "lock.open.fill")
                                 .font(.subheadline)
                                 .foregroundStyle(SteelFlowTheme.steelBlue)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(14)
                                 .background(SteelFlowTheme.steelBlue.opacity(0.08), in: RoundedRectangle(cornerRadius: 16))
+                        }
+                        if reason.emphasizesQuotes, let quotePreview, !purchaseManager.isPro {
+                            QuoteBrandingPreview(snapshot: quotePreview)
                         }
                         benefits
                         if inlineCheckout { checkout }
@@ -122,10 +111,10 @@ struct ProPaywallView: View {
                     .background(Color.white.opacity(0.08), in: Capsule())
             }
             VStack(alignment: .leading, spacing: 8) {
-                Text(purchaseManager.isPro ? "purchase.pro_active" : "purchase.paywall.title")
+                Text(purchaseManager.isPro ? "purchase.pro_active" : (reason.emphasizesQuotes ? "quote.pro.title" : "purchase.paywall.title"))
                     .font(.title2.bold())
                     .foregroundStyle(.white)
-                Text(purchaseManager.isPro ? "purchase.paywall.active_subtitle" : "purchase.paywall.subtitle")
+                Text(purchaseManager.isPro ? "purchase.paywall.active_subtitle" : (reason.emphasizesQuotes ? "quote.pro.detail" : "purchase.paywall.subtitle"))
                     .font(.subheadline)
                     .foregroundStyle(Color.white.opacity(0.8))
             }
@@ -145,13 +134,10 @@ struct ProPaywallView: View {
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.secondary)
             VStack(spacing: 0) {
-                benefit("projects", icon: "square.stack.3d.up.fill")
-                benefitDivider
-                benefit("materials", icon: "slider.horizontal.3")
-                benefitDivider
-                benefit("quotes", icon: "doc.richtext.fill")
-                benefitDivider
-                benefit("backups", icon: "externaldrive.fill")
+                ForEach(Array(reason.benefits.enumerated()), id: \.element) { index, key in
+                    if index > 0 { benefitDivider }
+                    benefit(key, icon: ["projects": "square.stack.3d.up.fill", "materials": "slider.horizontal.3", "quotes": "doc.richtext.fill", "backups": "externaldrive.fill"][key]!)
+                }
             }
             .padding(.horizontal, 16)
             .background(SteelFlowTheme.surface, in: RoundedRectangle(cornerRadius: 20))
@@ -285,7 +271,7 @@ private struct ProPurchaseButtonStyle: ButtonStyle {
 }
 
 extension View {
-    func proPaywall(reason: Binding<ProPaywallReason?>, onUnlocked: (() -> Void)? = nil) -> some View {
-        sheet(item: reason, onDismiss: { if PurchaseManager.shared.isPro { onUnlocked?() } }) { ProPaywallView(reason: $0) }
+    func proPaywall(reason: Binding<ProPaywallReason?>, quotePreview: QuoteSnapshotPayload? = nil, onUnlocked: (() -> Void)? = nil) -> some View {
+        sheet(item: reason, onDismiss: { if PurchaseManager.shared.isPro { onUnlocked?() } }) { ProPaywallView(reason: $0, quotePreview: quotePreview) }
     }
 }

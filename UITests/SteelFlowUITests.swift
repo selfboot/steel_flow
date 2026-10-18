@@ -248,7 +248,7 @@ final class SteelFlowUITests: XCTestCase {
         companyProfile.tap()
 
         XCTAssertTrue(app.navigationBars["SteelFlow Pro"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Unlock SteelFlow Pro"].exists)
+        XCTAssertTrue(app.staticTexts["Make this quote your own"].exists)
         XCTAssertTrue(app.buttons["Restore purchase"].exists)
 
         let purchaseButton = app.buttons.matching(

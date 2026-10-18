@@ -617,3 +617,6 @@
 "quote.pro.detail" = "添加公司信息与 Logo，移除 PDF 中的 SteelFlow 标识。";
 "quote.pro.action" = "升级 Pro，定制公司报价";
 "quote.pro.free_export" = "一次购买。带 SteelFlow 标识的 PDF 仍可免费分享。";
+
+"purchase.quote.sample" = "Pro PDF 样张 · 当前报价";
+"purchase.quote.your_company" = "您的公司";

@@ -91,6 +91,14 @@ struct PressableCardStyle: ButtonStyle {
 struct ShareFile: Identifiable { let id = UUID(); let url: URL }
 struct FileShareSheet: UIViewControllerRepresentable {
     let url: URL
-    func makeUIViewController(context: Context) -> UIActivityViewController { UIActivityViewController(activityItems: [url], applicationActivities: nil) }
+    var onCompleted: (@MainActor () -> Void)? = nil
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        controller.completionWithItemsHandler = { _, completed, _, error in
+            guard completed, error == nil else { return }
+            Task { @MainActor in onCompleted?() }
+        }
+        return controller
+    }
     func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
 }

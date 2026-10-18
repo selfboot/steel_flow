@@ -617,3 +617,6 @@
 "quote.pro.detail" = "会社情報とロゴを追加し、PDFからSteelFlowの表記を削除できます。";
 "quote.pro.action" = "Proで自社仕様にする";
 "quote.pro.free_export" = "買い切り。SteelFlow表記付きPDFの共有は無料です。";
+
+"purchase.quote.sample" = "Pro PDF サンプル · 現在の見積書";
+"purchase.quote.your_company" = "あなたの会社";

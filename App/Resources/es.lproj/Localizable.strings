@@ -617,3 +617,6 @@
 "quote.pro.detail" = "Añade los datos y el logotipo de tu empresa y elimina la marca SteelFlow de los PDF.";
 "quote.pro.action" = "Personalizar con Pro";
 "quote.pro.free_export" = "Compra única. Compartir PDF con la marca SteelFlow sigue siendo gratis.";
+
+"purchase.quote.sample" = "Ejemplo PDF Pro · tu presupuesto";
+"purchase.quote.your_company" = "Tu empresa";

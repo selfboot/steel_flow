@@ -18,6 +18,8 @@
 		10CABE5CB0E3416B4C53A6AE /* ReferenceCases.json in Resources */ = {isa = PBXBuildFile; fileRef = 20D6D1B0C08DBFE52F6AD27D /* ReferenceCases.json */; };
 		133D88902A77B96E60DDB085 /* CalculatorEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A8859FFF9B380FFA691F19 /* CalculatorEditorView.swift */; };
 		165172AE685CE2525DE04081 /* ProjectSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D3D3A9B13E6008D8210B7C /* ProjectSettingsSheet.swift */; };
+		191657A4B693C455B8E06513 /* BrandSampleLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565C75CE951ECD415BCA13AF /* BrandSampleLogo.swift */; };
+		1A11D0C7A5787CF612BDD610 /* ProPaywallReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA71C29163D1B1C4C00FB5EC /* ProPaywallReason.swift */; };
 		1A4482227EEDDE8186E24E16 /* QuoteHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DB845A48B414B5DD909459 /* QuoteHistoryView.swift */; };
 		1D70E7AC9C96979FEE44C9B2 /* ProjectSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB217571E84FE8AB483688F /* ProjectSummary.swift */; };
 		207A5AF55ACB720174B1BECE /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C2554186B9F660A235420E /* FeedbackView.swift */; };
@@ -59,6 +61,7 @@
 		B330E5E46553AD093B2909AF /* MaterialCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26358E6FFCE305FCC30BDA0 /* MaterialCatalog.swift */; };
 		B39729F62CDC02B60CDBF9EB /* MaterialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6058F1C2214E333E8CDBA4A3 /* MaterialsView.swift */; };
 		B702BD014FCC78F48AF0C9EF /* ReferenceCorpusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */; };
+		BDC6909A62C14394553889A1 /* QuoteBrandingPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19ABB58328CCFE7B8F6617A /* QuoteBrandingPreview.swift */; };
 		C36255A2785688AB4E1B0302 /* QuoteStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6C960733BFEE7AB33588E1 /* QuoteStyleTests.swift */; };
 		C5B2997476EF79EF0C81F761 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 548F05EFB267BDEC79826041 /* Localizable.strings */; };
 		CE8B976BF7EDBC7E8A641628 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1BBD2FD3693DDA53D3191B /* AppLanguage.swift */; };
@@ -127,6 +130,7 @@
 		504649A5D7DDE1728807CF73 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		511A1BFAFEF799E36FC76B32 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		513D90C6EEE9048760CB487B /* ProPaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPaywallView.swift; sourceTree = "<group>"; };
+		565C75CE951ECD415BCA13AF /* BrandSampleLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSampleLogo.swift; sourceTree = "<group>"; };
 		58CC8E5D22C931100A83B177 /* QuoteStylePalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteStylePalette.swift; sourceTree = "<group>"; };
 		5B21E1846F47FF49884F3515 /* AppReviewPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewPrompt.swift; sourceTree = "<group>"; };
 		6058F1C2214E333E8CDBA4A3 /* MaterialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsView.swift; sourceTree = "<group>"; };
@@ -143,8 +147,10 @@
 		97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceCorpusTests.swift; sourceTree = "<group>"; };
 		9B52CAF00D414FA5E96E86B0 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		9EB1431579F7CCAEE8C06263 /* RevenueCat.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = RevenueCat.xcconfig; sourceTree = "<group>"; };
+		A19ABB58328CCFE7B8F6617A /* QuoteBrandingPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteBrandingPreview.swift; sourceTree = "<group>"; };
 		A81AC82041FE1C5F6CEC20D9 /* WorkflowSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowSupport.swift; sourceTree = "<group>"; };
 		A8DE5AF3E3652E30A118DCCF /* ProfileSection3DPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSection3DPreview.swift; sourceTree = "<group>"; };
+		AA71C29163D1B1C4C00FB5EC /* ProPaywallReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPaywallReason.swift; sourceTree = "<group>"; };
 		B19861521A39EBAEF3AA5197 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B951C002DDA177685932D4A7 /* Units.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
 		BCE9E6DA308241E2A6327023 /* KeyboardDismissSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDismissSupport.swift; sourceTree = "<group>"; };
@@ -283,6 +289,7 @@
 		73BB5EF5622E02936A073B31 /* Export */ = {
 			isa = PBXGroup;
 			children = (
+				565C75CE951ECD415BCA13AF /* BrandSampleLogo.swift */,
 				33030624F9F51469EB697928 /* QuoteCSVRenderer.swift */,
 				13B9CFAE1CC59169A250AC3D /* QuoteExportService.swift */,
 				C8DB845A48B414B5DD909459 /* QuoteHistoryView.swift */,
@@ -373,8 +380,10 @@
 				5B21E1846F47FF49884F3515 /* AppReviewPrompt.swift */,
 				05629230A45CD002AE1E1A28 /* BackupService.swift */,
 				69C2554186B9F660A235420E /* FeedbackView.swift */,
+				AA71C29163D1B1C4C00FB5EC /* ProPaywallReason.swift */,
 				513D90C6EEE9048760CB487B /* ProPaywallView.swift */,
 				9B52CAF00D414FA5E96E86B0 /* PurchaseManager.swift */,
+				A19ABB58328CCFE7B8F6617A /* QuoteBrandingPreview.swift */,
 				3C649A49EC7D9C81AEA70527 /* SettingsView.swift */,
 			);
 			path = Settings;
@@ -599,6 +608,7 @@
 				CE8B976BF7EDBC7E8A641628 /* AppLanguage.swift in Sources */,
 				008A0217F95BF8264028BFD6 /* AppReviewPrompt.swift in Sources */,
 				990941C2F2D6480037294BB6 /* BackupService.swift in Sources */,
+				191657A4B693C455B8E06513 /* BrandSampleLogo.swift in Sources */,
 				FB8604E30CF184F83F4016C1 /* BulkPricingSheet.swift in Sources */,
 				8D9024E330781A9B87135B2E /* CalculationEngine.swift in Sources */,
 				DB0E83052CDB0A5142FC2528 /* CalculationLibrary.swift in Sources */,
@@ -617,6 +627,7 @@
 				B330E5E46553AD093B2909AF /* MaterialCatalog.swift in Sources */,
 				B39729F62CDC02B60CDBF9EB /* MaterialsView.swift in Sources */,
 				8FED81E02ECBA421030A20F4 /* Money.swift in Sources */,
+				1A11D0C7A5787CF612BDD610 /* ProPaywallReason.swift in Sources */,
 				032E45C382AB668D2118CCA8 /* ProPaywallView.swift in Sources */,
 				4EFBA5E9160EDD2CA7B5FAEA /* Profile.swift in Sources */,
 				8C8E050DA16D0BA8EEC66006 /* ProfileSection3DPreview.swift in Sources */,
@@ -625,6 +636,7 @@
 				1D70E7AC9C96979FEE44C9B2 /* ProjectSummary.swift in Sources */,
 				D77AC4F52C8D290A24F2F45F /* ProjectsView.swift in Sources */,
 				660013A3EAC22B0F760EF706 /* PurchaseManager.swift in Sources */,
+				BDC6909A62C14394553889A1 /* QuoteBrandingPreview.swift in Sources */,
 				A535072306FF5F83BAFC2D0A /* QuoteCSVRenderer.swift in Sources */,
 				415840C9C518A30E31A43B85 /* QuoteExportService.swift in Sources */,
 				1A4482227EEDDE8186E24E16 /* QuoteHistoryView.swift in Sources */,

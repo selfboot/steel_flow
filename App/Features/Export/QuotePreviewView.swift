@@ -4,6 +4,9 @@ import PDFKit
 
 struct QuotePreviewView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.requestReview) private var requestReview
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var completedShare = false
     @Environment(\.modelContext) private var modelContext
     @Environment(\.locale) private var locale
     @Environment(\.horizontalSizeClass) private var sizeClass
@@ -100,7 +103,7 @@ struct QuotePreviewView: View {
                     Section {
                         DisclosureGroup("ui.more_exports") {
                             Button("workflow.save_version") { _ = saveVersion() }.accessibilityIdentifier("quote.save_version").disabled(snapshotData == nil || versionSaved)
-                            if let pdfURL { ShareLink(item: pdfURL) { Label("ui.share_without_version", systemImage: "square.and.arrow.up") } }
+                            if let pdfURL { Button { sharing = ShareFile(url: pdfURL) } label: { Label("ui.share_without_version", systemImage: "square.and.arrow.up") } }
                             if purchaseManager.isPro {
                                 Picker("workflow.export_purpose", selection: $csvKind) { ForEach(QuoteCSVKind.allCases) { Text(LocalizedStringKey($0.title)).tag($0) } }
                                 Text("workflow.export_help").font(.caption).foregroundStyle(.secondary)
@@ -109,7 +112,7 @@ struct QuotePreviewView: View {
                         }
                     }
                 }
-                if wide { documentPreview.frame(maxWidth: .infinity, maxHeight: .infinity).padding().accessibilityIdentifier("quote.side_preview") }
+                if wide { documentPreview.frame(maxWidth: .infinity, maxHeight: .infinity).padding() }
             }
             .safeAreaInset(edge: .bottom) {
                 if !typeSize.isAccessibilitySize {
@@ -126,12 +129,25 @@ struct QuotePreviewView: View {
                 await prepareExports()
             }
             .onChange(of: csvKind) { _, _ in prepareCSV() }
-            .onChange(of: purchaseManager.isPro) { _, pro in if pro { snapshot = nil; snapshotData = nil; versionSaved = false; Task { await prepareExports() } } }
-            .proPaywall(reason: $paywallReason)
+            .onChange(of: purchaseManager.isPro) { _, _ in snapshot = nil; snapshotData = nil; pdfURL = nil; csvURL = nil; versionSaved = false; Task { await prepareExports() } }
+            .proPaywall(reason: $paywallReason, quotePreview: snapshot)
             .sheet(isPresented: $showQuoteStyles) {
                 QuoteStylePicker(selected: snapshot?.quoteStyle ?? selectedStyle, onSelect: applyStyle)
             }
-            .sheet(item: $sharing) { FileShareSheet(url: $0.url) }
+            .sheet(item: $sharing) {
+                FileShareSheet(url: $0.url) { completedShare = true }
+            }
+            .task(id: completedShare && sharing == nil && scenePhase == .active) {
+                guard completedShare, sharing == nil, scenePhase == .active else { return }
+#if DEBUG
+                guard !ProcessInfo.processInfo.arguments.contains("--workflow-tests") else { return }
+#endif
+                AppReviewPrompt.shared.recordCompletedShare()
+                do { try await Task.sleep(for: .seconds(2)) } catch { return }
+                let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+                if AppReviewPrompt.shared.claimRequest(version: version) { requestReview() }
+                completedShare = false
+            }
         }
     }
 
@@ -180,7 +196,7 @@ struct QuotePreviewView: View {
 #endif
                 NavigationLink { GeneratedPDFPreview(url: pdfURL) } label: {
                     Label(AppLocalization.text("quote.open_pdf_preview", locale: locale) + " · " + pageCountText, systemImage: "arrow.up.left.and.arrow.down.right")
-                }.frame(minHeight: 44)
+                }.frame(minHeight: 44).accessibilityIdentifier("quote.open_document")
             }
         } else if preparing { ProgressView("quote.preparing").frame(maxWidth: .infinity, minHeight: 150) }
         else { ContentUnavailableView("export.error.title", systemImage: "doc.badge.ellipsis") }

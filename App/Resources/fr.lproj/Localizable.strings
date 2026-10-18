@@ -617,3 +617,6 @@
 "quote.pro.detail" = "Ajoutez vos coordonnées et votre logo, et retirez la mention SteelFlow des PDF.";
 "quote.pro.action" = "Personnaliser avec Pro";
 "quote.pro.free_export" = "Achat unique. Le partage des PDF avec la mention SteelFlow reste gratuit.";
+
+"purchase.quote.sample" = "Exemple PDF Pro · devis actuel";
+"purchase.quote.your_company" = "Votre entreprise";

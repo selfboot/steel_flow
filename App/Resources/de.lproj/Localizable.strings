@@ -617,3 +617,6 @@
 "quote.pro.detail" = "Firmendaten und Logo hinzufügen und den SteelFlow-Hinweis aus PDFs entfernen.";
 "quote.pro.action" = "Mit Pro personalisieren";
 "quote.pro.free_export" = "Einmalkauf. PDFs mit SteelFlow-Hinweis bleiben kostenlos teilbar.";
+
+"purchase.quote.sample" = "Pro-PDF-Beispiel · aktuelles Angebot";
+"purchase.quote.your_company" = "Ihr Unternehmen";
