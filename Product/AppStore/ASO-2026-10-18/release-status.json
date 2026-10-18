@@ -1,8 +1,29 @@
 {
-  "status": "local_next_release_draft",
+  "status": "uploaded_app_store_draft",
   "appId": "6806282417",
-  "appStoreConnectModified": false,
+  "version": "1.3.1",
+  "build": "27",
+  "buildId": "7c812b1c-b03c-4b45-9842-0a11bdca95f4",
+  "versionId": "2cf0c050-54ae-499b-8496-19a7dc203ff9",
+  "processingState": "VALID",
+  "buildAudienceType": "APP_STORE_ELIGIBLE",
+  "appStoreConnectModified": true,
+  "metadataLocales": 12,
+  "newScreenshotLocales": [
+    "en-AU",
+    "en-CA",
+    "en-GB",
+    "es-MX"
+  ],
   "submitted": false,
   "pricesChanged": false,
-  "note": "新文案需随新版在 App Store Connect 提交；新增地区须沿用对应语言截图并在提交前核对。"
+  "note": "1.3.1（27）已上传并关联版本草稿，12 套 ASO 文案已同步回读，新增地区沿用现有英文/西语截图；未提交审核，线上版本仍为 1.3。",
+  "screenshotCount": 144,
+  "screenshotsState": "COMPLETE",
+  "readiness": {
+    "errors": 0,
+    "warnings": 0,
+    "blocking": 0,
+    "privacyPublicationVerified": false
+  }
 }

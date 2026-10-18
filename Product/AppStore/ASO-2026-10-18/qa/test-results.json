@@ -9,5 +9,11 @@
     "failed": 0,
     "resultBundle": "/Users/daemonzhao/Library/Developer/XcodeBuildMCP/workspaces/SteelFlow-1dd3ec10f123/result-bundles/test_sim_2026-10-18T12-46-10-457Z_pid91057_05ec564e.xcresult"
   },
-  "storeKit": "Local product load, confirmation presentation and cancellation passed. No production charge or physical-device purchase/restore validation."
+  "storeKit": "Local product load, confirmation presentation and cancellation passed. No production charge or physical-device purchase/restore validation.",
+  "releaseUnitTests": {
+    "passed": 118,
+    "failed": 0,
+    "skipped": 0,
+    "resultBundle": "/Users/daemonzhao/Library/Developer/XcodeBuildMCP/workspaces/SteelFlow-1dd3ec10f123/result-bundles/test_sim_2026-10-18T22-48-48-196Z_pid91057_bfcc8e3c.xcresult"
+  }
 }
