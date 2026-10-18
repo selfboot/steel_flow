@@ -1,0 +1,86 @@
+{
+  "en-US": {
+    "nameCharacters": 23,
+    "subtitleCharacters": 29,
+    "keywordCharacters": 100,
+    "keywordBytes": 100,
+    "promotionalCharacters": 151
+  },
+  "zh-Hans": {
+    "nameCharacters": 17,
+    "subtitleCharacters": 18,
+    "keywordCharacters": 41,
+    "keywordBytes": 97,
+    "promotionalCharacters": 90
+  },
+  "zh-Hant": {
+    "nameCharacters": 17,
+    "subtitleCharacters": 17,
+    "keywordCharacters": 34,
+    "keywordBytes": 80,
+    "promotionalCharacters": 83
+  },
+  "ja": {
+    "nameCharacters": 16,
+    "subtitleCharacters": 20,
+    "keywordCharacters": 34,
+    "keywordBytes": 84,
+    "promotionalCharacters": 82
+  },
+  "ko": {
+    "nameCharacters": 19,
+    "subtitleCharacters": 22,
+    "keywordCharacters": 34,
+    "keywordBytes": 84,
+    "promotionalCharacters": 102
+  },
+  "de-DE": {
+    "nameCharacters": 24,
+    "subtitleCharacters": 30,
+    "keywordCharacters": 94,
+    "keywordBytes": 95,
+    "promotionalCharacters": 149
+  },
+  "es-ES": {
+    "nameCharacters": 26,
+    "subtitleCharacters": 25,
+    "keywordCharacters": 81,
+    "keywordBytes": 82,
+    "promotionalCharacters": 143
+  },
+  "fr-FR": {
+    "nameCharacters": 27,
+    "subtitleCharacters": 28,
+    "keywordCharacters": 76,
+    "keywordBytes": 79,
+    "promotionalCharacters": 122
+  },
+  "en-GB": {
+    "nameCharacters": 23,
+    "subtitleCharacters": 29,
+    "keywordCharacters": 95,
+    "keywordBytes": 95,
+    "promotionalCharacters": 151
+  },
+  "en-AU": {
+    "nameCharacters": 23,
+    "subtitleCharacters": 29,
+    "keywordCharacters": 95,
+    "keywordBytes": 95,
+    "promotionalCharacters": 151
+  },
+  "en-CA": {
+    "nameCharacters": 23,
+    "subtitleCharacters": 29,
+    "keywordCharacters": 94,
+    "keywordBytes": 94,
+    "promotionalCharacters": 151
+  },
+  "es-MX": {
+    "nameCharacters": 26,
+    "subtitleCharacters": 25,
+    "keywordCharacters": 81,
+    "keywordBytes": 83,
+    "promotionalCharacters": 144
+  }
+}

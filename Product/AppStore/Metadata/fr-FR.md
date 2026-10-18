@@ -1,6 +1,6 @@
 # SteelFlow: Poids des métaux
 
-Calculez le poids de vos tôles, tubes et barres, estimez le coût des matériaux et créez un devis PDF clair. SteelFlow accompagne les ateliers, les travaux de métallerie et les achats de matériaux, des dimensions à l’offre finale.
+Calculez le poids de vos tôles, tubes et barres, estimez le coût des matériaux et créez un devis PDF clair. SteelFlow accompagne les ateliers, les travaux de métallerie et les achats de matériaux, des dimensions à l’offre finale. Avec Pro, ajoutez les coordonnées et le logo de votre entreprise et retirez la marque SteelFlow des PDF.
 
 LE POIDS À PARTIR DES DIMENSIONS
 Calculez le poids théorique des tôles et plats, barres rondes, carrées, hexagonales et octogonales, tubes ronds, carrés et rectangulaires, cornières, profilés U, I/H et T. Vous pouvez aussi saisir une aire de section personnalisée. Consultez le poids unitaire et total, la surface, le volume et la formule utilisée.
@@ -12,7 +12,7 @@ TOUTES LES PIÈCES DANS UN PROJET
 Enregistrez plusieurs matériaux dans un même projet, dupliquez et réorganisez les lignes, puis actualisez les prix. Gardez les quantités, les poids, les coûts et le montant total du devis au même endroit.
 
 DES DEVIS PDF PRÊTS À PARTAGER
-Choisissez parmi 7 styles et les formats A4 et Letter. Définissez un style par défaut, puis ajoutez les coordonnées du client, la durée de validité et vos notes. L’app et les devis PDF utilisent la langue choisie dans les réglages. Huit langues sont disponibles : français, anglais, allemand, espagnol, japonais, coréen, chinois simplifié et traditionnel.
+Choisissez parmi 7 styles et les formats A4 et Letter. Définissez un style par défaut, puis ajoutez les coordonnées du client et la durée de validité. L’app et les devis PDF utilisent la langue choisie dans les réglages. Huit langues sont disponibles : français, anglais, allemand, espagnol, japonais, coréen, chinois simplifié et traditionnel.
 
 MATÉRIAUX, UNITÉS ET USAGE HORS LIGNE
 Retrouvez des densités de référence pour l’acier au carbone, l’inox, l’aluminium, le cuivre, le laiton et d’autres matériaux. Travaillez en unités métriques ou impériales. Les calculs principaux fonctionnent hors ligne, sans création de compte. Les projets sont enregistrés sur votre appareil.

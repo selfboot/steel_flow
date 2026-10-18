@@ -1,6 +1,6 @@
 # SteelFlow: Metal Weight
 
-Calculate metal weight from dimensions, check material costs, and turn a project into a PDF quote. SteelFlow works offline with no account required.
+For metal fabricators, stock suppliers and estimators: calculate weight from dimensions, include waste and processing costs, then prepare a client PDF quote. Core calculations work offline with no account required.
 
 CALCULATE METAL WEIGHT
 
@@ -16,11 +16,11 @@ Save multiple material items into a project, duplicate and reorder them, update 
 
 SHARE PROFESSIONAL OUTPUT
 
-Create a polished PDF quote or export a machine-friendly CSV material list. Add company and customer details, validity, and notes before sharing.
+Share a clear PDF with customer details, line items, totals and validity. Free PDFs include SteelFlow branding. Pro adds your company details and logo, removes SteelFlow branding, and unlocks CSV material lists. One purchase, no subscription.
 
 MATERIALS AND UNITS THAT FIT YOUR WORK
 
-Use built-in densities for carbon steel, stainless steel, aluminium, copper, brass, titanium and more, or create custom materials. Work in metric or imperial units without rebuilding a calculation.
+Use built-in densities for carbon steel, stainless steel, aluminium, copper, brass, cast iron, or create custom materials. Work in metric or imperial units without rebuilding a calculation.
 
 PRIVATE AND OFFLINE
 
@@ -28,7 +28,7 @@ No account is required. Project and material data stays on your device by defaul
 
 FREE TO START, ONE-TIME PRO UPGRADE
 
-Quick calculations and essential project tools are free. SteelFlow Pro unlocks unlimited projects and items, custom materials, company details and logo, CSV export, PDF quotes without SteelFlow branding, versioned backup, and bulk pricing with one non-consumable purchase—no subscription.
+Quick calculations and up to 2 active projects with 10 items each are free. SteelFlow Pro unlocks unlimited projects and items, custom materials, company details and logo, CSV export, PDF quotes without SteelFlow branding, versioned backup, and bulk pricing with one non-consumable purchase—no subscription.
 
 IMPORTANT
 

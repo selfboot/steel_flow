@@ -1,6 +1,6 @@
 # SteelFlow: Metallrechner
 
-Metallgewicht berechnen, Materialkosten kalkulieren und ein übersichtliches PDF-Angebot erstellen: SteelFlow begleitet Ihre Arbeit vom ersten Maß bis zur fertigen Kalkulation. Für Metallbau, Werkstatt und Materialeinkauf.
+Metallgewicht berechnen, Materialkosten kalkulieren und ein übersichtliches PDF-Angebot erstellen: SteelFlow begleitet Ihre Arbeit vom ersten Maß bis zur fertigen Kalkulation. Für Metallbau, Werkstatt und Materialeinkauf. Mit Pro ergänzen Sie Firmendaten und Logo und entfernen das SteelFlow-Branding aus PDFs.
 
 GEWICHT AUS MASSEN BERECHNEN
 Berechnen Sie das theoretische Gewicht von Blechen und Flachstahl, Rund-, Vierkant-, Sechskant- und Achtkantstäben, Rund-, Quadrat- und Rechteckrohren, Winkeln, U-, I-/H- und T-Profilen sowie eigenen Querschnittsflächen. Maße und Stückzahl eingeben, Einzelgewicht, Gesamtgewicht, Oberfläche, Volumen und Rechenformel prüfen.
@@ -12,7 +12,7 @@ POSITIONEN IM PROJEKT BÜNDELN
 Mehrere Materialien in einem Projekt speichern, Positionen duplizieren und sortieren sowie Preise aktualisieren. Stückzahlen, Gewichte, Materialkosten, Gebühren und Angebotssumme bleiben zusammen.
 
 ANGEBOTE ALS PDF TEILEN
-Wählen Sie aus 7 Designs und den Papierformaten A4 und Letter. Legen Sie ein Standarddesign fest und ergänzen Sie Kundendaten, Gültigkeit und Notizen. Die App und PDF-Angebote verwenden die in den Einstellungen gewählte Sprache. Unterstützt werden Deutsch, Englisch, Französisch, Spanisch, Japanisch, Koreanisch sowie vereinfachtes und traditionelles Chinesisch.
+Wählen Sie aus 7 Designs und den Papierformaten A4 und Letter. Legen Sie ein Standarddesign fest und ergänzen Sie Kundendaten und Gültigkeit. Die App und PDF-Angebote verwenden die in den Einstellungen gewählte Sprache. Unterstützt werden Deutsch, Englisch, Französisch, Spanisch, Japanisch, Koreanisch sowie vereinfachtes und traditionelles Chinesisch.
 
 MATERIALIEN, EINHEITEN UND OFFLINE-NUTZUNG
 Referenzdichten für Baustahl, Edelstahl, Aluminium, Kupfer, Messing und weitere Materialien sind enthalten. Arbeiten Sie mit metrischen oder imperialen Einheiten. Die Kernberechnungen funktionieren offline und ohne Benutzerkonto. Projektdaten werden auf Ihrem Gerät gespeichert.

@@ -1,0 +1,1 @@
+placa,lámina,barra,perfil,aluminio,inoxidable,cobre,costo,cotización,pdf,material

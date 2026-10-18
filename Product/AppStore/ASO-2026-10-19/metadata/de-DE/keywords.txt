@@ -1,0 +1,1 @@
+metallgewicht,blechgewicht,rohr,profil,aluminium,edelstahl,kupfer,messing,träger,rundstahl,pdf
