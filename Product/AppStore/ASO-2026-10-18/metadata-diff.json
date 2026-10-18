@@ -1,0 +1,242 @@
+{
+  "en-US": {
+    "name": {
+      "before": "SteelFlow: Metal Calculator",
+      "after": "SteelFlow: Metal Weight"
+    },
+    "subtitle": {
+      "before": "Weight, Cost & PDF Quotes",
+      "after": "Steel Calculator & PDF Quotes"
+    },
+    "keywords": {
+      "before": "steel,pipe,tube,plate,bar,beam,angle,aluminum,stainless,copper,brass,material,mass,estimate,imperial",
+      "after": "cost,pipe,tube,plate,sheet,bar,beam,angle,aluminum,stainless,copper,brass,material,estimate,imperial"
+    },
+    "whatsNew": {
+      "before": "• Now available in 8 languages, including Traditional Chinese, Japanese, Korean, German, Spanish and French.\n• Choose from 7 PDF quote styles and set your default style and paper size in Quote Settings.\n• Improved quote previews, amount layouts and localized screens.",
+      "after": "• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
+    }
+  },
+  "zh-Hans": {
+    "whatsNew": {
+      "before": "• 新增繁体中文、日语、韩语、德语、西班牙语和法语，现支持 8 种语言。\n• 提供 7 种 PDF 报价样式，可在报价设置中选择默认样式与纸张尺寸。\n• 改善报价预览、金额排版及多语言显示。",
+      "after": "• 改善 Pro 商品加载与购买流程的稳定性。\n• 报价预览新增清晰的 Pro 升级入口，便于使用公司品牌报价。\n• 优化大字体下的报价预览布局。"
+    }
+  },
+  "zh-Hant": {
+    "keywords": {
+      "before": "角鋼,槽鋼,H型鋼,不鏽鋼,鋁材,銅,圓棒,扁鋼,密度,截面積",
+      "after": "鋼材,角鋼,槽鋼,H型鋼,不鏽鋼,鋁材,銅,圓棒,扁鋼,密度,截面積"
+    },
+    "whatsNew": {
+      "before": "• 新增繁體中文、日文、韓文、德文、西班牙文及法文，App 現支援 8 種語言。\n• 提供 7 種 PDF 報價樣式，可在報價設定中選擇預設樣式與紙張尺寸。\n• 改善報價預覽、金額排版及多語言顯示。",
+      "after": "• 改善 Pro 商品載入與購買流程的穩定性。\n• 報價預覽新增清楚的 Pro 升級入口，方便使用公司品牌報價。\n• 改善大字體下的報價預覽版面。"
+    }
+  },
+  "ja": {
+    "keywords": {
+      "before": "鉄板,鋼管,角パイプ,丸棒,平鋼,アルミ,ステンレス,銅,密度",
+      "after": "板金,鉄板,鋼管,角パイプ,丸棒,平鋼,アルミ,ステンレス,銅,密度"
+    },
+    "whatsNew": {
+      "before": "• 日本語、繁体字中国語、韓国語、ドイツ語、スペイン語、フランス語を追加し、8言語に対応しました。\n• PDF見積書は7種類のデザインから選択可能。設定で標準のデザインと用紙サイズを指定できます。\n• 見積書プレビュー、金額のレイアウト、多言語表示を改善しました。",
+      "after": "• Pro商品の読み込みと購入処理の安定性を改善しました。\n• 見積書プレビューに、自社ブランドの見積書を作成するためのPro案内を追加しました。\n• 文字を大きくした場合の見積書プレビューを改善しました。"
+    }
+  },
+  "ko": {
+    "keywords": {
+      "before": "철판,강관,각관,환봉,앵글,스테인리스,알루미늄,구리,밀도",
+      "after": "철판,강관,각관,환봉,앵글,판재,스테인리스,알루미늄,구리,밀도"
+    },
+    "whatsNew": {
+      "before": "• 한국어, 중국어 번체, 일본어, 독일어, 스페인어, 프랑스어가 추가되어 8개 언어를 지원합니다.\n• PDF 견적서 스타일 7종을 제공합니다. 설정에서 기본 스타일과 용지 크기를 선택할 수 있습니다.\n• 견적서 미리보기, 금액 배치 및 다국어 표시를 개선했습니다.",
+      "after": "• Pro 상품 불러오기와 구매 과정의 안정성을 개선했습니다.\n• 견적서 미리보기에 회사 브랜딩을 위한 Pro 업그레이드 안내를 추가했습니다.\n• 큰 글자 크기에서 견적서 미리보기 레이아웃을 개선했습니다."
+    }
+  },
+  "de-DE": {
+    "keywords": {
+      "before": "metallgewicht,rohr,blech,profil,aluminium,edelstahl,kupfer,messing,dichte,träger,rundstahl,pdf",
+      "after": "metallgewicht,blechgewicht,rohr,profil,aluminium,edelstahl,kupfer,messing,träger,rundstahl,pdf"
+    },
+    "whatsNew": {
+      "before": "• Jetzt in 8 Sprachen, darunter Deutsch, Französisch, Spanisch, Japanisch, Koreanisch und traditionelles Chinesisch.\n• 7 PDF-Designs für Angebote. Standarddesign und Papierformat in den Angebotseinstellungen wählen.\n• Verbesserte Angebotsvorschau, Betragsdarstellung und mehrsprachige Ansichten.",
+      "after": "• Zuverlässigeres Laden des Pro-Produkts und verbesserter Kaufablauf.\n• Klarer Pro-Einstieg in der Angebotsvorschau für Angebote mit Ihrer Firmenmarke.\n• Verbesserte Angebotsvorschau bei großen Textgrößen."
+    }
+  },
+  "es-ES": {
+    "subtitle": {
+      "before": "Calcula acero, tubos y costes",
+      "after": "Calculadora acero y tubos"
+    },
+    "keywords": {
+      "before": "chapa,barra,perfil,aluminio,inoxidable,cobre,latón,densidad,masa,presupuesto,pdf,material",
+      "after": "chapa,barra,perfil,aluminio,inoxidable,cobre,latón,coste,presupuesto,pdf,material"
+    },
+    "whatsNew": {
+      "before": "• Ahora en 8 idiomas, incluidos español, francés, alemán, japonés, coreano y chino tradicional.\n• 7 estilos de presupuesto PDF. Elige el estilo predeterminado y el tamaño de papel en los ajustes de presupuestos.\n• Mejoras en la vista previa, la presentación de importes y las pantallas traducidas.",
+      "after": "• Mejoras en la carga del producto Pro y en la fiabilidad de las compras.\n• Acceso más claro a Pro desde la vista previa para crear presupuestos con tu marca.\n• Mejoras de diseño al usar tamaños de texto grandes."
+    }
+  },
+  "fr-FR": {
+    "keywords": {
+      "before": "tôle,barre,profilé,aluminium,inox,cuivre,laiton,densité,masse,coût,pdf,matériau,atelier",
+      "after": "calculateur,tôle,barre,profilé,aluminium,inox,cuivre,laiton,coût,pdf,atelier"
+    },
+    "whatsNew": {
+      "before": "• Désormais disponible en 8 langues, dont le français, l’allemand, l’espagnol, le japonais, le coréen et le chinois traditionnel.\n• 7 styles de devis PDF. Choisissez le style et le format de papier par défaut dans les réglages des devis.\n• Aperçu des devis, affichage des montants et écrans traduits améliorés.",
+      "after": "• Chargement du produit Pro et achats plus fiables.\n• Accès plus clair à Pro depuis l’aperçu pour créer des devis à votre image.\n• Meilleure mise en page de l’aperçu avec les grandes tailles de texte."
+    }
+  },
+  "en-GB": {
+    "name": {
+      "before": null,
+      "after": "SteelFlow: Metal Weight"
+    },
+    "subtitle": {
+      "before": null,
+      "after": "Steel Calculator & PDF Quotes"
+    },
+    "promotionalText": {
+      "before": null,
+      "after": "From dimensions to a client-ready quote. Calculate metal weight and cost, organize projects, then export PDF quotes and CSV lists offline—no account required."
+    },
+    "keywords": {
+      "before": null,
+      "after": "cost,pipe,tube,plate,sheet,bar,beam,angle,aluminium,stainless,copper,material,estimate,imperial"
+    },
+    "descriptionFile": {
+      "before": null,
+      "after": "en-GB.md"
+    },
+    "supportUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow/support"
+    },
+    "marketingUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow"
+    },
+    "privacyPolicyUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow/privacy"
+    },
+    "whatsNew": {
+      "before": null,
+      "after": "• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
+    }
+  },
+  "en-AU": {
+    "name": {
+      "before": null,
+      "after": "SteelFlow: Metal Weight"
+    },
+    "subtitle": {
+      "before": null,
+      "after": "Steel Calculator & PDF Quotes"
+    },
+    "promotionalText": {
+      "before": null,
+      "after": "From dimensions to a client-ready quote. Calculate metal weight and cost, organize projects, then export PDF quotes and CSV lists offline—no account required."
+    },
+    "keywords": {
+      "before": null,
+      "after": "cost,pipe,tube,plate,sheet,bar,beam,angle,aluminium,stainless,copper,material,estimate,imperial"
+    },
+    "descriptionFile": {
+      "before": null,
+      "after": "en-AU.md"
+    },
+    "supportUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow/support"
+    },
+    "marketingUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow"
+    },
+    "privacyPolicyUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow/privacy"
+    },
+    "whatsNew": {
+      "before": null,
+      "after": "• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
+    }
+  },
+  "en-CA": {
+    "name": {
+      "before": null,
+      "after": "SteelFlow: Metal Weight"
+    },
+    "subtitle": {
+      "before": null,
+      "after": "Steel Calculator & PDF Quotes"
+    },
+    "promotionalText": {
+      "before": null,
+      "after": "From dimensions to a client-ready quote. Calculate metal weight and cost, organize projects, then export PDF quotes and CSV lists offline—no account required."
+    },
+    "keywords": {
+      "before": null,
+      "after": "cost,pipe,tube,plate,sheet,bar,beam,angle,aluminum,stainless,copper,material,estimate,imperial"
+    },
+    "descriptionFile": {
+      "before": null,
+      "after": "en-CA.md"
+    },
+    "supportUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow/support"
+    },
+    "marketingUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow"
+    },
+    "privacyPolicyUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow/privacy"
+    },
+    "whatsNew": {
+      "before": null,
+      "after": "• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
+    }
+  },
+  "es-MX": {
+    "name": {
+      "before": null,
+      "after": "SteelFlow: Peso de metales"
+    },
+    "subtitle": {
+      "before": null,
+      "after": "Calculadora acero y tubos"
+    },
+    "keywords": {
+      "before": null,
+      "after": "placa,lámina,barra,perfil,aluminio,inoxidable,cobre,costo,cotización,pdf,material"
+    },
+    "promotionalText": {
+      "before": null,
+      "after": "Calcula el peso y costo del metal, organiza materiales y comparte cotizaciones en PDF. Cálculos sin conexión y sin cuenta; Pro se desbloquea con una sola compra."
+    },
+    "whatsNew": {
+      "before": null,
+      "after": "• Mejoras en la carga del producto Pro y en la fiabilidad de las compras.\n• Acceso más claro a Pro desde la vista previa para crear cotizaciones con tu marca.\n• Mejoras de diseño al usar tamaños de texto grandes."
+    },
+    "descriptionFile": {
+      "before": null,
+      "after": "es-MX.md"
+    },
+    "supportUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow/support"
+    },
+    "marketingUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow"
+    },
+    "privacyPolicyUrl": {
+      "before": null,
+      "after": "https://docs.puzzles-game.com/en/steelflow/privacy"
+    }
+  }
+}

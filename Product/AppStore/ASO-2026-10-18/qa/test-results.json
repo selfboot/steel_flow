@@ -1,0 +1,13 @@
+{
+  "iphone": {
+    "passed": 20,
+    "failed": 0,
+    "resultBundle": "/Users/daemonzhao/Library/Developer/XcodeBuildMCP/workspaces/SteelFlow-1dd3ec10f123/result-bundles/test_sim_2026-10-18T12-41-56-540Z_pid91057_cf449c46.xcresult"
+  },
+  "ipad": {
+    "passed": 1,
+    "failed": 0,
+    "resultBundle": "/Users/daemonzhao/Library/Developer/XcodeBuildMCP/workspaces/SteelFlow-1dd3ec10f123/result-bundles/test_sim_2026-10-18T12-46-10-457Z_pid91057_05ec564e.xcresult"
+  },
+  "storeKit": "Local product load, confirmation presentation and cancellation passed. No production charge or physical-device purchase/restore validation."
+}

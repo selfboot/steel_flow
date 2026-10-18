@@ -1,4 +1,4 @@
-# SteelFlow: Metal Calculator
+# SteelFlow: Metal Weight
 
 Calculate metal weight from dimensions, check material costs, and turn a project into a PDF quote. SteelFlow works offline with no account required.
 

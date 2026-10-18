@@ -1,0 +1,214 @@
+[
+  {
+    "country": "us",
+    "appId": "6455635445",
+    "queriedAt": "2026-10-18T12:40:20.677011+00:00",
+    "sourceURL": "https://itunes.apple.com/us/rss/customerreviews/id=6455635445/sortBy=mostRecent/json",
+    "reviews": [
+      {
+        "rating": 1,
+        "updated": "2024-03-26T05:01:28-07:00",
+        "title": "Too many ads",
+        "body": "Way too many ads.  Makes app mostly useless",
+        "version": "1.0.12"
+      }
+    ]
+  },
+  {
+    "country": "in",
+    "appId": "1442079573",
+    "queriedAt": "2026-10-18T12:40:24.244697+00:00",
+    "sourceURL": "https://itunes.apple.com/in/rss/customerreviews/id=1442079573/sortBy=mostRecent/json",
+    "reviews": [
+      {
+        "rating": 5,
+        "updated": "2026-07-14T05:38:46-07:00",
+        "title": "Carbon Mfr’s",
+        "body": "Useful Apps",
+        "author": "Maksoodbdesai",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 1,
+        "updated": "2026-03-09T08:29:01-07:00",
+        "title": "APP NOT WORKING",
+        "body": "App not working",
+        "author": "Dhaval_1112",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 5,
+        "updated": "2026-01-31T05:22:27-07:00",
+        "title": "Nice",
+        "body": "Good",
+        "author": "Sv engg",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 3,
+        "updated": "2025-12-24T17:00:24-07:00",
+        "title": "Issue on ios but working perfectly on Mac OS",
+        "body": "Mac OS version is good but on ios not able to see, check and select metal . But good functional on mac . If developers can look into ios issue would be great",
+        "author": "Tester 22 jee",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 1,
+        "updated": "2025-08-20T10:12:06-07:00",
+        "title": "Why metal description removed",
+        "body": "After purchasing app 99 inr. The description of metal. Like iron aluminium stainless steel removed. The whole list is removed. Now i need to put density every time. Why is that.",
+        "author": "Nahim khan",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 2,
+        "updated": "2025-08-13T08:08:46-07:00",
+        "title": "Not good user interface",
+        "body": "App black out in dark mode please fix",
+        "author": "Yusuf babji",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 1,
+        "updated": "2025-07-21T23:25:27-07:00",
+        "title": "don’t work properly",
+        "body": "app doesn’t work properly nd selecting types are not seen 😐",
+        "author": "brothers groups",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 1,
+        "updated": "2025-05-22T07:19:33-07:00",
+        "title": "Unable to see metal tyes length",
+        "body": "All blackout",
+        "author": "DDevraj",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 1,
+        "updated": "2025-01-16T05:29:21-07:00",
+        "title": "Black screen getting some time",
+        "body": "1",
+        "author": "Chigs1139",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 1,
+        "updated": "2024-12-13T05:39:51-07:00",
+        "title": "Not Working",
+        "body": "App is not working properly",
+        "author": "Ishwar07",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 5,
+        "updated": "2024-11-19T02:33:52-07:00",
+        "title": "Weight Calculator",
+        "body": "Super",
+        "author": "Weight calculator",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 4,
+        "updated": "2024-10-14T06:57:27-07:00",
+        "title": "Good",
+        "body": "Very nice",
+        "author": "Ajim Multani",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 1,
+        "updated": "2024-09-02T06:07:28-07:00",
+        "title": "Not working properly",
+        "body": "Pro version also not working after payment",
+        "author": "Venkatesh ms",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 1,
+        "updated": "2024-07-03T04:26:44-07:00",
+        "title": "Technical issue",
+        "body": "The app is not showing the materials for selection. I’m unable to calculate any thing. We bad experience even after purchasing the pro version. It is literally useless.",
+        "author": "Arqam Ali",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 5,
+        "updated": "2023-12-26T03:23:39-07:00",
+        "title": "👌",
+        "body": "👌",
+        "author": "JV Zala",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 1,
+        "updated": "2023-12-16T19:14:28-07:00",
+        "title": "Parameters cannot be seen",
+        "body": "Parameters cannot be seen , material , units of measurement, density of material selected, material selected",
+        "author": "Raag2510",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 5,
+        "updated": "2023-12-12T06:23:10-07:00",
+        "title": "Good for trader",
+        "body": "Good for a steel trader like me. \nBest among the apps available in AppStore.\n\nOne thing to improve,\nduring night shift mode the material list goes blank or black, I don’t know, but couldn’t see anything material in the list.",
+        "author": "Azarudeen Asath",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 1,
+        "updated": "2023-11-29T05:17:11-07:00",
+        "title": "Worst",
+        "body": "All calculation shows wrong",
+        "author": "M Basheer",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 2,
+        "updated": "2023-11-27T20:59:39-07:00",
+        "title": "can’t find metal in ios",
+        "body": "list is not visible in ios 17 please fix it.",
+        "author": "jaikishan pandya",
+        "version": "1.2.1"
+      },
+      {
+        "rating": 1,
+        "updated": "2023-09-14T07:56:56-07:00",
+        "title": "Not user-friendly",
+        "body": "Not in the family",
+        "author": "fqergdgb",
+        "version": "1.2.1"
+      }
+    ]
+  },
+  {
+    "country": "jp",
+    "appId": "1381240441",
+    "queriedAt": "2026-10-18T12:40:28.671421+00:00",
+    "sourceURL": "https://itunes.apple.com/jp/rss/customerreviews/id=1381240441/sortBy=mostRecent/json",
+    "reviews": []
+  },
+  {
+    "country": "kr",
+    "appId": "1291109620",
+    "queriedAt": "2026-10-18T12:40:32.298601+00:00",
+    "sourceURL": "https://itunes.apple.com/kr/rss/customerreviews/id=1291109620/sortBy=mostRecent/json",
+    "reviews": []
+  },
+  {
+    "country": "de",
+    "appId": "1291109620",
+    "queriedAt": "2026-10-18T12:40:35.844206+00:00",
+    "sourceURL": "https://itunes.apple.com/de/rss/customerreviews/id=1291109620/sortBy=mostRecent/json",
+    "reviews": [
+      {
+        "rating": 5,
+        "updated": "2020-05-07T23:34:20-07:00",
+        "title": "Unverzichtbar für Fachleute",
+        "body": "Lange gesucht und endlich gefunden.  Eine Anwendung die seines gleichen sucht. Ein hervorragendes, unverzichtbares und Anwenderfreundliches Tool mit viel Potential nach oben. \n\nGenau das was man zum Kalkulieren oder zum Berechnen der Tonnage einer Konstruktion benötigt. Kein Nachschlagen mehr von Handbüchern. Alle  dafür erforderlichen Profidaten sind enthalten.\n\n Mein ganz besondere Wunsch wäre, dass man für eine bessere Nachverfolgung  die Favoriten Liste speichern, ändern, ausdrucken oder teilen könnte!!  👍🏆😄\n\nVielen herzlichen Dank\n\nMacht weiter so!\n\n...\n\nWow! Super schnelle Reaktion!\nDie Tinte meiner Rezession war noch nicht ganz trocken und schon kam eine passable Lösung. Die Liste läßt sich jetzt über den Teilen Button ablegen, ausdrucken oder weiterleiten.  👍👍👍😄🏆\n\nDanke\n\nBleibt kreativ und Anspruchsvoll",
+        "version": "9.5"
+      }
+    ]
+  }
+]

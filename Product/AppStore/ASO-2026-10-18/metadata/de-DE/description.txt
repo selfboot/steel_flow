@@ -1,0 +1,21 @@
+Metallgewicht berechnen, Materialkosten kalkulieren und ein übersichtliches PDF-Angebot erstellen: SteelFlow begleitet Ihre Arbeit vom ersten Maß bis zur fertigen Kalkulation. Für Metallbau, Werkstatt und Materialeinkauf.
+
+GEWICHT AUS MASSEN BERECHNEN
+Berechnen Sie das theoretische Gewicht von Blechen und Flachstahl, Rund-, Vierkant-, Sechskant- und Achtkantstäben, Rund-, Quadrat- und Rechteckrohren, Winkeln, U-, I-/H- und T-Profilen sowie eigenen Querschnittsflächen. Maße und Stückzahl eingeben, Einzelgewicht, Gesamtgewicht, Oberfläche, Volumen und Rechenformel prüfen.
+
+MATERIALKOSTEN IM BLICK
+Preise je kg, lb, Meter, Fuß oder Stück verwenden. Verschnitt, Bearbeitungskosten, Transport und andere Fixkosten, Aufschlag oder Marge sowie Steuern einbeziehen. So wird aus einer Gewichtsberechnung eine nachvollziehbare Kalkulation.
+
+POSITIONEN IM PROJEKT BÜNDELN
+Mehrere Materialien in einem Projekt speichern, Positionen duplizieren und sortieren sowie Preise aktualisieren. Stückzahlen, Gewichte, Materialkosten, Gebühren und Angebotssumme bleiben zusammen.
+
+ANGEBOTE ALS PDF TEILEN
+Wählen Sie aus 7 Designs und den Papierformaten A4 und Letter. Legen Sie ein Standarddesign fest und ergänzen Sie Kundendaten, Gültigkeit und Notizen. Die App und PDF-Angebote verwenden die in den Einstellungen gewählte Sprache. Unterstützt werden Deutsch, Englisch, Französisch, Spanisch, Japanisch, Koreanisch sowie vereinfachtes und traditionelles Chinesisch.
+
+MATERIALIEN, EINHEITEN UND OFFLINE-NUTZUNG
+Referenzdichten für Baustahl, Edelstahl, Aluminium, Kupfer, Messing und weitere Materialien sind enthalten. Arbeiten Sie mit metrischen oder imperialen Einheiten. Die Kernberechnungen funktionieren offline und ohne Benutzerkonto. Projektdaten werden auf Ihrem Gerät gespeichert.
+
+KOSTENLOS STARTEN, PRO EINMAL KAUFEN
+Schnellberechnungen und grundlegende Projektfunktionen sind kostenlos: bis zu 2 aktive Projekte mit je 10 Positionen. SteelFlow Pro schaltet unbegrenzte Projekte und Positionen, eigene Materialien, Firmendaten und Logo, CSV-Export, PDFs ohne SteelFlow-Kennzeichnung, Sicherung und Wiederherstellung sowie gemeinsame Preisaktualisierungen frei. Einmaliger Kauf, kein Abonnement.
+
+Gewichte und Kosten sind theoretische Schätzwerte auf Basis Ihrer Eingaben, Referenzdichten und Formeln. Prüfen Sie Materialspezifikationen und Lieferantendaten vor Einkauf, Fertigung oder Angebotsabgabe.

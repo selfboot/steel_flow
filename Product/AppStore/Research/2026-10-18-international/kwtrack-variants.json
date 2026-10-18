@@ -1,0 +1,101 @@
+[
+  {
+    "term": "Metallrechner",
+    "country": "de",
+    "popularity": 31,
+    "difficulty": 14,
+    "opportunity": 34,
+    "estimatedDailySearches": 9.75,
+    "classification": null,
+    "queriedAt": "2026-10-18T12:38:00.789806+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "Gewichtsrechner",
+    "country": "de",
+    "popularity": 20,
+    "difficulty": 15,
+    "opportunity": 22,
+    "estimatedDailySearches": 2.5,
+    "classification": null,
+    "queriedAt": "2026-10-18T12:38:08.945150+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "Metallgewicht",
+    "country": "de",
+    "popularity": 15,
+    "difficulty": 8,
+    "opportunity": 17,
+    "estimatedDailySearches": 1.25,
+    "classification": null,
+    "queriedAt": "2026-10-18T12:38:14.864775+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "calculateur poids métaux",
+    "country": "fr",
+    "popularity": 5,
+    "difficulty": 4,
+    "opportunity": 6,
+    "estimatedDailySearches": 0.22,
+    "classification": null,
+    "queriedAt": "2026-10-18T12:38:20.109781+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "calcul poids métaux",
+    "country": "fr",
+    "popularity": 5,
+    "difficulty": 4,
+    "opportunity": 6,
+    "estimatedDailySearches": 0.22,
+    "classification": null,
+    "queriedAt": "2026-10-18T12:38:25.176176+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "poids métaux",
+    "country": "fr",
+    "popularity": 21,
+    "difficulty": 15,
+    "opportunity": 24,
+    "estimatedDailySearches": 2.64,
+    "classification": null,
+    "queriedAt": "2026-10-18T12:38:32.205729+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "calculadora metales",
+    "country": "es",
+    "popularity": 21,
+    "difficulty": 11,
+    "opportunity": 24,
+    "estimatedDailySearches": 1.2,
+    "classification": null,
+    "queriedAt": "2026-10-18T12:38:38.144132+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "peso metales",
+    "country": "es",
+    "popularity": 14,
+    "difficulty": 13,
+    "opportunity": 16,
+    "estimatedDailySearches": 0.46,
+    "classification": null,
+    "queriedAt": "2026-10-18T12:38:43.139421+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  },
+  {
+    "term": "板金重量計算",
+    "country": "jp",
+    "popularity": 20,
+    "difficulty": 8,
+    "opportunity": 22,
+    "estimatedDailySearches": 3.5,
+    "classification": null,
+    "queriedAt": "2026-10-18T12:38:48.267150+00:00",
+    "source": "KWTrack estimate; not Apple search volume"
+  }
+]

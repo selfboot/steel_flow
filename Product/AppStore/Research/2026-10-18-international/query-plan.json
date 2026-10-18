@@ -1,0 +1,70 @@
+{
+  "us": [
+    "metal weight calculator",
+    "steel weight calculator",
+    "metal cost calculator",
+    "pipe weight calculator"
+  ],
+  "gb": [
+    "metal weight calculator",
+    "steel weight calculator"
+  ],
+  "ca": [
+    "metal weight calculator",
+    "steel weight calculator"
+  ],
+  "au": [
+    "metal weight calculator",
+    "steel weight calculator"
+  ],
+  "in": [
+    "steel weight calculator",
+    "metal weight calculator",
+    "steel calculator"
+  ],
+  "jp": [
+    "金属重量計算",
+    "鋼材重量計算",
+    "材料重量計算",
+    "パイプ 重量"
+  ],
+  "kr": [
+    "금속 중량 계산기",
+    "철강 무게 계산기",
+    "철판 중량",
+    "파이프 무게"
+  ],
+  "de": [
+    "Metallgewicht Rechner",
+    "Stahlgewicht Rechner",
+    "Gewichtsrechner Metall",
+    "Rohr Gewicht"
+  ],
+  "fr": [
+    "calcul poids métal",
+    "calcul poids acier",
+    "poids tube"
+  ],
+  "es": [
+    "calculadora peso metal",
+    "peso acero",
+    "peso tubo"
+  ],
+  "mx": [
+    "calculadora peso metal",
+    "peso acero"
+  ],
+  "tw": [
+    "鋼材重量計算",
+    "金屬重量計算器",
+    "鋼管重量"
+  ],
+  "vn": [
+    "tính trọng lượng thép",
+    "tính khối lượng thép"
+  ],
+  "tr": [
+    "metal ağırlık hesaplama",
+    "çelik ağırlık hesaplama"
+  ]
+}
