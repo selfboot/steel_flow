@@ -69,6 +69,16 @@ struct CalculatorEditorView: View {
             draft.priceSourceName = MarketingDemoData.text("source")
             draft.priceRegion = MarketingDemoData.text("region")
             draft.itemDescription = MarketingDemoData.text("plate")
+            if localeCode == "en-US", profile == .plate,
+               UserDefaults.standard.string(forKey: "app.unitSystem") == "imperial" {
+                draft.geometryUnit = .inch
+                draft.dimensionTexts[.width] = "4"
+                draft.dimensionTexts[.thickness] = "0.375"
+                draft.lengthUnit = .foot
+                draft.lengthText = "20"
+                draft.priceBasis = .perPound
+                draft.unitPriceText = "0.34"
+            }
 #endif
         }
         _draft = State(initialValue: draft)
