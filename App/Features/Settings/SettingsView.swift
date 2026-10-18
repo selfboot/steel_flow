@@ -151,14 +151,6 @@ struct SettingsView: View {
                 NavigationLink { FeedbackView() } label: {
                     SettingsLabel("feedback.entry", systemImage: "envelope")
                 }
-                NavigationLink { DisclaimerView() } label: {
-                    SettingsLabel("settings.calculation_disclaimer", systemImage: "doc.text")
-                }
-                LabeledContent {
-                    Text(AppLocalization.text("settings.privacy.value", locale: locale))
-                } label: {
-                    SettingsLabel("settings.privacy", systemImage: "hand.raised")
-                }
                 LabeledContent {
                     Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
                 } label: {
@@ -501,23 +493,5 @@ private struct CompanyProfileForm: View {
         company.address = address.trimmingCharacters(in: .whitespacesAndNewlines)
         company.updatedAt = .now
         if PersistenceErrorCenter.shared.save(modelContext) { dismiss() }
-    }
-}
-
-private struct DisclaimerView: View {
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("disclaimer.title").font(.title.bold())
-                Text("disclaimer.body")
-                Text("disclaimer.density").font(.headline)
-                Text("disclaimer.density.body")
-                Text("disclaimer.geometry").font(.headline)
-                Text("disclaimer.geometry.body")
-                Text("disclaimer.safety").font(.headline)
-                Text("disclaimer.safety.body")
-            }.padding()
-        }
-        .localizedNavigationTitle("settings.calculation_disclaimer")
     }
 }
