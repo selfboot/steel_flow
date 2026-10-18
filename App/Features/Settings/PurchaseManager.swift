@@ -11,7 +11,9 @@ final class PurchaseManager {
 
     private(set) var localizedPrice: String?
     private(set) var isPro = UserDefaults.standard.bool(forKey: "purchase.pro.cached")
-    private(set) var isLoading = false
+    private(set) var isLoadingProducts = false
+    private(set) var isProcessingTransaction = false
+    var isLoading: Bool { isLoadingProducts || isProcessingTransaction }
     private(set) var availabilityMessage: String?
     var alertTitle = ""
     var alertMessage: String?
@@ -41,40 +43,58 @@ final class PurchaseManager {
 
     var isPurchaseAvailable: Bool { package != nil && Purchases.isConfigured }
 
+    func trackPaywallImpression(reason: ProPaywallReason) {
+        guard !usesWorkflowFixture, !isPro, configureRevenueCatIfNeeded() else { return }
+        Purchases.shared.trackCustomPaywallImpression(
+            .init(paywallId: "steelflow.\(reason.rawValue)")
+        )
+    }
+
     func load() async {
         if usesWorkflowFixture { return }
         guard configureRevenueCatIfNeeded() else {
             availabilityMessage = AppLocalization.text("purchase.configuration_missing")
             return
         }
-        isLoading = true
-        availabilityMessage = nil
-        defer { isLoading = false }
-        do {
-            async let offerings = Purchases.shared.offerings()
-            async let customerInfo = Purchases.shared.customerInfo()
-            let (loadedOfferings, loadedCustomerInfo) = try await (offerings, customerInfo)
-            package = loadedOfferings.current?.availablePackages.first {
+        await loadProduct {
+            let offerings = try await Purchases.shared.offerings()
+            return offerings.current?.availablePackages.first {
                 $0.storeProduct.productIdentifier == Self.productID
             }
+        }
+        // Entitlements are refreshed by the app lifecycle and customerInfoStream.
+        // Their network state must never prevent a loaded product from being purchased.
+    }
+
+    func loadProduct(fetchPackage: () async throws -> Package?) async {
+        guard !isLoadingProducts else { return }
+        isLoadingProducts = true
+        availabilityMessage = nil
+        defer { isLoadingProducts = false }
+        do {
+            let loadedPackage = try await fetchPackage()
+            try Task.checkCancellation()
+            package = loadedPackage
             localizedPrice = package?.storeProduct.localizedPriceString
             if package == nil {
                 availabilityMessage = AppLocalization.text("purchase.product_missing")
             }
-            apply(loadedCustomerInfo)
+        } catch is CancellationError {
+            // Closing a sheet is not a store error. Preserve any previously loaded product.
         } catch {
-            // Keep the last verified entitlement when the service is temporarily unreachable.
-            availabilityMessage = error.localizedDescription
+            guard !Task.isCancelled else { return }
+            if package == nil { availabilityMessage = error.localizedDescription }
         }
     }
 
     func purchase() async {
+        guard !isProcessingTransaction else { return }
         guard configureRevenueCatIfNeeded(), let package else {
             showAlert(titleKey: "purchase.error", messageKey: "purchase.product_missing")
             return
         }
-        isLoading = true
-        defer { isLoading = false }
+        isProcessingTransaction = true
+        defer { isProcessingTransaction = false }
         do {
             let result = try await Purchases.shared.purchase(package: package)
             guard !result.userCancelled else { return }
@@ -90,12 +110,13 @@ final class PurchaseManager {
     }
 
     func restore() async {
+        guard !isProcessingTransaction else { return }
         guard configureRevenueCatIfNeeded() else {
             showAlert(titleKey: "purchase.error", messageKey: "purchase.configuration_missing")
             return
         }
-        isLoading = true
-        defer { isLoading = false }
+        isProcessingTransaction = true
+        defer { isProcessingTransaction = false }
         do {
             apply(try await Purchases.shared.restorePurchases())
             if isPro {

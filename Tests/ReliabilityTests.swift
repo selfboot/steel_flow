@@ -1,5 +1,6 @@
 import XCTest
 import SwiftData
+import RevenueCat
 @testable import SteelFlow
 
 @MainActor
@@ -11,6 +12,63 @@ final class ReliabilityTests: XCTestCase {
     private enum TestFailure: LocalizedError {
         case expected
         var errorDescription: String? { "Expected test failure" }
+    }
+
+    func testProductLoadingRecoversAfterFailureWithoutChangingEntitlement() async {
+        let manager = PurchaseManager(startListening: false)
+        let previousEntitlement = manager.isPro
+        await manager.loadProduct { throw TestFailure.expected }
+        XCTAssertNotNil(manager.availabilityMessage)
+        XCTAssertFalse(manager.isLoading)
+
+        await manager.loadProduct { Self.lifetimePackage() }
+        XCTAssertEqual(manager.localizedPrice, "$14.99")
+        XCTAssertNil(manager.availabilityMessage)
+        XCTAssertEqual(manager.isPro, previousEntitlement)
+        XCTAssertFalse(manager.isLoading)
+
+        // A later catalog refresh failure must not throw away an already usable product.
+        await manager.loadProduct { throw TestFailure.expected }
+        XCTAssertEqual(manager.localizedPrice, "$14.99")
+        XCTAssertNil(manager.availabilityMessage)
+    }
+
+    func testCancelledProductLoadKeepsPriceAndDoesNotShowStoreError() async {
+        let manager = PurchaseManager(startListening: false)
+        await manager.loadProduct { Self.lifetimePackage() }
+        await manager.loadProduct { throw CancellationError() }
+        XCTAssertEqual(manager.localizedPrice, "$14.99")
+        XCTAssertNil(manager.availabilityMessage)
+        XCTAssertFalse(manager.isLoading)
+    }
+
+    func testOverlappingProductLoadsCannotOverwriteTheActiveRequest() async {
+        let manager = PurchaseManager(startListening: false)
+        await manager.loadProduct {
+            XCTAssertTrue(manager.isLoadingProducts)
+            await manager.loadProduct {
+                XCTFail("The second caller must reuse the active load")
+                return nil
+            }
+            return Self.lifetimePackage()
+        }
+        XCTAssertEqual(manager.localizedPrice, "$14.99")
+        XCTAssertFalse(manager.isLoading)
+        await manager.loadProduct { nil }
+        XCTAssertNil(manager.localizedPrice)
+        XCTAssertNotNil(manager.availabilityMessage)
+    }
+
+    private static func lifetimePackage() -> Package {
+        let product = TestStoreProduct(
+            localizedTitle: "SteelFlow Pro", price: 14.99, currencyCode: "USD",
+            localizedPriceString: "$14.99", productIdentifier: PurchaseManager.productID,
+            productType: .nonConsumable, localizedDescription: "Lifetime unlock",
+            locale: Locale(identifier: "en_US")
+        )
+        return Package(identifier: "$rc_lifetime", packageType: .lifetime,
+                       storeProduct: product.toStoreProduct(), offeringIdentifier: "default",
+                       webCheckoutUrl: nil)
     }
 
     func testRevokedOrMissingCurrentEntitlementClearsCachedPro() {
