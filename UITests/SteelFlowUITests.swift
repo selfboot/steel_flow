@@ -513,13 +513,18 @@ final class SteelFlowUITests: XCTestCase {
     func testCaptureSpanishMarketingScreens() throws { try captureMarketingScreens(locale: "es-ES", language: "es") }
     func testCaptureFrenchMarketingScreens() throws { try captureMarketingScreens(locale: "fr-FR", language: "fr") }
 
+    func testCaptureBritishMarketingScreens() throws { try captureMarketingScreens(locale: "en-GB", language: "en") }
+    func testCaptureAustralianMarketingScreens() throws { try captureMarketingScreens(locale: "en-AU", language: "en") }
+    func testCaptureCanadianMarketingScreens() throws { try captureMarketingScreens(locale: "en-CA", language: "en") }
+    func testCaptureMexicanMarketingScreens() throws { try captureMarketingScreens(locale: "es-MX", language: "es-MX") }
+
     private func captureMarketingScreens(locale: String, language: String) throws {
         continueAfterFailure = false
-        let currency = ["zh-Hans": "CNY", "zh-Hant": "TWD", "ja": "JPY", "ko": "KRW", "de": "EUR", "es": "EUR", "fr": "EUR"][language] ?? "USD"
+        let currency = ["en-GB": "GBP", "en-AU": "AUD", "en-CA": "CAD", "es-MX": "MXN"][locale] ?? ["zh-Hans": "CNY", "zh-Hant": "TWD", "ja": "JPY", "ko": "KRW", "de": "EUR", "es": "EUR", "fr": "EUR"][language] ?? "USD"
         for screen in ["home", "calculation", "pricing", "project", "quote", "materials"] {
             let app = XCUIApplication()
             app.launchArguments = ["--workflow-tests", "--reset-workflow", "-AppleLanguages", "(\(language))",
-                "-AppleLocale", locale, "-app.language", language, "-app.unitSystem", "metric",
+                "-AppleLocale", locale, "-app.language", language, "-app.unitSystem", locale == "en-US" ? "imperial" : "metric",
                 "-app.currency", currency, "-app.quoteStyle", "blue", "--marketing-screen", screen, "--marketing-locale", locale]
             app.launch()
             dismissSimulatorAccountPrompt()
@@ -549,6 +554,7 @@ final class SteelFlowUITests: XCTestCase {
             "ko": ["계산", "판재 / 평강", "가격 설정", "로스율", "합계", "견적서 미리보기", "재료", "탄소강"],
             "de": ["Berechnen", "Blech / Flachstahl", "Preisberechnung", "Verschnitt", "Gesamt", "Angebotsvorschau", "Materialien", "Kohlenstoffstahl"],
             "es": ["Calcular", "Placa / barra plana", "Precios", "Merma", "Total", "Vista del presupuesto", "Materiales", "Acero al carbono"],
+            "es-MX": ["Calcular", "Placa / barra plana", "Precios", "Merma", "Total", "Vista de la cotización", "Materiales", "Acero al carbono"],
             "fr": ["Calculer", "Tôle / plat", "Tarification", "Pertes", "Total", "Aperçu du devis", "Matériaux", "Acier au carbone"],
         ]
         let t = labels[language]!
@@ -573,6 +579,10 @@ final class SteelFlowUITests: XCTestCase {
             XCTAssertTrue(app.navigationBars[t[5]].waitForExistence(timeout: 10))
             let share = app.buttons["quote.save_share"]
             XCTAssertTrue(share.waitForExistence(timeout: 5)); XCTAssertTrue(share.isEnabled)
+            let document = app.buttons.matching(NSPredicate(format: "identifier == %@ OR label BEGINSWITH %@", "quote.open_document", language == "es-MX" ? "Abrir vista previa del PDF" : "Open PDF preview")).firstMatch
+            for _ in 0..<4 where !document.isHittable { app.swipeUp() }
+            XCTAssertTrue(document.isHittable)
+            document.tap()
         case "materials":
             XCTAssertTrue(app.navigationBars[t[6]].waitForExistence(timeout: 8))
             XCTAssertTrue(app.staticTexts[t[7]].firstMatch.waitForExistence(timeout: 3))

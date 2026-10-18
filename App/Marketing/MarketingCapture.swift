@@ -74,15 +74,25 @@ struct MarketingCaptureRoot: View {
 @MainActor
 enum MarketingDemoData {
     static let projectNumber = "Q-2026-0828"
-    static var language: String {
+    static var locale: Locale {
         let args = ProcessInfo.processInfo.arguments
-        guard let i = args.firstIndex(of: "--marketing-locale"), args.indices.contains(i + 1) else { return "en" }
-        return AppLanguage.resolve(Locale(identifier: args[i + 1])).rawValue
+        guard let i = args.firstIndex(of: "--marketing-locale"), args.indices.contains(i + 1) else { return Locale(identifier: "en-US") }
+        return Locale(identifier: args[i + 1])
     }
+    static var language: String { AppLanguage.resolve(locale).rawValue }
     static var projectName: String { text("project") }
-    static var currency: String { ["zh-Hans": "CNY", "zh-Hant": "TWD", "ja": "JPY", "ko": "KRW", "de": "EUR", "es": "EUR", "fr": "EUR"][language] ?? "USD" }
-    static var priceMultiplier: Decimal { ["zh-Hant": Decimal(32), "ja": Decimal(145), "ko": Decimal(1350)][language] ?? 1 }
-    static func text(_ key: String) -> String { copy[language]?[key] ?? copy["en"]![key]! }
+    static var currency: String {
+        if let regional = ["US": "USD", "GB": "GBP", "AU": "AUD", "CA": "CAD", "MX": "MXN"][locale.region?.identifier ?? ""] { return regional }
+        return ["zh-Hans": "CNY", "zh-Hant": "TWD", "ja": "JPY", "ko": "KRW", "de": "EUR", "es": "EUR", "fr": "EUR"][language] ?? "USD"
+    }
+    // Demonstration prices, not a live foreign-exchange feed.
+    static var priceMultiplier: Decimal { ["TWD": Decimal(32), "JPY": Decimal(145), "KRW": Decimal(1350), "MXN": Decimal(18), "GBP": Decimal(string: "0.78")!, "AUD": Decimal(string: "1.5")!, "CAD": Decimal(string: "1.35")!][currency] ?? 1 }
+    static var unitSystem: UnitSystem { locale.region?.identifier == "US" ? .imperial : .metric }
+    static func text(_ key: String) -> String {
+        if key == "region", let regional = ["GB": "Birmingham", "AU": "Melbourne", "CA": "Ontario", "MX": "Monterrey"][locale.region?.identifier ?? ""] { return regional }
+        if language == "es-MX", key == "contact" { return "Cotizaciones" }
+        return copy[language == "es-MX" ? "es" : language]?[key] ?? copy["en"]![key]!
+    }
     private static let copy: [String: [String: String]] = [
         "en": ["project": "Harbor Canopy", "customer": "Northline Fabrication", "source": "Regional spot", "region": "US Midwest", "plate": "Base plate 200 × 12", "supplier": "Supplier quote", "tube": "Column tube Ø88.9", "angle": "Connection angle L75 × 6", "material": "Weathering steel", "materialNote": "Project-specific material", "priceName": "Q235B regional spot", "supplierName": "Northline Metals", "company": "Northline Fabrication", "contact": "Estimating team"],
         "zh-Hans": ["project": "港区雨棚", "customer": "北辰钢构", "source": "华东现货", "region": "上海", "plate": "底板 200 × 12", "supplier": "供应商报价", "tube": "立柱圆管 Ø88.9", "angle": "连接角钢 L75 × 6", "material": "耐候钢", "materialNote": "项目自定义材料", "priceName": "Q235B 华东现货", "supplierName": "联盛金属", "company": "北辰钢构", "contact": "业务部"],
@@ -104,9 +114,9 @@ enum MarketingDemoData {
             projectNumber: projectNumber,
             customerName: text("customer"),
             quoteLanguage: language,
-            unitSystem: .metric,
+            unitSystem: unitSystem,
             currencyCode: currency,
-            paperSize: .a4
+            paperSize: locale.region?.identifier == "US" ? .letter : .a4
         )
         project.taxPercentText = chinese ? "13" : "8.25"
         project.markupPercentText = chinese ? "12" : "18"
@@ -203,7 +213,8 @@ enum MarketingDemoData {
         if let company = ((try? context.fetch(FetchDescriptor<CompanyProfileEntity>())) ?? []).first {
             company.companyName = text("company")
             company.contactName = text("contact")
-            company.email = "quotes@steelflow.app"
+            company.email = "quotes@example.com"
+            company.logoData = BrandSampleLogo.pngData()
         }
         PersistenceErrorCenter.shared.save(context)
     }

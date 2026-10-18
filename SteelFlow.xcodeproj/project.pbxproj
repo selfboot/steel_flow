@@ -143,6 +143,7 @@
 		792027DA62C1260C0745FAD1 /* SteelFlow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SteelFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EFFAED6444C9E2846FA298C /* SteelFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SteelFlowApp.swift; sourceTree = "<group>"; };
 		9415D8F551024B7C1D682C68 /* FeedbackMailPayloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackMailPayloadTests.swift; sourceTree = "<group>"; };
+		959E4586BD0857E5B30DEF74 /* es-MX */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-MX"; path = "es-MX.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		9721D955138B314153CB547F /* WorkflowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowTests.swift; sourceTree = "<group>"; };
 		97AE02024E30025D98CA670D /* ReferenceCorpusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceCorpusTests.swift; sourceTree = "<group>"; };
 		9B52CAF00D414FA5E96E86B0 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
@@ -524,6 +525,7 @@
 				de,
 				en,
 				es,
+				"es-MX",
 				fr,
 				ja,
 				ko,
@@ -706,6 +708,7 @@
 				209C83C7AC34E01CE0AE6819 /* de */,
 				6641B5D09F6F34AA7B037D5B /* en */,
 				20BB69405A7135F60666E0B8 /* es */,
+				959E4586BD0857E5B30DEF74 /* es-MX */,
 				511A1BFAFEF799E36FC76B32 /* fr */,
 				4980875AD36F4A6365C48BD2 /* ja */,
 				D7259B68973BE3CDCD8CB10F /* ko */,

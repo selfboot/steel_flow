@@ -34,7 +34,7 @@ final class LocalizationTests: XCTestCase {
             ("zh-Hant-US", .traditionalChinese), ("zh-Hans-TW", .simplifiedChinese),
             ("ja_JP", .japanese), ("ko_KR", .korean),
             ("de_DE", .german), ("de_AT", .german), ("de_CH", .german),
-            ("es_ES", .spanish), ("es_MX", .spanish), ("es_US", .spanish),
+            ("es_ES", .spanish), ("es_MX", .spanishMexico), ("es_US", .spanish),
             ("fr_FR", .french), ("fr_CA", .french), ("fr_CH", .french), ("it_IT", .english)
         ]
         for (identifier, expected) in cases {
@@ -48,7 +48,7 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "ja_JP")), "見積書")
         XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "ko_KR")), "견적서")
         XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "de_DE")), "ANGEBOT")
-        XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "es_MX")), "PRESUPUESTO")
+        XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "es_MX")), "COTIZACIÓN")
         XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "fr_CA")), "DEVIS")
         XCTAssertEqual(AppLocalization.text("quote.title", locale: Locale(identifier: "it_IT")), "QUOTE")
     }
@@ -56,7 +56,7 @@ final class LocalizationTests: XCTestCase {
     func testSystemLanguageUsesFirstSupportedPreference() {
         XCTAssertEqual(AppLanguage.preferred(in: ["it-IT", "ja-JP", "en-US"]), .japanese)
         XCTAssertEqual(AppLanguage.preferred(in: ["fr-CA", "en-US"]), .french)
-        XCTAssertEqual(AppLanguage.preferred(in: ["es-MX", "en-US"]), .spanish)
+        XCTAssertEqual(AppLanguage.preferred(in: ["es-MX", "en-US"]), .spanishMexico)
         XCTAssertEqual(AppLanguage.preferred(in: ["zh-TW", "en-US"]), .traditionalChinese)
         XCTAssertEqual(AppLanguage.preferred(in: ["zh-HK", "en-US"]), .traditionalChinese)
         XCTAssertEqual(AppLanguage.preferred(in: ["ko-KR", "en-US"]), .korean)
