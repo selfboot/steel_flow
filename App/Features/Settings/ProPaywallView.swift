@@ -9,6 +9,7 @@ enum ProPaywallReason: String, Identifiable {
     case materials = "purchase.limit.materials"
     case csv = "purchase.limit.csv"
     case companyProfile = "purchase.limit.company_profile"
+    case quoteBranding = "quote.pro.detail"
     case backups = "purchase.limit.backups"
 
     var id: String { rawValue }
@@ -35,6 +36,7 @@ struct ProPaywallView: View {
     @Environment(\.dynamicTypeSize) private var typeSize
     let reason: ProPaywallReason
     @State private var purchaseManager = PurchaseManager.shared
+    @State private var trackedImpression = false
 
     var body: some View {
         NavigationStack {
@@ -84,7 +86,13 @@ struct ProPaywallView: View {
                     .accessibilityLabel(Text("common.close"))
                 }
             }
-            .task { await purchaseManager.load() }
+            .task {
+                if !trackedImpression {
+                    trackedImpression = true
+                    purchaseManager.trackPaywallImpression(reason: reason)
+                }
+                await purchaseManager.load()
+            }
             .alert(
                 purchaseManager.alertTitle,
                 isPresented: Binding(

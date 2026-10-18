@@ -8,6 +8,7 @@ struct QuotePreviewView: View {
     @Environment(\.locale) private var locale
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.colorScheme) private var colorScheme
     @Query private var companies: [CompanyProfileEntity]
     let project: ProjectEntity
     @AppStorage("app.quoteStyle") private var defaultQuoteStyleRaw = QuoteStyle.classic.rawValue
@@ -35,6 +36,34 @@ struct QuotePreviewView: View {
         NavigationStack {
             HStack(spacing: 0) {
                 List {
+                    if !purchaseManager.isPro {
+                        Section {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Label("quote.pro.title", systemImage: "doc.richtext")
+                                    .font(.headline)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Text("quote.pro.detail")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Button {
+                                    paywallReason = .quoteBranding
+                                } label: {
+                                    Label("quote.pro.action", systemImage: "crown")
+                                        .fixedSize(horizontal: false, vertical: true)
+                                        .frame(maxWidth: .infinity, minHeight: 32)
+                                }
+                                .buttonStyle(.bordered)
+                                .tint(colorScheme == .dark ? SteelFlowTheme.proHighlight : SteelFlowTheme.steelBlue)
+                                .accessibilityIdentifier("quote.upgrade")
+                                Text("quote.pro.free_export")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            .padding(.vertical, 4)
+                        }
+                    }
                     Section {
                         Button { showQuoteStyles = true } label: {
                             HStack {
@@ -61,6 +90,9 @@ struct QuotePreviewView: View {
                             Button("ui.retry") { Task { await prepareExports() } }.accessibilityIdentifier("quote.retry")
                         }
                     }
+                    if typeSize.isAccessibilitySize {
+                        Section { shareButton }
+                    }
                     Section("workflow.quote_versions") {
                         if versionSaved { Label("workflow.version_saved", systemImage: "checkmark.seal.fill").accessibilityIdentifier("quote.version_saved") }
                         Text("ui.share_version_help").font(.caption).foregroundStyle(.secondary)
@@ -80,11 +112,9 @@ struct QuotePreviewView: View {
                 if wide { documentPreview.frame(maxWidth: .infinity, maxHeight: .infinity).padding().accessibilityIdentifier("quote.side_preview") }
             }
             .safeAreaInset(edge: .bottom) {
-                Button {
-                    if saveVersion(), let pdfURL { sharing = ShareFile(url: pdfURL) }
-                } label: { Label(versionSaved ? "quote.share_pdf" : "ui.save_share_pdf", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
-                    .buttonStyle(PrimaryActionStyle()).controlSize(.large).padding().background(.bar)
-                    .disabled(preparing || pdfURL == nil || snapshotData == nil).accessibilityIdentifier("quote.save_share")
+                if !typeSize.isAccessibilitySize {
+                    shareButton.padding().background(.bar)
+                }
             }
             .localizedNavigationTitle("quote.preview").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("common.done") { dismiss() } } }
@@ -103,6 +133,19 @@ struct QuotePreviewView: View {
             }
             .sheet(item: $sharing) { FileShareSheet(url: $0.url) }
         }
+    }
+
+    private var shareButton: some View {
+        Button {
+            if saveVersion(), let pdfURL { sharing = ShareFile(url: pdfURL) }
+        } label: {
+            Label(versionSaved ? "quote.share_pdf" : "ui.save_share_pdf", systemImage: "square.and.arrow.up")
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(PrimaryActionStyle()).controlSize(.large)
+        .disabled(preparing || pdfURL == nil || snapshotData == nil)
+        .accessibilityIdentifier("quote.save_share")
     }
     private func applyStyle(_ style: QuoteStyle) {
         guard var updated = snapshot, updated.quoteStyle != style else { return }

@@ -611,3 +611,9 @@
 "quote.style.modern.detail" = "醒目大标题与通栏总价，突出报价重点。";
 "quote.style.ledger" = "清晰账式";
 "quote.style.ledger.detail" = "紧凑行距与清晰列线，适合较多明细。";
+
+// Contextual Pro upgrade in quote preview
+"quote.pro.title" = "让报价展示你的公司品牌";
+"quote.pro.detail" = "添加公司信息与 Logo，移除 PDF 中的 SteelFlow 标识。";
+"quote.pro.action" = "升级 Pro，定制公司报价";
+"quote.pro.free_export" = "一次购买。带 SteelFlow 标识的 PDF 仍可免费分享。";

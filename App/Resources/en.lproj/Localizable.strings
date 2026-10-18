@@ -611,3 +611,9 @@
 "quote.style.modern.detail" = "A bold title and prominent full-width total.";
 "quote.style.ledger" = "Business Ledger";
 "quote.style.ledger.detail" = "Compact rows and clear column rules for detailed quotes.";
+
+// Contextual Pro upgrade in quote preview
+"quote.pro.title" = "Make this quote your own";
+"quote.pro.detail" = "Add your company details and logo, and remove the SteelFlow branding from PDFs.";
+"quote.pro.action" = "Upgrade to Pro";
+"quote.pro.free_export" = "One-time purchase. PDFs with SteelFlow branding stay free.";

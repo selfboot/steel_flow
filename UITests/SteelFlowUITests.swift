@@ -3,6 +3,51 @@ import StoreKitTest
 
 @MainActor
 final class SteelFlowUITests: XCTestCase {
+    func testQuoteUpgradeKeepsFreeSharingAndOpensContextualPaywall() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        for dark in [false, true] {
+            app.launchArguments = ["--workflow-tests", "--workflow-free", "--reset-workflow",
+                                   "--marketing-screen", "quote", "--marketing-locale", "en-US",
+                                   "-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-app.language", "en"]
+                + (dark ? ["--ui-dark"] : [])
+            app.launch()
+            let upgrade = app.buttons["quote.upgrade"]
+            XCTAssertTrue(upgrade.waitForExistence(timeout: 5))
+            XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
+            attachScreenshot(named: "quote-pro-entry-" + (dark ? "dark" : "light"))
+            upgrade.tap()
+            XCTAssertTrue(app.buttons["paywall.purchase"].waitForExistence(timeout: 5))
+            XCTAssertTrue(app.staticTexts["Add your company details and logo, and remove the SteelFlow branding from PDFs."].exists)
+            attachScreenshot(named: "quote-pro-paywall-" + (dark ? "dark" : "light"))
+            app.buttons["Close"].tap()
+            XCTAssertTrue(app.buttons["quote.save_share"].waitForExistence(timeout: 3))
+            XCTAssertTrue(app.buttons["quote.save_share"].isEnabled)
+            app.terminate()
+        }
+        app.launchArguments.removeAll { $0 == "--workflow-free" }
+        app.launch()
+        XCTAssertTrue(app.buttons["quote.style.choose"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["quote.upgrade"].exists)
+        app.terminate()
+    }
+
+    func testQuoteUpgradeWrapsAtGermanAccessibilitySize() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["--workflow-tests", "--workflow-free", "--reset-workflow",
+            "--marketing-screen", "quote", "--marketing-locale", "de-DE",
+            "-AppleLanguages", "(de)", "-AppleLocale", "de_DE", "-app.language", "de",
+            "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch(); defer { app.terminate() }
+        let upgrade = app.buttons["quote.upgrade"]
+        XCTAssertTrue(upgrade.waitForExistence(timeout: 5))
+        attachScreenshot(named: "quote-pro-entry-german-accessibility-top")
+        for _ in 0..<8 where !upgrade.isHittable { app.swipeUp() }
+        attachScreenshot(named: "quote-pro-entry-german-accessibility")
+        upgrade.tap()
+        XCTAssertTrue(app.buttons["paywall.purchase"].waitForExistence(timeout: 5))
+    }
     private var storeKitSession: SKTestSession?
 
     private func configureStoreKit() throws {

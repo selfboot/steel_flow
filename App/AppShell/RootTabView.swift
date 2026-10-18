@@ -21,9 +21,6 @@ struct RootTabView: View {
                 .tabItem { tabLabel("tab.settings", symbol: "gearshape.fill", index: 3) }
                 .tag(3)
         }
-#if DEBUG
-        .preferredColorScheme(ProcessInfo.processInfo.arguments.contains("--ui-dark") ? .dark : nil)
-#endif
         .tint(SteelFlowTheme.steelBlue)
         .alert("data.error.title", isPresented: Binding(
             get: { persistenceErrors.message != nil },

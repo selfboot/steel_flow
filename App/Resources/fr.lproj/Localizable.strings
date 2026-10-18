@@ -611,3 +611,9 @@
 "quote.style.modern.detail" = "Un titre affirmé et un total sur toute la largeur pour souligner l’essentiel.";
 "quote.style.ledger" = "Tableau";
 "quote.style.ledger.detail" = "Des lignes compactes et des colonnes bien délimitées pour les devis détaillés.";
+
+// Contextual Pro upgrade in quote preview
+"quote.pro.title" = "Un devis à votre image";
+"quote.pro.detail" = "Ajoutez vos coordonnées et votre logo, et retirez la mention SteelFlow des PDF.";
+"quote.pro.action" = "Personnaliser avec Pro";
+"quote.pro.free_export" = "Achat unique. Le partage des PDF avec la mention SteelFlow reste gratuit.";

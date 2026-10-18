@@ -611,3 +611,9 @@
 "quote.style.modern.detail" = "Markanter Titel und eine hervorgehobene Gesamtsumme über die volle Breite.";
 "quote.style.ledger" = "Tabellarisch";
 "quote.style.ledger.detail" = "Kompakte Zeilen und klare Spaltenlinien für umfangreiche Angebote.";
+
+// Contextual Pro upgrade in quote preview
+"quote.pro.title" = "Ihr Angebot mit eigener Marke";
+"quote.pro.detail" = "Firmendaten und Logo hinzufügen und den SteelFlow-Hinweis aus PDFs entfernen.";
+"quote.pro.action" = "Mit Pro personalisieren";
+"quote.pro.free_export" = "Einmalkauf. PDFs mit SteelFlow-Hinweis bleiben kostenlos teilbar.";

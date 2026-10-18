@@ -611,3 +611,9 @@
 "quote.style.modern.detail" = "醒目大標題與通欄總價，突顯報價重點。";
 "quote.style.ledger" = "清晰帳式";
 "quote.style.ledger.detail" = "緊湊行距與清晰欄線，適合較多明細。";
+
+// Contextual Pro upgrade in quote preview
+"quote.pro.title" = "讓報價展現你的公司品牌";
+"quote.pro.detail" = "加入公司資訊與 Logo，移除 PDF 中的 SteelFlow 標識。";
+"quote.pro.action" = "升級 Pro，訂製公司報價";
+"quote.pro.free_export" = "一次購買。含 SteelFlow 標識的 PDF 仍可免費分享。";

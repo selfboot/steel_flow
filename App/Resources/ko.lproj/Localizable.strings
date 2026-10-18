@@ -611,3 +611,9 @@
 "quote.style.modern.detail" = "큰 제목과 넓은 총액 영역으로 핵심을 강조합니다.";
 "quote.style.ledger" = "비즈니스 장부";
 "quote.style.ledger.detail" = "촘촘한 행과 명확한 열 구분선으로 많은 항목을 정리합니다.";
+
+// Contextual Pro upgrade in quote preview
+"quote.pro.title" = "우리 회사 이름으로 견적서를";
+"quote.pro.detail" = "회사 정보와 로고를 추가하고 PDF에서 SteelFlow 표시를 제거하세요.";
+"quote.pro.action" = "Pro로 회사 견적서 만들기";
+"quote.pro.free_export" = "한 번 구매로 이용하세요. SteelFlow 표시가 있는 PDF는 무료로 공유할 수 있습니다.";

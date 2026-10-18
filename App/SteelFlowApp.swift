@@ -27,6 +27,9 @@ struct SteelFlowApp: App {
                     }
                 }
             }
+#if DEBUG
+            .preferredColorScheme(ProcessInfo.processInfo.arguments.contains("--ui-dark") ? .dark : nil)
+#endif
             .keyboardOutsideTapSupport()
             .environment(\.locale, languageCode == "system" ? AppLocalization.systemLocale : Locale(identifier: languageCode))
             .task { await PurchaseManager.shared.refreshEntitlement() }

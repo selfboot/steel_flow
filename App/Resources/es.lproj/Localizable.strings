@@ -611,3 +611,9 @@
 "quote.style.modern.detail" = "Título destacado y total a todo el ancho para resaltar lo esencial.";
 "quote.style.ledger" = "Tabular";
 "quote.style.ledger.detail" = "Filas compactas y columnas bien delimitadas para muchos conceptos.";
+
+// Contextual Pro upgrade in quote preview
+"quote.pro.title" = "Presupuestos con tu marca";
+"quote.pro.detail" = "Añade los datos y el logotipo de tu empresa y elimina la marca SteelFlow de los PDF.";
+"quote.pro.action" = "Personalizar con Pro";
+"quote.pro.free_export" = "Compra única. Compartir PDF con la marca SteelFlow sigue siendo gratis.";
