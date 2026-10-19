@@ -1,3 +1,4 @@
+• Turn a calculation into a free PDF quote with fewer steps.
 • Improved Pro product loading and purchase reliability.
 • A clearer Pro entry in quote preview explains company branding and PDF branding removal.
 • Improved quote preview layouts at larger text sizes.

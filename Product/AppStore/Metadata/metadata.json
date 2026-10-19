@@ -35,7 +35,7 @@
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
       "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy",
-      "whatsNew": "• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
+      "whatsNew": "• Turn a calculation into a free PDF quote with fewer steps.\n• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
     },
     "zh-Hans": {
       "name": "SteelFlow 钢材重量计算器",
@@ -46,14 +46,14 @@
       "supportUrl": "https://docs.puzzles-game.com/zh/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/zh/steelflow",
       "privacyPolicyUrl": "https://docs.puzzles-game.com/zh/steelflow/privacy",
-      "whatsNew": "• 改善 Pro 商品加载与购买流程的稳定性。\n• 报价预览新增清晰的 Pro 升级入口，便于使用公司品牌报价。\n• 优化大字体下的报价预览布局。"
+      "whatsNew": "• 从计算结果快速制作客户报价，免费预览和分享 PDF。\n• 改善 Pro 商品加载与购买流程的稳定性。\n• 报价预览新增清晰的 Pro 升级入口，便于使用公司品牌报价。\n• 优化大字体下的报价预览布局。"
     },
     "zh-Hant": {
       "name": "SteelFlow 金屬重量計算器",
       "subtitle": "鋼管鋼板算重、材料成本與PDF報價",
       "keywords": "鋼材,角鋼,槽鋼,H型鋼,不鏽鋼,鋁材,銅,圓棒,扁鋼,密度,截面積",
       "promotionalText": "從尺寸算重，到耗損、加工費、利潤與稅費，再產生客戶報價。適合金屬加工與材料採購。Pro 一次買斷，加入公司 Logo 並移除 PDF 中的 SteelFlow 標示。",
-      "whatsNew": "• 改善 Pro 商品載入與購買流程的穩定性。\n• 報價預覽新增清楚的 Pro 升級入口，方便使用公司品牌報價。\n• 改善大字體下的報價預覽版面。",
+      "whatsNew": "• 從計算結果快速製作客戶報價，免費預覽及分享 PDF。\n• 改善 Pro 商品載入與購買流程的穩定性。\n• 報價預覽新增清楚的 Pro 升級入口，方便使用公司品牌報價。\n• 改善大字體下的報價預覽版面。",
       "descriptionFile": "zh-Hant.md",
       "supportUrl": "https://docs.puzzles-game.com/zh/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/zh/steelflow",
@@ -64,7 +64,7 @@
       "subtitle": "鋼材・パイプの重さと材料費、PDF見積書",
       "keywords": "板金,鉄板,鋼管,角パイプ,丸棒,平鋼,アルミ,ステンレス,銅,密度",
       "promotionalText": "鋼材の重量から材料費、ロス、加工費、利益、税まで計算し、顧客向けPDF見積書を作成。買い切りProで会社ロゴを追加し、PDFのSteelFlow表記を削除できます。",
-      "whatsNew": "• Pro商品の読み込みと購入処理の安定性を改善しました。\n• 見積書プレビューに、自社ブランドの見積書を作成するためのPro案内を追加しました。\n• 文字を大きくした場合の見積書プレビューを改善しました。",
+      "whatsNew": "• 計算結果から顧客向け見積書を作成し、PDFを無料でプレビュー・共有できます。\n• Pro商品の読み込みと購入処理の安定性を改善しました。\n• 見積書プレビューに、自社ブランドの見積書を作成するためのPro案内を追加しました。\n• 文字を大きくした場合の見積書プレビューを改善しました。",
       "descriptionFile": "ja.md",
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
@@ -75,7 +75,7 @@
       "subtitle": "강재·파이프 무게, 재료비와 PDF 견적",
       "keywords": "철판,강관,각관,환봉,앵글,판재,스테인리스,알루미늄,구리,밀도",
       "promotionalText": "금속 중량부터 재료비, 로스, 가공비, 이익과 세금까지 계산하고 고객용 PDF 견적서를 만드세요. Pro 일회성 구매로 회사 로고를 넣고 SteelFlow 표시를 제거할 수 있습니다.",
-      "whatsNew": "• Pro 상품 불러오기와 구매 과정의 안정성을 개선했습니다.\n• 견적서 미리보기에 회사 브랜딩을 위한 Pro 업그레이드 안내를 추가했습니다.\n• 큰 글자 크기에서 견적서 미리보기 레이아웃을 개선했습니다.",
+      "whatsNew": "• 계산 결과에서 고객 견적서를 만들고 PDF를 무료로 미리 보고 공유하세요.\n• Pro 상품 불러오기와 구매 과정의 안정성을 개선했습니다.\n• 견적서 미리보기에 회사 브랜딩을 위한 Pro 업그레이드 안내를 추가했습니다.\n• 큰 글자 크기에서 견적서 미리보기 레이아웃을 개선했습니다.",
       "descriptionFile": "ko.md",
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
@@ -86,7 +86,7 @@
       "subtitle": "Stahlgewicht, Kosten & Angebot",
       "keywords": "metallgewicht,blechgewicht,rohr,profil,aluminium,edelstahl,kupfer,messing,träger,rundstahl,pdf",
       "promotionalText": "Vom Metallgewicht zum Angebot: Material, Verschnitt, Zuschlag und Steuer kalkulieren. Pro einmal kaufen: Firmenlogo und PDFs ohne SteelFlow-Branding.",
-      "whatsNew": "• Zuverlässigeres Laden des Pro-Produkts und verbesserter Kaufablauf.\n• Klarer Pro-Einstieg in der Angebotsvorschau für Angebote mit Ihrer Firmenmarke.\n• Verbesserte Angebotsvorschau bei großen Textgrößen.",
+      "whatsNew": "• Vom Rechenergebnis mit weniger Schritten zum kostenlosen PDF-Angebot.\n• Zuverlässigeres Laden des Pro-Produkts und verbesserter Kaufablauf.\n• Klarer Pro-Einstieg in der Angebotsvorschau für Angebote mit Ihrer Firmenmarke.\n• Verbesserte Angebotsvorschau bei großen Textgrößen.",
       "descriptionFile": "de-DE.md",
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
@@ -97,7 +97,7 @@
       "subtitle": "Calculadora acero y tubos",
       "keywords": "chapa,barra,perfil,aluminio,inoxidable,cobre,latón,coste,presupuesto,pdf,material",
       "promotionalText": "Del peso al presupuesto: material, merma, margen e impuestos. Compra Pro una vez para añadir tu logotipo y exportar PDF sin la marca SteelFlow.",
-      "whatsNew": "• Mejoras en la carga del producto Pro y en la fiabilidad de las compras.\n• Acceso más claro a Pro desde la vista previa para crear presupuestos con tu marca.\n• Mejoras de diseño al usar tamaños de texto grandes.",
+      "whatsNew": "• Convierte un cálculo en un presupuesto PDF gratuito en menos pasos.\n• Mejoras en la carga del producto Pro y en la fiabilidad de las compras.\n• Acceso más claro a Pro desde la vista previa para crear presupuestos con tu marca.\n• Mejoras de diseño al usar tamaños de texto grandes.",
       "descriptionFile": "es-ES.md",
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
@@ -108,7 +108,7 @@
       "subtitle": "Calcul acier, tubes et devis",
       "keywords": "calculateur,tôle,barre,profilé,aluminium,inox,cuivre,laiton,coût,pdf,atelier",
       "promotionalText": "Du poids au devis : matière, pertes, marge et taxes. Un achat Pro ajoute votre logo et retire la marque SteelFlow des PDF.",
-      "whatsNew": "• Chargement du produit Pro et achats plus fiables.\n• Accès plus clair à Pro depuis l’aperçu pour créer des devis à votre image.\n• Meilleure mise en page de l’aperçu avec les grandes tailles de texte.",
+      "whatsNew": "• Passez du calcul à un devis PDF gratuit en moins d’étapes.\n• Chargement du produit Pro et achats plus fiables.\n• Accès plus clair à Pro depuis l’aperçu pour créer des devis à votre image.\n• Meilleure mise en page de l’aperçu avec les grandes tailles de texte.",
       "descriptionFile": "fr-FR.md",
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
@@ -123,7 +123,7 @@
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
       "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy",
-      "whatsNew": "• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
+      "whatsNew": "• Turn a calculation into a free PDF quote with fewer steps.\n• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
     },
     "en-AU": {
       "name": "SteelFlow: Metal Weight",
@@ -134,7 +134,7 @@
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
       "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy",
-      "whatsNew": "• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
+      "whatsNew": "• Turn a calculation into a free PDF quote with fewer steps.\n• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
     },
     "en-CA": {
       "name": "SteelFlow: Metal Weight",
@@ -145,21 +145,21 @@
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
       "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy",
-      "whatsNew": "• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
+      "whatsNew": "• Turn a calculation into a free PDF quote with fewer steps.\n• Improved Pro product loading and purchase reliability.\n• A clearer Pro entry in quote preview explains company branding and PDF branding removal.\n• Improved quote preview layouts at larger text sizes."
     },
     "es-MX": {
       "name": "SteelFlow: Peso de metales",
       "subtitle": "Calculadora acero y tubos",
       "keywords": "placa,lámina,barra,perfil,aluminio,inoxidable,cobre,costo,cotización,pdf,material",
       "promotionalText": "Del peso a la cotización: material, merma, margen e impuestos. Compra Pro una vez para añadir tu logotipo y exportar PDF sin la marca SteelFlow.",
-      "whatsNew": "• Mejoras en la carga del producto Pro y en la fiabilidad de las compras.\n• Acceso más claro a Pro desde la vista previa para crear cotizaciones con tu marca.\n• Mejoras de diseño al usar tamaños de texto grandes.",
+      "whatsNew": "• Convierte un cálculo en una cotización PDF gratuita en menos pasos.\n• Mejoras en la carga del producto Pro y en la fiabilidad de las compras.\n• Acceso más claro a Pro desde la vista previa para crear cotizaciones con tu marca.\n• Mejoras de diseño al usar tamaños de texto grandes.",
       "descriptionFile": "es-MX.md",
       "supportUrl": "https://docs.puzzles-game.com/en/steelflow/support",
       "marketingUrl": "https://docs.puzzles-game.com/en/steelflow",
       "privacyPolicyUrl": "https://docs.puzzles-game.com/en/steelflow/privacy"
     }
   },
-  "reviewNotes": "Version 1.3 (build 26) supports eight app and quote languages: English, Simplified and Traditional Chinese, Japanese, Korean, German, Spanish and French. The app UI and generated PDF quotes use the language selected in Settings, including exports from older projects and saved quote versions. Seven PDF quote styles are available; choose the default style and paper size in Settings > Quote Settings. Pro removes SteelFlow branding from exported PDFs.\n\nTo review: select a language in Settings > App Language, create a project, add a calculation, and open Quote Preview. Change the App Language setting and reopen the quote preview or a saved version to verify localized PDF labels and built-in materials. Customer-entered content and financial data are preserved. No account is required. Core calculations work offline. SteelFlow Pro is a non-consumable lifetime purchase (com.steelflow.app.pro.lifetime), not a subscription. Project data stays on the device; RevenueCat processes anonymous purchase and entitlement information.",
+  "reviewNotes": "Version 1.4 (build 29) improves Pro product loading and adds a customer-quote entry after a valid calculation. Nine app localizations are included: English, Simplified Chinese, Traditional Chinese, Japanese, Korean, German, Spanish (Spain), Spanish (Mexico), and French. Twelve App Store localizations are supplied.\n\nReview the free flow: Calculate > Plate / flat bar > Make a customer quote > Create and add (or choose an existing project). After saving, tap Quote Preview. Free users can preview and share PDFs with SteelFlow branding, within the free project/item limits. View Project lets reviewers edit client information, prices, fees, margin and tax. No purchase is required for the free PDF.\n\nReview Pro: in Quote Preview tap the Pro upgrade entry to see a clearly labelled branding example, localized App Store price, and purchase/restore actions. Pro adds company details/logo, removes SteelFlow branding, and unlocks CSV exports, local backups and unlimited projects/items. SteelFlow Pro is a non-consumable lifetime purchase (com.steelflow.app.pro.lifetime), not a subscription. Prices have not changed. Restore Purchases is also available in Settings.\n\nSelect the app language in Settings > App Language; PDF labels follow that selection. Seven PDF styles and A4/Letter paper are supported. No account is required. Calculations work offline. Project and quote content stays on the device; RevenueCat processes anonymous purchase and entitlement information.",
   "inAppPurchase": {
     "productId": "com.steelflow.app.pro.lifetime",
     "type": "Non-Consumable",
@@ -179,23 +179,51 @@
     "localizations": {
       "en-US": {
         "displayName": "SteelFlow Pro Lifetime",
-        "description": "Unlimited projects, quotes, and full exports"
+        "description": "Branded quotes, CSV, backups and unlimited projects"
       },
       "zh-Hans": {
         "displayName": "SteelFlow Pro 永久版",
-        "description": "无限项目、自定义报价与完整导出"
+        "description": "公司 Logo、无 SteelFlow 标识报价、CSV、备份及无限项目"
       },
       "zh-Hant": {
         "displayName": "SteelFlow Pro 永久版",
-        "description": "無限專案、自訂報價與完整匯出"
+        "description": "公司 Logo、無 SteelFlow 標示報價、CSV、備份及無限專案"
       },
       "ja": {
-        "displayName": "SteelFlow Pro 無期限版",
-        "description": "無制限のプロジェクト、見積書、すべての書き出し機能"
+        "displayName": "SteelFlow Pro 買い切り",
+        "description": "会社ロゴ・SteelFlow表記なし見積書、CSV、バックアップ、無制限プロジェクト"
       },
       "ko": {
         "displayName": "SteelFlow Pro 평생 이용",
-        "description": "프로젝트 무제한, 맞춤 견적 및 모든 내보내기"
+        "description": "회사 로고, SteelFlow 표시 없는 견적, CSV, 백업, 프로젝트 무제한"
+      },
+      "de-DE": {
+        "displayName": "SteelFlow Pro Einmalkauf",
+        "description": "Firmenlogo, PDF ohne SteelFlow-Branding, CSV und Backup"
+      },
+      "es-ES": {
+        "displayName": "SteelFlow Pro de por vida",
+        "description": "Tu logo, PDF sin marca SteelFlow, CSV y copias de datos"
+      },
+      "es-MX": {
+        "displayName": "SteelFlow Pro de por vida",
+        "description": "Tu logo, PDF sin marca SteelFlow, CSV y copias de datos"
+      },
+      "fr-FR": {
+        "displayName": "SteelFlow Pro à vie",
+        "description": "Votre logo, PDF sans marque SteelFlow, CSV, sauvegardes"
+      },
+      "en-GB": {
+        "displayName": "SteelFlow Pro Lifetime",
+        "description": "Branded quotes, CSV, backups and unlimited projects"
+      },
+      "en-AU": {
+        "displayName": "SteelFlow Pro Lifetime",
+        "description": "Branded quotes, CSV, backups and unlimited projects"
+      },
+      "en-CA": {
+        "displayName": "SteelFlow Pro Lifetime",
+        "description": "Branded quotes, CSV, backups and unlimited projects"
       }
     }
   }
