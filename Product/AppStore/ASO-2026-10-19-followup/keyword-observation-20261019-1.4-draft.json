@@ -1,0 +1,66 @@
+[
+  {
+    "country": "us",
+    "query": "metal cost calculator",
+    "observedAt": "2026-10-19T00:35:25.739706+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 93,
+    "apiResultPosition": 16
+  },
+  {
+    "country": "us",
+    "query": "metal weight calculator",
+    "observedAt": "2026-10-19T00:35:31.618182+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 91,
+    "apiResultPosition": 43
+  },
+  {
+    "country": "us",
+    "query": "steel weight calculator",
+    "observedAt": "2026-10-19T00:35:42.223825+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 88,
+    "apiResultPosition": 31
+  },
+  {
+    "country": "gb",
+    "query": "metal weight calculator",
+    "observedAt": "2026-10-19T00:35:51.880256+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 90,
+    "apiResultPosition": null
+  },
+  {
+    "country": "jp",
+    "query": "鋼材重量計算",
+    "observedAt": "2026-10-19T00:36:03.007652+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 19,
+    "apiResultPosition": 7
+  },
+  {
+    "country": "de",
+    "query": "blechgewicht",
+    "observedAt": "2026-10-19T00:36:08.693035+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 2,
+    "apiResultPosition": null
+  },
+  {
+    "country": "mx",
+    "query": "calculadora peso metal",
+    "observedAt": "2026-10-19T00:36:11.830758+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 15,
+    "apiResultPosition": null
+  },
+  {
+    "country": "mx",
+    "query": "cotización metal",
+    "observedAt": "2026-10-19T00:36:15.518410+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 10,
+    "apiResultPosition": null
+  }
+]

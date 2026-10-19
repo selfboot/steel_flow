@@ -1,0 +1,41 @@
+{
+  "count": 6,
+  "assets": [
+    {
+      "path": "exports/ios/ipad/2064x2752/en-US/01-device-bottom.png",
+      "width": 2064,
+      "height": 2752,
+      "sha256": "9b7124edc31c8c385dd3da7f098a97085a69aa936128aaebc534b49181f61ff2"
+    },
+    {
+      "path": "exports/ios/ipad/2048x2732/en-US/01-device-bottom.png",
+      "width": 2048,
+      "height": 2732,
+      "sha256": "1dee9c30de113ab5c3705d8eb3572e1d13d58ef652c27734acf5c2d34da4e491"
+    },
+    {
+      "path": "exports/ios/iphone/1206x2622/en-US/01-device-bottom.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "933bb7f8879ea49d6e1e51c8d5e3722a8cd9938885ee2ba1609c3086009e2cd4"
+    },
+    {
+      "path": "exports/ios/iphone/1320x2868/en-US/01-device-bottom.png",
+      "width": 1320,
+      "height": 2868,
+      "sha256": "501c1afa789645f7b98337677ce809fe9230fa3b1a7db99a70d3784b7ee00721"
+    },
+    {
+      "path": "exports/ios/iphone/1125x2436/en-US/01-device-bottom.png",
+      "width": 1125,
+      "height": 2436,
+      "sha256": "8a73853f5dad6e28760972277fc4ad95a23904c719721de34f6d0bc045e0239f"
+    },
+    {
+      "path": "exports/ios/iphone/1284x2778/en-US/01-device-bottom.png",
+      "width": 1284,
+      "height": 2778,
+      "sha256": "8996fa647f73adb680957b9fee509a7adb4d8611782fd380cd9b379cf876b4ef"
+    }
+  ]
+}

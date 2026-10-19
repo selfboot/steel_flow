@@ -1,0 +1,83 @@
+[
+  {
+    "country": "us",
+    "query": "metal weight calculator",
+    "observedAt": "2026-10-18T23:00:56.364686+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 91,
+    "apiResultPosition": 43,
+    "error": null
+  },
+  {
+    "country": "us",
+    "query": "metal cost calculator",
+    "observedAt": "2026-10-18T23:01:02.415317+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 93,
+    "apiResultPosition": 16,
+    "error": null
+  },
+  {
+    "country": "us",
+    "query": "sheet metal calculator",
+    "observedAt": "2026-10-18T23:01:08.668232+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 94,
+    "apiResultPosition": null,
+    "error": null
+  },
+  {
+    "country": "us",
+    "query": "metal fabrication estimate",
+    "observedAt": "2026-10-18T23:01:14.907546+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 92,
+    "apiResultPosition": null,
+    "error": null
+  },
+  {
+    "country": "gb",
+    "query": "metal weight calculator",
+    "observedAt": "2026-10-18T23:01:20.909516+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 90,
+    "apiResultPosition": null,
+    "error": null
+  },
+  {
+    "country": "jp",
+    "query": "鋼材重量計算",
+    "observedAt": "2026-10-18T23:01:25.002023+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 19,
+    "apiResultPosition": 7,
+    "error": null
+  },
+  {
+    "country": "de",
+    "query": "blechgewicht",
+    "observedAt": "2026-10-18T23:01:29.126353+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 2,
+    "apiResultPosition": null,
+    "error": null
+  },
+  {
+    "country": "mx",
+    "query": "calculadora peso metal",
+    "observedAt": "2026-10-18T23:01:32.807630+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 15,
+    "apiResultPosition": null,
+    "error": null
+  },
+  {
+    "country": "in",
+    "query": "metal weight calculator",
+    "observedAt": "2026-10-18T23:01:36.956244+00:00",
+    "source": "Apple iTunes Search API; NOT App Store organic rank",
+    "resultCount": 73,
+    "apiResultPosition": 62,
+    "error": null
+  }
+]

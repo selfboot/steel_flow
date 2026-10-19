@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 2,
+  "appName": "SteelFlow",
+  "themeId": "steel-navy",
+  "connectedCanvas": false,
+  "locales": [
+    "en-US"
+  ],
+  "locale": "en-US",
+  "device": "iphone",
+  "orientation": "portrait",
+  "appIcon": "/brand/app-icon.png",
+  "slidesByDevice": {
+    "iphone": [
+      {
+        "id": "quote",
+        "layout": "device-bottom",
+        "label": {
+          "en-US": "",
+          "en-GB": "",
+          "en-AU": "",
+          "en-CA": "",
+          "zh-Hans": "",
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "es-MX": "",
+          "fr-FR": ""
+        },
+        "headline": {
+          "en-US": "",
+          "en-GB": "",
+          "en-AU": "",
+          "en-CA": "",
+          "zh-Hans": "",
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "es-MX": "",
+          "fr-FR": ""
+        },
+        "screenshot": "/screenshots/aso-20261019/iphone/{locale}/quote.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "device": {
+            "x": 0,
+            "y": 580,
+            "width": 1320,
+            "height": 2689
+          }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "en-US": "SteelFlow Pro"
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 120,
+              "width": 1174.8,
+              "height": 100
+            },
+            "fontSize": 64,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "en-US": "Send quotes with your logo."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 245,
+              "width": 1174.8,
+              "height": 205
+            },
+            "fontSize": 82,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "en-US": "One-time purchase. No subscription."
+            },
+            "transform": {
+              "x": 72.6,
+              "y": 448,
+              "width": 1174.8,
+              "height": 95
+            },
+            "fontSize": 42,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
+      }
+    ],
+    "android": [],
+    "ipad": [
+      {
+        "id": "quote",
+        "layout": "device-bottom",
+        "label": {
+          "en-US": "",
+          "en-GB": "",
+          "en-AU": "",
+          "en-CA": "",
+          "zh-Hans": "",
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "es-MX": "",
+          "fr-FR": ""
+        },
+        "headline": {
+          "en-US": "",
+          "en-GB": "",
+          "en-AU": "",
+          "en-CA": "",
+          "zh-Hans": "",
+          "zh-Hant": "",
+          "ja": "",
+          "ko": "",
+          "de-DE": "",
+          "es-ES": "",
+          "es-MX": "",
+          "fr-FR": ""
+        },
+        "screenshot": "/screenshots/aso-20261019/ipad/{locale}/quote.png",
+        "inverted": true,
+        "transforms": {
+          "caption": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "device": {
+            "x": 28,
+            "y": 650,
+            "width": 2008,
+            "height": 2667
+          }
+        },
+        "textElements": [
+          {
+            "id": "brand",
+            "text": {
+              "en-US": "SteelFlow Pro"
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 110,
+              "width": 1836.96,
+              "height": 100
+            },
+            "fontSize": 78,
+            "fontWeight": 650,
+            "color": "#C9E3F5",
+            "align": "center"
+          },
+          {
+            "id": "headline",
+            "text": {
+              "en-US": "Send quotes with your logo."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 238,
+              "width": 1836.96,
+              "height": 205
+            },
+            "fontSize": 100,
+            "fontWeight": 750,
+            "color": "#FFFFFF",
+            "align": "center"
+          },
+          {
+            "id": "subtitle",
+            "text": {
+              "en-US": "One-time purchase. No subscription."
+            },
+            "transform": {
+              "x": 113.52,
+              "y": 460,
+              "width": 1836.96,
+              "height": 95
+            },
+            "fontSize": 54,
+            "fontWeight": 450,
+            "color": "#B9D4E9",
+            "align": "center"
+          }
+        ]
+      }
+    ],
+    "android-7": [],
+    "android-10": [],
+    "feature-graphic": []
+  }
+}
