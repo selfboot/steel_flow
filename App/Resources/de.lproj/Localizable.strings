@@ -620,3 +620,6 @@
 
 "purchase.quote.sample" = "Pro-PDF-Beispiel · aktuelles Angebot";
 "purchase.quote.your_company" = "Ihr Unternehmen";
+
+"calculator.start_quote" = "Kundenangebot erstellen";
+"calculator.start_quote_help" = "Berechnung in einem Projekt speichern, dann ein PDF mit SteelFlow-Branding kostenlos ansehen und teilen.";

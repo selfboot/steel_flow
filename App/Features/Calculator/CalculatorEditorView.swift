@@ -46,6 +46,7 @@ struct CalculatorEditorView: View {
     @State private var lastSavedItem: CalculationItemEntity?
     @State private var lastSavedProject: ProjectEntity?
     @State private var openedProject: ProjectEntity?
+    @State private var quoteProject: ProjectEntity?
     @State private var keyboardVisible = false
     @State private var initialReviewState: DraftState?
     @Environment(\.horizontalSizeClass) private var sizeClass
@@ -133,6 +134,10 @@ struct CalculatorEditorView: View {
             if lastSavedItem != nil {
                 Section {
                     StatusNotice(text: AppLocalization.text("calculator.saved", locale: locale) + " · " + (lastSavedProject?.name ?? ""), actionTitle: "ui.view_project") { openedProject = lastSavedProject }
+                    Button("quote.preview", systemImage: "doc.text.magnifyingglass") {
+                        quoteProject = lastSavedProject
+                    }
+                    .accessibilityIdentifier("calculator.preview_saved_quote")
                     HStack {
                         Button("workflow.undo") { undoSavedItem() }
                         Spacer()
@@ -449,6 +454,7 @@ struct CalculatorEditorView: View {
             if let result { CalculationDetailsView(result: result) }
         }
         .navigationDestination(item: $openedProject) { ProjectDetailView(project: $0) }
+        .fullScreenCover(item: $quoteProject) { QuotePreviewView(project: $0) }
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in keyboardVisible = true }
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in keyboardVisible = false }
         .proPaywall(reason: $paywallReason) {
@@ -459,7 +465,7 @@ struct CalculatorEditorView: View {
             isReady: initialReviewState != nil && initialReviewState != storedState
                 && result != nil && issue == nil && pricing != nil
                 && !keyboardVisible && !showSaveSheet && pendingCurrencyProject == nil
-                && !showDetails && paywallReason == nil && openedProject == nil
+                && !showDetails && paywallReason == nil && openedProject == nil && quoteProject == nil
                 && PersistenceErrorCenter.shared.message == nil
         ))
     }
@@ -468,11 +474,27 @@ struct CalculatorEditorView: View {
         VStack(alignment: .leading, spacing: 6) {
             if let result {
                 ResultMetric("calculator.result.total_mass", value: mass(result.totalMassKg), emphasized: true)
+                    .accessibilityIdentifier("calculation.quick_result")
+                if destinationProject == nil && lastSavedItem == nil {
+                    Button {
+                        showSaveSheet = true
+                    } label: {
+                        Label("calculator.start_quote", systemImage: "doc.badge.plus")
+                            .frame(minHeight: 44)
+                    }
+                    .buttonStyle(.borderless)
+                    .disabled(issue != nil || pricing == nil || draft.priceNeedsReview)
+                    .accessibilityIdentifier("calculator.start_quote")
+                    Text("calculator.start_quote_help")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             } else {
                 ResultMetric("calculator.result.total_mass", value: "—", emphasized: true)
                 Text("ui.complete_fields").font(.caption).foregroundStyle(.secondary)
             }
-        }.frame(minHeight: 95, alignment: .top).accessibilityIdentifier("calculation.quick_result")
+        }.frame(minHeight: 95, alignment: .top)
     }
     private func actionBar(scroll: ScrollViewProxy) -> some View {
         VStack(alignment: .leading, spacing: 6) {

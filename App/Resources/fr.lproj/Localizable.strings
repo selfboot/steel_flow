@@ -620,3 +620,6 @@
 
 "purchase.quote.sample" = "Exemple PDF Pro · devis actuel";
 "purchase.quote.your_company" = "Votre entreprise";
+
+"calculator.start_quote" = "Créer un devis client";
+"calculator.start_quote_help" = "Enregistrez le calcul dans un projet, puis prévisualisez et partagez gratuitement un PDF avec la marque SteelFlow.";

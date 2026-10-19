@@ -620,3 +620,6 @@
 
 "purchase.quote.sample" = "Pro PDF サンプル · 現在の見積書";
 "purchase.quote.your_company" = "あなたの会社";
+
+"calculator.start_quote" = "顧客向け見積書を作成";
+"calculator.start_quote_help" = "計算をプロジェクトに保存すると、SteelFlow表記付きPDFを無料でプレビュー・共有できます。";

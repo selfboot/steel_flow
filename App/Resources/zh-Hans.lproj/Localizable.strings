@@ -620,3 +620,6 @@
 
 "purchase.quote.sample" = "Pro PDF 样张 · 当前报价";
 "purchase.quote.your_company" = "您的公司";
+
+"calculator.start_quote" = "制作客户报价";
+"calculator.start_quote_help" = "将本次计算存入项目，即可预览并免费分享带 SteelFlow 标识的 PDF。";

@@ -620,3 +620,6 @@
 
 "purchase.quote.sample" = "Pro PDF example · your current quote";
 "purchase.quote.your_company" = "Your company";
+
+"calculator.start_quote" = "Make a customer quote";
+"calculator.start_quote_help" = "Save this calculation to a project, then preview and share a free PDF with SteelFlow branding.";

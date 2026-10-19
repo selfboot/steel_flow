@@ -620,3 +620,6 @@
 
 "purchase.quote.sample" = "Pro PDF 範例 · 目前報價";
 "purchase.quote.your_company" = "您的公司";
+
+"calculator.start_quote" = "製作客戶報價";
+"calculator.start_quote_help" = "將本次計算存入專案，即可預覽並免費分享帶 SteelFlow 標示的 PDF。";

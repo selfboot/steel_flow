@@ -620,3 +620,6 @@
 
 "purchase.quote.sample" = "Ejemplo PDF Pro · tu presupuesto";
 "purchase.quote.your_company" = "Tu empresa";
+
+"calculator.start_quote" = "Crear un presupuesto";
+"calculator.start_quote_help" = "Guarda el cálculo en un proyecto y previsualiza y comparte gratis un PDF con la marca SteelFlow.";

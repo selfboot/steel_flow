@@ -28,6 +28,29 @@ import XCTest
         if phoneTab.exists { phoneTab.tap() }
         else { app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", name)).firstMatch.tap() }
     }
+    func testFreeCalculationToQuoteCanCancelAndShareWithoutPurchase() {
+        let app = launch(extra: ["--workflow-free"])
+        defer { app.terminate() }
+        app.descendants(matching: .any)["profile.plate"].tap()
+        let start = app.buttons["calculator.start_quote"]
+        XCTAssertTrue(start.waitForExistence(timeout: 5))
+        tap(start, in: app)
+        app.buttons["Cancel"].tap()
+        XCTAssertTrue(start.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["calculator.preview_saved_quote"].exists)
+        tap(start, in: app)
+        tap(app.buttons["Create and add"], in: app)
+        let preview = app.buttons["calculator.preview_saved_quote"]
+        XCTAssertTrue(preview.waitForExistence(timeout: 5))
+        tap(preview, in: app)
+        let share = app.buttons["quote.save_share"]
+        XCTAssertTrue(share.waitForExistence(timeout: 10))
+        expectation(for: NSPredicate(format: "isEnabled == true"), evaluatedWith: share)
+        waitForExpectations(timeout: 15)
+        XCTAssertTrue(app.buttons["quote.upgrade"].exists)
+        XCTAssertFalse(app.buttons["paywall.purchase"].exists)
+        capture(app, "free-first-calculation-quote")
+    }
     func testCrossCurrencySaveRequiresExplicitChoice() {
         let app = launch()
         app.descendants(matching: .any)["profile.plate"].tap()
