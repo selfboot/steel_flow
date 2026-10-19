@@ -1,0 +1,42 @@
+{
+  "release": "1.4 (29)",
+  "unitTests": {
+    "passed": 120,
+    "failed": 0
+  },
+  "iphoneUI": {
+    "passed": 4,
+    "failedAfterFix": 0,
+    "coverage": [
+      "free calculation to quote: cancel/save/free share",
+      "Pro entry light/dark and purchased state",
+      "German largest accessibility size",
+      "settings defaults across both creation flows, light/dark"
+    ]
+  },
+  "ipadUI": {
+    "passed": 2,
+    "failed": 0,
+    "coverage": [
+      "free calculation to quote: cancel/save/free share",
+      "German largest accessibility size"
+    ]
+  },
+  "visualReview": {
+    "settingsLightDark": "passed: direct symbols, no icon tiles or shadows, consistent 32pt column",
+    "englishScreenshotVariant": "passed: real PDF, logo/client/total visible; 6 sizes; not live or an active experiment",
+    "website": "en/zh, mobile/desktop, images and download links verified; live HTTP 200"
+  },
+  "unchanged": [
+    "IAP prices",
+    "product ID",
+    "core keywords",
+    "data collection: Apple and RevenueCat only"
+  ],
+  "limitations": [
+    "No available physical iPhone for TestFlight purchase/restore verification",
+    "Apple ONGOING discovery/download reports still have zero instances",
+    "IAP localization version 2 remains PREPARE_FOR_SUBMISSION; existing version remains APPROVED",
+    "Public search API order is not App Store organic rank"
+  ]
+}

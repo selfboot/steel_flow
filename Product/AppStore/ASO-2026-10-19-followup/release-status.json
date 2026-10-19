@@ -1,0 +1,31 @@
+{
+  "version": "1.4",
+  "build": "29",
+  "buildId": "83587827-070f-40ae-a267-0bbef3fb1445",
+  "buildProcessingState": "VALID",
+  "versionState": "PREPARE_FOR_SUBMISSION",
+  "reviewSubmitted": false,
+  "iapLocalizationVersion": 2,
+  "iapLocalizationState": "PREPARE_FOR_SUBMISSION",
+  "iapLocaleCount": 12,
+  "appLocaleCount": 9,
+  "pricesChanged": false,
+  "newAnalyticsSDKAdded": false,
+  "website": {
+    "status": "live verified HTTP 200",
+    "commit": "0fb6ac2",
+    "urls": [
+      "https://docs.puzzles-game.com/en/steelflow",
+      "https://docs.puzzles-game.com/zh/steelflow"
+    ]
+  },
+  "ipaSha256": "506e97681eec5e899426c6dbe154024917ea695bc30a248e5828387c8c9179fe",
+  "sourceCommit": "a6c804edd96df9689d6fd7716fbf60461a80dbcf",
+  "submissionReadiness": {
+    "errors": 0,
+    "warnings": 0,
+    "blocking": 0,
+    "infos": 1,
+    "info": "App Privacy publication cannot be verified by public API"
+  }
+}
