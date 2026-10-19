@@ -217,7 +217,12 @@ struct SettingsView: View {
         VStack(alignment: .leading, spacing: 18) {
             HStack(spacing: 12) {
                 if !typeSize.isAccessibilitySize {
-                    ProEmblem(isActive: purchaseManager.isPro, size: 44)
+                    Image(systemName: purchaseManager.isPro ? "checkmark.seal.fill" : "crown.fill")
+                        .font(.system(size: 28, weight: .medium))
+                        .symbolRenderingMode(.monochrome)
+                        .foregroundStyle(SteelFlowTheme.proHighlight)
+                        .frame(width: 44, height: 44)
+                        .accessibilityHidden(true)
                 }
                 Text("settings.pro")
                     .font(.title3.weight(.bold))
@@ -355,11 +360,12 @@ private struct SettingsLabel: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            SteelIconTile(
-                systemName: systemImage,
-                base: destructive ? Color.red.opacity(0.12) : SteelFlowTheme.settingsIconFill,
-                foreground: destructive ? .red : .white
-            )
+            Image(systemName: systemImage)
+                .font(.system(size: 20, weight: .regular))
+                .symbolRenderingMode(.monochrome)
+                .foregroundStyle(destructive ? Color.red : SteelFlowTheme.steelBlue)
+                .frame(width: 32, height: 32)
+                .accessibilityHidden(true)
             Text(title)
                 .foregroundStyle(destructive ? Color.red : Color.primary)
                 .fixedSize(horizontal: false, vertical: true)
