@@ -1,0 +1,12 @@
+{
+  "locales": 12,
+  "screenshots": 144,
+  "state": "COMPLETE",
+  "checks": [
+    "exact source MD5",
+    "dimensions",
+    "order",
+    "count"
+  ],
+  "versionId": "2cf0c050-54ae-499b-8496-19a7dc203ff9"
+}

@@ -30,5 +30,9 @@
   "limitations": [
     "PostHog independent project and event capture pending user answer; no new behavioral tracking enabled",
     "Apple ONGOING analytics request active; selected report instances still empty at initial check"
-  ]
+  ],
+  "manualVisualReview": {
+    "lightAndDarkQuoteSample": "verified",
+    "note": "Initial iPhone light-mode test attachment captured before the sample finished drawing; manual settled-page review confirmed full PDF rendering. Workflow fixture disables payment, so its Price unavailable label is not purchase-load evidence."
+  }
 }
