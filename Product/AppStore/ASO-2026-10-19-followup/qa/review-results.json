@@ -36,7 +36,7 @@
   "limitations": [
     "No available physical iPhone for TestFlight purchase/restore verification",
     "Apple ONGOING discovery/download reports still have zero instances",
-    "IAP localization version 2 remains PREPARE_FOR_SUBMISSION; existing version remains APPROVED",
+    "IAP localization version 2 is WAITING_FOR_REVIEW; existing version remains APPROVED",
     "Public search API order is not App Store organic rank"
   ]
 }

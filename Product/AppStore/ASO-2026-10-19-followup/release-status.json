@@ -3,10 +3,10 @@
   "build": "29",
   "buildId": "83587827-070f-40ae-a267-0bbef3fb1445",
   "buildProcessingState": "VALID",
-  "versionState": "PREPARE_FOR_SUBMISSION",
-  "reviewSubmitted": false,
+  "versionState": "WAITING_FOR_REVIEW",
+  "reviewSubmitted": true,
   "iapLocalizationVersion": 2,
-  "iapLocalizationState": "PREPARE_FOR_SUBMISSION",
+  "iapLocalizationState": "WAITING_FOR_REVIEW",
   "iapLocaleCount": 12,
   "appLocaleCount": 9,
   "pricesChanged": false,
@@ -27,5 +27,8 @@
     "blocking": 0,
     "infos": 1,
     "info": "App Privacy publication cannot be verified by public API"
-  }
+  },
+  "reviewSubmissionId": "bc5cfe6a-fee6-47d6-9b68-b9f5d3741290",
+  "submittedAt": "2026-10-19T01:18:53.486Z",
+  "releaseType": "AFTER_APPROVAL"
 }
